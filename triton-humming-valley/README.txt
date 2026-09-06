@@ -86,6 +86,44 @@ ACCESSIBILITY AND BEHAVIOUR NOTES
   send it moves focus to a summary listing what to fix.
 - Tested at 375px (small phone) and 1440px with no sideways scrolling.
 
-The enquiry form does NOT send email yet. It validates and shows a success
-message, but nothing is delivered. See the "WIRE THIS UP" comment in
-js/site.js for where to POST it to your CRM or a form endpoint.
+
+THE ENQUIRY FORM (Leadi5)
+-------------------------
+The form is connected to Leadi5. A submission goes to submit.php on your own
+server, which adds the API key and forwards the lead to the Leadi5 webhook.
+
+config.php in this folder already holds your key and webhook URL, so it works
+as soon as you upload. Requires PHP 7.4+ with cURL, which cPanel has by
+default.
+
+WHY THE KEY IS IN A PHP FILE AND NOT IN THE JAVASCRIPT
+Everything under js/ and css/ is downloaded by the visitor's browser and can
+be read by anyone with View Source. An API key placed there is public: anyone
+could read it and post fake leads into your CRM, and bots scan for exactly
+this. Keeping it in config.php means it stays on the server and is never sent
+to the browser. Do not move it.
+
+.htaccess denies web access to config.php and to any .log file, so the key
+and enquirers' contact details cannot be fetched directly even if PHP is
+misconfigured.
+
+⚠ ROTATE THIS KEY. It appeared in a screenshot, so treat it as exposed.
+   Generate a new one in Leadi5, put it in config.php, and the site keeps
+   working with no other change.
+
+Spam protection, with no CAPTCHA for real visitors to solve:
+  - a hidden field people never see, which automated scripts fill in;
+  - a minimum time on the form, since bots submit in under two seconds.
+Both are silently accepted and discarded, so the bot does not learn to retry.
+
+If Leadi5 is unreachable, the lead is appended to leads-failed.log in this
+folder before the visitor is shown an error, so an outage costs a delay
+rather than the enquiry. Check that file after any reported problem.
+
+To send a copy of each enquiry to your inbox, set notify_email in config.php.
+
+⚠ CHECK THE DATE FORMAT ON YOUR FIRST REAL LEAD.
+   Leadi5's sample timestamp, "28-03-18 22:22:32", reads as either DD-MM-YY
+   or YY-MM-DD. This build sends DD-MM-YY. If the first lead arrives with the
+   wrong date, change LEAD_DATE_FORMAT near the top of submit.php to
+   'y-m-d H:i:s'. That is the only edit needed.

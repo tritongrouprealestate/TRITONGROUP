@@ -408,6 +408,7 @@ const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
 const form = $('#viewing-form');
 const summary = $('#form-summary');
 const summaryList = $('#form-summary-list');
+const formOpenedAt = Date.now();
 
 const RULES = {
   'f-name':  { msg:'Enter your name so we know who to expect.',
@@ -461,22 +462,66 @@ form.addEventListener('submit', e => {
 
   summary.classList.remove('is-shown');
   const btn = $('#f-submit');
+  const label = btn.textContent;
   btn.disabled = true;
   btn.textContent = 'Sending…';
 
-  /* ── WIRE THIS UP ────────────────────────────────────────────────────
-     Replace the timeout with a POST to your CRM or form endpoint, e.g.
-       await fetch('/api/enquiry', {method:'POST',
-         headers:{'Content-Type':'application/json'},
-         body: JSON.stringify(Object.fromEntries(new FormData(form)))});
-     Keep the success/failure handling below: the button must return to an
-     enabled state on failure, or a network error strands the visitor.  */
-  setTimeout(() => {
+  /* Posts to submit.php, which holds the Leadi5 API key server-side and
+     forwards the lead. The key is deliberately not in this file: everything
+     under js/ is served to the browser and readable by any visitor. */
+  fetch('submit.php', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      name:  $('#f-name').value.trim(),
+      phone: $('#f-phone').value.trim(),
+      email: $('#f-email').value.trim(),
+      villa: $('#f-villa').value,
+      date:  $('#f-date').value,
+      note:  $('#f-note').value.trim(),
+      source: location.pathname + location.hash,
+      company: $('#f-company').value,          // honeypot — must stay empty
+      elapsed: Date.now() - formOpenedAt       // bots submit in under 2s
+    })
+  })
+  .then(async res => {
+    const data = await res.json().catch(() => ({}));
+    if (res.ok && data.ok) return showSuccess();
+
+    /* The server validates independently of the browser. If it rejects a
+       field, show that against the field rather than a generic failure. */
+    if (data.fields) {
+      Object.entries(data.fields).forEach(([k, msg]) => {
+        const el = $('#f-' + k);
+        if (!el) return;
+        el.setAttribute('aria-invalid', 'true');
+        const field = el.closest('.field');
+        field.classList.add('is-invalid');
+        const err = $('.err', field);
+        if (err) err.textContent = msg;
+      });
+    }
+    throw new Error(data.error || 'That did not send.');
+  })
+  .catch(err => {
+    /* Never strand the visitor on a dead button. Restore it, say what
+       happened, and leave the phone number as the way through. */
+    btn.disabled = false;
+    btn.textContent = label;
+    summaryList.innerHTML =
+      '<li>' + (err && err.message ? err.message : 'That did not send.') +
+      ' You can also call <a class="underline underline-offset-2" href="tel:' +
+      DATA.contact.phone.replace(/[^\d+]/g, '') + '">' + DATA.contact.phone + '</a>.</li>';
+    summary.classList.add('is-shown');
+    summary.focus();
+  });
+
+  function showSuccess(){
     form.querySelectorAll(':scope > .grid, :scope > #f-submit, :scope > p').forEach(n => n.hidden = true);
     const done = $('#form-done');
     done.hidden = false;
     done.focus();
-  }, 900);
+  }
 });
 })();
 

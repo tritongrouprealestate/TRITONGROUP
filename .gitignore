@@ -2,3 +2,9 @@ node_modules/
 .next/
 *.tsbuildinfo
 .DS_Store
+
+# Holds the live Leadi5 API key — never commit
+triton-humming-valley/config.php
+triton-humming-valley/leads-failed.log
+# The upload zip is built with config.php inside it
+triton-humming-valley.zip
