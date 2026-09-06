@@ -54,19 +54,19 @@ const DATA = {
   mapUrl: 'https://maps.app.goo.gl/qKgAu1p8eE1tc8KK6',
 
   villas: [
-    { id:'3bhk', name:'3 BHK', area:'2,400', price:'₹2.5 Cr',
+    { id:'3bhk', name:'3 BHK', area:'2,400', price:'₹2.9 Cr',
       beds:3, baths:3, verified:true,
       photo:'images/villa-3bhk.jpg',
       photoAlt:'A 3 BHK villa seen from the street, planting spilling from the upper balconies',
       blurb:'The compact plan. Living, dining and kitchen wrap a single-height court with the waterfall at its head; three bedrooms above, all facing the valley.',
       features:['Private garden','15 ft indoor waterfall','Jacuzzi','Covered parking for two'] },
-    { id:'4bhk', name:'4 BHK', area:'3,100', price:'₹3.6 Cr',
+    { id:'4bhk', name:'4 BHK', area:'3,100', price:'₹3.5 Cr',
       beds:4, baths:4, verified:false,   /* ⚠ area interpolated — verify */
       photo:'images/villa-4bhk.jpg',
       photoAlt:'A 4 BHK villa standing against the wooded hillside, palms either side',
       blurb:'A second court opens the plan east, so the morning sun reaches the dining room before it clears the ridge. Family room on the upper floor.',
       features:['Private garden','15 ft indoor waterfall','Jacuzzi','Family lounge','Covered parking for three'] },
-    { id:'5bhk', name:'5 BHK', area:'3,800', price:'₹4 Cr',
+    { id:'5bhk', name:'5 BHK', area:'3,800', price:'₹4.5 Cr',
       beds:5, baths:5, verified:true,
       photo:'images/villa-5bhk.jpg',
       photoAlt:'The pool below the 5 BHK villas, the valley opening beyond it',
@@ -78,41 +78,45 @@ const DATA = {
      villas numbered 1-30, clubhouse at the south-west corner, approach road
      down the eastern edge. Areas are the figures printed on that plan.
 
-     ⚠ Two things here are still placeholders. The BHK against each villa is
-     derived from its area (under 2,700 → 3 BHK, under 3,500 → 4 BHK, above
-     → 5 BHK) because the plan does not state configurations. And the
-     available / held / sold split is invented. Send the real ones and both
-     are a single edit. */
+     Statuses are the real ones: villas 8, 20, 22 and 23 are unsold and
+     everything else has gone. Nothing is on hold.
+
+     ⚠ The BHK against each villa is still derived from its area, because
+     the plan does not state configurations. Of the four that remain, two
+     are 3 BHK and two are 4 BHK; 8 and 23 are ~2,670 sq ft and 20 and 22
+     are ~3,690, which puts the thresholds at 2,700 and 3,700 and leaves
+     villas 10, 11 and 12 as the only 5 BHKs. Send the real configurations
+     and this stops being an inference. */
   plots: [
     {n:'10',x:100,y:46,t:'5 BHK',sq:3724,s:'sold',a:'North row'},
     {n:'9',x:148,y:46,t:'4 BHK',sq:2725,s:'sold',a:'North row'},
     {n:'8',x:196,y:46,t:'3 BHK',sq:2660,s:'available',a:'North row'},
-    {n:'7',x:244,y:46,t:'3 BHK',sq:2334,s:'available',a:'North row'},
-    {n:'6',x:292,y:46,t:'3 BHK',sq:2554,s:'available',a:'North row'},
-    {n:'5',x:340,y:46,t:'3 BHK',sq:2366,s:'held',a:'North row'},
-    {n:'4',x:388,y:46,t:'3 BHK',sq:2553,s:'available',a:'North row'},
+    {n:'7',x:244,y:46,t:'3 BHK',sq:2334,s:'sold',a:'North row'},
+    {n:'6',x:292,y:46,t:'3 BHK',sq:2554,s:'sold',a:'North row'},
+    {n:'5',x:340,y:46,t:'3 BHK',sq:2366,s:'sold',a:'North row'},
+    {n:'4',x:388,y:46,t:'3 BHK',sq:2553,s:'sold',a:'North row'},
     {n:'3',x:436,y:46,t:'3 BHK',sq:2553,s:'sold',a:'North row'},
     {n:'2',x:484,y:46,t:'3 BHK',sq:2389,s:'sold',a:'North row'},
     {n:'1',x:532,y:46,t:'4 BHK',sq:3136,s:'sold',a:'North row'},
-    {n:'11',x:100,y:176,t:'5 BHK',sq:4448,s:'available',a:'Central row'},
-    {n:'12',x:148,y:176,t:'5 BHK',sq:3780,s:'available',a:'Central row'},
-    {n:'13',x:196,y:176,t:'3 BHK',sq:2600,s:'available',a:'Central row'},
-    {n:'14',x:244,y:176,t:'3 BHK',sq:2600,s:'available',a:'Central row'},
-    {n:'15',x:292,y:176,t:'3 BHK',sq:2680,s:'available',a:'Central row'},
-    {n:'16',x:340,y:176,t:'3 BHK',sq:2680,s:'available',a:'Central row'},
-    {n:'17',x:388,y:176,t:'3 BHK',sq:2600,s:'held',a:'Central row'},
-    {n:'18',x:436,y:176,t:'3 BHK',sq:2680,s:'available',a:'Central row'},
-    {n:'19',x:484,y:176,t:'3 BHK',sq:2680,s:'available',a:'Central row'},
-    {n:'20',x:532,y:176,t:'5 BHK',sq:3695,s:'available',a:'Central row'},
-    {n:'30',x:100,y:306,t:'3 BHK',sq:2680,s:'available',a:'South row, clubhouse side'},
-    {n:'29',x:148,y:306,t:'4 BHK',sq:3473,s:'available',a:'South row, clubhouse side'},
-    {n:'28',x:196,y:306,t:'3 BHK',sq:2673,s:'held',a:'South row, clubhouse side'},
-    {n:'27',x:244,y:306,t:'3 BHK',sq:2680,s:'available',a:'South row, clubhouse side'},
-    {n:'26',x:292,y:306,t:'3 BHK',sq:2680,s:'held',a:'South row, clubhouse side'},
-    {n:'25',x:340,y:306,t:'3 BHK',sq:2680,s:'available',a:'South row, clubhouse side'},
-    {n:'24',x:388,y:306,t:'3 BHK',sq:2680,s:'available',a:'South row, clubhouse side'},
-    {n:'23',x:436,y:306,t:'3 BHK',sq:2680,s:'sold',a:'South row, clubhouse side'},
-    {n:'22',x:484,y:306,t:'5 BHK',sq:3680,s:'sold',a:'South row, clubhouse side'},
+    {n:'11',x:100,y:176,t:'5 BHK',sq:4448,s:'sold',a:'Central row'},
+    {n:'12',x:148,y:176,t:'5 BHK',sq:3780,s:'sold',a:'Central row'},
+    {n:'13',x:196,y:176,t:'3 BHK',sq:2600,s:'sold',a:'Central row'},
+    {n:'14',x:244,y:176,t:'3 BHK',sq:2600,s:'sold',a:'Central row'},
+    {n:'15',x:292,y:176,t:'3 BHK',sq:2680,s:'sold',a:'Central row'},
+    {n:'16',x:340,y:176,t:'3 BHK',sq:2680,s:'sold',a:'Central row'},
+    {n:'17',x:388,y:176,t:'3 BHK',sq:2600,s:'sold',a:'Central row'},
+    {n:'18',x:436,y:176,t:'3 BHK',sq:2680,s:'sold',a:'Central row'},
+    {n:'19',x:484,y:176,t:'3 BHK',sq:2680,s:'sold',a:'Central row'},
+    {n:'20',x:532,y:176,t:'4 BHK',sq:3695,s:'available',a:'Central row'},
+    {n:'30',x:100,y:306,t:'3 BHK',sq:2680,s:'sold',a:'South row, clubhouse side'},
+    {n:'29',x:148,y:306,t:'4 BHK',sq:3473,s:'sold',a:'South row, clubhouse side'},
+    {n:'28',x:196,y:306,t:'3 BHK',sq:2673,s:'sold',a:'South row, clubhouse side'},
+    {n:'27',x:244,y:306,t:'3 BHK',sq:2680,s:'sold',a:'South row, clubhouse side'},
+    {n:'26',x:292,y:306,t:'3 BHK',sq:2680,s:'sold',a:'South row, clubhouse side'},
+    {n:'25',x:340,y:306,t:'3 BHK',sq:2680,s:'sold',a:'South row, clubhouse side'},
+    {n:'24',x:388,y:306,t:'3 BHK',sq:2680,s:'sold',a:'South row, clubhouse side'},
+    {n:'23',x:436,y:306,t:'3 BHK',sq:2680,s:'available',a:'South row, clubhouse side'},
+    {n:'22',x:484,y:306,t:'4 BHK',sq:3680,s:'available',a:'South row, clubhouse side'},
     {n:'21',x:532,y:306,t:'4 BHK',sq:3474,s:'sold',a:'South row, clubhouse side'}
   ],
 
@@ -382,9 +386,10 @@ function renderSummary(){
           <dt class="text-mist">${v.name} &middot; ${v.area} sq ft</dt>
           <dd>${byType(v.name)} available</dd>
         </div>`).join('')}
+      ${count('held') ? `
       <div class="flex justify-between gap-4 py-3">
         <dt class="text-mist">On hold</dt><dd>${count('held')}</dd>
-      </div>
+      </div>` : ''}
       <div class="flex justify-between gap-4 py-3">
         <dt class="text-mist">Sold</dt><dd>${count('sold')}</dd>
       </div>
