@@ -464,8 +464,7 @@
       <div class="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] lg:gap-16">
 
         <!-- The map. Ridge contours give the plots a site to sit in. -->
-        <div class="relative min-w-0 border border-ink/12 bg-white p-3 sm:p-5">
-          <div class="plan-scroll">
+        <div class="plan-map relative min-w-0 border border-ink/12 bg-white p-3 sm:p-5">
           <svg id="plan" viewBox="0 0 640 460" class="w-full h-auto"
                role="group" aria-label="Site plan. Thirty villas in three rows, clubhouse to the south-west, approach road along the eastern edge.">
             <defs>
@@ -500,9 +499,15 @@
 
             <g id="plots"><!-- injected from DATA.plots --></g>
           </svg>
-          </div>
-          <p class="plan-hint">Scroll the plan sideways to see the whole site.</p>
         </div>
+
+        <!-- The same thirty villas for a phone. Thirty plots drawn across
+             300px are unreadable and untappable, and a map that scrolls
+             sideways inside a page that scrolls down reads as a mistake. The
+             rows are kept, so the site is still legible as three rows with
+             the clubhouse at one end — it is the drawing that goes, not the
+             information. Built from DATA.plots, same handler as the map. -->
+        <div id="plot-chips" class="plan-chips"><!-- from DATA.plots --></div>
 
         <!-- Detail panel -->
         <aside class="lg:sticky lg:top-28 self-start" aria-labelledby="plot-detail-h">

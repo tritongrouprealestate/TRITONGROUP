@@ -518,20 +518,55 @@ html.lenis,html.lenis body{height:auto}
 }
 
 /* ── The site plan on a small screen ─────────────────────────────────────
-   Thirty plots across 280px gives each villa 19x33px: the numbers are
-   unreadable and no finger can pick one. The plan keeps a legible width and
-   the screen scrolls across it instead, which is how every map on a phone
-   works. */
+   Thirty plots drawn across 300px give each villa 19x33px: unreadable, and
+   under half the size a finger can hit. A map that scrolls sideways inside
+   a page that scrolls down was worse — it reads as a broken layout, not as
+   a map.
+
+   So below 640px the drawing goes and the same thirty villas come back as
+   chips, still grouped into the three rows. What is lost is the shape of
+   the site; what is gained is thirty numbers you can read and press. The
+   full plan returns the moment there is room for it. */
+.plan-chips{display:none}
 @media (max-width:639.98px){
-  /* min-width:0 is what actually lets it scroll. A scroll container's
-     min-width is auto, so without this the box refuses to shrink below its
-     34rem of content and pushes the page sideways instead of scrolling. */
-  .plan-scroll{overflow-x:auto;min-width:0;-webkit-overflow-scrolling:touch;
-    scrollbar-width:thin}
-  .plan-scroll > svg{min-width:34rem}
-  .plan-hint{display:block}
+  .plan-map{display:none}
+  .plan-chips{display:block}
 }
-.plan-hint{display:none;margin-top:.5rem;font-size:.78rem;color:var(--color-mist)}
+
+.chip-row + .chip-row{margin-top:1.5rem}
+.chip-row-name{margin:0 0 .6rem;font-size:.78rem;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--color-mist)}
+/* auto-fill rather than a fixed five: at 320px it settles on five chips of
+   57px, and as the screen widens it works towards ten across — which is the
+   row as it is actually laid out on the ground. */
+.chip-grid{display:grid;gap:.5rem;
+  grid-template-columns:repeat(auto-fill,minmax(3.4rem,1fr))}
+
+.plot-chip{display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:.1rem;min-height:3.25rem;padding:.4rem .2rem;
+  border:1px solid rgba(16,24,32,.16);background:#fff;cursor:pointer;
+  font-family:var(--font-display);font-size:1.05rem;color:var(--color-ink);
+  transition:border-color .25s var(--ease-out),background-color .25s var(--ease-out)}
+.plot-chip small{font-family:var(--font-sans);font-size:.6rem;font-weight:600;
+  letter-spacing:.04em;color:var(--color-frond)}
+.plot-chip[data-status="available"]{border-color:var(--color-frond);
+  background:rgba(47,74,60,.07)}
+.plot-chip[data-status="held"]{border-color:var(--color-dawn-deep);
+  background:rgba(122,90,18,.07)}
+.plot-chip[data-status="held"] small{color:var(--color-dawn-deep)}
+.plot-chip[data-status="sold"]{color:#96A3AD;background:rgba(16,24,32,.03);
+  border-style:dashed;cursor:default}
+.plot-chip[aria-pressed="true"]{background:var(--color-frond);color:var(--color-cloud);
+  border-color:var(--color-frond)}
+.plot-chip[aria-pressed="true"] small{color:rgba(238,241,244,.85)}
+
+.chip-key{display:flex;flex-wrap:wrap;gap:1rem;margin-top:1.25rem;
+  font-size:.78rem;color:var(--color-mist)}
+.chip-key span{display:inline-flex;align-items:center;gap:.4rem}
+.chip-key i{width:.7rem;height:.7rem;border:1px solid currentColor;
+  font-style:normal}
+.chip-key .k-open{color:var(--color-frond);background:rgba(47,74,60,.07)}
+.chip-key .k-sold{color:#96A3AD;border-style:dashed}
 
 /* ── The gallery, now a calm grid ─────────────────────────────────────────
    It follows the choreography, so it should be still: two scroll-driven

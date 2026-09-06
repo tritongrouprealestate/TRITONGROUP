@@ -464,8 +464,8 @@ function renderSummary(){
   const byType = t => DATA.plots.filter(p => p.t === t && p.s === 'available').length;
   detail.innerHTML = `
     <h4 class="font-display" style="font-size:var(--step-2)">${DATA.inventoryHeading}</h4>
-    <p class="mt-3 text-mist">Select a plot on the site plan for its villa type,
-      built-up area, aspect and price.</p>
+    <p class="mt-3 text-mist">Select a villa for its type, built-up area,
+      aspect and price.</p>
     <dl class="mt-7 divide-y divide-ink/12 border-y border-ink/12 text-[.95rem]">
       ${DATA.villas.map(v => `
         <div class="flex justify-between gap-4 py-3">
@@ -521,6 +521,43 @@ $$('#plots [data-plot]').forEach(node => {
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectPlot(p, node); }
   });
 });
+
+/* ── The same villas, for a phone ─────────────────────────────────────────
+   Real <button> elements, so no keydown handling is needed here — Enter and
+   Space come free, which is the whole reason the map needed its own and
+   this does not. Only one of the two is in the layout at a time, so there
+   is never a second set of tab stops. */
+const chips = $('#plot-chips');
+if (chips) {
+  const rows = [];
+  DATA.plots.forEach(p => {
+    const row = rows.find(r => r.name === p.a) || (rows.push({name:p.a, list:[]}), rows[rows.length-1]);
+    row.list.push(p);
+  });
+
+  chips.innerHTML = rows.map(r => `
+    <div class="chip-row">
+      <p class="chip-row-name">${r.name}</p>
+      <div class="chip-grid">
+        ${r.list.map(p => `
+          <button type="button" class="plot-chip" data-chip="${p.n}"
+                  data-status="${p.s}" aria-pressed="false"
+                  ${p.s === 'sold' ? 'aria-disabled="true" tabindex="-1"' : ''}
+                  aria-label="${label(p)}">
+            ${p.n}${p.s === 'sold' ? '' : `<small>${p.t.replace(' BHK','')} BHK</small>`}
+          </button>`).join('')}
+      </div>
+    </div>`).join('') + `
+    <p class="chip-key">
+      <span><i class="k-open"></i>Available</span>
+      <span><i class="k-sold"></i>Sold</span>
+    </p>`;
+
+  $$('#plot-chips [data-chip]').forEach(node => {
+    const p = DATA.plots.find(x => x.n === node.dataset.chip);
+    node.addEventListener('click', () => selectPlot(p, node));
+  });
+}
 
 /* ═══ OWNERSHIP MODEL ══════════════════════════════════════════════════
    Markup only. The skew, the glow and the panel that opens are all CSS, so
