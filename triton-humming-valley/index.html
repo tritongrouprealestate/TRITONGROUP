@@ -412,7 +412,7 @@
           </div>
           <div data-anim="rise">
             <dt class="text-[.85rem] text-mist">Villa Configurations</dt>
-            <dd class="font-display mt-1.5" style="font-size:var(--step-3)">3,4 &amp; 5<span class="text-[.42em] text-mist ml-1.5 font-sans font-medium">BHK</span></dd>
+            <dd class="font-display mt-1.5" data-no-count style="font-size:var(--step-3)">3,4 &amp; 5<span class="text-[.42em] text-mist ml-1.5 font-sans font-medium">BHK</span></dd>
           </div>
           <div data-anim="rise" data-possession-row class="col-span-2 border-t border-ink/12 pt-6">
             <dt class="text-[.85rem] text-mist">Possession</dt>
@@ -464,7 +464,8 @@
       <div class="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] lg:gap-16">
 
         <!-- The map. Ridge contours give the plots a site to sit in. -->
-        <div class="relative border border-ink/12 bg-white p-3 sm:p-5">
+        <div class="relative min-w-0 border border-ink/12 bg-white p-3 sm:p-5">
+          <div class="plan-scroll">
           <svg id="plan" viewBox="0 0 640 460" class="w-full h-auto"
                role="group" aria-label="Site plan. Thirty villas in three rows, clubhouse to the south-west, approach road along the eastern edge.">
             <defs>
@@ -499,6 +500,8 @@
 
             <g id="plots"><!-- injected from DATA.plots --></g>
           </svg>
+          </div>
+          <p class="plan-hint">Scroll the plan sideways to see the whole site.</p>
         </div>
 
         <!-- Detail panel -->

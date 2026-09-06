@@ -983,8 +983,11 @@ window.addEventListener('load', () => ScrollTrigger.refresh());
     if (!node || node.nodeType !== Node.TEXT_NODE) return;
 
     /* A date is not a quantity. Counting it produced "October 2,026" — the
-       year read as a number, complete with a thousands separator. */
-    if (dd.hasAttribute('data-possession')) return;
+       year read as a number, complete with a thousands separator. And
+       "3,4 & 5" is a list of villa types, not a number to count to: it read
+       "1,1 & 2", then "2,2 & 3", then "3,3 & 4" on the way, which looks
+       like a page still loading rather than a figure arriving. */
+    if (dd.hasAttribute('data-possession') || dd.hasAttribute('data-no-count')) return;
 
     /* The capturing group keeps the separators, so they can be put back
        around the animated numbers exactly as they were written. */
@@ -1081,17 +1084,20 @@ window.addEventListener('load', () => ScrollTrigger.refresh());
 
   /* Offsets differ by screen: 36vw is a postage stamp on a phone, and the
      quadrant spread has to shrink with it or the frames leave the viewport. */
+  /* Desktop only. Below 768px the stylesheet lays the four photographs out
+     as a grid: the effect needs room either side of centre to read as
+     depth, and a phone has none — it drifted four thumbnails across three
+     screens of empty ground and showed the pictures smaller than the grid
+     does. */
   const mm = gsap.matchMedia();
   mm.add({
-    isDesktop: '(min-width: 768px) and (prefers-reduced-motion: no-preference)',
-    isMobile:  '(max-width: 767.98px) and (prefers-reduced-motion: no-preference)'
-  }, ctx => {
-    const { isDesktop } = ctx.conditions;
+    isDesktop: '(min-width: 768px) and (prefers-reduced-motion: no-preference)'
+  }, () => {
     /* Half of a 42vw frame is 21vw, so the spread has to clear that or the
        two columns meet in the middle. 23 leaves a 4vw channel between them
        and 6vw of air outside. */
-    const X = isDesktop ? 23 : 15;   // vw from centre
-    const Y = isDesktop ? 15 : 11;   // vh from centre
+    const X = 23;   // vw from centre
+    const Y = 15;   // vh from centre
 
     const [topLeft, bottomRight, bottomLeft, hero] = frames;
 
