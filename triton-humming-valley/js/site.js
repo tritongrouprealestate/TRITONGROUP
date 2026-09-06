@@ -18,7 +18,7 @@ const DATA = {
      and the masterplan, so it is stated once here and written into all of
      them. DATA.plots must hold the same number of entries — the masterplan
      draws a plot per entry, and a visitor can count them. */
-  villaCount: 32,
+  villaCount: 30,
 
   /* Heading above the site-plan inventory. The exact counts still appear in
      the rows beneath it, so this line can carry urgency without the panel
@@ -28,7 +28,31 @@ const DATA = {
   /* The address shown to visitors. Where enquiries are DELIVERED is a
      separate setting — notify_email in config.php — so the public address can
      sit on the domain while the inbox behind it is wherever you read mail. */
-  contact: { phone: '+91 90366 82626', email: 'sales@tritongroup.in' },
+  contact: {
+    /* Shown on the page and used by the "call us" links in the enquiry
+       section and footer. */
+    phone: '+91 90366 82626',
+
+    /* ⚠ VERIFY. The hero call button was specified as +91 90388 82626, which
+       differs from the number above and from the WhatsApp number by two
+       digits (903-66 vs 903-88). That is either a separate sales line or a
+       typo, and a wrong number on the most prominent button on the page
+       loses enquiries silently. Set this to null and the button falls back
+       to contact.phone. */
+    callPhone: '+91 90388 82626',
+
+    email: 'sales@tritongroup.in'
+  },
+
+  /* WhatsApp click-to-chat. The number is digits only with country code and
+     no +, which is what wa.me expects; anything else silently opens WhatsApp
+     with no conversation. The prefilled message arrives in the chat box so
+     the person only has to press send, and tells you which page they came
+     from. */
+  whatsapp: {
+    number: '919036682626',
+    message: 'Hi, I would like to know more about Triton Humming Valley.'
+  },
 
   /* Google Maps pin for the site. Written into every address on the page. */
   mapUrl: 'https://maps.app.goo.gl/qKgAu1p8eE1tc8KK6',
@@ -51,40 +75,46 @@ const DATA = {
       features:['Private garden','15 ft indoor waterfall','Jacuzzi','Guest suite','Ridge terrace','Covered parking for three'] }
   ],
 
-  /* Plot inventory. status: available | held | sold */
+  /* Real site layout, read from the project masterplan: three rows of ten,
+     villas numbered 1-30, clubhouse at the south-west corner, approach road
+     down the eastern edge. Areas are the figures printed on that plan.
+
+     ⚠ Two things here are still placeholders. The BHK against each villa is
+     derived from its area (under 2,700 → 3 BHK, under 3,500 → 4 BHK, above
+     → 5 BHK) because the plan does not state configurations. And the
+     available / held / sold split is invented. Send the real ones and both
+     are a single edit. */
   plots: [
-    {n:'A1',x:96, y:120,t:'5 BHK',s:'sold',     a:'West, ridge face'},
-    {n:'A2',x:158,y:104,t:'5 BHK',s:'sold',     a:'West, ridge face'},
-    {n:'A3',x:220,y:118,t:'4 BHK',s:'available',a:'West, ridge face'},
-    {n:'A4',x:282,y:100,t:'4 BHK',s:'held',     a:'North-west'},
-    {n:'A5',x:344,y:114,t:'4 BHK',s:'available',a:'North-west'},
-    {n:'A6',x:406,y:96, y2:0,t:'5 BHK',s:'available',a:'North, valley view'},
-    {n:'B1',x:96, y:186,t:'3 BHK',s:'sold',     a:'West'},
-    {n:'B2',x:158,y:172,t:'3 BHK',s:'sold',     a:'West'},
-    {n:'B3',x:220,y:184,t:'3 BHK',s:'held',     a:'Central'},
-    {n:'B4',x:406,y:162,t:'4 BHK',s:'available',a:'North'},
-    {n:'B5',x:468,y:148,t:'5 BHK',s:'available',a:'North, valley view'},
-    {n:'B6',x:530,y:160,t:'5 BHK',s:'available',a:'North-east'},
-    {n:'C1',x:96, y:258,t:'3 BHK',s:'sold',     a:'South-west'},
-    {n:'C2',x:158,y:244,t:'3 BHK',s:'sold',     a:'South-west'},
-    {n:'C3',x:220,y:256,t:'3 BHK',s:'available',a:'Central'},
-    {n:'C4',x:282,y:270,t:'4 BHK',s:'available',a:'Central'},
-    {n:'C5',x:406,y:236,t:'4 BHK',s:'held',     a:'East'},
-    {n:'C6',x:468,y:222,t:'5 BHK',s:'available',a:'East, valley view'},
-    {n:'C7',x:530,y:234,t:'5 BHK',s:'available',a:'East'},
-    {n:'D1',x:96, y:330,t:'3 BHK',s:'available',a:'South-west'},
-    {n:'D2',x:158,y:316,t:'3 BHK',s:'available',a:'South'},
-    {n:'D3',x:220,y:328,t:'4 BHK',s:'sold',     a:'South'},
-    {n:'D4',x:282,y:342,t:'4 BHK',s:'available',a:'South'},
-    {n:'D5',x:406,y:308,t:'4 BHK',s:'available',a:'South-east'},
-    {n:'D6',x:468,y:294,t:'5 BHK',s:'held',     a:'East'},
-    {n:'D7',x:530,y:306,t:'5 BHK',s:'available',a:'East'},
-    {n:'E1',x:96, y:402,t:'3 BHK',s:'available',a:'South-west'},
-    {n:'E2',x:158,y:388,t:'3 BHK',s:'available',a:'South'},
-    {n:'E3',x:220,y:400,t:'3 BHK',s:'available',a:'South'},
-    {n:'E4',x:406,y:380,t:'4 BHK',s:'sold',     a:'South-east'},
-    {n:'E5',x:468,y:366,t:'5 BHK',s:'available',a:'South-east'},
-    {n:'E6',x:530,y:378,t:'5 BHK',s:'available',a:'East'}
+    {n:'10',x:100,y:46,t:'5 BHK',sq:3724,s:'sold',a:'North row'},
+    {n:'9',x:148,y:46,t:'4 BHK',sq:2725,s:'sold',a:'North row'},
+    {n:'8',x:196,y:46,t:'3 BHK',sq:2660,s:'available',a:'North row'},
+    {n:'7',x:244,y:46,t:'3 BHK',sq:2334,s:'available',a:'North row'},
+    {n:'6',x:292,y:46,t:'3 BHK',sq:2554,s:'available',a:'North row'},
+    {n:'5',x:340,y:46,t:'3 BHK',sq:2366,s:'held',a:'North row'},
+    {n:'4',x:388,y:46,t:'3 BHK',sq:2553,s:'available',a:'North row'},
+    {n:'3',x:436,y:46,t:'3 BHK',sq:2553,s:'sold',a:'North row'},
+    {n:'2',x:484,y:46,t:'3 BHK',sq:2389,s:'sold',a:'North row'},
+    {n:'1',x:532,y:46,t:'4 BHK',sq:3136,s:'sold',a:'North row'},
+    {n:'11',x:100,y:176,t:'5 BHK',sq:4448,s:'available',a:'Central row'},
+    {n:'12',x:148,y:176,t:'5 BHK',sq:3780,s:'available',a:'Central row'},
+    {n:'13',x:196,y:176,t:'3 BHK',sq:2600,s:'available',a:'Central row'},
+    {n:'14',x:244,y:176,t:'3 BHK',sq:2600,s:'available',a:'Central row'},
+    {n:'15',x:292,y:176,t:'3 BHK',sq:2680,s:'available',a:'Central row'},
+    {n:'16',x:340,y:176,t:'3 BHK',sq:2680,s:'available',a:'Central row'},
+    {n:'17',x:388,y:176,t:'3 BHK',sq:2600,s:'held',a:'Central row'},
+    {n:'18',x:436,y:176,t:'3 BHK',sq:2680,s:'available',a:'Central row'},
+    {n:'19',x:484,y:176,t:'3 BHK',sq:2680,s:'available',a:'Central row'},
+    {n:'20',x:532,y:176,t:'5 BHK',sq:3695,s:'available',a:'Central row'},
+    {n:'30',x:100,y:306,t:'3 BHK',sq:2680,s:'available',a:'South row, clubhouse side'},
+    {n:'29',x:148,y:306,t:'4 BHK',sq:3473,s:'available',a:'South row, clubhouse side'},
+    {n:'28',x:196,y:306,t:'3 BHK',sq:2673,s:'held',a:'South row, clubhouse side'},
+    {n:'27',x:244,y:306,t:'3 BHK',sq:2680,s:'available',a:'South row, clubhouse side'},
+    {n:'26',x:292,y:306,t:'3 BHK',sq:2680,s:'held',a:'South row, clubhouse side'},
+    {n:'25',x:340,y:306,t:'3 BHK',sq:2680,s:'available',a:'South row, clubhouse side'},
+    {n:'24',x:388,y:306,t:'3 BHK',sq:2680,s:'available',a:'South row, clubhouse side'},
+    {n:'23',x:436,y:306,t:'3 BHK',sq:2680,s:'sold',a:'South row, clubhouse side'},
+    {n:'22',x:484,y:306,t:'5 BHK',sq:3680,s:'sold',a:'South row, clubhouse side'},
+    {n:'21',x:532,y:306,t:'4 BHK',sq:3474,s:'sold',a:'South row, clubhouse side'}
   ],
 
   /* The four frames of the scroll choreography in the Inside section. The
@@ -149,6 +179,25 @@ $('#rera-line').textContent = DATA.rera
   : 'RERA registration — not yet configured.';
 if (!DATA.rera) $('#faq-rera').textContent =
   'Registration details are confirmed at the point of enquiry. Ask our sales team for the certificate.';
+
+/* Call links open the dialer on a phone and the default calling app on a
+   desktop. The href keeps only digits and a leading +, because spaces in a
+   tel: URI are unreliable across handsets. */
+$$('[data-call]').forEach(a => {
+  const num = DATA.contact.callPhone || DATA.contact.phone;
+  a.href = 'tel:' + num.replace(/[^\d+]/g, '');
+  const label = a.querySelector('[data-call-label]');
+  if (label) label.textContent = num;
+});
+
+/* WhatsApp links. wa.me hands off to the app on a phone and to WhatsApp Web
+   on a desktop, so one link covers both without sniffing the device. */
+$$('[data-whatsapp]').forEach(a => {
+  a.href = 'https://wa.me/' + DATA.whatsapp.number
+         + '?text=' + encodeURIComponent(DATA.whatsapp.message);
+  a.target = '_blank';
+  a.rel = 'noopener noreferrer';
+});
 
 /* Addresses become links to the map pin. Opened in a new tab so a visitor
    part-way through the enquiry form does not lose what they have typed. */
@@ -271,9 +320,9 @@ const NS = 'http://www.w3.org/2000/svg';
    Each plot is a real <button> wrapped around an SVG rect, so it is
    focusable, announces its own name and reports pressed state — none of
    which you get from a click handler on a bare <path>.               */
-const PW = 54, PH = 40;
+const PW = 44, PH = 76;   // matches the real plot proportions
 const group = $('#plots');
-const label = p => `Plot ${p.n}, ${p.t}, ${p.a}, ${p.s === 'held' ? 'on hold' : p.s}`;
+const label = p => `Villa ${p.n}, ${p.t}, ${p.sq.toLocaleString('en-IN')} square feet, ${p.a}, ${p.s === 'held' ? 'on hold' : p.s}`;
 
 DATA.plots.forEach(p => {
   const g = document.createElementNS(NS,'g');
@@ -343,7 +392,7 @@ function selectPlot(p, node){
   const villa = DATA.villas.find(v => v.name === p.t);
   detail.innerHTML = `
     <div class="flex items-baseline justify-between gap-4">
-      <h4 class="font-display" style="font-size:var(--step-2)">Plot ${p.n}</h4>
+      <h4 class="font-display" style="font-size:var(--step-2)">Villa ${p.n}</h4>
       <span class="text-[.8rem] font-medium px-2.5 py-1 border"
             style="${p.s === 'available'
               ? 'color:#2F4A3C;border-color:#2F4A3C;background:rgba(47,74,60,.08)'
@@ -353,11 +402,11 @@ function selectPlot(p, node){
     </div>
     <dl class="mt-6 divide-y divide-ink/12 border-y border-ink/12 text-[.95rem]">
       <div class="flex justify-between gap-4 py-3"><dt class="text-mist">Villa type</dt><dd>${p.t}</dd></div>
-      <div class="flex justify-between gap-4 py-3"><dt class="text-mist">Built-up</dt><dd>${villa ? villa.area + ' sq ft' : '—'}</dd></div>
+      <div class="flex justify-between gap-4 py-3"><dt class="text-mist">Built-up</dt><dd>${p.sq ? p.sq.toLocaleString('en-IN') + ' sq ft' : '—'}</dd></div>
       <div class="flex justify-between gap-4 py-3"><dt class="text-mist">Aspect</dt><dd>${p.a}</dd></div>
       <div class="flex justify-between gap-4 py-3"><dt class="text-mist">From</dt><dd class="text-dawn-deep font-medium">${villa ? villa.price : '—'}</dd></div>
     </dl>
-    <button type="button" class="btn btn-ink mt-7 w-full" data-enquire="Plot ${p.n}" data-plot-cta="${p.n}">Enquire about plot ${p.n}</button>`;
+    <button type="button" class="btn btn-ink mt-7 w-full" data-enquire="Villa ${p.n}" data-plot-cta="${p.n}">Enquire about villa ${p.n}</button>`;
 
   if (hasGSAP && !reduced.matches)
     gsap.from(detail.children, {opacity:0, y:10, duration:.4, stagger:.05, ease:'power2.out'});
@@ -773,21 +822,55 @@ window.addEventListener('load', () => ScrollTrigger.refresh());
   });
 
   /* ── 8 · Counting statistics ─────────────────────────────────────────────
-     The land figures count up once as they arrive. Only the numeric part is
-     animated; units and ranges are left alone so "2,400–3,800" does not turn
-     into nonsense mid-count. */
+     Every figure in the land summary counts up from zero as it arrives.
+
+     Rather than match particular shapes, this splits the value into numbers
+     and everything between them, and animates each number in place. So it
+     handles a plain count, a percentage, a range like "2,400–3,800" and a
+     list like "3 4 & 5" without knowing anything about them, and a future
+     value in some other shape will work too.
+
+     Two things it is careful about. The unit sits in its own element inside
+     the cell ("sq ft", "BHK Villas"), so only the leading text node is
+     rewritten — replacing the cell's text would delete the unit. And a value
+     with no digits in it, like the possession date, is left alone rather
+     than counted to nonsense. */
+  const fmt = n => Math.round(n).toLocaleString('en-IN');
+
   $$('#land dd').forEach(dd => {
-    const raw = dd.textContent.trim();
-    const m = raw.match(/^(\d[\d,]*)(%?)$/);
-    if (!m) return;
-    const end = parseInt(m[1].replace(/,/g, ''), 10);
-    const suffix = m[2];
-    const o = {v: 0};
-    gsap.to(o, {
-      v: end, duration: 1.6, ease: 'power2.out',
-      scrollTrigger: {trigger: dd, start: 'top 90%', once: true},
-      onUpdate: () => { dd.textContent = Math.round(o.v).toLocaleString('en-IN') + suffix; }
+    const node = dd.firstChild;
+    if (!node || node.nodeType !== Node.TEXT_NODE) return;
+
+    /* A date is not a quantity. Counting it produced "October 2,026" — the
+       year read as a number, complete with a thousands separator. */
+    if (dd.hasAttribute('data-possession')) return;
+
+    /* The capturing group keeps the separators, so they can be put back
+       around the animated numbers exactly as they were written. */
+    const parts = node.nodeValue.trim().split(/(\d[\d,]*)/);
+    const slots = parts.reduce((acc, t, i) => /^\d[\d,]*$/.test(t) ? acc.concat(i) : acc, []);
+    if (!slots.length) return;
+
+    const from = {}, to = {}, grouped = {};
+    slots.forEach((i, k) => {
+      from['n' + k] = 0;
+      to['n' + k] = parseInt(parts[i].replace(/,/g, ''), 10);
+      /* Only group a number that was written grouped. Adding separators to a
+         value that never had them turns a year into a quantity. */
+      grouped[k] = parts[i].includes(',');
     });
+
+    gsap.to(from, Object.assign({}, to, {
+      duration: 1.6, ease: 'power2.out',
+      scrollTrigger: { trigger: dd, start: 'top 92%', once: true },
+      onUpdate: () => {
+        const out = parts.slice();
+        slots.forEach((i, k) => {
+          out[i] = grouped[k] ? fmt(from['n' + k]) : String(Math.round(from['n' + k]));
+        });
+        node.nodeValue = out.join('');
+      }
+    }));
   });
 
   /* ── 9 · Section grounds ─────────────────────────────────────────────────

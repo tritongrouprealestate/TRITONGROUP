@@ -144,6 +144,22 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
 .btn-ink:hover{background:var(--color-frond)}
 .btn[disabled]{opacity:.45;cursor:not-allowed;transform:none}
 
+/* WhatsApp. The glyph carries the recognition, so the button itself stays in
+   the page's own language rather than becoming a slab of #25D366 in the
+   middle of the hero — the brand green appears only in the mark, and fills
+   the button on hover so the association is still made. */
+.btn-whatsapp{background:transparent;color:var(--color-cloud);
+  border-color:rgba(37,211,102,.55)}
+.btn-whatsapp .wa-icon{width:20px;height:20px;color:#25D366;
+  transition:color .3s var(--ease-out)}
+.btn-whatsapp:hover{background:#25D366;color:#0B1F12;border-color:#25D366}
+.btn-whatsapp:hover .wa-icon{color:#0B1F12}
+
+.call-icon{width:18px;height:18px}
+/* The number stays on one line with its label — a phone number broken across
+   two lines is unreadable and unmemorable. */
+.btn-dawn [data-call-label]{white-space:nowrap}
+
 /* ── Nav ──────────────────────────────────────────────────────────────── */
 #nav{transition:background-color .45s var(--ease-out),
                 border-color .45s var(--ease-out), color .45s var(--ease-out)}
