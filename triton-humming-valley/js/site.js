@@ -14,7 +14,13 @@ const DATA = {
      table; set to null and both rows are omitted rather than left blank. */
   possession: 'October 2026',
 
-  contact: { phone: '+91 80 0000 0000', email: 'sales@tritongroup.in' },
+  /* The villa count appears in the hero facts, the land copy, the land stat
+     and the masterplan, so it is stated once here and written into all of
+     them. DATA.plots must hold the same number of entries — the masterplan
+     draws a plot per entry, and a visitor can count them. */
+  villaCount: 32,
+
+  contact: { phone: '+91 90366 82626', email: 'tritonhomz@gmail.com' },
 
   villas: [
     { id:'3bhk', name:'3 BHK', area:'2,400', price:'₹2.5 Cr',
@@ -133,6 +139,12 @@ $('#rera-line').textContent = DATA.rera
 if (!DATA.rera) $('#faq-rera').textContent =
   'Registration details are confirmed at the point of enquiry. Ask our sales team for the certificate.';
 
+/* The villa count is written wherever the page states it, from the one value. */
+$$('[data-villa-count]').forEach(el => { el.textContent = DATA.villaCount; });
+if (DATA.plots.length !== DATA.villaCount)
+  console.warn('site.js: villaCount is ' + DATA.villaCount + ' but the site plan '
+    + 'has ' + DATA.plots.length + ' plots. A visitor can count them — keep these in step.');
+
 /* Possession fills in wherever the page states it. If it is unset the rows
    are removed rather than left showing an empty value. */
 $$('[data-possession]').forEach(el => {
@@ -141,11 +153,11 @@ $$('[data-possession]').forEach(el => {
 });
 
 /* ── Contact details flow from DATA ────────────────────────────────────── */
-$$('[data-field="phone"]').forEach(a => {
+$$('a[data-field="phone"]').forEach(a => {
   a.textContent = DATA.contact.phone;
   a.href = 'tel:' + DATA.contact.phone.replace(/[^\d+]/g,'');
 });
-$$('[data-field="email"]').forEach(a => {
+$$('a[data-field="email"]').forEach(a => {
   a.textContent = DATA.contact.email; a.href = 'mailto:' + DATA.contact.email;
 });
 
@@ -666,6 +678,18 @@ window.addEventListener('load', () => ScrollTrigger.refresh());
   function splitLines(el){
     if (el.dataset.origHtml === undefined) el.dataset.origHtml = el.innerHTML;
     el.innerHTML = el.dataset.origHtml;
+
+    /* data-lines pins the break points. Measured splitting is right for most
+       headings — it re-flows with the width — but a two-part line like
+       "More Space / More Life" only works broken in one place, and at some
+       widths measurement would put the break in the wrong one. */
+    if (el.dataset.lines){
+      el.innerHTML = el.dataset.lines.split('|')
+        .map(l => `<span class="line-mask"><span class="line-inner">${l.trim()}</span></span>`)
+        .join('');
+      return $$('.line-inner', el);
+    }
+
     const words = el.textContent.trim().split(/\s+/);
     el.innerHTML = words.map(w => `<span class="w">${w}</span>`).join(' ');
     const spans = $$('.w', el);
@@ -912,7 +936,7 @@ const Enquiry = (() => {
     const full = o.variant === 'full';
 
     const field = (key, type, label, extra='') => `
-      <div class="field" data-field="${key}">
+      <div class="field" data-fieldname="${key}">
         <label for="${id}-${key}">${label}${RULES[key] ? ' <span aria-hidden="true" class="req">*</span>' : ''}</label>
         <input id="${id}-${key}" name="${key}" type="${type}"
                ${type==='tel' ? 'inputmode="tel" autocomplete="tel"' : ''}

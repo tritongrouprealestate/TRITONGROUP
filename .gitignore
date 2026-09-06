@@ -17,3 +17,6 @@ triton-humming-valley.tar.gz
 #   python3 build/placeholders.py && python3 build/make_preview.py
 build/art.json
 build/preview.html
+
+# Stray screenshots from local verification runs
+*.png
