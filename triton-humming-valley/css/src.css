@@ -233,3 +233,100 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
 @media (prefers-reduced-motion: reduce){
   [data-foot]{opacity:1!important;transform:none!important}
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   MOTION LAYER
+   The page's fluidity comes from one decision, not from many effects: a
+   smooth-scroll layer under everything, so every movement on the page
+   inherits the same weight and easing. The individual effects below are
+   tuned to that rhythm rather than each carrying its own.
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* ── Custom cursor ────────────────────────────────────────────────────────
+   A dot that tracks precisely plus a ring that lags behind it. The lag is
+   the whole effect — the ring easing toward the dot is what reads as weight.
+   Fine pointers only: on touch there is no cursor to augment, and on a
+   coarse pointer the native cursor must never be hidden. */
+@media (hover:hover) and (pointer:fine){
+  .has-cursor, .has-cursor *{cursor:none}
+  /* Text inputs keep a real caret — hiding it makes a form feel broken. */
+  .has-cursor :where(input,textarea,select){cursor:auto}
+}
+#cursor-dot,#cursor-ring{position:fixed;top:0;left:0;z-index:9999;
+  pointer-events:none;border-radius:50%;opacity:0;
+  will-change:transform;mix-blend-mode:difference}
+#cursor-dot{width:7px;height:7px;background:#EEF1F4;margin:-3.5px 0 0 -3.5px}
+/* Fixed box, resized with transform: scale rather than width/height, which
+   would run layout on every frame of an effect that follows the pointer —
+   the one place on the page that can least afford it.
+
+   Position and scale live on DIFFERENT elements on purpose. Both were on the
+   ring at first and the scale silently never applied: the x/y tweens driving
+   the position and the scale tween were writing to one transform and
+   overwriting each other. The outer element carries position, the inner
+   carries scale, so the two can no longer collide. */
+#cursor-ring{width:38px;height:38px;margin:-19px 0 0 -19px;background:none;border:0}
+#cursor-ring > i{display:block;width:100%;height:100%;border-radius:50%;
+  border:1px solid rgba(238,241,244,.55);will-change:transform;
+  transition:border-color .32s var(--ease-out), background-color .32s var(--ease-out)}
+/* Over something interactive the ring opens up and fills faintly. */
+#cursor-ring.is-active > i{border-color:rgba(201,150,46,.9);background:rgba(201,150,46,.12)}
+/* Over the site plan it tightens instead — a plot needs precision, and a
+   64px ring over a 54px plot would obscure the thing being pointed at. */
+#cursor-ring.is-precise > i{border-color:rgba(201,150,46,.95)}
+
+/* ── Magnetic elements ───────────────────────────────────────────────── */
+[data-magnetic]{will-change:transform}
+
+/* ── Line and word reveals ───────────────────────────────────────────────
+   Headings arrive from behind a mask rather than fading. A fade says the
+   text appeared; a mask says it was already there and has been uncovered,
+   which is the difference between motion that decorates and motion that
+   describes. */
+.line-mask{display:block;overflow:hidden}
+.line-inner{display:block;will-change:transform}
+
+/* ── Image reveals ───────────────────────────────────────────────────────
+   A clip wipe with the image counter-scaling inside it, so the picture
+   holds still while the frame opens. Fading an image in makes it look like
+   it loaded late; wiping it in looks intentional. */
+[data-reveal-img]{overflow:hidden}
+[data-reveal-img] > img{will-change:transform}
+
+/* ── Link sweep ─────────────────────────────────────────────────────────
+   Underlines wipe out to the right and back in from the left, so the
+   pointer's direction of travel is carried through. */
+.nav-link::after{transition:transform .45s var(--ease-out)}
+
+/* ── Card hover ─────────────────────────────────────────────────────── */
+.villa-shot img{transition:transform .9s var(--ease-out)}
+.villa:hover .villa-shot img{transform:scale(1.045)}
+.frame img{transition:opacity 1s var(--ease-out), transform 1.2s var(--ease-out)}
+.frame:hover img.is-loaded{transform:scale(1.05)}
+
+/* ── Scroll progress ─────────────────────────────────────────────────────
+   A hairline at the top edge. It is the one piece of chrome that earns a
+   permanent place: on a page this long, how far through you are is real
+   information. */
+#scroll-progress{position:fixed;top:0;left:0;height:2px;width:100%;z-index:60;
+  transform:scaleX(0);transform-origin:0 50%;
+  background:linear-gradient(to right,#7A5A12,#C9962E);will-change:transform}
+
+/* Lenis needs these to own the scroll; without them the wheel and the
+   library fight each other. */
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto !important}
+.lenis.lenis-stopped{overflow:hidden}
+
+/* ── Reduced motion switches the whole layer off ──────────────────────────
+   Not softened — off. Everything below renders at its end state, the custom
+   cursor is removed and the native one comes back. */
+@media (prefers-reduced-motion: reduce){
+  .has-cursor,.has-cursor *{cursor:auto !important}
+  #cursor-dot,#cursor-ring,#scroll-progress{display:none !important}
+  .line-inner{transform:none !important}
+  [data-reveal-img]{clip-path:none !important}
+  [data-reveal-img] > img{transform:none !important}
+  [data-magnetic]{transform:none !important}
+  .villa:hover .villa-shot img,.frame:hover img.is-loaded{transform:none}
+}

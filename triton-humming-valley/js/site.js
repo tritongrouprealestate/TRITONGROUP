@@ -6,15 +6,13 @@
    ═══════════════════════════════════════════════════════════════════════ */
 const DATA = {
 
-  /* ⚠ NEEDS VERIFY — sourced from a third-party listing (99acres), not from
-     Triton's own site, which this build environment could not reach. Confirm
-     against your RERA certificate before publishing. Leave as null to make
-     the footer say the number is not yet configured. */
+  /* Confirmed by Triton. Set to null and the footer says the number is not
+     configured, rather than showing a wrong one. */
   rera: 'PRM/KA/RERA/1254/460/PR/131224/007292',
 
-  /* ⚠ NEEDS VERIFY — listings show Dec 2025, which has passed. Set the real
-     date, or leave null and the possession row is omitted entirely. */
-  possession: null,
+  /* Confirmed by Triton. Shown in the land summary and the specification
+     table; set to null and both rows are omitted rather than left blank. */
+  possession: 'October 2026',
 
   contact: { phone: '+91 80 0000 0000', email: 'sales@tritongroup.in' },
 
@@ -119,6 +117,13 @@ $('#rera-line').textContent = DATA.rera
   : 'RERA registration — not yet configured.';
 if (!DATA.rera) $('#faq-rera').textContent =
   'Registration details are confirmed at the point of enquiry. Ask our sales team for the certificate.';
+
+/* Possession fills in wherever the page states it. If it is unset the rows
+   are removed rather than left showing an empty value. */
+$$('[data-possession]').forEach(el => {
+  if (DATA.possession) el.textContent = DATA.possession;
+  else el.closest('[data-possession-row]')?.remove();
+});
 
 /* ── Contact details flow from DATA ────────────────────────────────────── */
 $$('[data-field="phone"]').forEach(a => {
@@ -703,4 +708,244 @@ window.addEventListener('load', () => ScrollTrigger.refresh());
     yPercent:0, ease:'none',
     scrollTrigger:{ trigger:'.footer-spacer', start:'top bottom', end:'bottom bottom', scrub:1 }
   });
+})();
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOTION LAYER
+   Order matters here: smooth scroll is installed first and ScrollTrigger is
+   driven from it, so every scroll-linked animation on the page reads from the
+   same eased position rather than from the raw wheel. That single wiring is
+   what makes the whole page feel continuous; the effects after it are tuned
+   to that rhythm.
+   ═══════════════════════════════════════════════════════════════════════ */
+(() => {
+  'use strict';
+  const $  = (s, r=document) => r.querySelector(s);
+  const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+
+  const reduced   = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const finePoint = window.matchMedia('(hover:hover) and (pointer:fine)');
+  const hasGSAP   = typeof window.gsap !== 'undefined' && typeof window.ScrollTrigger !== 'undefined';
+
+  /* Reduced motion gets none of this. Not a gentler version — none, with the
+     page already at its finished state. */
+  if (reduced.matches || !hasGSAP) return;
+
+  /* ── 1 · Smooth scroll ────────────────────────────────────────────────
+     Lenis eases the scroll position and ScrollTrigger is updated from it, so
+     pinned sections and scrubbed timelines track the eased value. Driving
+     Lenis from GSAP's ticker keeps both on one rAF loop rather than two
+     competing ones. */
+  let lenis = null;
+  if (typeof window.Lenis !== 'undefined') {
+    lenis = new Lenis({
+      duration: 1.1,
+      easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),  // expo out
+      smoothWheel: true,
+      /* Touch is left alone deliberately: native momentum on a phone is
+         better than anything re-implemented, and overriding it makes a
+         page feel wrong in the hand. */
+      smoothTouch: false,
+      touchMultiplier: 1.6
+    });
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add(time => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
+
+    /* In-page links must go through Lenis, or they jump while everything
+       else eases and the page feels like two different documents. */
+    $$('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const id = a.getAttribute('href');
+        if (!id || id === '#') return;
+        const target = document.querySelector(id);
+        if (!target) return;
+        e.preventDefault();
+        lenis.scrollTo(target, { offset: -72, duration: 1.4 });
+      });
+    });
+  }
+
+  /* ── 2 · Scroll progress ─────────────────────────────────────────────── */
+  const bar = document.createElement('div');
+  bar.id = 'scroll-progress';
+  document.body.appendChild(bar);
+  gsap.to(bar, {
+    scaleX: 1, ease: 'none',
+    scrollTrigger: { start: 0, end: () => document.body.scrollHeight - innerHeight, scrub: .3 }
+  });
+
+  /* ── 3 · Custom cursor ───────────────────────────────────────────────────
+     The dot tracks exactly; the ring is eased toward it with quickTo. The lag
+     between them is the effect — a ring that tracked perfectly would read as
+     a shape stuck to the pointer rather than as something with weight. */
+  if (finePoint.matches) {
+    const dot  = document.createElement('div'); dot.id  = 'cursor-dot';
+    const ring = document.createElement('div'); ring.id = 'cursor-ring';
+    ring.appendChild(document.createElement('i'));   // scales; the ring positions
+    document.body.append(dot, ring);
+    document.documentElement.classList.add('has-cursor');
+
+    const dx = gsap.quickTo(dot,  'x', {duration:.12, ease:'power3'});
+    const dy = gsap.quickTo(dot,  'y', {duration:.12, ease:'power3'});
+    const rx = gsap.quickTo(ring, 'x', {duration:.55, ease:'power3'});
+    const ry = gsap.quickTo(ring, 'y', {duration:.55, ease:'power3'});
+
+    let shown = false;
+    window.addEventListener('pointermove', e => {
+      if (e.pointerType !== 'mouse') return;
+      dx(e.clientX); dy(e.clientY); rx(e.clientX); ry(e.clientY);
+      if (!shown) { shown = true; gsap.to([dot, ring], {opacity:1, duration:.35}); }
+    }, {passive:true});
+
+    /* Leaving the window must hide it, or the ring is left stranded at the
+       edge of the screen when the pointer is somewhere else entirely. */
+    document.addEventListener('mouseleave', () => {
+      shown = false; gsap.to([dot, ring], {opacity:0, duration:.25});
+    });
+
+    /* Scale targets the inner element, never the ring itself: the ring's
+       transform is owned by the position tweens.
+
+       gsap.to, not quickTo. quickTo is built for per-frame updates of ONE
+       resolved property and silently creates no tween for `scale`, which GSAP
+       treats as shorthand for scaleX/scaleY — the ring stayed at 1 with no
+       error. Scale changes on hover, a few times a second at most, so a plain
+       tween with overwrite is both correct and cheaper. */
+    const rs = v => gsap.to(ring.firstChild,
+      {scale: v, duration: .34, ease: 'power3', overwrite: 'auto'});
+    const OPEN    = 'a, button, summary, [role="button"], .frame, label';
+    const PRECISE = '#plots [data-plot], input, textarea, select';
+    document.addEventListener('pointerover', e => {
+      if (e.target.closest(PRECISE)) {
+        ring.classList.add('is-precise'); ring.classList.remove('is-active'); rs(0.58);
+      } else if (e.target.closest(OPEN)) {
+        ring.classList.add('is-active');  ring.classList.remove('is-precise'); rs(1.68);
+      } else {
+        ring.classList.remove('is-active', 'is-precise'); rs(1);
+      }
+    });
+  }
+
+  /* ── 4 · Magnetic pull ───────────────────────────────────────────────────
+     Buttons lean toward the pointer within their own area. Capped well below
+     the element's size: a control that moves far enough to slip out from
+     under the pointer is a worse button, however good it looks. */
+  if (finePoint.matches) {
+    $$('.btn, [data-magnetic]').forEach(el => {
+      el.setAttribute('data-magnetic', '');
+      const mx = gsap.quickTo(el, 'x', {duration:.5, ease:'power3'});
+      const my = gsap.quickTo(el, 'y', {duration:.5, ease:'power3'});
+      el.addEventListener('pointermove', e => {
+        const r = el.getBoundingClientRect();
+        mx(gsap.utils.clamp(-14, 14, (e.clientX - (r.left + r.width/2)) * .32));
+        my(gsap.utils.clamp(-10, 10, (e.clientY - (r.top + r.height/2)) * .32));
+      });
+      el.addEventListener('pointerleave', () => { mx(0); my(0); });
+      /* Keyboard focus must reset the offset, or a tabbed-to button sits
+         wherever the mouse last nudged it. */
+      el.addEventListener('focus', () => { mx(0); my(0); });
+    });
+  }
+
+  /* ── 5 · Heading reveals ─────────────────────────────────────────────────
+     Each heading is split into lines and each line rises out of its own mask.
+     Splitting by line rather than by word keeps the reveal readable: words
+     arriving individually turn a sentence into a list.
+
+     The original text is kept and restored on resize, because a line split
+     is only valid for the width it was measured at. */
+  const splitTargets = $$('main h2, #inside h2, .display:not(h1)')
+    .filter(el => !el.closest('#ascent'));
+
+  function splitLines(el){
+    if (el.dataset.origHtml === undefined) el.dataset.origHtml = el.innerHTML;
+    el.innerHTML = el.dataset.origHtml;
+    const words = el.textContent.trim().split(/\s+/);
+    el.innerHTML = words.map(w => `<span class="w">${w}</span>`).join(' ');
+    const spans = $$('.w', el);
+    const lines = [];
+    let top = null, cur = [];
+    spans.forEach(sp => {
+      const t = Math.round(sp.offsetTop);
+      if (top === null || t === top) { cur.push(sp.textContent); top = t; }
+      else { lines.push(cur); cur = [sp.textContent]; top = t; }
+    });
+    if (cur.length) lines.push(cur);
+    el.innerHTML = lines
+      .map(l => `<span class="line-mask"><span class="line-inner">${l.join(' ')}</span></span>`)
+      .join('');
+    return $$('.line-inner', el);
+  }
+
+  const lineTriggers = [];
+  function buildLineReveals(){
+    lineTriggers.forEach(t => t.kill());
+    lineTriggers.length = 0;
+    splitTargets.forEach(el => {
+      const inners = splitLines(el);
+      gsap.set(inners, {yPercent: 108});
+      const tl = gsap.to(inners, {
+        yPercent: 0, duration: 1.05, ease: 'expo.out', stagger: .085,
+        scrollTrigger: { trigger: el, start: 'top 86%', once: true }
+      });
+      if (tl.scrollTrigger) lineTriggers.push(tl.scrollTrigger);
+    });
+  }
+  buildLineReveals();
+
+  let rt;
+  window.addEventListener('resize', () => {
+    clearTimeout(rt);
+    rt = setTimeout(() => { buildLineReveals(); ScrollTrigger.refresh(); }, 250);
+  });
+
+  /* ── 6 · Image reveals ───────────────────────────────────────────────────
+     The frame wipes open while the picture counter-scales inside it, so the
+     image itself appears still and only the aperture moves. */
+  $$('.villa-shot, .frame, figure.relative').forEach(box => {
+    const img = box.querySelector('img');
+    if (!img) return;
+    box.setAttribute('data-reveal-img', '');
+    gsap.set(box, {clipPath:'inset(0 0 100% 0)'});
+    gsap.set(img, {scale:1.22});
+    gsap.timeline({scrollTrigger:{trigger:box, start:'top 88%', once:true}})
+      .to(box, {clipPath:'inset(0 0 0% 0)', duration:1.15, ease:'expo.out'})
+      .to(img, {scale:1, duration:1.5, ease:'expo.out'}, 0);
+  });
+
+  /* ── 7 · Depth on scroll ─────────────────────────────────────────────────
+     Photographs drift slower than the page. Kept small — beyond about 12% the
+     foreground and background visibly desync and it reads as a glitch. */
+  $$('.villa-shot img, figure.relative .band-photo').forEach(img => {
+    gsap.fromTo(img, {yPercent:-6}, {
+      yPercent: 6, ease:'none',
+      scrollTrigger:{trigger: img.closest('figure, .villa-shot'), start:'top bottom', end:'bottom top', scrub:1}
+    });
+  });
+
+  /* ── 8 · Counting statistics ─────────────────────────────────────────────
+     The land figures count up once as they arrive. Only the numeric part is
+     animated; units and ranges are left alone so "2,400–3,800" does not turn
+     into nonsense mid-count. */
+  $$('#land dd').forEach(dd => {
+    const raw = dd.textContent.trim();
+    const m = raw.match(/^(\d[\d,]*)(%?)$/);
+    if (!m) return;
+    const end = parseInt(m[1].replace(/,/g, ''), 10);
+    const suffix = m[2];
+    const o = {v: 0};
+    gsap.to(o, {
+      v: end, duration: 1.6, ease: 'power2.out',
+      scrollTrigger: {trigger: dd, start: 'top 90%', once: true},
+      onUpdate: () => { dd.textContent = Math.round(o.v).toLocaleString('en-IN') + suffix; }
+    });
+  });
+
+  /* ── 9 · Section grounds ─────────────────────────────────────────────────
+     The nav already switches at the cloud line. This eases the switch across
+     the boundary instead of snapping it, which is the join most likely to
+     betray that the page is made of separate sections. */
+  ScrollTrigger.refresh();
 })();

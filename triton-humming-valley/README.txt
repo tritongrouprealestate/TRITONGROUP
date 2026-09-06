@@ -21,8 +21,13 @@ index.html                 the page
 css/styles.css             compiled stylesheet — DO NOT hand-edit this file
 css/src.css                the source it is compiled FROM — edit this instead
 js/site.js                 all site behaviour, and the DATA object
+js/lenis.min.js            smooth scrolling, bundled
 js/gsap.min.js             animation library, bundled (no CDN dependency)
 js/ScrollTrigger.min.js    scroll-driven animation, bundled
+submit.php                 receives the enquiry form and forwards it to Leadi5
+config.php                 your API key and webhook URL — never served
+config.sample.php          template for config.php
+.htaccess                  blocks access to config.php and log files
 
 Only the fonts load from the internet (Google Fonts). Everything else is
 served from your own hosting, so the site does not break if a CDN does.
@@ -76,11 +81,37 @@ Colours, type and spacing
     only editing content you never need to do this.
 
 
+MOTION
+------
+The page's fluidity comes from one thing rather than many: a smooth-scroll
+layer runs underneath everything, so every scroll-linked animation reads from
+the same eased position. That is why the page feels continuous instead of
+feeling like a series of separate effects.
+
+On top of it:
+  - a custom cursor, a dot that tracks exactly with a ring that lags behind
+    it; the ring opens over links and buttons and tightens over site-plan
+    plots, where a large ring would cover the thing being pointed at
+  - buttons lean toward the pointer, capped well short of moving out from
+    under it
+  - headings are split into lines and each line rises out of its own mask
+  - photographs wipe open while the image counter-scales inside the frame,
+    and drift slightly against the page as you scroll
+  - the land figures count up as they arrive
+  - a hairline progress bar along the top edge
+
+All of it is off on touch devices and under "reduce motion", where the page
+renders complete and still.
+
 ACCESSIBILITY AND BEHAVIOUR NOTES
 ---------------------------------
 - Works without JavaScript: text, prices and structure all still render.
-- Respects the operating system's "reduce motion" setting — the animation
-  is skipped and the finished page is shown immediately.
+- Respects the operating system's "reduce motion" setting — the whole motion
+  layer is switched off, not softened, and the finished page is shown
+  immediately. The custom cursor is removed and the normal pointer returns.
+- The custom cursor never appears on touch devices or on any device without
+  a precise pointer, and never replaces the text caret inside form fields.
+- Keyboard focus outlines are unaffected by any of the motion work.
 - The site plan can be operated by keyboard: Tab to a plot, Enter to select.
 - The enquiry form checks fields when you leave them, and after a failed
   send it moves focus to a summary listing what to fix.
