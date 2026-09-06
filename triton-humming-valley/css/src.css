@@ -353,11 +353,6 @@ html.lenis,html.lenis body{height:auto}
   text-transform:uppercase;letter-spacing:.1em;margin:0 0 1.25rem}
 .on-light .eyebrow{color:var(--color-dawn-deep)}
 
-/* The closing line of the land section reads as a statement rather than as
-   body copy, so it is set in the display face and given room around it. */
-.land-aside{font-family:var(--font-display);font-size:var(--step-1);
-  line-height:1.4;color:var(--color-ink);max-width:34ch;
-  padding-top:1.5rem;border-top:1px solid rgba(16,24,32,.14)}
 #hero h1{font-size:var(--display);color:var(--color-cloud);max-width:15ch;margin:0}
 /* Two sentences, each on its own line. The second is set a step smaller so
    the pair reads as a statement and its answer rather than as two competing

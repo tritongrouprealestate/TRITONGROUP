@@ -147,6 +147,24 @@ const DATA = {
 'use strict';
 const $  = (s, r=document) => r.querySelector(s);
 const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+
+/* ── Cache buster ──────────────────────────────────────────────────────────
+   Photographs are replaced by overwriting the file under the same name, so a
+   browser that has already been here shows the picture it kept rather than
+   the one now on the server. Every image URL carries ?v=BUILD; raising this
+   number by one is what makes a swap appear immediately, for everybody.
+
+   AFTER YOU REPLACE ANYTHING IN images/, BUMP THIS NUMBER.                */
+const BUILD = '2';
+
+const bust = p => /^images\//.test(p) ? p + '?v=' + BUILD : p;
+$$('[data-src]').forEach(el => { el.dataset.src = bust(el.dataset.src); });
+if (typeof DATA !== 'undefined') {
+  (DATA.villas       || []).forEach(v => { v.photo = bust(v.photo); });
+  (DATA.choreography || []).forEach(f => { f.src   = bust(f.src);   });
+  (DATA.gallery      || []).forEach(g => { g.src   = bust(g.src);   });
+}
+
 document.body.classList.remove('no-js');
 $('#year').textContent = new Date().getFullYear();
 
@@ -840,8 +858,13 @@ window.addEventListener('load', () => ScrollTrigger.refresh());
 
     /* The capturing group keeps the separators, so they can be put back
        around the animated numbers exactly as they were written. */
-    const parts = node.nodeValue.trim().split(/(\d[\d,]*)/);
-    const slots = parts.reduce((acc, t, i) => /^\d[\d,]*$/.test(t) ? acc.concat(i) : acc, []);
+    /* A comma is a thousands separator only when three digits follow it.
+       Splitting on \d[\d,]* instead read "3,4 & 5" as the single number 34
+       and counted to it, so the configurations cell animated to "34 & 5". */
+    const NUM = /(\d{1,3}(?:,\d{3})+|\d+)/;
+    const parts = node.nodeValue.trim().split(NUM);
+    const slots = parts.reduce((acc, t, i) =>
+      new RegExp('^' + NUM.source.slice(1, -1) + '$').test(t) ? acc.concat(i) : acc, []);
     if (!slots.length) return;
 
     const from = {}, to = {}, grouped = {};
