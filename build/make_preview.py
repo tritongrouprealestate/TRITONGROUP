@@ -42,6 +42,14 @@ def data_uri(path):
     im.convert('RGB').save(buf, 'JPEG', quality=PREVIEW_Q, optimize=True, progressive=True)
     return 'data:image/jpeg;base64,' + base64.b64encode(buf.getvalue()).decode()
 
+# The stylesheet reaches the fonts with a relative path. An artifact is one
+# document with no folder beside it, so the four faces are folded in too —
+# 110 KB of base64 against a preview that would otherwise fall back to the
+# system stack and stop looking like the site.
+for f in sorted((root / 'fonts').glob('*.woff2')):
+    uri = 'data:font/woff2;base64,' + base64.b64encode(f.read_bytes()).decode()
+    css = css.replace('../fonts/' + f.name, uri)
+
 photos = {}
 for f in sorted((root / 'images').glob('*.jpg')):
     photos['images/' + f.name] = data_uri(f)
@@ -74,7 +82,9 @@ js = js.replace(
 # showSuccess is declared after its use; hoisting makes the early return valid.
 js = js.replace("  function showSuccess(){", "  function showSuccess(){", 1)
 
-body = html[html.index('<body class="no-js">'):html.index('<script src="js/lenis.min.js">')]
+# The libraries moved into <head> with defer, so the body now runs to its
+# own closing tag rather than to the first script.
+body = html[html.index('<body class="no-js">'):html.index('</body>')]
 body = body.replace('<body class="no-js">', '<div class="no-js" id="doc">', 1)
 
 crit = re.search(r'<style>\n(  html\{background.*?)\n</style>', html, re.S).group(1)
@@ -85,7 +95,7 @@ out = f'''<title>Triton Humming Valley</title>
 {crit}
 /* The artifact wrapper paints its own ground behind the page, so the night
    ground is stated explicitly rather than inherited. */
-html,body{{background:#0E1621;margin:0}}
+html,body{{background:#071A1C;margin:0}}
 </style>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">

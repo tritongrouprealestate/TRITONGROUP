@@ -29,7 +29,7 @@ caption, edit the DATA object at the top of ../js/site.js.
   gallery-5.jpg     1280x596   taken on site, June 2026
   gallery-6.jpg      480x1040  taken on site, June 2026
 
-  cover-1.jpg       1400x1050  the seven cards of the coverflow above the
+  cover-1.jpg       1000x750   the seven cards of the coverflow above the
   cover-2.jpg                  masterplan, 4:3. The centre card is the one
   cover-3.jpg                  the visitor reads, so put the strongest
   cover-4.jpg                  photographs at 1, 4 and 7 — those are the
@@ -37,7 +37,21 @@ caption, edit the DATA object at the top of ../js/site.js.
   cover-6.jpg
   cover-7.jpg
 
-Largest useful width is about 2400px. Bigger files only slow the page down.
+SIZE MATTERS MORE THAN YOU THINK
+A photograph is never drawn larger than the frame it sits in, so anything
+past twice that frame's width is bytes a visitor pays for and never sees.
+The right widths are:
+
+  hero.jpg                    2400px   (full screen)
+  band.jpg                    2000px   (full screen)
+  villa-*.jpg                 1200px   (drawn at ~600px)
+  choreo-*.jpg                1500px   (drawn at ~700px)
+  gallery-*.jpg               1400px   (drawn at ~520px)
+  cover-*.jpg                 1000px   (drawn at ~340px)
+
+Keep each file under about 350 KB. Export at JPEG quality 80 — above that
+the file doubles and nobody can see the difference. A 2.5 MB photograph is
+roughly eight seconds of a 4G connection in the hills, on its own.
 Everything is cropped to fill its frame, so the subject only needs to be
 roughly centred. Any file that is missing falls back to artwork drawn in
 code — nothing breaks, you just lose that photograph.

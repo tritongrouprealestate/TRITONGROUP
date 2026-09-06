@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-IN">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,6 +9,18 @@
 <meta property="og:title" content="Triton Humming Valley — Boutique villas near Nandi Hills">
 <meta property="og:description" content="Thirty Bali-inspired villas in North Bangalore, at the foothills of Nandi Hills. Private viewings by appointment.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/">
+<meta property="og:site_name" content="Triton Group">
+<meta property="og:locale" content="en_IN">
+<meta property="og:image" content="https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/images/hero.jpg">
+<meta property="og:image:width" content="2000">
+<meta property="og:image:height" content="1116">
+<meta property="og:image:alt" content="The villa rows at Triton Humming Valley at sunset, the Nandi hills behind them.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Triton Humming Valley — Boutique villas near Nandi Hills">
+<meta name="twitter:description" content="Thirty Bali-inspired villas in North Bangalore, at the foothills of Nandi Hills. Private viewings by appointment.">
+<meta name="twitter:image" content="https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/images/hero.jpg">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 <link rel="canonical" href="https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/">
 
 <!-- ═══════════════════════════════════════════════════════════════════════════
@@ -22,16 +34,26 @@
        js/site.js          all site behaviour, and the DATA object
        js/gsap.min.js      animation library (bundled, no CDN)
        js/ScrollTrigger.min.js
-
-     ⚠ THREE VALUES NEED YOUR CONFIRMATION — all marked NEEDS VERIFY at the
-       top of js/site.js:
-         1. RERA number — taken from a third-party listing, not your own site.
-         2. Possession date — listings show Dec 2025, which has passed.
-         3. The 4 BHK built-up area — interpolated between the published
-            2,400 and 3,800 sq ft endpoints.
+       js/lenis.min.js
+       fonts/*.woff2       Marcellus and Manrope, served from this domain
+       images/             the photographs — see images/README.txt
+       submit.php          receives the enquiry forms
+       config.php          your API key and notification address (never commit)
+       robots.txt          points crawlers at the sitemap
+       sitemap.xml         one URL; update <lastmod> when the page changes
 
      To change project facts, edit the DATA object at the top of js/site.js.
      To change styling, edit css/src.css then re-run:  npm run build:css
+
+     ⚠ AFTER REPLACING ANY PHOTOGRAPH, bump BUILD at the top of js/site.js
+       and the two ?v= numbers in the head below. Browsers keep images for a
+       day, and without a new number a visitor who has been here before
+       carries on seeing the old picture.
+
+     ⚠ STILL UNCONFIRMED, all marked in js/site.js:
+       · the BHK against each villa on the site plan, derived from plot area
+       · the built-up areas on the three villa cards (2,400 / 3,100 / 3,800),
+         which disagree with the "Upto 4448 sq ft" figure in The Land
      ═══════════════════════════════════════════════════════════════════════ -->
 
 <!-- Critical CSS, inline and first: paints the night ground before the
@@ -44,20 +66,195 @@
   .no-js [data-anim]{opacity:1!important;transform:none!important;clip-path:none!important}
 </style>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Manrope:wght@200..800&display=swap">
+<!-- The two typefaces are served from this domain, so there is no third
+     party to resolve, connect to and wait for before the first letter is
+     drawn. Both latin files are preloaded because the stylesheet only
+     discovers them after it has parsed, which is a request too late. -->
+<link rel="preload" href="fonts/marcellus-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
 
-<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/styles.css?v=2">
+
+<!-- The hero photograph is the largest thing on the first screen, and it is
+     fetched by script rather than found in the markup, so the browser is
+     told about it here instead of discovering it a second late. -->
+<link rel="preload" href="images/hero.jpg?v=2" as="image" fetchpriority="high">
+
+<!-- Deferred, not at the foot of the page: the download starts while the
+     HTML is still parsing and execution still waits for it, in order. -->
+<script src="js/lenis.min.js" defer></script>
+<script src="js/gsap.min.js" defer></script>
+<script src="js/ScrollTrigger.min.js" defer></script>
+<script src="js/site.js?v=2" defer></script>
+
+<!-- Structured data. Everything in here is stated on the page as well;
+     nothing is claimed to Google that a visitor cannot read. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tritongroup.in/#organization",
+      "name": "Triton Group",
+      "url": "https://tritongroup.in/",
+      "telephone": "+91-90366-82626",
+      "email": "sales@tritongroup.in",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Bengaluru",
+        "addressRegion": "Karnataka",
+        "addressCountry": "IN"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/#webpage",
+      "url": "https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/",
+      "name": "Triton Humming Valley — Boutique villas near Nandi Hills",
+      "description": "Thirty Bali-inspired boutique villas in North Bangalore, at the foothills of Nandi Hills. 3, 4 and 5 BHK. Possession October 2026.",
+      "inLanguage": "en-IN",
+      "isPartOf": {
+        "@id": "https://tritongroup.in/#organization"
+      },
+      "primaryImageOfPage": "https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/images/hero.jpg"
+    },
+    {
+      "@type": "ApartmentComplex",
+      "@id": "https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/#project",
+      "name": "Triton Humming Valley",
+      "url": "https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/",
+      "description": "A private collection of thirty Bali-inspired villas in North Bangalore, at the foothills of Nandi Hills. Each villa is built around a fifteen-foot indoor waterfall and a private pool.",
+      "numberOfAccommodationUnits": {
+        "@type": "QuantitativeValue",
+        "value": 30
+      },
+      "numberOfAvailableAccommodationUnits": {
+        "@type": "QuantitativeValue",
+        "value": 4
+      },
+      "image": [
+        "https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/images/hero.jpg",
+        "https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/images/cover-1.jpg",
+        "https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/images/cover-4.jpg"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Bengaluru North",
+        "addressRegion": "Karnataka",
+        "addressCountry": "IN"
+      },
+      "amenityFeature": [
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Clubhouse",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "24/7 security",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Gated access",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Private pool",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Rainwater harvesting",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Solar integration",
+          "value": true
+        }
+      ],
+      "provider": {
+        "@id": "https://tritongroup.in/#organization"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is the project RERA registered?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The registration number is shown in the footer of this page."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What do I actually see at a viewing?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Your own plot, on the ground, and the villas as they stand today — the structures are up and finishing work is under way ahead of possession in October 2026. Early morning slots are worth taking between November and February, when the cloud sits in the valley."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are home loans available?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The project is approved by leading lenders. Our team can put you in touch with the relevant bank relationship manager."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Who maintains the common areas?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A facilities team manages landscaping, security, the clubhouse and water systems, funded by a monthly maintenance charge confirmed at booking."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
 </head>
 
 <body class="no-js">
 <a class="skip" href="#main">Skip to main content</a>
 
+<!-- The villa list, the site plan, the gallery and the enquiry forms are all
+     built from the DATA object, so with scripting off they are empty. Search
+     engines render the page and see them; a person with scripting off would
+     not, and the facts they would want are the ones below. -->
+<noscript>
+  <div style="background:#0E2A2D;color:#EEF1F4;padding:1.5rem clamp(1.25rem,4vw,3rem);
+              font:400 15px/1.6 Manrope,system-ui,sans-serif">
+    <p style="margin:0 0 .75rem;font-family:Marcellus,Georgia,serif;font-size:1.25rem">
+      Triton Humming Valley &mdash; villas in Nandi Hills, Bangalore
+    </p>
+    <p style="margin:0 0 .5rem">
+      Thirty Bali-inspired villas at the foothills of Nandi Hills, North Bangalore.
+      3&nbsp;BHK from &#8377;2.9&nbsp;Cr, 4&nbsp;BHK from &#8377;3.5&nbsp;Cr,
+      5&nbsp;BHK from &#8377;4.5&nbsp;Cr. Possession October 2026.
+    </p>
+    <p style="margin:0">
+      To arrange a viewing, call
+      <a href="tel:+919036682626" style="color:#C9962E">+91&nbsp;90366&nbsp;82626</a>
+      or email
+      <a href="mailto:sales@tritongroup.in" style="color:#C9962E">sales@tritongroup.in</a>.
+      RERA PRM/KA/RERA/1254/460/PR/131224/007292.
+    </p>
+  </div>
+</noscript>
+
 <!-- ══ NAV ═══════════════════════════════════════════════════════════════ -->
 <header id="nav" class="fixed inset-x-0 top-0 z-50 border-b border-transparent text-cloud">
-  <nav aria-label="Primary" class="mx-auto flex max-w-[1600px] items-center gap-6 px-[clamp(1.25rem,4vw,3rem)] py-4">
-    <a href="#ascent" class="font-display text-[1.05rem] leading-none tracking-[.01em] shrink-0">
+  <nav aria-label="Primary" class="mx-auto flex max-w-[1600px] items-center gap-3 sm:gap-6 px-[clamp(1.25rem,4vw,3rem)] py-4">
+    <a href="#ascent" class="font-display min-w-0 py-1 text-[.95rem] leading-tight tracking-[.01em] sm:text-[1.05rem]">
       Triton <span class="opacity-70">Humming Valley</span>
     </a>
     <ul class="ml-auto hidden items-center gap-8 text-[.9rem] font-medium lg:flex">
@@ -83,7 +280,7 @@
        while the image loads and never broken if it fails. -->
   <div class="hero-ground" aria-hidden="true"></div>
   <img class="hero-photo" alt=""
-       data-src="images/hero.jpg"
+       data-src="images/hero.jpg" width="2000" height="1116"
        aria-hidden="true" decoding="async" fetchpriority="high">
   <div class="hero-scrim" aria-hidden="true"></div>
 
@@ -450,19 +647,19 @@
       <div class="rail-line text-mist" aria-hidden="true"></div>
       <h2 style="font-size:var(--step-3)" data-anim="rise">The paperwork, plainly</h2>
 
-      <div class="mt-12 grid gap-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+      <div class="mt-12 grid gap-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] [&>div]:min-w-0">
 
         <!-- Specifications -->
         <div>
           <h3 class="font-display" style="font-size:var(--step-1)" data-anim="rise">What is built in</h3>
           <ul class="mt-6 divide-y divide-ink/12 border-t border-ink/12">
-            <li class="flex gap-6 py-3.5"><span class="w-40 shrink-0 text-mist text-[.88rem]">Architecture</span><span>Balinese, single and split level</span></li>
-            <li class="flex gap-6 py-3.5"><span class="w-40 shrink-0 text-mist text-[.88rem]">Water feature</span><span>15 ft indoor waterfall, private jacuzzi</span></li>
-            <li class="flex gap-6 py-3.5"><span class="w-40 shrink-0 text-mist text-[.88rem]">Flooring</span><span>Imported stone and engineered timber</span></li>
-            <li class="flex gap-6 py-3.5"><span class="w-40 shrink-0 text-mist text-[.88rem]">Automation</span><span>Smart home, lighting and climate</span></li>
-            <li class="flex gap-6 py-3.5"><span class="w-40 shrink-0 text-mist text-[.88rem]">Energy</span><span>Solar integration</span></li>
-            <li class="flex gap-6 py-3.5"><span class="w-40 shrink-0 text-mist text-[.88rem]">Water</span><span>Rainwater harvesting</span></li>
-            <li class="flex gap-6 py-3.5"><span class="w-40 shrink-0 text-mist text-[.88rem]">Community</span><span>Clubhouse, 24/7 security, gated access</span></li>
+            <li class="flex flex-col gap-1 py-3.5 sm:flex-row sm:gap-6"><span class="text-mist text-[.88rem] sm:w-40 sm:shrink-0">Architecture</span><span>Balinese, single and split level</span></li>
+            <li class="flex flex-col gap-1 py-3.5 sm:flex-row sm:gap-6"><span class="text-mist text-[.88rem] sm:w-40 sm:shrink-0">Water feature</span><span>15 ft indoor waterfall, private jacuzzi</span></li>
+            <li class="flex flex-col gap-1 py-3.5 sm:flex-row sm:gap-6"><span class="text-mist text-[.88rem] sm:w-40 sm:shrink-0">Flooring</span><span>Imported stone and engineered timber</span></li>
+            <li class="flex flex-col gap-1 py-3.5 sm:flex-row sm:gap-6"><span class="text-mist text-[.88rem] sm:w-40 sm:shrink-0">Automation</span><span>Smart home, lighting and climate</span></li>
+            <li class="flex flex-col gap-1 py-3.5 sm:flex-row sm:gap-6"><span class="text-mist text-[.88rem] sm:w-40 sm:shrink-0">Energy</span><span>Solar integration</span></li>
+            <li class="flex flex-col gap-1 py-3.5 sm:flex-row sm:gap-6"><span class="text-mist text-[.88rem] sm:w-40 sm:shrink-0">Water</span><span>Rainwater harvesting</span></li>
+            <li class="flex flex-col gap-1 py-3.5 sm:flex-row sm:gap-6"><span class="text-mist text-[.88rem] sm:w-40 sm:shrink-0">Community</span><span>Clubhouse, 24/7 security, gated access</span></li>
             <li class="flex gap-6 py-3.5" data-possession-row><span class="w-40 shrink-0 text-mist text-[.88rem]">Possession</span><span data-possession>October 2026</span></li>
           </ul>
         </div>
@@ -618,10 +815,7 @@
     <figcaption id="lb-cap" class="mt-4 text-haze text-[.9rem]"></figcaption>
   </figure>
 </div>
-<script src="js/lenis.min.js"></script>
-<script src="js/gsap.min.js"></script>
-<script src="js/ScrollTrigger.min.js"></script>
-<script src="js/site.js"></script>
+
 
 </body>
 </html>

@@ -200,6 +200,42 @@ const DATA = {
   ]
 };
 
+/* ── Images ───────────────────────────────────────────────────────────────
+   Every photograph is fetched through a probe rather than set straight onto
+   the element, so a missing file leaves the drawn design in place instead of
+   a broken-image glyph.
+
+   The probe has to be held back until the picture is near the viewport.
+   `loading="lazy"` on the <img> does nothing here: the probe is a detached
+   Image, and the browser has no idea it belongs to something off screen. The
+   first build fetched all twenty-two photographs on load — six megabytes
+   before a visitor had scrolled anywhere. `near` is the whole fix. */
+const NEAR = '600px 0px';        // start fetching this far ahead of the fold
+
+const near = (el, run) => {
+  if (!('IntersectionObserver' in window)) { run(); return; }
+  const io = new IntersectionObserver(entries => {
+    if (!entries.some(e => e.isIntersecting)) return;
+    io.disconnect();
+    run();
+  }, { rootMargin: NEAR });
+  io.observe(el);
+};
+
+function loadImage(el, src, done){
+  const probe = new Image();
+  probe.decoding = 'async';
+  probe.onload = () => { el.src = src; el.classList.add('is-loaded'); done && done(true); };
+  probe.onerror = () => { el.dataset.failed = 'true'; done && done(false); };
+  probe.src = src;
+}
+
+/* Watches the element the picture will appear in, not the picture itself:
+   an <img> with no src can be zero-sized, which no observer ever reports. */
+function loadWhenNear(el, src, done, box){
+  near(box || el.parentElement || el, () => loadImage(el, src, done));
+}
+
 (() => {
 'use strict';
 const $  = (s, r=document) => r.querySelector(s);
@@ -211,7 +247,8 @@ const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
    the one now on the server. Every image URL carries ?v=BUILD; raising this
    number by one is what makes a swap appear immediately, for everybody.
 
-   AFTER YOU REPLACE ANYTHING IN images/, BUMP THIS NUMBER.                */
+   AFTER YOU REPLACE ANYTHING IN images/, BUMP THIS NUMBER — and the two
+   ?v=2 in index.html's <head> with it, or the hero is fetched twice.     */
 const BUILD = '2';
 
 const bust = p => /^images\//.test(p) ? p + '?v=' + BUILD : p;
@@ -229,15 +266,9 @@ const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
 const hasGSAP = typeof window.gsap !== 'undefined';
 if (hasGSAP && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
 
-/* ── Images: fade in only once decoded, so a 404 leaves the drawn design
-      intact rather than showing a broken-image glyph. ─────────────────── */
-function loadImage(el, src, done){
-  const probe = new Image();
-  probe.decoding = 'async';
-  probe.onload = () => { el.src = src; el.classList.add('is-loaded'); done && done(true); };
-  probe.onerror = () => { el.dataset.failed = 'true'; done && done(false); };
-  probe.src = src;
-}
+/* The hero is the one exception. It is the first thing on the screen and it
+   is what the page is judged on, so it is fetched at once and preloaded from
+   the document head. */
 const heroImg = $('.hero-photo');
 if (heroImg && heroImg.dataset.src) loadImage(heroImg, heroImg.dataset.src);
 
@@ -328,7 +359,7 @@ $('#villa-list').innerHTML = DATA.villas.map(v => `
       <div class="grid gap-5">
         <div class="villa-shot relative aspect-[3/4] overflow-hidden bg-cloud-2">
           <img alt="${v.photoAlt}" data-src="${v.photo}" loading="lazy"
-               decoding="async" class="h-full w-full object-cover opacity-0
+               decoding="async" width="1200" height="1600" class="h-full w-full object-cover opacity-0
                transition-opacity duration-700">
         </div>
       <!-- Indicative plan diagram, drawn rather than photographed so it is
@@ -355,11 +386,13 @@ $('#villa-list').innerHTML = DATA.villas.map(v => `
 /* Villa and band photographs use the same rule as the gallery: they fade in
    once decoded, and a failure leaves the drawn artwork rather than a hole. */
 $$('.villa-shot img, .band-photo').forEach(img => {
-  const probe = new Image();
-  probe.onload = () => { img.src = img.dataset.src; img.style.opacity = img.classList.contains('band-photo') ? '.55' : '1'; };
-  probe.onerror = () => { const w = img.closest('.villa-shot'); if (w) w.style.background =
-    'linear-gradient(150deg,#DFE5EB,#C9D3DC)'; img.remove(); };
-  probe.src = img.dataset.src;
+  const wrap = img.closest('.villa-shot') || img.parentElement;
+  loadWhenNear(img, img.dataset.src, ok => {
+    if (ok) { img.style.opacity = img.classList.contains('band-photo') ? '.55' : '1'; return; }
+    const w = img.closest('.villa-shot');
+    if (w) w.style.background = 'linear-gradient(150deg,#DFE5EB,#C9D3DC)';
+    img.remove();
+  }, wrap);
 });
 
 /* Animate the disclosure without owning its state: <details> stays the
@@ -522,13 +555,12 @@ gal.innerHTML = DATA.gallery.map((g,i) => `
   </figure>`).join('');
 
 $$('#gallery img').forEach(img => {
-  const probe = new Image();
-  probe.onload  = () => { img.src = img.dataset.src; img.classList.add('is-loaded'); };
-  probe.onerror = () => {
+  const frame = img.closest('.frame');
+  loadWhenNear(img, img.dataset.src, ok => {
+    if (ok) return;
     /* Photo missing: the frame becomes a drawn panel rather than a hole.
-       Capture the frame BEFORE detaching the image — closest() on a removed
-       node returns null. */
-    const frame = img.closest('.frame');
+       The frame is captured before the image is detached — closest() on a
+       removed node returns null. */
     img.remove();
     if (!frame) return;
     const f = document.createElement('div');
@@ -536,8 +568,7 @@ $$('#gallery img').forEach(img => {
     f.style.background = 'linear-gradient(160deg,#2F4A3C,#22382D 60%,#1A2C23)';
     f.setAttribute('aria-hidden','true');
     frame.prepend(f);
-  };
-  probe.src = img.dataset.src;
+  }, frame);
 });
 
 /* ═══ LIGHTBOX ═════════════════════════════════════════════════════════
@@ -1025,6 +1056,7 @@ window.addEventListener('load', () => ScrollTrigger.refresh());
   inner.innerHTML = DATA.choreography.map((f, i) => `
     <figure class="choreo-frame" style="z-index:${(i + 1) * 10}">
       <img alt="${f.alt}" data-src="${f.src}" decoding="async"
+           width="1500" height="1000"
            ${i === DATA.choreography.length - 1 ? '' : 'loading="lazy"'}>
     </figure>`).join('');
 
@@ -1034,10 +1066,8 @@ window.addEventListener('load', () => ScrollTrigger.refresh());
   /* Same loading rule as everywhere else on the page: show the picture once
      it has decoded, and leave the frame's own colour if it never arrives. */
   imgs.forEach(img => {
-    const probe = new Image();
-    probe.onload  = () => { img.src = img.dataset.src; };
-    probe.onerror = () => { img.remove(); };
-    probe.src = img.dataset.src;
+    const frame = img.closest('.choreo-frame');
+    loadWhenNear(img, img.dataset.src, ok => { if (!ok) img.remove(); }, frame);
   });
 
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -1471,7 +1501,8 @@ mount.innerHTML = `
           <figure class="cf-card" role="group" aria-roledescription="slide"
                   aria-label="${i + 1} of ${count}">
             <img alt="${s.alt}" data-src="${s.src}" draggable="false"
-                 decoding="async" ${i > 2 ? 'loading="lazy"' : ''}>
+                 decoding="async" width="1000" height="750"
+                 ${i > 2 ? 'loading="lazy"' : ''}>
           </figure>`).join('')}
       </div>
     </div>
@@ -1494,10 +1525,8 @@ const caption = $('.cf-caption');
 /* Same loading rule as the rest of the page: show the photograph once it has
    decoded, and leave the card's own colour if it never arrives. */
 $$('.cf-card img').forEach(img => {
-  const probe = new Image();
-  probe.onload  = () => { img.src = img.dataset.src; };
-  probe.onerror = () => { img.remove(); };
-  probe.src = img.dataset.src;
+  const card = img.closest('.cf-card');
+  loadWhenNear(img, img.dataset.src, ok => { if (!ok) img.remove(); }, card);
 });
 
 let pos = 0;        // fractional index at the centre — the single source of truth
