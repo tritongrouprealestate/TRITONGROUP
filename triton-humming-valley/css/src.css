@@ -461,6 +461,17 @@ html.lenis,html.lenis body{height:auto}
 .foot-nav a:hover,.foot-contact a:hover{color:var(--color-dawn)}
 .foot-contact{display:flex;flex-direction:column;gap:.65rem;font-size:.95rem}
 .foot-contact p{margin:.35rem 0 0;font-size:.88rem;line-height:1.6}
+
+/* Address as a map link. The pin sits on the first line rather than centred
+   against a two-line address, and the "View on Google Maps" cue only appears
+   where there is room for it. */
+.map-link{display:flex;gap:.6rem;align-items:flex-start;color:var(--color-haze);
+  text-decoration:none;transition:color .25s var(--ease-out);line-height:1.6}
+.map-link:hover{color:var(--color-dawn)}
+.map-pin{width:18px;height:18px;flex:0 0 auto;margin-top:.15em;color:var(--color-dawn)}
+.map-link em{display:block;margin-top:.4rem;font-style:normal;font-size:.8rem;
+  letter-spacing:.02em;color:var(--color-dawn);opacity:.85}
+.map-link:hover em{opacity:1}
 .foot-legal{margin-top:3rem;padding-top:1.5rem;border-top:1px solid rgba(168,182,194,.15);
   display:grid;gap:.6rem;font-size:.78rem;line-height:1.6}
 .foot-legal p{max-width:78ch;margin:0}

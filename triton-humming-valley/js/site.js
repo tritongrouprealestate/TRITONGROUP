@@ -20,7 +20,18 @@ const DATA = {
      draws a plot per entry, and a visitor can count them. */
   villaCount: 32,
 
-  contact: { phone: '+91 90366 82626', email: 'tritonhomz@gmail.com' },
+  /* Heading above the site-plan inventory. The exact counts still appear in
+     the rows beneath it, so this line can carry urgency without the panel
+     losing the facts a buyer came for. */
+  inventoryHeading: 'Only Few Villas Remaining!',
+
+  /* The address shown to visitors. Where enquiries are DELIVERED is a
+     separate setting — notify_email in config.php — so the public address can
+     sit on the domain while the inbox behind it is wherever you read mail. */
+  contact: { phone: '+91 90366 82626', email: 'sales@tritongroup.in' },
+
+  /* Google Maps pin for the site. Written into every address on the page. */
+  mapUrl: 'https://maps.app.goo.gl/qKgAu1p8eE1tc8KK6',
 
   villas: [
     { id:'3bhk', name:'3 BHK', area:'2,400', price:'₹2.5 Cr',
@@ -138,6 +149,14 @@ $('#rera-line').textContent = DATA.rera
   : 'RERA registration — not yet configured.';
 if (!DATA.rera) $('#faq-rera').textContent =
   'Registration details are confirmed at the point of enquiry. Ask our sales team for the certificate.';
+
+/* Addresses become links to the map pin. Opened in a new tab so a visitor
+   part-way through the enquiry form does not lose what they have typed. */
+$$('[data-map]').forEach(a => {
+  a.href = DATA.mapUrl;
+  a.target = '_blank';
+  a.rel = 'noopener noreferrer';
+});
 
 /* The villa count is written wherever the page states it, from the one value. */
 $$('[data-villa-count]').forEach(el => { el.textContent = DATA.villaCount; });
@@ -294,7 +313,7 @@ function renderSummary(){
   const count = st => DATA.plots.filter(p => p.s === st).length;
   const byType = t => DATA.plots.filter(p => p.t === t && p.s === 'available').length;
   detail.innerHTML = `
-    <h4 class="font-display" style="font-size:var(--step-2)">${count('available')} of ${DATA.plots.length} still available</h4>
+    <h4 class="font-display" style="font-size:var(--step-2)">${DATA.inventoryHeading}</h4>
     <p class="mt-3 text-mist">Select a plot on the site plan for its villa type,
       built-up area, aspect and price.</p>
     <dl class="mt-7 divide-y divide-ink/12 border-y border-ink/12 text-[.95rem]">
