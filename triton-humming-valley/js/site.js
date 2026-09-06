@@ -135,12 +135,22 @@ const DATA = {
      caption:'The living room, gathered around the water court'}
   ],
 
-  /* Replace every src with project photography. The frame keeps its shape
-     and caption whether or not the image loads. */
+  /* The six captions the client wrote for this grid, in their order:
+       1  Kitchen opening into the living space          ← photo needed
+       2  Lounge overlooking the internal courtyard      ← photo needed
+       3  Interior passage                               ← photo needed
+       4  Infinity Pool facing the valley                ← in place below
+       5  Private Jacuzzi                                ← photo needed
+       6  Family room with panoramic mountain view       ← in place below
+     Four of them describe rooms we have no photograph of, so those tiles
+     keep a picture we do have and a caption that matches it. Drop the four
+     photographs into images/ and the captions above go straight in.
+
+     The frame keeps its shape and caption whether or not an image loads. */
   gallery: [
     {src:'images/gallery-1.jpg', cap:'The internal street between the two villa rows'},
-    {src:'images/gallery-2.jpg', cap:'The pool at first light, looking down the valley'},
-    {src:'images/gallery-3.jpg', cap:'The wooded slope from a bedroom window'},
+    {src:'images/gallery-2.jpg', cap:'Infinity Pool facing the valley'},
+    {src:'images/gallery-3.jpg', cap:'Family room with panoramic mountain view'},
     {src:'images/gallery-4.jpg', cap:'On site: the first row, structure complete'},
     {src:'images/gallery-5.jpg', cap:'On site: the rows from the approach road'},
     {src:'images/gallery-6.jpg', cap:'On site: looking back up the street under construction'}

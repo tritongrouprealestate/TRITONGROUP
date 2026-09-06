@@ -466,6 +466,20 @@ html.lenis,html.lenis body{height:auto}
 @media (min-width:768px){ .foot-inner{grid-template-columns:1.2fr 1fr 1fr} }
 .foot-name{font-family:var(--font-display);font-size:1.25rem;color:var(--color-cloud);margin:0}
 .foot-by{margin:.5rem 0 0;font-size:.88rem}
+/* The one outward link in the footer: quiet enough not to compete with the
+   enquiry form above it, but a target rather than a line of text. */
+.foot-site{display:inline-flex;align-items:center;gap:.5rem;margin-top:1.25rem;
+  padding:.6rem 1.1rem;font-size:.85rem;letter-spacing:.02em;
+  color:var(--color-cloud);text-decoration:none;
+  border:1px solid rgba(168,182,194,.35);
+  transition:border-color .3s var(--ease-out), color .3s var(--ease-out),
+             background-color .3s var(--ease-out)}
+.foot-site svg{width:.9rem;height:.9rem;transition:transform .3s var(--ease-out)}
+.foot-site:hover{color:var(--color-night);background:var(--color-dawn);
+  border-color:var(--color-dawn)}
+.foot-site:hover svg{transform:translate(2px,-2px)}
+@media (prefers-reduced-motion:reduce){ .foot-site:hover svg{transform:none} }
+
 .foot-nav{display:flex;flex-direction:column;gap:.65rem}
 .foot-nav a,.foot-contact a{color:var(--color-haze);text-decoration:none;
   transition:color .25s var(--ease-out)}
