@@ -6,8 +6,8 @@
   @theme {
     /* Three grounds, one journey: cold night below the cloud line,
        cloud light at the inversion, warm frond-dark inside the villas. */
-    --color-night:      #0E1621;
-    --color-night-2:    #16232F;
+    --color-night:      #071A1C;
+    --color-night-2:    #0E2A2D;
     --color-haze:       #A8B6C2;   /* 8.8:1 on night  */
     --color-cloud:      #EEF1F4;
     --color-cloud-2:    #DFE5EB;
@@ -51,7 +51,7 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
 .on-light :where(a,button,input,textarea,select,summary,[tabindex]):focus-visible{
   outline-color:var(--color-dawn-deep)}
 .skip{position:absolute;left:-9999px;top:0;z-index:100;background:var(--color-dawn);
-  color:#0E1621;padding:.75rem 1.25rem;font-weight:600}
+  color:#071A1C;padding:.75rem 1.25rem;font-weight:600}
 .skip:focus{left:1rem;top:1rem}
 
 /* ── The altitude rail ─────────────────────────────────────────────────────
@@ -103,6 +103,52 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
 .villa .chev{transition:transform .35s var(--ease-out)}
 .villa[open] .chev{transform:rotate(180deg)}
 
+/* ── Pointer light ────────────────────────────────────────────────────────
+   A soft teal light that follows the pointer across the dark grounds. It
+   blends with `screen`, so it only ever adds light — on a photograph it
+   reads as a sheen rather than a disc — and it fades out over the light
+   sections, where adding light would wash the page out. */
+.cursor-glow{position:fixed;left:0;top:0;width:44rem;height:44rem;
+  margin:-22rem 0 0 -22rem;pointer-events:none;z-index:1;opacity:0;
+  mix-blend-mode:screen;will-change:transform,opacity;
+  background:radial-gradient(closest-side,
+    rgba(96,214,205,.20), rgba(74,166,168,.09) 42%, rgba(74,166,168,0) 74%)}
+
+/* ── The cloud line ───────────────────────────────────────────────────────
+   The band between the dark half of the page and the light one. Everything
+   in it is drawn: a gradient sky, two ridge silhouettes and three layers of
+   soft cloud. Each layer holds the same set of clouds twice, so a drift of
+   -50% lands exactly where it started and the loop is invisible.        */
+#inversion{position:relative;overflow:hidden;isolation:isolate}
+.inversion-sky{height:clamp(20rem,52vh,34rem);width:100%;
+  background:linear-gradient(to bottom,#0E2A2D 0%,#1B4145 26%,#7C8C9A 56%,
+                             #C3CFD9 80%,#EEF1F4 100%)}
+.inversion-ridge{position:absolute;left:0;right:0;top:16%;width:100%;
+  height:38%;pointer-events:none;will-change:transform}
+
+.cloud-field{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.cloud-layer{position:absolute;inset:0;display:flex;width:200%;
+  will-change:transform}
+.cloud-set{position:relative;width:50%;height:100%;flex:0 0 50%}
+.cloud{position:absolute;aspect-ratio:5/2;transform:translate(-50%,-50%);
+  border-radius:50%;
+  background:radial-gradient(closest-side,rgba(255,255,255,.95),
+                             rgba(255,255,255,.55) 45%,rgba(255,255,255,0) 78%)}
+[data-cloud="1"] .cloud{filter:blur(26px);opacity:.30}
+[data-cloud="2"] .cloud{filter:blur(20px);opacity:.48}
+[data-cloud="3"] .cloud{filter:blur(14px);opacity:.72}
+
+.inversion-copy{position:absolute;inset-inline:0;top:50%;
+  transform:translateY(-50%);padding-inline:clamp(1.25rem,4vw,3rem);
+  pointer-events:none;z-index:2}
+.inversion-copy > p{margin-inline:auto}
+
+/* With motion off the clouds are still weather, just weather that holds
+   still. Nothing is hidden, nothing moves. */
+@media (prefers-reduced-motion:reduce){
+  .cloud-layer{animation:none}
+}
+
 /* ── Horizontal gallery track ─────────────────────────────────────────── */
 #inside{background:#22382D}
 .frame{position:relative;overflow:hidden;background:#2F4A3C}
@@ -125,7 +171,7 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
 .field select[aria-invalid="true"]{border-bottom-color:#F0806A}
 .field .err{display:none;color:#F0806A;font-size:var(--step--1);margin-top:.45rem}
 .field.is-invalid .err{display:block}
-.field select option{background:#16232F;color:#EEF1F4}
+.field select option{background:#0E2A2D;color:#EEF1F4}
 #form-summary{display:none}
 #form-summary.is-shown{display:block}
 
@@ -136,7 +182,7 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
   transition:background-color .3s var(--ease-out),color .3s var(--ease-out),
              border-color .3s var(--ease-out),transform .18s var(--ease-out)}
 .btn:active{transform:scale(.985)}
-.btn-dawn{background:var(--color-dawn);color:#0E1621}
+.btn-dawn{background:var(--color-dawn);color:#071A1C}
 .btn-dawn:hover{background:#DBAA45}
 .btn-quiet{background:transparent;color:var(--color-cloud);border-color:rgba(168,182,194,.45)}
 .btn-quiet:hover{border-color:var(--color-dawn);color:var(--color-dawn)}
@@ -286,12 +332,12 @@ html.lenis,html.lenis body{height:auto}
 .choreo-inner{position:absolute;inset:0}
 
 .choreo-frame{position:absolute;left:50%;top:50%;margin:0;
-  width:36vw;height:24vh;overflow:hidden;background:var(--color-frond);
+  width:42vw;height:25vh;overflow:hidden;background:var(--color-frond);
   transform:translate(-50%,-50%);will-change:transform,width,height}
 .choreo-frame img{width:100%;height:100%;object-fit:cover;display:block}
 
 @media (max-width:767.98px){
-  .choreo-frame{width:62vw;height:20vh}
+  .choreo-frame{width:68vw;height:21vh}
 }
 
 /* The caption belongs to the final full-screen frame, so it only appears
@@ -329,8 +375,8 @@ html.lenis,html.lenis body{height:auto}
    ══════════════════════════════════════════════════════════════════════ */
 #hero{display:grid;background:var(--color-night)}
 .hero-ground{position:absolute;inset:0;
-  background:radial-gradient(120% 80% at 70% 20%, #24313E 0%, transparent 60%),
-             linear-gradient(160deg,#0B121B 0%,#16232F 55%,#22303B 100%)}
+  background:radial-gradient(120% 80% at 70% 20%, #17383A 0%, transparent 60%),
+             linear-gradient(160deg,#051417 0%,#0E2A2D 55%,#123336 100%)}
 .hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
   opacity:0;transition:opacity 1.4s var(--ease-out);will-change:transform}
 .hero-photo.is-loaded{opacity:1}
@@ -358,7 +404,12 @@ html.lenis,html.lenis body{height:auto}
    the pair reads as a statement and its answer rather than as two competing
    headlines — and so the longer line does not wrap into three. */
 .hero-line{display:block}
-.hero-line-2{font-size:.74em;color:var(--color-haze)}
+/* The second line reads as a subheading under the name, not as a second
+   headline, so it sits well below the display size. */
+/* max() keeps it above the lede on a phone, where .34em of a 50px display
+   line would land under the body size and stop reading as a heading. */
+.hero-line-2{font-size:max(1.4rem, .34em);color:var(--color-haze);letter-spacing:.005em;
+  display:block;margin-top:.6em}
 #hero .lede{margin-top:1.5rem;color:var(--color-haze);max-width:52ch}
 
 .hero-facts{display:flex;flex-wrap:wrap;gap:2rem 2.75rem;margin:2.25rem 0 0;padding:1.5rem 0 0;
@@ -410,7 +461,7 @@ html.lenis,html.lenis body{height:auto}
 .enquiry input:focus,.enquiry select:focus,.enquiry textarea:focus{
   outline:none;border-bottom-color:var(--color-dawn)}
 .enquiry [aria-invalid="true"]{border-bottom-color:#F0806A}
-.enquiry select option{background:#16232F;color:#EEF1F4}
+.enquiry select option{background:#0E2A2D;color:#EEF1F4}
 .enquiry .err{display:none;color:#F0806A;font-size:.8rem;margin:.4rem 0 0}
 .enquiry .field.is-invalid .err{display:block}
 .enquiry .form-submit{margin-top:1.75rem;width:100%}

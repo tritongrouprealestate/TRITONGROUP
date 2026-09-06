@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Triton Humming Valley — Boutique villas above the Nandi cloud line</title>
 <meta name="description" content="Thirty Bali-inspired boutique villas in North Bangalore, at the foothills of Nandi Hills. 3, 4 and 5 BHK. Possession October 2026. Private viewings by appointment.">
-<meta name="theme-color" content="#0E1621">
+<meta name="theme-color" content="#071A1C">
 <meta property="og:title" content="Triton Humming Valley — Boutique villas near Nandi Hills">
 <meta property="og:description" content="Thirty Bali-inspired villas in North Bangalore, at the foothills of Nandi Hills. Private viewings by appointment.">
 <meta property="og:type" content="website">
@@ -38,8 +38,8 @@
      stylesheet resolves, so a slow connection never flashes white over a
      night-sky hero. -->
 <style>
-  html{background:#0E1621;color-scheme:dark}
-  body{margin:0;background:#0E1621;color:#EEF1F4;-webkit-font-smoothing:antialiased;
+  html{background:#071A1C;color-scheme:dark}
+  body{margin:0;background:#071A1C;color:#EEF1F4;-webkit-font-smoothing:antialiased;
        font-family:Manrope,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
   .no-js [data-anim]{opacity:1!important;transform:none!important;clip-path:none!important}
 </style>
@@ -61,11 +61,8 @@
       Triton <span class="opacity-70">Humming Valley</span>
     </a>
     <ul class="ml-auto hidden items-center gap-8 text-[.9rem] font-medium lg:flex">
-      <li><a class="nav-link" href="#land">The land</a></li>
       <li><a class="nav-link" href="#masterplan">Masterplan</a></li>
       <li><a class="nav-link" href="#villas">Villas</a></li>
-      <li><a class="nav-link" href="#inside">Inside</a></li>
-      <li><a class="nav-link" href="#assurance">Assurance</a></li>
     </ul>
     <button type="button" data-enquire="Nav" class="btn btn-dawn ml-auto lg:ml-0 min-h-[44px]! px-4! sm:px-5! py-2.5! text-[.85rem] sm:text-[.9rem] whitespace-nowrap">
       Book a viewing
@@ -184,16 +181,79 @@
      The structural hinge of the page. Everything above this band is night;
      everything below it is cloud light. It is one sentence and a gradient
      — the transition is the content.                                      -->
-<section id="inversion" aria-label="Crossing the cloud line" class="relative">
-  <div class="h-[42vh] min-h-[280px] w-full"
-       style="background:linear-gradient(to bottom,#16232F 0%,#2C3E4E 26%,#7C8C9A 56%,#C3CFD9 80%,#EEF1F4 100%)"></div>
-  <div class="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 px-[clamp(1.25rem,4vw,3rem)]">
-    <div class="mx-auto max-w-[1600px]">
-      <p class="font-display text-center mx-auto max-w-[24ch] text-[clamp(1.3rem,3.2vw,2.4rem)] leading-[1.25]"
-         style="color:#1B2A38" data-anim="rise">
-        Where the hills rise, and the clouds fall below.
-      </p>
+<section id="inversion" aria-label="Crossing the cloud line" class="relative overflow-hidden">
+  <div class="inversion-sky"></div>
+
+  <!-- The ridge stands above the weather; the cloud layers drift below it at
+       three speeds, take a parallax offset from the scroll and lean with the
+       pointer. All of it is drawn, so there is no image to wait for. -->
+  <svg class="inversion-ridge" viewBox="0 0 1600 260" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,190 C120,150 190,96 300,104 C398,111 452,63 560,74
+             C662,84 712,40 828,52 C944,64 1002,26 1114,44
+             C1226,62 1290,110 1400,120 C1490,128 1550,158 1600,176
+             L1600,260 L0,260 Z" fill="#0F2E31" opacity=".55"/>
+    <path d="M0,232 C140,206 236,168 352,178 C470,188 536,152 654,162
+             C772,172 838,140 956,152 C1074,164 1150,196 1268,204
+             C1370,211 1520,232 1600,240 L1600,260 L0,260 Z"
+          fill="#194145" opacity=".4"/>
+  </svg>
+
+  <div class="cloud-field" aria-hidden="true">
+    <div class="cloud-layer" data-cloud="1">
+      <div class="cloud-set">
+          <span class="cloud" style="left:4%;top:58%;width:34vw"></span>
+          <span class="cloud" style="left:28%;top:44%;width:26vw"></span>
+          <span class="cloud" style="left:52%;top:62%;width:40vw"></span>
+          <span class="cloud" style="left:74%;top:50%;width:30vw"></span>
+          <span class="cloud" style="left:90%;top:66%;width:24vw"></span>
+      </div>
+      <div class="cloud-set">
+          <span class="cloud" style="left:4%;top:58%;width:34vw"></span>
+          <span class="cloud" style="left:28%;top:44%;width:26vw"></span>
+          <span class="cloud" style="left:52%;top:62%;width:40vw"></span>
+          <span class="cloud" style="left:74%;top:50%;width:30vw"></span>
+          <span class="cloud" style="left:90%;top:66%;width:24vw"></span>
+      </div>
     </div>
+    <div class="cloud-layer" data-cloud="2">
+      <div class="cloud-set">
+          <span class="cloud" style="left:0%;top:72%;width:44vw"></span>
+          <span class="cloud" style="left:22%;top:64%;width:30vw"></span>
+          <span class="cloud" style="left:46%;top:78%;width:36vw"></span>
+          <span class="cloud" style="left:68%;top:68%;width:48vw"></span>
+          <span class="cloud" style="left:88%;top:80%;width:28vw"></span>
+      </div>
+      <div class="cloud-set">
+          <span class="cloud" style="left:0%;top:72%;width:44vw"></span>
+          <span class="cloud" style="left:22%;top:64%;width:30vw"></span>
+          <span class="cloud" style="left:46%;top:78%;width:36vw"></span>
+          <span class="cloud" style="left:68%;top:68%;width:48vw"></span>
+          <span class="cloud" style="left:88%;top:80%;width:28vw"></span>
+      </div>
+    </div>
+    <div class="cloud-layer" data-cloud="3">
+      <div class="cloud-set">
+          <span class="cloud" style="left:10%;top:88%;width:52vw"></span>
+          <span class="cloud" style="left:34%;top:92%;width:38vw"></span>
+          <span class="cloud" style="left:58%;top:86%;width:46vw"></span>
+          <span class="cloud" style="left:80%;top:94%;width:34vw"></span>
+          <span class="cloud" style="left:96%;top:88%;width:42vw"></span>
+      </div>
+      <div class="cloud-set">
+          <span class="cloud" style="left:10%;top:88%;width:52vw"></span>
+          <span class="cloud" style="left:34%;top:92%;width:38vw"></span>
+          <span class="cloud" style="left:58%;top:86%;width:46vw"></span>
+          <span class="cloud" style="left:80%;top:94%;width:34vw"></span>
+          <span class="cloud" style="left:96%;top:88%;width:42vw"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="inversion-copy">
+    <p class="font-display text-center mx-auto max-w-[24ch] text-[clamp(1.3rem,3.2vw,2.4rem)] leading-[1.25]"
+       style="color:#0F2E31" data-anim="rise">
+      Where the hills rise, and the clouds fall below.
+    </p>
   </div>
 </section>
 
@@ -253,7 +313,7 @@
      single large image serves better than any arrangement of small ones. -->
 <figure class="relative m-0 h-[clamp(17rem,46vh,32rem)] w-full overflow-hidden bg-night">
   <div class="absolute inset-0"
-       style="background:linear-gradient(140deg,#16232F,#2C3E4E 45%,#7C8C9A)" aria-hidden="true"></div>
+       style="background:linear-gradient(140deg,#0E2A2D,#1B4145 45%,#7C8C9A)" aria-hidden="true"></div>
   <img class="band-photo absolute inset-0 h-full w-full object-cover opacity-0"
        data-src="images/band.jpg"
        alt="The villa rows along the internal street, the hillside standing in monsoon cloud behind them."
@@ -389,10 +449,6 @@
   <div id="gallery" class="mx-auto mt-20 grid max-w-[1600px] gap-4 px-[clamp(1.25rem,4vw,3rem)]
                             sm:grid-cols-2 lg:grid-cols-3"><!-- injected from DATA.gallery --></div>
 
-  <p class="mx-auto mt-8 max-w-[1600px] px-[clamp(1.25rem,4vw,3rem)] text-[.82rem]" style="color:#9FB3A6">
-    Interiors and elevations are the architect&rsquo;s renders. The three photographs in the bottom row
-    were taken on site in June 2026.
-  </p>
 </section>
 
 <!-- ══ 8 · THE CASE ══════════════════════════════════════════════════════ -->
@@ -438,10 +494,6 @@
         </article>
       </div>
 
-      <p class="mt-10 text-[.82rem] text-mist max-w-[70ch]">
-        Nothing on this page is a forecast of returns. Property values can fall as
-        well as rise. Please take independent advice before you buy.
-      </p>
     </div>
   </div>
 </section>

@@ -702,17 +702,35 @@ window.addEventListener('load', () => ScrollTrigger.refresh());
     const rx = gsap.quickTo(ring, 'x', {duration:.55, ease:'power3'});
     const ry = gsap.quickTo(ring, 'y', {duration:.55, ease:'power3'});
 
-    let shown = false;
+    /* The light travels with the pointer but a long way behind it, so it
+       reads as the room lighting rather than as a second cursor. */
+    const glow = document.createElement('div');
+    glow.className = 'cursor-glow';
+    document.body.appendChild(glow);
+    const gx = gsap.quickTo(glow, 'x', {duration:.9, ease:'power2'});
+    const gy = gsap.quickTo(glow, 'y', {duration:.9, ease:'power2'});
+
+    let shown = false, lit = null;
     window.addEventListener('pointermove', e => {
       if (e.pointerType !== 'mouse') return;
       dx(e.clientX); dy(e.clientY); rx(e.clientX); ry(e.clientY);
+      gx(e.clientX); gy(e.clientY);
       if (!shown) { shown = true; gsap.to([dot, ring], {opacity:1, duration:.35}); }
+
+      /* Only tween when the ground actually changes: a tween per pointer
+         event would queue hundreds a second for no visible difference. */
+      const dark = !(e.target.closest && e.target.closest('.on-light'));
+      if (dark !== lit) {
+        lit = dark;
+        gsap.to(glow, {opacity: dark ? 1 : 0, duration:.5, ease:'power2', overwrite:'auto'});
+      }
     }, {passive:true});
 
     /* Leaving the window must hide it, or the ring is left stranded at the
        edge of the screen when the pointer is somewhere else entirely. */
     document.addEventListener('mouseleave', () => {
-      shown = false; gsap.to([dot, ring], {opacity:0, duration:.25});
+      shown = false; lit = null;
+      gsap.to([dot, ring, glow], {opacity:0, duration:.25});
     });
 
     /* Scale targets the inner element, never the ring itself: the ring's
@@ -904,6 +922,51 @@ window.addEventListener('load', () => ScrollTrigger.refresh());
     }));
   });
 
+  /* ── 9 · The cloud line ──────────────────────────────────────────────────
+     Three layers of drawn cloud crossing the band between the dark half of
+     the page and the light one. Each layer holds its cloud set twice, so a
+     drift of -50% lands exactly where it started and repeats invisibly.
+     Scroll pulls the layers apart; the pointer leans them. */
+  const cloudLayers = $$('#inversion .cloud-layer');
+  if (cloudLayers.length && !reduced.matches) {
+    const DRIFT = [128, 86, 58];      // seconds for one pass, far to near
+
+    cloudLayers.forEach((layer, i) => {
+      /* Start each layer somewhere else in its own cycle, or all three set
+         off together and the parallax reads as one sheet. */
+      gsap.to(layer, {
+        xPercent: -50, duration: DRIFT[i], ease: 'none', repeat: -1
+      }).progress(i * 0.27);
+    });
+
+    gsap.timeline({
+      scrollTrigger: { trigger: '#inversion', start: 'top bottom',
+                       end: 'bottom top', scrub: 1 }
+    })
+      .fromTo(cloudLayers[0], {yPercent: 6},  {yPercent: -14}, 0)
+      .fromTo(cloudLayers[1], {yPercent: 10}, {yPercent: -6},  0)
+      .fromTo(cloudLayers[2], {yPercent: 14}, {yPercent: 4},   0)
+      .fromTo('#inversion .inversion-ridge', {yPercent: 8}, {yPercent: -10}, 0);
+
+    if (finePoint.matches) {
+      /* Depth: the near layer answers the pointer most. */
+      const lean = cloudLayers.map((layer, i) => ({
+        x: gsap.quickTo(layer, 'x', {duration: 1.1, ease: 'power2'}),
+        y: gsap.quickTo(layer, 'y', {duration: 1.1, ease: 'power2'}),
+        d: [10, 22, 38][i]
+      }));
+      const band = $('#inversion');
+      window.addEventListener('pointermove', e => {
+        if (e.pointerType !== 'mouse') return;
+        const r = band.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > window.innerHeight) return;   // off screen
+        const nx = (e.clientX / window.innerWidth  - .5) * 2;
+        const ny = ((e.clientY - r.top) / r.height - .5) * 2;
+        lean.forEach(l => { l.x(-nx * l.d); l.y(-ny * l.d * .35); });
+      }, {passive:true});
+    }
+  }
+
   /* ── 9 · Section grounds ─────────────────────────────────────────────────
      The nav already switches at the cloud line. This eases the switch across
      the boundary instead of snapping it, which is the join most likely to
@@ -973,8 +1036,11 @@ window.addEventListener('load', () => ScrollTrigger.refresh());
     isMobile:  '(max-width: 767.98px) and (prefers-reduced-motion: no-preference)'
   }, ctx => {
     const { isDesktop } = ctx.conditions;
-    const X = isDesktop ? 20 : 17;   // vw from centre
-    const Y = isDesktop ? 14 : 11;   // vh from centre
+    /* Half of a 42vw frame is 21vw, so the spread has to clear that or the
+       two columns meet in the middle. 23 leaves a 4vw channel between them
+       and 6vw of air outside. */
+    const X = isDesktop ? 23 : 15;   // vw from centre
+    const Y = isDesktop ? 15 : 11;   // vh from centre
 
     const [topLeft, bottomRight, bottomLeft, hero] = frames;
 
