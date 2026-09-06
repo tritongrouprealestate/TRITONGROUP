@@ -135,6 +135,29 @@ const DATA = {
      caption:'The living room, gathered around the water court'}
   ],
 
+  /* The three cards of the ownership model. `from` and `to` are the two
+     ends of the panel that sits behind each card and glows through it —
+     keep them inside the site's palette or the section stops matching the
+     rest of the page. */
+  ownership: [
+    { n:'01', kicker:'Own',
+      head:'Own the residence.',
+      body:'A private residence in Humming Valley, created for a life closer to '
+         + 'nature, hospitality and the hills.',
+      cta:'Discover', from:'#E6B84F', to:'#B4791C' },
+    { n:'02', kicker:'Forget the maintenance.',
+      head:'We manage the rest.',
+      body:'No day-to-day maintenance. No property management headaches. Your '
+         + 'residence is managed through the hotel-managed residence program.',
+      cta:'Discover', from:'#5FC8C2', to:'#1B5F63' },
+    { n:'03', kicker:'Let it earn.',
+      head:'Zero inventory tension.',
+      body:'When you are away, your residence can be offered to guests. Revenue '
+         + 'generated through the hotel-managed residence contributes to your '
+         + 'defined owner share.',
+      cta:'See how it works', from:'#8FD49B', to:'#2F6B4A' }
+  ],
+
   /* The seven photographs in the coverflow above the masterplan. Point
      these at whatever you like — the carriage reads the list, so adding an
      eighth or dropping to five needs no other change. */
@@ -465,6 +488,27 @@ $$('#plots [data-plot]').forEach(node => {
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectPlot(p, node); }
   });
 });
+
+/* ═══ OWNERSHIP MODEL ══════════════════════════════════════════════════
+   Markup only. The skew, the glow and the panel that opens are all CSS, so
+   the cards work with script disabled and cost nothing per frame. The two
+   gradient ends are the only per-card values that reach the stylesheet. */
+const own = $('#ownership-cards');
+if (own && DATA.ownership) own.innerHTML = DATA.ownership.map(c => `
+  <article class="skew-card" style="--from:${c.from};--to:${c.to}">
+    <span class="skew-panel" aria-hidden="true"></span>
+    <span class="skew-panel skew-panel-glow" aria-hidden="true"></span>
+    <span class="skew-blob skew-blob-a" aria-hidden="true"></span>
+    <span class="skew-blob skew-blob-b" aria-hidden="true"></span>
+    <div class="skew-body">
+      <p class="skew-kicker">${c.n} &mdash; ${c.kicker}</p>
+      <h3 class="skew-head">${c.head}</h3>
+      <p class="skew-copy">${c.body}</p>
+      <button type="button" class="skew-cta" data-enquire="Ownership model &mdash; ${c.kicker}">
+        ${c.cta}<span aria-hidden="true">&rarr;</span>
+      </button>
+    </div>
+  </article>`).join('');
 
 /* ═══ GALLERY ══════════════════════════════════════════════════════════ */
 const gal = $('#gallery');

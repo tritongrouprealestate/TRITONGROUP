@@ -118,6 +118,72 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
 .glow-ground.is-lit::before{opacity:1}
 @media (prefers-reduced-motion:reduce){ .glow-ground::before{display:none} }
 
+/* ── The ownership cards ──────────────────────────────────────────────────
+   A skewed panel stands behind each card with a blurred copy of itself
+   underneath, so the colour reads as light thrown onto the ground rather
+   than as a shape. On hover the skew straightens, the panel opens to the
+   card's width and the glass body slides out over it.
+
+   The reference this came from used neon on black. The mechanism is the
+   same; the colours are the site's, because a card that glows magenta in
+   the middle of this page would belong to a different one. */
+.skew-card{position:relative;display:grid;align-items:center;
+  min-height:26rem;isolation:isolate}
+
+.skew-panel{position:absolute;top:0;left:3rem;width:50%;height:100%;
+  border-radius:2px;background:linear-gradient(315deg,var(--from),var(--to));
+  transform:skewX(15deg);
+  transition:transform .6s var(--ease-out), left .6s var(--ease-out),
+             width .6s var(--ease-out)}
+.skew-panel-glow{filter:blur(34px);opacity:.55}
+
+.skew-card:hover .skew-panel,
+.skew-card:focus-within .skew-panel{
+  transform:skewX(0);left:1.25rem;width:calc(100% - 5rem)}
+
+/* The two drifting squares. They are the only thing here that moves on its
+   own, and they only exist once the card is open. */
+.skew-blob{position:absolute;width:0;height:0;border-radius:2px;opacity:0;
+  background:rgba(238,241,244,.10);backdrop-filter:blur(10px);
+  box-shadow:0 5px 15px rgba(0,0,0,.2);pointer-events:none;z-index:10;
+  transition:all .5s var(--ease-out);animation:skew-drift 3.4s ease-in-out infinite}
+.skew-blob-a{top:0;left:0}
+.skew-blob-b{bottom:0;right:0;animation-delay:-1.7s}
+.skew-card:hover .skew-blob-a,
+.skew-card:focus-within .skew-blob-a{top:-2.5rem;left:2.5rem;width:5rem;height:5rem;opacity:1}
+.skew-card:hover .skew-blob-b,
+.skew-card:focus-within .skew-blob-b{bottom:-2.5rem;right:2.5rem;width:5rem;height:5rem;opacity:1}
+@keyframes skew-drift{0%,100%{transform:translateY(8px)}50%{transform:translateY(-8px)}}
+
+.skew-body{position:relative;z-index:20;left:0;padding:2rem 2.25rem;
+  border-radius:2px;background:rgba(7,26,28,.55);
+  backdrop-filter:blur(14px);border:1px solid rgba(238,241,244,.12);
+  box-shadow:0 24px 60px -30px rgba(0,0,0,.8);
+  transition:left .6s var(--ease-out), padding .6s var(--ease-out),
+             background-color .6s var(--ease-out)}
+.skew-card:hover .skew-body,
+.skew-card:focus-within .skew-body{left:-1.5rem;padding:2.75rem 2.25rem;
+  background:rgba(7,26,28,.68)}
+
+.skew-kicker{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--color-dawn);margin:0}
+.skew-head{font-family:var(--font-display);font-size:var(--step-2);
+  line-height:1.15;margin:.9rem 0 0;color:var(--color-cloud)}
+.skew-copy{margin:1rem 0 0;font-size:.96rem;line-height:1.6;
+  color:var(--color-haze);max-width:34ch}
+.skew-cta{display:inline-flex;align-items:center;gap:.55rem;margin-top:1.6rem;
+  padding:.7rem 1.2rem;font-size:.85rem;font-weight:600;letter-spacing:.01em;
+  color:var(--color-night);background:var(--color-cloud);border-radius:2px;
+  cursor:pointer;transition:background-color .3s var(--ease-out),
+                            gap .3s var(--ease-out)}
+.skew-cta:hover{background:var(--color-dawn);gap:.85rem}
+
+/* Nothing here is load-bearing, so with motion off it simply rests open. */
+@media (prefers-reduced-motion:reduce){
+  .skew-panel,.skew-body,.skew-blob,.skew-cta{transition:none}
+  .skew-blob{animation:none}
+}
+
 /* ── The views, and the coverflow that carries them ───────────────────────
    Cards sit on one absolutely-positioned rail and are placed entirely by
    transform: no reflow while dragging, and the loop is arithmetic on the

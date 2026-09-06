@@ -372,6 +372,30 @@
 
 </section>
 
+<!-- ══ 7b · THE OWNERSHIP MODEL ══════════════════════════════════════════
+     Three cards, built from DATA.ownership. The skew, the glow behind it and
+     the panel that opens on hover are in the stylesheet — nothing here needs
+     script beyond the markup. -->
+<section id="ownership" class="relative overflow-hidden bg-night text-cloud py-[clamp(5rem,13vh,9rem)]">
+  <div class="mx-auto w-full max-w-[1600px] px-[clamp(1.25rem,4vw,3rem)]">
+    <div class="relative pl-[var(--rail)]">
+      <div class="rail-line text-haze" aria-hidden="true"></div>
+
+      <p class="eyebrow" data-anim="rise" style="color:#C9962E">The ownership model</p>
+      <h2 style="font-size:var(--step-4)" class="max-w-[18ch]" data-anim="rise"
+          data-lines="Own it. Forget it.|Let it earn.">
+        Own it. Forget it. Let it earn.
+      </h2>
+      <p class="lede mt-7" style="color:var(--color-haze);max-width:54ch" data-anim="rise">
+        A residence at Humming Valley can be yours to live in, and yours to leave
+        running when you are not there.
+      </p>
+
+      <div id="ownership-cards" class="mt-16 grid gap-x-10 gap-y-14 md:grid-cols-2 lg:grid-cols-3"><!-- from DATA.ownership --></div>
+    </div>
+  </div>
+</section>
+
 <!-- ══ 8 · THE CASE ══════════════════════════════════════════════════════ -->
 <section id="case" class="on-light bg-cloud text-ink py-[clamp(5rem,13vh,9rem)]">
   <div class="mx-auto w-full max-w-[1600px] px-[clamp(1.25rem,4vw,3rem)]">
