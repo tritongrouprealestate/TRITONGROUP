@@ -125,9 +125,7 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
 
 /* ── Horizontal gallery track ─────────────────────────────────────────── */
 #inside{background:#22382D}
-.track{display:flex;gap:clamp(1rem,2.5vw,2.25rem);will-change:transform}
-.frame{position:relative;flex:0 0 auto;width:min(78vw,560px);aspect-ratio:4/5;
-  overflow:hidden;background:#2F4A3C}
+.frame{position:relative;overflow:hidden;background:#2F4A3C}
 .frame img{width:100%;height:100%;object-fit:cover;opacity:0;
   transition:opacity 1s var(--ease-out),transform 1.2s var(--ease-out);transform:scale(1.06)}
 .frame img.is-loaded{opacity:1;transform:scale(1)}
@@ -330,3 +328,55 @@ html.lenis,html.lenis body{height:auto}
   [data-magnetic]{transform:none !important}
   .villa:hover .villa-shot img,.frame:hover img.is-loaded{transform:none}
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   SCROLL CHOREOGRAPHY  (Inside section)
+   Four frames in the quadrants swap diagonally, gather to the centre, and
+   the last one opens to fill the screen.
+
+   Held by position:sticky, not a ScrollTrigger pin. Sticky is native, needs
+   no pin-spacer, and does not fight the smooth-scroll layer — which leaves
+   the page with one pinned section instead of three.
+   ══════════════════════════════════════════════════════════════════════ */
+#choreo{height:300vh}
+.choreo-stage{position:sticky;top:0;height:100svh;width:100%;overflow:hidden}
+.choreo-inner{position:absolute;inset:0}
+
+.choreo-frame{position:absolute;left:50%;top:50%;margin:0;
+  width:36vw;height:24vh;overflow:hidden;background:var(--color-frond);
+  transform:translate(-50%,-50%);will-change:transform,width,height}
+.choreo-frame img{width:100%;height:100%;object-fit:cover;display:block}
+
+@media (max-width:767.98px){
+  .choreo-frame{width:62vw;height:20vh}
+}
+
+/* The caption belongs to the final full-screen frame, so it only appears
+   once that frame has arrived. */
+.choreo-caption{position:absolute;left:0;right:0;bottom:0;z-index:50;opacity:0;
+  padding:5rem clamp(1.25rem,4vw,3rem) clamp(1.5rem,4vh,2.5rem);
+  color:var(--color-cloud);font-size:var(--step--1);
+  background:linear-gradient(to top,rgba(11,18,14,.85),transparent);
+  pointer-events:none}
+
+/* ── Reduced motion, and the no-JS case ─────────────────────────────────
+   The choreography is the presentation; the photographs are the content.
+   With motion off, the section collapses from a 300vh scroll region to an
+   ordinary grid so the pictures are still all there, at rest. */
+@media (prefers-reduced-motion: reduce){
+  #choreo{height:auto}
+  .choreo-stage{position:static;height:auto;overflow:visible}
+  .choreo-inner{position:static;display:grid;gap:1rem;
+    padding:0 clamp(1.25rem,4vw,3rem);max-width:1600px;margin-inline:auto}
+  @media (min-width:640px){ .choreo-inner{grid-template-columns:1fr 1fr} }
+  .choreo-frame{position:static;width:auto;height:auto;aspect-ratio:3/2;
+    transform:none;will-change:auto}
+  .choreo-caption{display:none}
+}
+
+/* ── The gallery, now a calm grid ─────────────────────────────────────────
+   It follows the choreography, so it should be still: two scroll-driven
+   sequences back to back is exhausting rather than impressive. */
+#gallery .frame{position:relative;width:auto;aspect-ratio:4/3;overflow:hidden;
+  background:var(--color-frond)}
+#gallery .frame img{width:100%;height:100%;object-fit:cover}

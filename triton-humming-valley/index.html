@@ -434,9 +434,20 @@
     </div>
   </div>
 
-  <div id="gallery-wrap" class="mt-16 overflow-hidden">
-    <div class="track px-[clamp(1.25rem,4vw,3rem)]" id="gallery"><!-- injected from DATA.gallery --></div>
-  </div>
+  <!-- Scroll choreography. Four frames sit in the quadrants, swap
+       diagonally, gather to the centre and the last one opens to fill the
+       screen. Held by CSS position:sticky rather than a ScrollTrigger pin —
+       sticky is native, needs no pin-spacer and does not fight the smooth
+       scroll layer, so the page is left with a single pinned section. -->
+  <section id="choreo" aria-label="The villa interiors" class="relative mt-16">
+    <div class="choreo-stage">
+      <div class="choreo-inner"><!-- injected from DATA.choreography --></div>
+      <figcaption class="choreo-caption" aria-hidden="true"></figcaption>
+    </div>
+  </section>
+
+  <div id="gallery" class="mx-auto mt-20 grid max-w-[1600px] gap-4 px-[clamp(1.25rem,4vw,3rem)]
+                            sm:grid-cols-2 lg:grid-cols-3"><!-- injected from DATA.gallery --></div>
 
   <p class="mx-auto mt-8 max-w-[1600px] px-[clamp(1.25rem,4vw,3rem)] text-[.82rem]" style="color:#9FB3A6">
     Photography is indicative of the design intent. Replace with project photography before launch.

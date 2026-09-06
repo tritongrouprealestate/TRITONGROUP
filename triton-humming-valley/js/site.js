@@ -70,6 +70,21 @@ const DATA = {
     {n:'E6',x:530,y:378,t:'5 BHK',s:'available',a:'East'}
   ],
 
+  /* The four frames of the scroll choreography in the Inside section. The
+     last one is the hero: it is the frame that ends up filling the screen,
+     so it should be the strongest photograph you have. */
+  choreography: [
+    {src:'https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1400&q=75',
+     alt:'Villa exterior seen from the internal road'},
+    {src:'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=75',
+     alt:'The double-height core, teak and stone'},
+    {src:'https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?auto=format&fit=crop&w=1400&q=75',
+     alt:'Jacuzzi terrace at the valley edge'},
+    {src:'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=80',
+     alt:'The living volume, wrapped around the water court',
+     caption:'The living volume, wrapped around the water court'}
+  ],
+
   /* Replace every src with project photography. The frame keeps its shape
      and caption whether or not the image loads. */
   gallery: [
@@ -345,7 +360,7 @@ $$('#plots [data-plot]').forEach(node => {
 const gal = $('#gallery');
 gal.innerHTML = DATA.gallery.map((g,i) => `
   <figure class="frame">
-    <img alt="${g.cap}" data-src="${g.src}" data-i="${i}" loading="lazy" decoding="async" width="1100" height="1375">
+    <img alt="${g.cap}" data-src="${g.src}" data-i="${i}" loading="lazy" decoding="async" width="1100" height="825">
     <figcaption>${g.cap}</figcaption>
     <button class="absolute inset-0 h-full w-full cursor-zoom-in" data-lb="${i}">
       <span class="sr-only">Open larger: ${g.cap}</span>
@@ -630,17 +645,9 @@ mm.add('(prefers-reduced-motion: no-preference)', () => {
   });
   gsap.set('main > section:not(#ascent) [data-anim="rise"]', {opacity:0, y:14});
 
-  /* ── The interior gallery: the second and last pin ─────────────────── */
-  const track = $('#gallery');
-  ScrollTrigger.create({
-    trigger:'#gallery-wrap',
-    start:'center center',
-    end: () => '+=' + (track.scrollWidth - window.innerWidth + 120),
-    pin:'#gallery-wrap', scrub:1, invalidateOnRefresh:true,
-    animation: gsap.to(track, {
-      x: () => -(track.scrollWidth - window.innerWidth + 120), ease:'none'
-    })
-  });
+  /* The interior choreography lives in its own block below, driven by CSS
+     sticky rather than a pin, which leaves the hero as the page's only
+     pinned section. */
 
   /* ── Dawn breaks on the CTA. The only other place gold washes the page,
         and the reason the accent was held back everywhere else. ─────── */
@@ -948,4 +955,130 @@ window.addEventListener('load', () => ScrollTrigger.refresh());
      the boundary instead of snapping it, which is the join most likely to
      betray that the page is made of separate sections. */
   ScrollTrigger.refresh();
+})();
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SCROLL CHOREOGRAPHY  (Inside section)
+
+   Four frames start in the quadrants. Two swap diagonally, all four gather to
+   the centre, and the last one opens out to fill the screen while the three
+   beneath it fade.
+
+   Ported from a React/Framer Motion component. Two things changed in the
+   port, both deliberate:
+
+   1. Framer's useSpring is replaced by ScrollTrigger's scrub, which is
+      already smoothing every other scroll-linked animation on this page.
+      Adding a second, differently-tuned smoother would have made this one
+      section move to a rhythm the rest of the page does not share.
+   2. The original's alt text described the layout — "Top Left", "Top Right
+      (Hero)" — which tells a screen-reader user nothing. Alt text here
+      describes the photograph.
+   ═══════════════════════════════════════════════════════════════════════ */
+(() => {
+  'use strict';
+  const $  = (s, r=document) => r.querySelector(s);
+  const inner = $('.choreo-inner');
+  if (!inner || typeof DATA === 'undefined' || !DATA.choreography) return;
+
+  /* Markup is built regardless of motion preference: with motion off the CSS
+     lays these out as a plain grid, so the photographs are still delivered. */
+  inner.innerHTML = DATA.choreography.map((f, i) => `
+    <figure class="choreo-frame" style="z-index:${(i + 1) * 10}">
+      <img alt="${f.alt}" data-src="${f.src}" decoding="async"
+           ${i === DATA.choreography.length - 1 ? '' : 'loading="lazy"'}>
+    </figure>`).join('');
+
+  const frames = Array.from(inner.querySelectorAll('.choreo-frame'));
+  const imgs   = frames.map(f => f.querySelector('img'));
+
+  /* Same loading rule as everywhere else on the page: show the picture once
+     it has decoded, and leave the frame's own colour if it never arrives. */
+  imgs.forEach(img => {
+    const probe = new Image();
+    probe.onload  = () => { img.src = img.dataset.src; };
+    probe.onerror = () => { img.remove(); };
+    probe.src = img.dataset.src;
+  });
+
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const hasGSAP = typeof window.gsap !== 'undefined' && typeof window.ScrollTrigger !== 'undefined';
+  if (reduced.matches || !hasGSAP) return;   // CSS has already made it a grid
+
+  const caption = $('.choreo-caption');
+  if (caption && DATA.choreography[3] && DATA.choreography[3].caption) {
+    caption.textContent = DATA.choreography[3].caption;
+  }
+
+  /* Offsets differ by screen: 36vw is a postage stamp on a phone, and the
+     quadrant spread has to shrink with it or the frames leave the viewport. */
+  const mm = gsap.matchMedia();
+  mm.add({
+    isDesktop: '(min-width: 768px) and (prefers-reduced-motion: no-preference)',
+    isMobile:  '(max-width: 767.98px) and (prefers-reduced-motion: no-preference)'
+  }, ctx => {
+    const { isDesktop } = ctx.conditions;
+    const X = isDesktop ? 20 : 17;   // vw from centre
+    const Y = isDesktop ? 14 : 11;   // vh from centre
+
+    const [topLeft, bottomRight, bottomLeft, hero] = frames;
+
+    /* Centring is stated here explicitly rather than inherited from the
+       stylesheet's translate(-50%,-50%). Relying on GSAP to round-trip that
+       CSS percentage was not reliable: at desktop widths it composed both
+       axes, at 375px it kept only the Y half and every frame sat half its
+       own width to the right — the effect looked correct on a laptop and
+       broken on a phone. The stylesheet keeps its translate for the state
+       before this script runs; from here GSAP owns the whole transform. */
+    gsap.set(frames, { xPercent: -50, yPercent: -50 });
+
+    gsap.set(topLeft,     { x: -X + 'vw', y: -Y + 'vh' });
+    gsap.set(bottomRight, { x:  X + 'vw', y:  Y + 'vh' });
+    gsap.set(bottomLeft,  { x: -X + 'vw', y:  Y + 'vh' });
+    gsap.set(hero,        { x:  X + 'vw', y: -Y + 'vh' });
+    gsap.set([topLeft, bottomRight, bottomLeft], { opacity: 1 });
+
+    const tl = gsap.timeline({
+      defaults: { ease: 'none' },
+      scrollTrigger: {
+        trigger: '#choreo',
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 1,
+        invalidateOnRefresh: true
+      }
+    });
+
+    /* Phase 1 — the diagonal swap. Two frames trade corners while the other
+       two hold, so the movement reads as an exchange rather than a drift. */
+    tl.to(topLeft,     { y:  Y + 'vh', duration: .30 }, 0)
+      .to(bottomRight, { y: -Y + 'vh', duration: .30 }, 0)
+
+    /* Phase 2 — everything gathers on the centre and stacks. */
+      .to(frames, { x: 0, y: 0, duration: .30 }, .35)
+
+    /* Phase 3 — the last frame opens to fill the screen.
+       width/height rather than a transform: the frames have different aspect
+       ratios from the viewport, so a non-uniform scale would stretch the
+       photograph. This is one absolutely-positioned element, so the layout
+       work is contained and does not reflow anything around it. */
+      .to(hero, { width: '100vw', height: '100svh', duration: .20 }, .70)
+
+    /* The three beneath fade as the hero passes over them — without this the
+       stack's edges show through at the corners as it grows. */
+      .to([topLeft, bottomRight, bottomLeft], { opacity: 0, duration: .10 }, .75);
+
+    if (caption) tl.to(caption, { opacity: 1, duration: .08 }, .88);
+
+    /* Hint the compositor only while the expansion is actually running.
+       Leaving will-change on a full-viewport element permanently costs
+       memory for the whole length of the page. */
+    ScrollTrigger.create({
+      trigger: '#choreo', start: 'top bottom', end: 'bottom top',
+      onToggle: self => {
+        hero.style.willChange = self.isActive ? 'width, height, transform' : 'auto';
+      }
+    });
+  });
 })();

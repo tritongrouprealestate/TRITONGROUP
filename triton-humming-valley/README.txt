@@ -66,8 +66,11 @@ Phone number and email
     DATA.contact in js/site.js. They update everywhere at once.
 
 Photographs
-    Every image URL is in js/site.js (DATA.gallery and the villa entries)
-    plus two in index.html (the hero and the wide landscape band). They
+    Every image URL is in js/site.js (DATA.choreography for the four frames
+    in the Inside sequence, DATA.gallery for the grid, and the villa entries)
+    plus two in index.html (the hero and the wide landscape band). The last
+    entry in DATA.choreography is the one that ends up filling the screen, so
+    it should be your strongest photograph. They
     currently point at Unsplash stock. Replace them with your own photos —
     upload the files to an  images/  folder and use  images/yourphoto.jpg
     as the URL. Any image that fails to load falls back to artwork drawn in
@@ -94,6 +97,10 @@ On top of it:
     plots, where a large ring would cover the thing being pointed at
   - buttons lean toward the pointer, capped well short of moving out from
     under it
+  - in the Inside section, four photographs sit in the corners of the screen,
+    swap diagonally, gather to the centre and the last one opens to fill the
+    screen; the gallery below it is deliberately still, because two
+    scroll-driven sequences back to back is tiring rather than impressive
   - headings are split into lines and each line rises out of its own mask
   - photographs wipe open while the image counter-scales inside the frame,
     and drift slightly against the page as you scroll
