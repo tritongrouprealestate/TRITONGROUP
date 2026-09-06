@@ -29,6 +29,14 @@ caption, edit the DATA object at the top of ../js/site.js.
   gallery-5.jpg     1280x596   taken on site, June 2026
   gallery-6.jpg      480x1040  taken on site, June 2026
 
+  cover-1.jpg       1400x1050  the seven cards of the coverflow above the
+  cover-2.jpg                  masterplan, 4:3. The centre card is the one
+  cover-3.jpg                  the visitor reads, so put the strongest
+  cover-4.jpg                  photographs at 1, 4 and 7 — those are the
+  cover-5.jpg                  ones that land in the middle first.
+  cover-6.jpg
+  cover-7.jpg
+
 Largest useful width is about 2400px. Bigger files only slow the page down.
 Everything is cropped to fill its frame, so the subject only needs to be
 roughly centred. Any file that is missing falls back to artwork drawn in

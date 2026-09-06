@@ -135,6 +135,26 @@ const DATA = {
      caption:'The living room, gathered around the water court'}
   ],
 
+  /* The seven photographs in the coverflow above the masterplan. Point
+     these at whatever you like — the carriage reads the list, so adding an
+     eighth or dropping to five needs no other change. */
+  coverflow: [
+    {src:'images/cover-1.jpg', alt:'The pool at first light, the valley opening beyond it',
+     title:'The pool, looking down the valley'},
+    {src:'images/cover-2.jpg', alt:'The internal street between the two villa rows at sunset',
+     title:'The street at sunset'},
+    {src:'images/cover-3.jpg', alt:'The wooded slope seen from a bedroom window',
+     title:'The hills from a bedroom'},
+    {src:'images/cover-4.jpg', alt:'The living room, the water wall and seated Buddha behind the seating',
+     title:'The living room and the water wall'},
+    {src:'images/cover-5.jpg', alt:'The water court from the side, the garden beyond the glass',
+     title:'The water court'},
+    {src:'images/cover-6.jpg', alt:'A family in the living room, the garden behind them',
+     title:'Living room, open to the garden'},
+    {src:'images/cover-7.jpg', alt:'A villa standing against the wooded hillside',
+     title:'A villa against the hillside'}
+  ],
+
   /* The six captions the client wrote for this grid, in their order:
        1  Kitchen opening into the living space          ← photo needed
        2  Lounge overlooking the internal courtyard      ← photo needed
@@ -1351,4 +1371,218 @@ const Enquiry = (() => {
       e.preventDefault(); first.focus();
     }
   });
+})();
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   COVERFLOW  (The views)
+
+   Ported from a React component. The mechanism is unchanged and worth
+   stating, because it is the reason this is cheap to run:
+
+   · One fractional index, `pos`, is the entire state. Every card's place is
+     derived from its distance to it, so there is nothing to keep in sync.
+   · The loop is arithmetic. A card's offset is folded into the shorter way
+     round the ring, so the strip repeats without a single cloned node or
+     any reordering of the DOM.
+   · Nothing is written to layout. Position, recession and tilt are one
+     transform per card, so a drag costs compositing and no reflow.
+
+   Three things changed in the port, all forced by the surroundings:
+   React's per-frame state became direct style writes (there was never any
+   state React needed to see); the settle honours prefers-reduced-motion by
+   arriving at once; and the frame keeps touch-action:pan-y so a drag on a
+   phone still leaves the page its vertical scroll.
+   ═══════════════════════════════════════════════════════════════════════ */
+(() => {
+'use strict';
+const mount = document.querySelector('[data-coverflow]');
+if (!mount || typeof DATA === 'undefined' || !DATA.coverflow) return;
+
+const slides = DATA.coverflow, count = slides.length;
+if (!count) return;
+
+/* Geometry. Every one of these is a look, not a mechanism — change them
+   freely, nothing below depends on a particular value.
+
+   ROTATE    degrees the first neighbour tilts
+   DEPTH     how far it recedes, as a fraction of card width
+   FALLOFF   exponent on distance: below 1 the rake eases off as cards
+             travel out, which is what keeps the second card readable
+   FADE      opacity lost per step from the centre
+   GAP       space between cards, as a fraction of card width           */
+const ROTATE = 44, DEPTH = 0.6, FALLOFF = 0.56, FADE = 0.1, GAP = 0.05;
+const LOOP = true, MAX_TILT = 82;
+
+const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+const chev = d => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+  stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`;
+
+mount.innerHTML = `
+  <div class="cf" role="region" aria-roledescription="carousel"
+       aria-label="${mount.dataset.label || 'Gallery'}">
+    <div class="cf-frame" tabindex="0">
+      <div class="cf-track">
+        ${slides.map((s, i) => `
+          <figure class="cf-card" role="group" aria-roledescription="slide"
+                  aria-label="${i + 1} of ${count}">
+            <img alt="${s.alt}" data-src="${s.src}" draggable="false"
+                 decoding="async" ${i > 2 ? 'loading="lazy"' : ''}>
+          </figure>`).join('')}
+      </div>
+    </div>
+    <button type="button" class="cf-nav cf-prev" aria-label="Previous view">${chev('m15 18-6-6 6-6')}</button>
+    <button type="button" class="cf-nav cf-next" aria-label="Next view">${chev('m9 18 6-6-6-6')}</button>
+    <p class="cf-caption" aria-live="polite"></p>
+    <div class="cf-dots">
+      ${slides.map((s, i) => `<button type="button" class="cf-dot"
+         aria-label="Go to ${s.title || 'view ' + (i + 1)}" data-dot="${i}"></button>`).join('')}
+    </div>
+  </div>`;
+
+const $  = (s, r = mount) => r.querySelector(s);
+const $$ = (s, r = mount) => Array.from(r.querySelectorAll(s));
+const frame   = $('.cf-frame');
+const cards   = $$('.cf-card');
+const dots    = $$('.cf-dot');
+const caption = $('.cf-caption');
+
+/* Same loading rule as the rest of the page: show the photograph once it has
+   decoded, and leave the card's own colour if it never arrives. */
+$$('.cf-card img').forEach(img => {
+  const probe = new Image();
+  probe.onload  = () => { img.src = img.dataset.src; };
+  probe.onerror = () => { img.remove(); };
+  probe.src = img.dataset.src;
+});
+
+let pos = 0;        // fractional index at the centre — the single source of truth
+let target = 0;     // where the current settle is headed
+let width = 0;      // card width in px; pitch, depth and perspective all derive
+let raf = null;
+let drag = null;
+let selected = -1;
+
+const indexAt = p => ((Math.round(p) % count) + count) % count;
+const wrap = i => LOOP ? i : Math.max(0, Math.min(count - 1, i));
+
+function select(i) {
+  if (i === selected) return;
+  selected = i;
+  caption.textContent = slides[i].title || '';
+  dots.forEach((d, n) => d.setAttribute('aria-current', String(n === i)));
+}
+
+function paint() {
+  if (!width) return;
+  const pitch = width * (1 + GAP);
+
+  cards.forEach((card, i) => {
+    /* Fold the distance into the shorter way round the ring. This is the
+       whole looping mechanism. */
+    let offset = i - pos;
+    if (LOOP) {
+      offset = ((offset % count) + count) % count;
+      if (offset > count / 2) offset -= count;
+    }
+
+    const distance = Math.abs(offset);
+    /* Tilt and recession both ease off with distance: doubling it adds only
+       about half again as much of each. A linear ramp folds the second card
+       shut and the strip stops reading. */
+    const ramp = Math.pow(distance, FALLOFF);
+    const tilt = Math.min(ROTATE * ramp, MAX_TILT) * Math.sign(offset);
+
+    card.style.transform =
+      `translateX(calc(-50% + ${offset * pitch}px)) ` +
+      `translateZ(${-DEPTH * width * ramp}px) rotateY(${-tilt}deg)`;
+
+    /* A card is teleported across the ring at exactly half a turn out, so it
+       has to be gone by then or the jump is visible. */
+    const edge = LOOP ? Math.min(1, Math.max(0, count / 2 - distance)) : 1;
+    card.style.opacity = String(Math.max(0, 1 - FADE * distance) * edge);
+    card.style.zIndex  = String(100 - Math.round(distance));
+  });
+}
+
+function settle(to) {
+  if (raf !== null) cancelAnimationFrame(raf);
+  target = to;
+  select(indexAt(to));
+
+  if (reduced.matches) { pos = to; paint(); raf = null; return; }
+
+  const step = () => {
+    const remaining = target - pos;
+    if (Math.abs(remaining) < 0.0004) {
+      pos = target; paint(); raf = null; return;
+    }
+    pos += remaining * 0.16;      // exponential ease-out, no overshoot
+    paint();
+    raf = requestAnimationFrame(step);
+  };
+  raf = requestAnimationFrame(step);
+}
+
+/* Step off the target rather than off pos, or a click that lands mid-flight
+   is swallowed by the round-off. */
+const nudge = by => settle(wrap(Math.round(target) + by));
+const goTo  = i  => settle(wrap(LOOP
+  ? i + Math.round((target - i) / count) * count     // the shorter way round
+  : i));
+
+/* ── Drag ─────────────────────────────────────────────────────────────── */
+frame.addEventListener('pointerdown', e => {
+  if (raf !== null) { cancelAnimationFrame(raf); raf = null; }
+  frame.setPointerCapture(e.pointerId);
+  target = pos;
+  drag = { id: e.pointerId, x: e.clientX, pos, v: 0, t: performance.now() };
+});
+
+frame.addEventListener('pointermove', e => {
+  if (!drag || drag.id !== e.pointerId) return;
+  const pitch = width * (1 + GAP);
+  if (!pitch) return;
+
+  const now = performance.now(), previous = pos;
+  pos = wrap(drag.pos - (e.clientX - drag.x) / pitch);
+  drag.v = ((pos - previous) / Math.max(now - drag.t, 1)) * 1000;   // cards/sec
+  drag.t = now;
+  select(indexAt(pos));
+  paint();
+});
+
+function endDrag(e) {
+  if (!drag || drag.id !== e.pointerId) return;
+  const carried = Math.max(-2, Math.min(2, drag.v * 0.18));  // let a flick carry
+  drag = null;
+  settle(wrap(Math.round(pos + carried)));
+}
+frame.addEventListener('pointerup', endDrag);
+frame.addEventListener('pointercancel', endDrag);
+
+/* ── Keyboard, buttons, dots ──────────────────────────────────────────── */
+frame.addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft')       { e.preventDefault(); nudge(-1); }
+  else if (e.key === 'ArrowRight') { e.preventDefault(); nudge(1);  }
+});
+$('.cf-prev').addEventListener('click', () => nudge(-1));
+$('.cf-next').addEventListener('click', () => nudge(1));
+dots.forEach(d => d.addEventListener('click', () => goTo(+d.dataset.dot)));
+
+/* A click on a card that is not the centre brings it in, which is what
+   everyone tries first. A drag must not count as a click. */
+cards.forEach((card, i) => {
+  card.addEventListener('click', () => {
+    if (Math.abs(pos - target) > 0.02) return;
+    if (indexAt(pos) !== i) goTo(i);
+  });
+});
+
+/* Card width drives pitch, depth and perspective, so it is the only thing
+   worth measuring — and only when the box actually changes. */
+const measure = () => { width = cards[0].offsetWidth; paint(); };
+measure();
+new ResizeObserver(measure).observe(frame);
+select(0);
 })();

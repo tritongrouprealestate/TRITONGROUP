@@ -118,6 +118,58 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
 .glow-ground.is-lit::before{opacity:1}
 @media (prefers-reduced-motion:reduce){ .glow-ground::before{display:none} }
 
+/* ── The views, and the coverflow that carries them ───────────────────────
+   Cards sit on one absolutely-positioned rail and are placed entirely by
+   transform: no reflow while dragging, and the loop is arithmetic on the
+   index rather than nodes moved through the DOM. Every measurement derives
+   from --cf-card, so the whole rake scales with one number. */
+#views{isolation:isolate}
+.views-scrim{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(6,20,22,.82) 0%,rgba(6,20,22,.62) 38%,
+                             rgba(6,20,22,.86) 100%)}
+.views-lead{position:relative;max-width:42ch;margin-inline:auto;text-align:center;
+  font-family:var(--font-display);font-size:var(--step-2);line-height:1.3;
+  color:var(--color-cloud);text-wrap:balance}
+
+.cf{--cf-card:clamp(190px,26vw,340px);width:100%}
+.cf-frame{perspective:calc(var(--cf-card) * 3);padding-block:2.75rem;
+  overflow:hidden;cursor:grab;touch-action:pan-y;outline:none}
+.cf-frame:active{cursor:grabbing}
+.cf-frame:focus-visible{outline:2px solid var(--color-dawn);outline-offset:-4px}
+.cf-track{position:relative;height:calc(var(--cf-card) * .75);
+  transform-style:preserve-3d;user-select:none}
+.cf-card{position:absolute;left:50%;top:0;margin:0;width:var(--cf-card);
+  aspect-ratio:4/3;overflow:hidden;background:var(--color-frond);
+  box-shadow:0 34px 70px -30px rgba(0,0,0,.85);
+  will-change:transform,opacity;backface-visibility:hidden}
+.cf-card img{display:block;width:100%;height:100%;object-fit:cover;
+  user-select:none;-webkit-user-drag:none}
+
+/* The arrows sit outside the cards on a wide screen and over them on a
+   phone, where there is no outside to sit in. */
+.cf-nav{position:absolute;top:calc(50% - 1.4rem);z-index:200;
+  display:grid;place-items:center;width:2.75rem;height:2.75rem;
+  color:var(--color-cloud);background:rgba(6,20,22,.45);
+  border:1px solid rgba(238,241,244,.22);border-radius:50%;
+  backdrop-filter:blur(6px);cursor:pointer;
+  transition:background-color .3s var(--ease-out),border-color .3s var(--ease-out),
+             transform .3s var(--ease-out)}
+.cf-nav:hover{background:var(--color-dawn);border-color:var(--color-dawn);
+  color:var(--color-night)}
+.cf-nav:active{transform:scale(.94)}
+.cf-nav svg{width:1.1rem;height:1.1rem}
+.cf-prev{left:clamp(.75rem,3vw,2.5rem)}
+.cf-next{right:clamp(.75rem,3vw,2.5rem)}
+
+.cf-caption{margin:.25rem auto 0;text-align:center;color:var(--color-cloud);
+  font-family:var(--font-display);font-size:var(--step-1);min-height:1.6em}
+.cf-dots{display:flex;justify-content:center;gap:.55rem;margin-top:1.5rem}
+.cf-dot{width:.5rem;height:.5rem;border-radius:50%;cursor:pointer;
+  background:var(--color-cloud);opacity:.3;
+  transition:opacity .3s var(--ease-out),transform .3s var(--ease-out)}
+.cf-dot[aria-current="true"]{opacity:1;transform:scale(1.25)}
+.cf-dot:focus-visible{outline:2px solid var(--color-dawn);outline-offset:3px}
+
 /* ── Horizontal gallery track ─────────────────────────────────────────── */
 #inside{background:#22382D}
 .frame{position:relative;overflow:hidden;background:#2F4A3C}
