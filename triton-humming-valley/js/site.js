@@ -33,13 +33,9 @@ const DATA = {
        section and footer. */
     phone: '+91 90366 82626',
 
-    /* ⚠ VERIFY. The hero call button was specified as +91 90388 82626, which
-       differs from the number above and from the WhatsApp number by two
-       digits (903-66 vs 903-88). That is either a separate sales line or a
-       typo, and a wrong number on the most prominent button on the page
-       loses enquiries silently. Set this to null and the button falls back
-       to contact.phone. */
-    callPhone: '+91 90388 82626',
+    /* Confirmed as the same number as above. Set this to a different value
+       only if a separate sales line is ever used for the call button. */
+    callPhone: null,
 
     email: 'sales@tritongroup.in'
   },
@@ -60,17 +56,17 @@ const DATA = {
   villas: [
     { id:'3bhk', name:'3 BHK', area:'2,400', price:'₹2.5 Cr',
       beds:3, baths:3, verified:true,
-      photo:'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=75',
+      photo:'images/villa-3bhk.jpg',
       blurb:'The compact plan. Living, dining and kitchen wrap a single-height court with the waterfall at its head; three bedrooms above, all facing the valley.',
       features:['Private garden','15 ft indoor waterfall','Jacuzzi','Covered parking for two'] },
     { id:'4bhk', name:'4 BHK', area:'3,100', price:'₹3.6 Cr',
       beds:4, baths:4, verified:false,   /* ⚠ area interpolated — verify */
-      photo:'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=75',
+      photo:'images/villa-4bhk.jpg',
       blurb:'A second court opens the plan east, so the morning sun reaches the dining room before it clears the ridge. Family room on the upper floor.',
       features:['Private garden','15 ft indoor waterfall','Jacuzzi','Family lounge','Covered parking for three'] },
     { id:'5bhk', name:'5 BHK', area:'3,800', price:'₹4 Cr',
       beds:5, baths:5, verified:true,
-      photo:'https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1200&q=75',
+      photo:'images/villa-5bhk.jpg',
       blurb:'The full plan. A guest suite sits apart across the court, the primary bedroom takes the whole west end, and the terrace runs the length of the ridge face.',
       features:['Private garden','15 ft indoor waterfall','Jacuzzi','Guest suite','Ridge terrace','Covered parking for three'] }
   ],
@@ -121,32 +117,26 @@ const DATA = {
      last one is the hero: it is the frame that ends up filling the screen,
      so it should be the strongest photograph you have. */
   choreography: [
-    {src:'https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1400&q=75',
-     alt:'Villa exterior seen from the internal road'},
-    {src:'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=75',
-     alt:'The double-height core, teak and stone'},
-    {src:'https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?auto=format&fit=crop&w=1400&q=75',
-     alt:'Jacuzzi terrace at the valley edge'},
-    {src:'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=80',
-     alt:'The living volume, wrapped around the water court',
-     caption:'The living volume, wrapped around the water court'}
+    {src:'images/choreo-1.jpg',
+     alt:'A family on the bedroom balcony, looking out over the wooded hillside'},
+    {src:'images/choreo-2.jpg',
+     alt:'The living room, the waterfall wall and seated Buddha behind the seating'},
+    {src:'images/choreo-3.jpg',
+     alt:'The double-height living volume at dusk, opening to the garden'},
+    {src:'images/choreo-4.jpg',
+     alt:'The living room gathered around the water court',
+     caption:'The living room, gathered around the water court'}
   ],
 
   /* Replace every src with project photography. The frame keeps its shape
      and caption whether or not the image loads. */
   gallery: [
-    {src:'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1100&q=75',
-     cap:'The living volume, wrapped around the water court'},
-    {src:'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1100&q=75',
-     cap:'Double-height core, teak and stone'},
-    {src:'https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1100&q=75',
-     cap:'Villa approach from the internal road'},
-    {src:'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1100&q=75',
-     cap:'Primary bedroom, west end'},
-    {src:'https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?auto=format&fit=crop&w=1100&q=75',
-     cap:'Jacuzzi terrace at the valley edge'},
-    {src:'https://images.unsplash.com/photo-1416331108676-a22ccb276e35?auto=format&fit=crop&w=1100&q=75',
-     cap:'Eucalyptus on the lower slope'}
+    {src:'images/gallery-1.jpg', cap:'The internal street between the villa rows'},
+    {src:'images/gallery-2.jpg', cap:'The infinity pool, looking across the valley'},
+    {src:'images/gallery-3.jpg', cap:'A balcony above the tree line'},
+    {src:'images/gallery-4.jpg', cap:'Villa frontage from the approach'},
+    {src:'images/gallery-5.jpg', cap:'The waterfall wall, seen from the seating'},
+    {src:'images/gallery-6.jpg', cap:'Terrace lanterns, the hill in cloud beyond'}
   ]
 };
 
