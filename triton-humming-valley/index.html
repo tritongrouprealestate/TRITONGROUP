@@ -1,0 +1,737 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Triton Humming Valley — Boutique villas above the Nandi cloud line</title>
+<meta name="description" content="Thirty-two Bali-inspired boutique villas at Kuduvathi, near Nandi Hills, Bangalore. 3, 4 and 5 BHK from 2,400 to 3,800 sq ft. Private viewings by appointment.">
+<meta name="theme-color" content="#0E1621">
+<meta property="og:title" content="Triton Humming Valley — Boutique villas near Nandi Hills">
+<meta property="og:description" content="Thirty-two Bali-inspired villas at Kuduvathi, Bangalore North. Private viewings by appointment.">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/">
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     TRITON HUMMING VALLEY  ·  static build, ready for cPanel
+     ───────────────────────────────────────────────────────────────────────────
+     Upload the whole folder. No Node, no build step, no server config needed.
+
+       index.html          this file
+       css/styles.css      compiled stylesheet — DO NOT hand-edit
+       css/src.css         the source it is compiled FROM — edit this
+       js/site.js          all site behaviour, and the DATA object
+       js/gsap.min.js      animation library (bundled, no CDN)
+       js/ScrollTrigger.min.js
+
+     ⚠ THREE VALUES NEED YOUR CONFIRMATION — all marked NEEDS VERIFY at the
+       top of js/site.js:
+         1. RERA number — taken from a third-party listing, not your own site.
+         2. Possession date — listings show Dec 2025, which has passed.
+         3. The 4 BHK built-up area — interpolated between the published
+            2,400 and 3,800 sq ft endpoints.
+
+     To change project facts, edit the DATA object at the top of js/site.js.
+     To change styling, edit css/src.css then re-run:  npm run build:css
+     ═══════════════════════════════════════════════════════════════════════ -->
+
+<!-- Critical CSS, inline and first: paints the night ground before the
+     stylesheet resolves, so a slow connection never flashes white over a
+     night-sky hero. -->
+<style>
+  html{background:#0E1621;color-scheme:dark}
+  body{margin:0;background:#0E1621;color:#EEF1F4;-webkit-font-smoothing:antialiased;
+       font-family:Manrope,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  .no-js [data-anim]{opacity:1!important;transform:none!important;clip-path:none!important}
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Manrope:wght@200..800&display=swap">
+
+<link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body class="no-js">
+<a class="skip" href="#main">Skip to main content</a>
+
+<!-- ══ NAV ═══════════════════════════════════════════════════════════════ -->
+<header id="nav" class="fixed inset-x-0 top-0 z-50 border-b border-transparent text-cloud">
+  <nav aria-label="Primary" class="mx-auto flex max-w-[1600px] items-center gap-6 px-[clamp(1.25rem,4vw,3rem)] py-4">
+    <a href="#ascent" class="font-display text-[1.05rem] leading-none tracking-[.01em] shrink-0">
+      Triton <span class="opacity-70">Humming Valley</span>
+    </a>
+    <ul class="ml-auto hidden items-center gap-8 text-[.9rem] font-medium lg:flex">
+      <li><a class="nav-link" href="#land">The land</a></li>
+      <li><a class="nav-link" href="#masterplan">Masterplan</a></li>
+      <li><a class="nav-link" href="#villas">Villas</a></li>
+      <li><a class="nav-link" href="#inside">Inside</a></li>
+      <li><a class="nav-link" href="#assurance">Assurance</a></li>
+    </ul>
+    <a href="#viewing" class="btn btn-dawn ml-auto lg:ml-0 min-h-[44px]! px-4! sm:px-5! py-2.5! text-[.85rem] sm:text-[.9rem] whitespace-nowrap">
+      Book a viewing
+    </a>
+  </nav>
+</header>
+
+<div class="page-shell">
+<main id="main">
+
+<!-- ══ 1 · THE ASCENT ════════════════════════════════════════════════════
+     The one place this page raises its voice. Scroll is altitude: four
+     ridgelines part at different rates, the cloud bank sinks below you,
+     and the sky turns from pre-dawn to first light. The elevation readout
+     is real — Bengaluru sits at ~920 m, the Nandi ridge at 1,478 m.     -->
+<section id="ascent" class="relative min-h-[100svh]">
+  <div class="sky"></div>
+  <div class="stars" data-parallax="0.06" aria-hidden="true"></div>
+  <div class="sunwash" aria-hidden="true"></div>
+
+  <!-- Optional photograph. Drawn layers below are the real design; this
+       only deepens it. Swap the URL for your own site photography. -->
+  <img class="hero-photo" alt=""
+       data-src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=2000&q=75"
+       aria-hidden="true" decoding="async">
+
+  <!-- The inversion layer you wake up above. Soft overlapping ellipses
+       under a blur, not a wave-shaped fill — a filled wave reads as a slab. -->
+  <svg class="cloudbank" data-parallax="0.30" style="bottom:23%" viewBox="0 0 1200 200"
+       preserveAspectRatio="none" aria-hidden="true" height="190">
+    <defs><filter id="soft1" x="-25%" y="-60%" width="150%" height="240%">
+      <feGaussianBlur stdDeviation="17"/></filter></defs>
+    <g filter="url(#soft1)" fill="#C9D8E5" fill-opacity=".17">
+      <ellipse cx="150" cy="128" rx="240" ry="42"/>
+      <ellipse cx="470" cy="112" rx="290" ry="36"/>
+      <ellipse cx="810" cy="132" rx="250" ry="44"/>
+      <ellipse cx="1090" cy="116" rx="215" ry="34"/>
+    </g>
+  </svg>
+  <svg class="cloudbank" data-parallax="0.46" style="bottom:13%" viewBox="0 0 1200 200"
+       preserveAspectRatio="none" aria-hidden="true" height="220">
+    <defs><filter id="soft2" x="-25%" y="-60%" width="150%" height="240%">
+      <feGaussianBlur stdDeviation="22"/></filter></defs>
+    <g filter="url(#soft2)" fill="#E4EDF5" fill-opacity=".2">
+      <ellipse cx="60"  cy="150" rx="300" ry="46"/>
+      <ellipse cx="420" cy="136" rx="330" ry="40"/>
+      <ellipse cx="790" cy="152" rx="300" ry="48"/>
+      <ellipse cx="1150" cy="138" rx="270" ry="38"/>
+    </g>
+  </svg>
+
+  <!-- Four ridgelines, back to front. Cubic curves with irregular peak
+       spacing — a range reads wrong the moment its rhythm becomes regular.
+       Speeds diverge on scroll, which is what sells the depth. -->
+  <svg class="ridge" data-parallax="0.10" viewBox="0 0 1200 300" preserveAspectRatio="none"
+       aria-hidden="true" height="47%">
+    <path fill="#2E4257" d="M0,206 C58,188 96,152 148,132 C188,117 226,144 268,122
+      C318,96 358,58 412,70 C452,79 482,122 524,112 C572,100 604,56 654,64
+      C702,72 734,122 784,118 C832,114 864,68 914,78 C962,88 994,132 1044,126
+      C1094,120 1146,152 1200,142 L1200,300 L0,300 Z"/>
+  </svg>
+  <svg class="ridge" data-parallax="0.21" viewBox="0 0 1200 300" preserveAspectRatio="none"
+       aria-hidden="true" height="39%">
+    <path fill="#213347" d="M0,232 C66,220 108,186 166,170 C214,157 254,182 306,166
+      C362,148 398,112 456,122 C502,130 532,168 582,162 C636,155 668,116 724,126
+      C772,134 802,172 856,168 C906,164 938,126 992,136 C1042,145 1078,176 1132,170
+      C1160,167 1180,172 1200,178 L1200,300 L0,300 Z"/>
+  </svg>
+  <svg class="ridge" data-parallax="0.35" viewBox="0 0 1200 300" preserveAspectRatio="none"
+       aria-hidden="true" height="31%">
+    <path fill="#15242F" d="M0,254 C74,246 122,220 186,208 C240,198 282,216 340,206
+      C400,196 438,168 500,176 C548,182 578,208 632,204 C690,200 722,172 782,180
+      C832,187 860,210 916,208 C968,206 1000,182 1056,190 C1108,197 1152,214 1200,210
+      L1200,300 L0,300 Z"/>
+  </svg>
+  <svg class="ridge" data-parallax="0.52" viewBox="0 0 1200 300" preserveAspectRatio="none"
+       aria-hidden="true" height="23%">
+    <path fill="#0A1017" d="M0,272 C82,268 138,254 208,248 C268,243 314,254 378,250
+      C444,246 486,232 552,236 C606,239 638,252 698,250 C760,248 794,236 856,240
+      C910,243 942,254 1000,252 C1060,250 1108,240 1200,244 L1200,300 L0,300 Z"/>
+  </svg>
+
+  <!-- Hero content, hung on the same left rail everything else uses -->
+  <div class="relative z-10 flex min-h-[100svh] flex-col justify-end
+              px-[clamp(1.25rem,4vw,3rem)] pb-[clamp(3rem,9vh,7rem)] pt-32">
+    <div class="mx-auto w-full max-w-[1600px]">
+      <div class="relative pl-[var(--rail)]">
+        <div class="rail-line text-haze" aria-hidden="true"></div>
+
+        <p class="alt text-dawn mb-7 flex items-baseline gap-2" data-anim="rise">
+          <span class="tabular-nums" id="alt-readout" aria-hidden="true">920</span>
+          <span>metres and climbing</span>
+        </p>
+
+        <h1 class="display max-w-[16ch] text-cloud" style="font-size:var(--display)">
+          <span class="word-mask"><span class="word">Wake</span></span>
+          <span class="word-mask"><span class="word">above</span></span>
+          <span class="word-mask"><span class="word">the</span></span>
+          <span class="word-mask"><span class="word">weather.</span></span>
+        </h1>
+
+        <p class="lede mt-8 text-haze" data-anim="rise">
+          Thirty-two Balinese villas on the slope below Nandi Hills, where the valley
+          fills with cloud before sunrise and you are already above it.
+        </p>
+
+        <div class="mt-10 flex flex-wrap items-center gap-4" data-anim="rise">
+          <a href="#viewing" class="btn btn-dawn">Book a private viewing</a>
+          <a href="#land" class="btn btn-quiet">See the land</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="absolute bottom-6 right-[clamp(1.25rem,4vw,3rem)] z-10 alt text-haze/70"
+     data-anim="rise" aria-hidden="true">Scroll to climb</p>
+</section>
+
+<!-- ══ 2 · THE DRIVE UP  (still below the cloud line) ═════════════════════ -->
+<section id="approach" class="relative bg-night-2 py-[clamp(5rem,12vh,9rem)]">
+  <div class="mx-auto w-full max-w-[1600px] px-[clamp(1.25rem,4vw,3rem)]">
+    <div class="relative pl-[var(--rail)]">
+      <div class="rail-line text-haze" aria-hidden="true"></div>
+
+      <p class="alt alt-tick text-haze mb-10" data-anim="rise">920 m &middot; you set off from the city</p>
+
+      <h2 class="text-cloud max-w-[18ch]" style="font-size:var(--step-4)" data-anim="rise">
+        An hour that undoes a week.
+      </h2>
+
+      <p class="lede mt-7 text-haze" data-anim="rise">
+        North out of Bengaluru, past the airport, and the road begins to lift. The
+        temperature drops a few degrees. The last stretch runs through vineyard and
+        eucalyptus before the gate.
+      </p>
+
+      <!-- Drive times as a definition list: it is reference data people will
+           scan and compare, so it is typeset as data, not as three cards. -->
+      <dl class="mt-14 grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-4 max-w-5xl">
+        <div class="border-t border-haze/25 pt-5" data-anim="rise">
+          <dt class="text-haze text-[.9rem]">Kempegowda International</dt>
+          <dd class="font-display text-cloud mt-2" style="font-size:var(--step-2)">35 min</dd>
+        </div>
+        <div class="border-t border-haze/25 pt-5" data-anim="rise">
+          <dt class="text-haze text-[.9rem]">Nandi Hills summit</dt>
+          <dd class="font-display text-cloud mt-2" style="font-size:var(--step-2)">20 min</dd>
+        </div>
+        <div class="border-t border-haze/25 pt-5" data-anim="rise">
+          <dt class="text-haze text-[.9rem]">Hebbal, north Bengaluru</dt>
+          <dd class="font-display text-cloud mt-2" style="font-size:var(--step-2)">1 hr</dd>
+        </div>
+        <div class="border-t border-haze/25 pt-5" data-anim="rise">
+          <dt class="text-haze text-[.9rem]">Nandi valley vineyards</dt>
+          <dd class="font-display text-cloud mt-2" style="font-size:var(--step-2)">15 min</dd>
+        </div>
+      </dl>
+      <p class="mt-6 text-[.82rem] text-haze/70">
+        Approximate driving times outside peak hours. Confirm current road conditions with our sales team.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 3 · THE INVERSION ═════════════════════════════════════════════════
+     The structural hinge of the page. Everything above this band is night;
+     everything below it is cloud light. It is one sentence and a gradient
+     — the transition is the content.                                      -->
+<section id="inversion" aria-label="Crossing the cloud line" class="relative">
+  <div class="h-[42vh] min-h-[280px] w-full"
+       style="background:linear-gradient(to bottom,#16232F 0%,#2C3E4E 26%,#7C8C9A 56%,#C3CFD9 80%,#EEF1F4 100%)"></div>
+  <div class="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 px-[clamp(1.25rem,4vw,3rem)]">
+    <div class="mx-auto max-w-[1600px]">
+      <p class="font-display text-center mx-auto max-w-[24ch] text-[clamp(1.3rem,3.2vw,2.4rem)] leading-[1.25]"
+         style="color:#1B2A38" data-anim="rise">
+        Somewhere around twelve hundred metres, the cloud is beneath you.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 4 · THE LAND  (above the line — light ground from here) ════════════ -->
+<section id="land" class="on-light bg-cloud text-ink py-[clamp(5rem,13vh,10rem)]">
+  <div class="mx-auto w-full max-w-[1600px] px-[clamp(1.25rem,4vw,3rem)]">
+    <div class="relative pl-[var(--rail)]">
+      <div class="rail-line text-mist" aria-hidden="true"></div>
+
+      <p class="alt alt-tick text-dawn-deep mb-10" data-anim="rise">1,478 m &middot; the Nandi ridge</p>
+
+      <div class="grid gap-14 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,.95fr)] lg:gap-24">
+        <div>
+          <h2 class="max-w-[15ch]" style="font-size:var(--step-4)" data-anim="rise">
+            Half of it stays empty.
+          </h2>
+          <p class="mt-7 text-mist" style="font-size:var(--step-1);line-height:1.55;font-weight:200" data-anim="rise">
+            Thirty-two villas is a deliberate number. Half the site is left as open
+            ground — planted, walkable, and kept that way. What you buy here is as
+            much the space between the houses as the house.
+          </p>
+          <p class="mt-5 text-mist" data-anim="rise">
+            The land sits below the summit at Kuduvathi, in Bangalore North. The
+            9th-century Bhoga Nandeeshwara temple stands at the foot of the same hill;
+            the cloud inversion that gives the ridge its reputation is most reliable
+            between November and February.
+          </p>
+        </div>
+
+        <dl class="grid grid-cols-2 gap-x-8 gap-y-10 self-start pt-2">
+          <div data-anim="rise">
+            <dt class="text-[.85rem] text-mist">Villas</dt>
+            <dd class="font-display mt-1.5" style="font-size:var(--step-3)">32</dd>
+          </div>
+          <div data-anim="rise">
+            <dt class="text-[.85rem] text-mist">Open green</dt>
+            <dd class="font-display mt-1.5" style="font-size:var(--step-3)">50%</dd>
+          </div>
+          <div data-anim="rise">
+            <dt class="text-[.85rem] text-mist">Built-up range</dt>
+            <dd class="font-display mt-1.5" style="font-size:var(--step-3)">2,400&ndash;3,800<span class="text-[.42em] text-mist ml-1.5 font-sans font-medium">sq ft</span></dd>
+          </div>
+          <div data-anim="rise">
+            <dt class="text-[.85rem] text-mist">Configurations</dt>
+            <dd class="font-display mt-1.5" style="font-size:var(--step-3)">3&ndash;5<span class="text-[.42em] text-mist ml-1.5 font-sans font-medium">BHK</span></dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 4b · THE SITE, FULL BLEED ═════════════════════════════════════════
+     One photograph at full width. A landscape is the one subject that a
+     single large image serves better than any arrangement of small ones. -->
+<figure class="relative m-0 h-[clamp(20rem,58vh,38rem)] w-full overflow-hidden bg-night">
+  <div class="absolute inset-0"
+       style="background:linear-gradient(140deg,#16232F,#2C3E4E 45%,#7C8C9A)" aria-hidden="true"></div>
+  <img class="band-photo absolute inset-0 h-full w-full object-cover opacity-0"
+       data-src="https://images.unsplash.com/photo-1439066615861-d1af74d74000?auto=format&fit=crop&w=2000&q=75"
+       alt="The ridge above the valley at first light, cloud filling the ground below."
+       loading="lazy" decoding="async" width="2000" height="1200">
+  <figcaption class="absolute bottom-0 left-0 right-0 px-[clamp(1.25rem,4vw,3rem)] pb-8 pt-20
+                     text-cloud text-[.85rem]"
+              style="background:linear-gradient(to top,rgba(14,22,33,.8),transparent)">
+    <span class="mx-auto block max-w-[1600px]">The valley below the ridge, shortly after six.</span>
+  </figcaption>
+</figure>
+
+<!-- ══ 5 · MASTERPLAN ════════════════════════════════════════════════════
+     Plots are real <button> elements inside foreignObject-free SVG: each
+     is focusable, has an accessible name, and reports pressed state. The
+     detail panel is a live region, so selecting a plot with a keyboard
+     announces the change without moving focus away from the map.        -->
+<section id="masterplan" class="on-light bg-cloud-2 text-ink py-[clamp(4rem,11vh,8rem)]">
+  <div class="mx-auto w-full max-w-[1600px] px-[clamp(1.25rem,4vw,3rem)]">
+    <div class="relative pl-[var(--rail)]">
+      <div class="rail-line text-mist" aria-hidden="true"></div>
+
+      <div class="flex flex-wrap items-end justify-between gap-6">
+        <h2 style="font-size:var(--step-3)" data-anim="rise">Choose your ground</h2>
+        <ul class="flex flex-wrap gap-x-7 gap-y-2 text-[.85rem]" aria-hidden="true">
+          <li class="flex items-center gap-2"><span class="inline-block h-3 w-3 border" style="border-color:#2F4A3C;background:rgba(47,74,60,.16)"></span>Available</li>
+          <li class="flex items-center gap-2"><span class="inline-block h-3 w-3 border" style="border-color:#7A5A12;background:rgba(122,90,18,.18)"></span>On hold</li>
+          <li class="flex items-center gap-2"><span class="inline-block h-3 w-3 border" style="border-color:#8A99A6;background:rgba(90,107,122,.14)"></span>Sold</li>
+        </ul>
+      </div>
+
+      <div class="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] lg:gap-16">
+
+        <!-- The map. Ridge contours give the plots a site to sit in. -->
+        <div class="relative border border-ink/12 bg-white p-3 sm:p-5">
+          <svg id="plan" viewBox="0 0 640 460" class="w-full h-auto"
+               role="group" aria-label="Site plan. Thirty-two villa plots arranged along the ridge contour.">
+            <defs>
+              <pattern id="grass" width="14" height="14" patternUnits="userSpaceOnUse">
+                <path d="M0 14 L14 0" stroke="#2F4A3C" stroke-opacity=".07" stroke-width="1"/>
+              </pattern>
+            </defs>
+            <rect width="640" height="460" fill="url(#grass)"/>
+            <!-- contour lines: the slope the site sits on -->
+            <g fill="none" stroke="#5A6B7A" stroke-opacity=".25" stroke-width="1">
+              <path d="M-10,96 C120,64 240,110 360,80 C470,52 560,92 650,66"/>
+              <path d="M-10,156 C120,124 240,170 360,140 C470,112 560,152 650,126"/>
+              <path d="M-10,232 C130,204 250,246 370,216 C480,190 570,228 650,204"/>
+              <path d="M-10,318 C130,292 250,332 370,304 C480,278 570,314 650,292"/>
+              <path d="M-10,404 C130,380 250,418 370,392 C480,368 570,402 650,382"/>
+            </g>
+            <!-- the approach road -->
+            <path d="M320,460 C318,398 292,372 268,338 C240,300 250,262 286,238
+                     C330,208 392,214 436,190 C476,168 486,132 470,96"
+                  fill="none" stroke="#7A5A12" stroke-opacity=".55" stroke-width="7" stroke-linecap="round"/>
+            <path d="M320,460 C318,398 292,372 268,338 C240,300 250,262 286,238
+                     C330,208 392,214 436,190 C476,168 486,132 470,96"
+                  fill="none" stroke="#EEF1F4" stroke-opacity=".7" stroke-width="1.5"
+                  stroke-dasharray="7 9" stroke-linecap="round"/>
+            <!-- clubhouse -->
+            <g>
+              <rect x="286" y="196" width="62" height="42" fill="#2F4A3C" fill-opacity=".9"/>
+              <text x="317" y="222" text-anchor="middle" fill="#EEF1F4"
+                    font-size="10" font-family="Manrope, sans-serif" font-weight="600">Club</text>
+            </g>
+            <g id="plots"><!-- injected from DATA.plots --></g>
+          </svg>
+          <p class="mt-3 text-[.8rem] text-mist">
+            Indicative site plan. Plot shapes and positions are representational —
+            request the surveyed masterplan for exact dimensions.
+          </p>
+        </div>
+
+        <!-- Detail panel -->
+        <aside class="lg:sticky lg:top-28 self-start" aria-labelledby="plot-detail-h">
+          <h3 id="plot-detail-h" class="sr-only">Selected plot</h3>
+          <div id="plot-detail" aria-live="polite" class="border-t-2 border-ink pt-6 min-h-[16rem]"></div>
+        </aside>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 6 · THE VILLAS ════════════════════════════════════════════════════
+     <details>/<summary> so the expansion works with no JavaScript and is
+     keyboard- and screen-reader-correct by construction. GSAP animates the
+     open/close; it never owns the state.                                 -->
+<section id="villas" class="on-light bg-cloud text-ink py-[clamp(5rem,13vh,10rem)]">
+  <div class="mx-auto w-full max-w-[1600px] px-[clamp(1.25rem,4vw,3rem)]">
+    <div class="relative pl-[var(--rail)]">
+      <div class="rail-line text-mist" aria-hidden="true"></div>
+
+      <h2 style="font-size:var(--step-4)" class="max-w-[16ch]" data-anim="rise">Three ways to live here.</h2>
+      <p class="mt-6 text-mist max-w-[52ch]" data-anim="rise">
+        Every villa gets a private garden, a double-height living volume and the
+        indoor waterfall the project is known for. What changes is how much room
+        you want around it.
+      </p>
+
+      <div id="villa-list" class="mt-14 grid gap-5"><!-- injected from DATA.villas --></div>
+
+      <p class="mt-8 text-[.82rem] text-mist max-w-[70ch]">
+        Prices are indicative starting figures exclusive of registration, stamp duty,
+        GST and statutory charges. Areas are super built-up. Floor plans available on request.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 7 · INSIDE  (warm dark — the Balinese world) ══════════════════════
+     The third ground. Above the cloud line the page has been cool and open;
+     stepping inside the villa it turns warm and enclosed. One pinned
+     horizontal track — the only other pinned section on the page.       -->
+<section id="inside" class="text-cloud py-[clamp(5rem,13vh,9rem)]">
+  <div class="mx-auto w-full max-w-[1600px] px-[clamp(1.25rem,4vw,3rem)]">
+    <div class="relative pl-[var(--rail)]">
+      <div class="rail-line text-cloud" aria-hidden="true"></div>
+      <h2 style="font-size:var(--step-4)" class="max-w-[17ch]" data-anim="rise">
+        Water runs through the middle of the house.
+      </h2>
+      <p class="lede mt-7" style="color:#C7D6CC" data-anim="rise">
+        A fifteen-foot waterfall drops through the core of each villa, into a pool
+        the living room wraps around. It is the first thing you hear and the reason
+        the valley is named for its hum.
+      </p>
+    </div>
+  </div>
+
+  <div id="gallery-wrap" class="mt-16 overflow-hidden">
+    <div class="track px-[clamp(1.25rem,4vw,3rem)]" id="gallery"><!-- injected from DATA.gallery --></div>
+  </div>
+
+  <p class="mx-auto mt-8 max-w-[1600px] px-[clamp(1.25rem,4vw,3rem)] text-[.82rem]" style="color:#9FB3A6">
+    Photography is indicative of the design intent. Replace with project photography before launch.
+  </p>
+</section>
+
+<!-- ══ 8 · THE CASE ══════════════════════════════════════════════════════ -->
+<section id="case" class="on-light bg-cloud text-ink py-[clamp(5rem,13vh,9rem)]">
+  <div class="mx-auto w-full max-w-[1600px] px-[clamp(1.25rem,4vw,3rem)]">
+    <div class="relative pl-[var(--rail)]">
+      <div class="rail-line text-mist" aria-hidden="true"></div>
+      <h2 style="font-size:var(--step-3)" class="max-w-[20ch]" data-anim="rise">
+        Why this stretch of road, and why now
+      </h2>
+
+      <div class="mt-12 grid gap-x-16 gap-y-12 md:grid-cols-2 lg:grid-cols-3 max-w-6xl">
+        <article data-anim="rise">
+          <h3 class="font-display" style="font-size:var(--step-1)">The airport corridor</h3>
+          <p class="mt-3 text-mist">
+            Bengaluru's growth has been running north for a decade. The land between
+            Hebbal and Devanahalli carries the city's newest infrastructure, and the
+            ridge sits just beyond its edge — close to the airport, outside the sprawl.
+          </p>
+        </article>
+        <article data-anim="rise">
+          <h3 class="font-display" style="font-size:var(--step-1)">Supply that cannot grow</h3>
+          <p class="mt-3 text-mist">
+            Ridge-facing land near Nandi is finite and building on it is constrained.
+            Thirty-two villas is the whole project; there is no phase two on this site.
+          </p>
+        </article>
+        <article data-anim="rise">
+          <h3 class="font-display" style="font-size:var(--step-1)">It works as a second home</h3>
+          <p class="mt-3 text-mist">
+            An hour from north Bengaluru makes this usable on an ordinary weekend,
+            not just a holiday — which is what separates a home you visit from one
+            you keep meaning to.
+          </p>
+        </article>
+      </div>
+
+      <p class="mt-10 text-[.82rem] text-mist max-w-[70ch]">
+        Nothing on this page is a forecast of returns. Property values can fall as
+        well as rise. Please take independent advice before you buy.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 9 · ASSURANCE ═════════════════════════════════════════════════════ -->
+<section id="assurance" class="on-light bg-cloud-2 text-ink py-[clamp(5rem,13vh,9rem)]">
+  <div class="mx-auto w-full max-w-[1600px] px-[clamp(1.25rem,4vw,3rem)]">
+    <div class="relative pl-[var(--rail)]">
+      <div class="rail-line text-mist" aria-hidden="true"></div>
+      <h2 style="font-size:var(--step-3)" data-anim="rise">The paperwork, plainly</h2>
+
+      <div class="mt-12 grid gap-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+
+        <!-- Specifications -->
+        <div>
+          <h3 class="font-display" style="font-size:var(--step-1)" data-anim="rise">What is built in</h3>
+          <ul class="mt-6 divide-y divide-ink/12 border-t border-ink/12">
+            <li class="flex gap-6 py-3.5"><span class="w-40 shrink-0 text-mist text-[.88rem]">Architecture</span><span>Balinese, single and split level</span></li>
+            <li class="flex gap-6 py-3.5"><span class="w-40 shrink-0 text-mist text-[.88rem]">Water feature</span><span>15 ft indoor waterfall, private jacuzzi</span></li>
+            <li class="flex gap-6 py-3.5"><span class="w-40 shrink-0 text-mist text-[.88rem]">Flooring</span><span>Imported stone and engineered timber</span></li>
+            <li class="flex gap-6 py-3.5"><span class="w-40 shrink-0 text-mist text-[.88rem]">Automation</span><span>Smart home, lighting and climate</span></li>
+            <li class="flex gap-6 py-3.5"><span class="w-40 shrink-0 text-mist text-[.88rem]">Energy</span><span>Solar integration</span></li>
+            <li class="flex gap-6 py-3.5"><span class="w-40 shrink-0 text-mist text-[.88rem]">Water</span><span>Rainwater harvesting</span></li>
+            <li class="flex gap-6 py-3.5"><span class="w-40 shrink-0 text-mist text-[.88rem]">Community</span><span>Clubhouse, 24/7 security, gated access</span></li>
+          </ul>
+        </div>
+
+        <!-- FAQ -->
+        <div>
+          <h3 class="font-display" style="font-size:var(--step-1)" data-anim="rise">Questions we are asked</h3>
+          <div class="mt-6 border-t border-ink/12">
+            <details class="group border-b border-ink/12 py-4">
+              <summary class="flex cursor-pointer items-center justify-between gap-4 font-medium">
+                Is the project RERA registered?
+                <svg class="chev h-4 w-4 shrink-0 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              </summary>
+              <p class="mt-3 text-mist" id="faq-rera">Yes. The registration number is shown in the footer of this page.</p>
+            </details>
+            <details class="group border-b border-ink/12 py-4">
+              <summary class="flex cursor-pointer items-center justify-between gap-4 font-medium">
+                Can I see a villa before it is finished?
+                <svg class="chev h-4 w-4 shrink-0 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              </summary>
+              <p class="mt-3 text-mist">Yes — book a viewing and we will walk you through a completed villa and the site. Early morning slots are worth taking between November and February, when the cloud sits in the valley.</p>
+            </details>
+            <details class="group border-b border-ink/12 py-4">
+              <summary class="flex cursor-pointer items-center justify-between gap-4 font-medium">
+                Are home loans available?
+                <svg class="chev h-4 w-4 shrink-0 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              </summary>
+              <p class="mt-3 text-mist">The project is approved by leading lenders. Our team can put you in touch with the relevant bank relationship manager.</p>
+            </details>
+            <details class="group border-b border-ink/12 py-4">
+              <summary class="flex cursor-pointer items-center justify-between gap-4 font-medium">
+                Who maintains the common areas?
+                <svg class="chev h-4 w-4 shrink-0 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              </summary>
+              <p class="mt-3 text-mist">A facilities team manages landscaping, security, the clubhouse and water systems, funded by a monthly maintenance charge confirmed at booking.</p>
+            </details>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 10 · BOOK A VIEWING ═══════════════════════════════════════════════
+     Back to night ground, and the only place the sunrise wash returns —
+     dawn breaks on the conversion, which is the whole point of the page. -->
+<section id="viewing" class="relative overflow-clip bg-night text-cloud py-[clamp(5rem,14vh,10rem)]">
+  <div class="sunwash" style="bottom:-30%" aria-hidden="true"></div>
+
+  <div class="relative mx-auto w-full max-w-[1600px] px-[clamp(1.25rem,4vw,3rem)]">
+    <div class="relative pl-[var(--rail)]">
+      <div class="rail-line text-haze" aria-hidden="true"></div>
+      <p class="alt alt-tick text-dawn mb-8">First light &middot; 06:14</p>
+
+      <div class="grid gap-16 lg:grid-cols-[minmax(0,.9fr)_minmax(0,1.1fr)] lg:gap-24">
+        <div>
+          <h2 style="font-size:var(--step-4)" class="max-w-[14ch]">Come and stand on it.</h2>
+          <p class="lede mt-7 text-haze">
+            Viewings are by appointment, one party at a time. Tell us when suits and
+            we will confirm within a working day.
+          </p>
+          <dl class="mt-12 space-y-6">
+            <div>
+              <dt class="text-[.85rem] text-haze">Sales</dt>
+              <dd class="mt-1"><a class="nav-link font-display text-[1.35rem]" href="tel:+918000000000" data-field="phone">+91 80 0000 0000</a></dd>
+            </div>
+            <div>
+              <dt class="text-[.85rem] text-haze">Email</dt>
+              <dd class="mt-1"><a class="nav-link font-display text-[1.35rem]" href="mailto:sales@tritongroup.in" data-field="email">sales@tritongroup.in</a></dd>
+            </div>
+            <div>
+              <dt class="text-[.85rem] text-haze">Site</dt>
+              <dd class="mt-1 text-haze">Kuduvathi, near Nandi Hills,<br>Bangalore North, Karnataka</dd>
+            </div>
+          </dl>
+        </div>
+
+        <form id="viewing-form" novalidate class="max-w-xl">
+          <!-- Error summary: focused after a failed submit, each item links
+               to its field. Inline field errors stay in place as well. -->
+          <div id="form-summary" tabindex="-1" role="alert"
+               class="mb-8 border-l-2 border-[#F0806A] bg-[#F0806A]/10 p-5">
+            <h3 class="font-medium text-[#F0806A]">Check these before sending</h3>
+            <ul id="form-summary-list" class="mt-2 list-disc pl-5 text-[.92rem] space-y-1"></ul>
+          </div>
+
+          <div class="grid gap-7 sm:grid-cols-2">
+            <div class="field sm:col-span-2">
+              <label for="f-name" class="block text-[.85rem] text-haze mb-1">Your name <span aria-hidden="true" class="text-dawn">*</span></label>
+              <input id="f-name" name="name" type="text" autocomplete="name" required
+                     aria-describedby="f-name-err">
+              <p class="err" id="f-name-err">Enter your name so we know who to expect.</p>
+            </div>
+
+            <div class="field">
+              <label for="f-phone" class="block text-[.85rem] text-haze mb-1">Phone <span aria-hidden="true" class="text-dawn">*</span></label>
+              <input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required
+                     aria-describedby="f-phone-hint f-phone-err" placeholder="+91">
+              <p id="f-phone-hint" class="mt-1.5 text-[.8rem] text-haze/70">We confirm viewings by phone.</p>
+              <p class="err" id="f-phone-err">Enter a phone number of at least 10 digits.</p>
+            </div>
+
+            <div class="field">
+              <label for="f-email" class="block text-[.85rem] text-haze mb-1">Email <span aria-hidden="true" class="text-dawn">*</span></label>
+              <input id="f-email" name="email" type="email" inputmode="email" autocomplete="email" required
+                     aria-describedby="f-email-err">
+              <p class="err" id="f-email-err">Enter an email address in the form name@example.com.</p>
+            </div>
+
+            <div class="field">
+              <label for="f-villa" class="block text-[.85rem] text-haze mb-1">Villa type</label>
+              <select id="f-villa" name="villa">
+                <option value="">No preference yet</option>
+                <option value="3 BHK">3 BHK &mdash; 2,400 sq ft</option>
+                <option value="4 BHK">4 BHK &mdash; 3,100 sq ft</option>
+                <option value="5 BHK">5 BHK &mdash; 3,800 sq ft</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="f-date" class="block text-[.85rem] text-haze mb-1">Preferred date</label>
+              <input id="f-date" name="date" type="date" aria-describedby="f-date-hint">
+              <p id="f-date-hint" class="mt-1.5 text-[.8rem] text-haze/70">Sunrise slots start at 06:00.</p>
+            </div>
+
+            <div class="field sm:col-span-2">
+              <label for="f-note" class="block text-[.85rem] text-haze mb-1">Anything we should know</label>
+              <textarea id="f-note" name="note" rows="3"></textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-dawn mt-9 w-full sm:w-auto" id="f-submit">
+            Request a viewing
+          </button>
+          <p class="mt-4 text-[.8rem] text-haze/70 max-w-[46ch]">
+            We use these details only to arrange your viewing.
+          </p>
+
+          <!-- Success replaces the form in place; focus moves to it. -->
+          <div id="form-done" hidden tabindex="-1" class="border-l-2 border-dawn bg-dawn/10 p-6">
+            <h3 class="font-display text-[1.4rem]">Request sent</h3>
+            <p class="mt-2 text-haze">We will confirm your viewing within one working day.
+              If it is urgent, call <a class="text-dawn nav-link" href="tel:+918000000000">+91 80 0000 0000</a>.</p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+</div><!-- /.page-shell -->
+
+<!-- Reserves the scroll distance the reveal travels. Height is set from the
+     footer's own measured height, so the two can never disagree. -->
+<div class="footer-spacer" aria-hidden="true"></div>
+
+<!-- ══ FOOTER ════════════════════════════════════════════════════════════ -->
+<footer id="site-footer" class="text-cloud">
+  <div class="footer-glow" aria-hidden="true"></div>
+
+  <div class="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-[1600px] flex-col
+              justify-between px-[clamp(1.25rem,4vw,3rem)] pb-8 pt-[clamp(4rem,12vh,8rem)]">
+
+    <div class="grid gap-12 sm:grid-cols-2 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)]">
+      <div data-foot>
+        <p class="alt text-dawn">First light &middot; 06:14</p>
+        <p class="font-display mt-5 max-w-[16ch]" style="font-size:var(--step-2);line-height:1.15">
+          Viewings are one party at a time.
+        </p>
+        <a href="#viewing" class="btn btn-dawn mt-8">Book a private viewing</a>
+      </div>
+
+      <nav aria-label="Footer" data-foot>
+        <h2 class="text-[.85rem] text-haze">The project</h2>
+        <ul class="mt-5 space-y-3">
+          <li><a class="nav-link" href="#land">The land</a></li>
+          <li><a class="nav-link" href="#masterplan">Masterplan</a></li>
+          <li><a class="nav-link" href="#villas">Villas</a></li>
+          <li><a class="nav-link" href="#inside">Inside</a></li>
+          <li><a class="nav-link" href="#assurance">Assurance</a></li>
+        </ul>
+      </nav>
+
+      <div data-foot>
+        <h2 class="text-[.85rem] text-haze">Get in touch</h2>
+        <ul class="mt-5 space-y-3">
+          <li><a class="nav-link" href="tel:+918000000000" data-field="phone">+91 80 0000 0000</a></li>
+          <li><a class="nav-link" href="mailto:sales@tritongroup.in" data-field="email">sales@tritongroup.in</a></li>
+        </ul>
+        <p class="mt-5 text-haze text-[.9rem]">Kuduvathi, near Nandi Hills,<br>Bangalore North, Karnataka</p>
+      </div>
+    </div>
+
+    <div class="mt-16" data-foot>
+      <div class="grid gap-6 border-t border-haze/20 pt-7 md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
+        <p class="text-[.82rem] text-haze" id="rera-line">RERA registration &mdash; not yet configured.</p>
+        <p class="text-[.82rem] leading-relaxed text-haze">
+          Images, plans and areas on this page are indicative and subject to change.
+          They do not form part of any offer or contract. All areas are super built-up
+          unless stated otherwise.
+        </p>
+      </div>
+    </div>
+
+    <!-- The wordmark runs the full width and is cropped by the viewport edge.
+         It is set as an image of the name rather than a heading, so it is
+         hidden from assistive tech — the name is already in the page title,
+         the nav and the copyright line below. -->
+    <div class="mt-12 select-none" aria-hidden="true">
+      <p class="wordmark font-display leading-[.82] tracking-[-.02em] whitespace-nowrap">
+        Humming&nbsp;Valley
+      </p>
+    </div>
+
+    <p class="mt-6 text-[.8rem] text-haze">
+      &copy; <span id="year">2026</span> Triton Group. Triton Humming Valley, Bengaluru.
+    </p>
+  </div>
+</footer>
+
+<!-- Lightbox -->
+<div id="lightbox" hidden role="dialog" aria-modal="true" aria-labelledby="lb-cap">
+  <button id="lb-close" class="absolute right-5 top-5 btn btn-quiet min-h-[44px]! px-4! py-2!">
+    Close
+  </button>
+  <figure class="text-center">
+    <img id="lb-img" alt="">
+    <figcaption id="lb-cap" class="mt-4 text-haze text-[.9rem]"></figcaption>
+  </figure>
+</div>
+<script src="js/gsap.min.js"></script>
+<script src="js/ScrollTrigger.min.js"></script>
+<script src="js/site.js"></script>
+
+</body>
+</html>

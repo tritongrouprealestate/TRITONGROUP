@@ -1,0 +1,235 @@
+@import "tailwindcss";
+
+@source "../index.html";
+@source "../js/site.js";
+
+  @theme {
+    /* Three grounds, one journey: cold night below the cloud line,
+       cloud light at the inversion, warm frond-dark inside the villas. */
+    --color-night:      #0E1621;
+    --color-night-2:    #16232F;
+    --color-haze:       #A8B6C2;   /* 8.8:1 on night  */
+    --color-cloud:      #EEF1F4;
+    --color-cloud-2:    #DFE5EB;
+    --color-ink:        #101820;   /* 17:1  on cloud  */
+    --color-mist:       #5A6B7A;   /* 4.9:1 on cloud  */
+    --color-frond:      #2F4A3C;   /* 8.6:1 on cloud  */
+    --color-frond-2:    #22382D;
+    --color-dawn:       #C9962E;   /* 6.8:1 on night  */
+    --color-dawn-deep:  #7A5A12;   /* 5.6:1 on cloud  */
+    --font-display: Marcellus, Georgia, "Times New Roman", serif;
+    --font-sans: Manrope, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+/* ── Type scale ────────────────────────────────────────────────────────────
+   Major third (1.25) for text, but the display sizes break the scale on
+   purpose — the hero is the one place this page raises its voice.          */
+:root{
+  --step--1: clamp(.82rem, .79rem + .12vw, .89rem);
+  --step-0 : clamp(1rem, .96rem + .2vw, 1.13rem);
+  --step-1 : clamp(1.25rem, 1.17rem + .38vw, 1.5rem);
+  --step-2 : clamp(1.56rem, 1.41rem + .74vw, 2.11rem);
+  --step-3 : clamp(1.95rem, 1.69rem + 1.3vw, 3rem);
+  --step-4 : clamp(2.44rem, 1.99rem + 2.24vw, 4.5rem);
+  --display: clamp(2.9rem, 1.6rem + 6.2vw, 8rem);
+  --rail: 4.5rem;                     /* left altitude rail gutter          */
+  --ease-out: cubic-bezier(.16,1,.3,1);
+  --ease-in-out: cubic-bezier(.65,0,.35,1);
+}
+@media (min-width:1024px){ :root{ --rail: 7.5rem } }
+
+body{font-size:var(--step-0);line-height:1.65;font-weight:300;
+     font-variant-numeric:tabular-nums}
+h1,h2,h3,.display{font-family:var(--font-display);font-weight:400;line-height:1.04;
+     letter-spacing:-.012em;text-wrap:balance}
+p{max-width:62ch}                      /* under 80 chars, per the brief     */
+.lede{font-size:var(--step-1);line-height:1.5;font-weight:200;max-width:48ch}
+
+/* ── Focus: one visible treatment everywhere, never removed ─────────────── */
+:where(a,button,input,textarea,select,summary,[tabindex]):focus-visible{
+  outline:2px solid var(--color-dawn);outline-offset:3px;border-radius:2px}
+.on-light :where(a,button,input,textarea,select,summary,[tabindex]):focus-visible{
+  outline-color:var(--color-dawn-deep)}
+.skip{position:absolute;left:-9999px;top:0;z-index:100;background:var(--color-dawn);
+  color:#0E1621;padding:.75rem 1.25rem;font-weight:600}
+.skip:focus{left:1rem;top:1rem}
+
+/* ── The altitude rail ─────────────────────────────────────────────────────
+   A hairline down the left edge carrying real elevations. It replaces
+   01/02/03 numbering because this page genuinely is an ascent — the
+   numbers carry information rather than decorating the sections.          */
+.rail-line{position:absolute;left:0;top:0;bottom:0;width:1px;
+  background:linear-gradient(to bottom,transparent,currentColor 8%,currentColor 92%,transparent);
+  opacity:.22}
+.alt{font-size:var(--step--1);letter-spacing:.02em;font-weight:500;
+  font-variant-numeric:tabular-nums lining-nums}
+.alt-tick{position:relative;padding-left:1.15rem}
+.alt-tick::before{content:"";position:absolute;left:0;top:.62em;width:.7rem;height:1px;
+  background:currentColor;opacity:.6}
+
+/* ── Hero: layered sky. Every layer is drawn in CSS/SVG, so the hero is
+   complete before a single photograph loads — the photo fades in on top
+   only once it has decoded. A 404 costs atmosphere, never the design.   */
+#ascent{position:relative;overflow:clip;background:#0E1621}
+.sky{position:absolute;inset:0;
+  background:
+    radial-gradient(120% 75% at 50% 108%, #23384B 0%, transparent 62%),
+    linear-gradient(to bottom, #070C13 0%, #0E1621 42%, #17242F 78%, #24313A 100%)}
+.sunwash{position:absolute;left:50%;bottom:14%;width:min(150vw,1500px);aspect-ratio:2/1;
+  translate:-50% 0;pointer-events:none;opacity:0;
+  background:radial-gradient(closest-side, rgba(201,150,46,.62), rgba(201,150,46,.14) 45%, transparent 72%);
+  filter:blur(14px)}
+.stars{position:absolute;inset:0;opacity:.55;
+  background-image:
+    radial-gradient(1.4px 1.4px at 12% 18%, #fff, transparent),
+    radial-gradient(1.1px 1.1px at 32% 9%,  #dfe8f2, transparent),
+    radial-gradient(1.6px 1.6px at 58% 22%, #fff, transparent),
+    radial-gradient(1.2px 1.2px at 74% 12%, #cfe0ee, transparent),
+    radial-gradient(1.3px 1.3px at 88% 27%, #fff, transparent),
+    radial-gradient(1px 1px   at 22% 34%, #c9d6e4, transparent),
+    radial-gradient(1px 1px   at 66% 38%, #dbe6f0, transparent)}
+.ridge{position:absolute;left:-6%;width:112%;bottom:0;display:block;will-change:transform}
+.cloudbank{position:absolute;left:-10%;width:120%;pointer-events:none;will-change:transform;
+  filter:blur(.4px)}
+.hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;transition:opacity 1.6s var(--ease-out);mix-blend-mode:screen}
+.hero-photo.is-loaded{opacity:.34}
+
+/* ── Reveal primitives. Applied to a handful of elements, not to every
+   section — a page of identical fade-and-slide-ups is the generated look. */
+[data-anim="rise"]{opacity:0;transform:translate3d(0,14px,0)}
+[data-anim="wipe"]{clip-path:inset(0 0 100% 0)}
+.word{display:inline-block;will-change:transform}
+.word-mask{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.08em}
+
+/* ── Masterplan plots ──────────────────────────────────────────────────── */
+.plot{cursor:pointer;transition:fill .28s var(--ease-out), stroke .28s var(--ease-out);
+  stroke-width:1.25;outline:none}
+.plot[data-status="available"]{fill:rgba(47,74,60,.16);stroke:#2F4A3C}
+.plot[data-status="held"]     {fill:rgba(122,90,18,.18);stroke:#7A5A12}
+.plot[data-status="sold"]     {fill:rgba(90,107,122,.14);stroke:#8A99A6;cursor:not-allowed}
+.plot:hover[data-status="available"],.plot[aria-pressed="true"]{fill:rgba(47,74,60,.42)}
+.plot:focus-visible{stroke:#7A5A12;stroke-width:2.5;
+  outline:2px solid #7A5A12;outline-offset:2px}
+
+/* ── Villa cards. Deliberately not one uniform radius + one grey shadow on
+   everything: the open card earns depth, the closed ones stay flat.      */
+.villa{border:1px solid rgba(16,24,32,.14);background:#fff;
+  transition:border-color .3s var(--ease-out), box-shadow .4s var(--ease-out)}
+.villa:hover{border-color:rgba(122,90,18,.5)}
+.villa[open]{box-shadow:0 24px 60px -28px rgba(16,24,32,.45);border-color:rgba(122,90,18,.6)}
+.villa summary{list-style:none;cursor:pointer}
+.villa summary::-webkit-details-marker{display:none}
+.villa .chev{transition:transform .35s var(--ease-out)}
+.villa[open] .chev{transform:rotate(180deg)}
+
+/* ── Horizontal gallery track ─────────────────────────────────────────── */
+#inside{background:#22382D}
+.track{display:flex;gap:clamp(1rem,2.5vw,2.25rem);will-change:transform}
+.frame{position:relative;flex:0 0 auto;width:min(78vw,560px);aspect-ratio:4/5;
+  overflow:hidden;background:#2F4A3C}
+.frame img{width:100%;height:100%;object-fit:cover;opacity:0;
+  transition:opacity 1s var(--ease-out),transform 1.2s var(--ease-out);transform:scale(1.06)}
+.frame img.is-loaded{opacity:1;transform:scale(1)}
+.frame figcaption{position:absolute;left:0;right:0;bottom:0;padding:1.5rem 1.35rem 1.15rem;
+  background:linear-gradient(to top,rgba(11,18,14,.88),transparent);font-size:var(--step--1)}
+
+/* ── Form ─────────────────────────────────────────────────────────────── */
+.field input,.field select,.field textarea{
+  width:100%;min-height:48px;background:transparent;color:inherit;
+  border:0;border-bottom:1px solid rgba(168,182,194,.42);padding:.7rem .1rem;
+  font:inherit;font-size:var(--step-0);border-radius:0;
+  transition:border-color .25s var(--ease-out)}
+.field input:hover,.field select:hover,.field textarea:hover{border-bottom-color:rgba(168,182,194,.8)}
+.field input:focus,.field select:focus,.field textarea:focus{
+  outline:none;border-bottom-color:var(--color-dawn)}
+.field input[aria-invalid="true"],.field textarea[aria-invalid="true"],
+.field select[aria-invalid="true"]{border-bottom-color:#F0806A}
+.field .err{display:none;color:#F0806A;font-size:var(--step--1);margin-top:.45rem}
+.field.is-invalid .err{display:block}
+.field select option{background:#16232F;color:#EEF1F4}
+#form-summary{display:none}
+#form-summary.is-shown{display:block}
+
+/* ── Buttons ──────────────────────────────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;
+  min-height:52px;padding:.9rem 2rem;font-weight:600;font-size:var(--step-0);
+  letter-spacing:.005em;cursor:pointer;border:1px solid transparent;
+  transition:background-color .3s var(--ease-out),color .3s var(--ease-out),
+             border-color .3s var(--ease-out),transform .18s var(--ease-out)}
+.btn:active{transform:scale(.985)}
+.btn-dawn{background:var(--color-dawn);color:#0E1621}
+.btn-dawn:hover{background:#DBAA45}
+.btn-quiet{background:transparent;color:var(--color-cloud);border-color:rgba(168,182,194,.45)}
+.btn-quiet:hover{border-color:var(--color-dawn);color:var(--color-dawn)}
+.btn-ink{background:var(--color-ink);color:var(--color-cloud)}
+.btn-ink:hover{background:var(--color-frond)}
+.btn[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+
+/* ── Nav ──────────────────────────────────────────────────────────────── */
+#nav{transition:background-color .45s var(--ease-out),
+                border-color .45s var(--ease-out), color .45s var(--ease-out)}
+#nav.is-stuck{background:rgba(14,22,33,.82);backdrop-filter:blur(14px) saturate(1.3);
+  border-bottom-color:rgba(168,182,194,.16)}
+#nav.is-light.is-stuck{background:rgba(238,241,244,.86);color:var(--color-ink);
+  border-bottom-color:rgba(16,24,32,.12)}
+#nav.is-light.is-stuck .nav-link:hover{color:var(--color-dawn-deep)}
+.nav-link{position:relative;padding:.35rem 0}
+.nav-link::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:100%;
+  background:currentColor;transform:scaleX(0);transform-origin:right;
+  transition:transform .4s var(--ease-out)}
+.nav-link:hover::after,.nav-link:focus-visible::after{transform:scaleX(1);transform-origin:left}
+
+/* ── Lightbox ─────────────────────────────────────────────────────────── */
+#lightbox[hidden]{display:none}
+#lightbox{position:fixed;inset:0;z-index:90;background:rgba(7,12,19,.94);
+  display:grid;place-items:center;padding:clamp(1rem,4vw,3rem)}
+#lightbox img{max-width:100%;max-height:82vh;object-fit:contain}
+
+/* ── Reduced motion: the page must be complete without any of it ──────── */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;
+    transition-duration:.01ms!important;scroll-behavior:auto!important}
+  [data-anim]{opacity:1!important;transform:none!important;clip-path:none!important}
+  .hero-photo.is-loaded{opacity:.34}
+  .frame img{opacity:1;transform:none}
+  .sunwash{opacity:.5}
+}
+
+/* ── Sticky reveal footer ──────────────────────────────────────────────────
+   The footer is fixed at the back of the stack; .page-shell is an opaque
+   sheet that slides up off it as you reach the end. .footer-spacer reserves
+   exactly the scroll distance the reveal needs.
+
+   The page has climbed from valley dark to dawn, so the footer is the
+   fullest the light gets — the reveal uncovers sunrise, not another dark
+   slab. Below 768px it reverts to an ordinary footer in flow: a viewport-
+   tall fixed element fights mobile address-bar resizing for no benefit. */
+.page-shell{position:relative;z-index:2;background:var(--color-night)}
+
+#site-footer{position:relative;z-index:1;background:#120E08;overflow:hidden}
+.footer-glow{position:absolute;left:50%;bottom:-28%;width:min(180vw,1800px);
+  aspect-ratio:2/1;translate:-50% 0;pointer-events:none;
+  background:radial-gradient(closest-side,
+    rgba(201,150,46,.55), rgba(201,150,46,.16) 46%, transparent 74%);
+  filter:blur(10px)}
+
+.wordmark{font-size:clamp(3.2rem,13.4vw,13rem);
+  color:transparent;-webkit-text-stroke:1px rgba(238,241,244,.30);
+  background:linear-gradient(to bottom, rgba(238,241,244,.14), rgba(201,150,46,.30));
+  -webkit-background-clip:text;background-clip:text}
+
+@media (min-width:768px){
+  #site-footer{position:fixed;left:0;bottom:0;width:100%;z-index:0}
+  .footer-spacer{height:100svh}   /* replaced with the measured height in JS */
+}
+@media (max-width:767.98px){
+  .footer-spacer{display:none}
+  #site-footer > div{min-height:0}
+}
+
+/* The reveal is a scroll position, not an animation — with reduced motion it
+   still uncovers correctly; only the content's entrance is dropped. */
+@media (prefers-reduced-motion: reduce){
+  [data-foot]{opacity:1!important;transform:none!important}
+}

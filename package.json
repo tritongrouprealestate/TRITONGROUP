@@ -1,0 +1,13 @@
+{
+  "name": "tritongroup-sites",
+  "private": true,
+  "description": "Build tooling only. The deployable site in triton-humming-valley/ is plain static files and needs none of this at runtime.",
+  "scripts": {
+    "build:css": "tailwindcss -i triton-humming-valley/css/src.css -o triton-humming-valley/css/styles.css --minify",
+    "watch:css": "tailwindcss -i triton-humming-valley/css/src.css -o triton-humming-valley/css/styles.css --watch"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4",
+    "tailwindcss": "^4"
+  }
+}
