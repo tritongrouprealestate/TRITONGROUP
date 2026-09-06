@@ -57,16 +57,19 @@ const DATA = {
     { id:'3bhk', name:'3 BHK', area:'2,400', price:'₹2.5 Cr',
       beds:3, baths:3, verified:true,
       photo:'images/villa-3bhk.jpg',
+      photoAlt:'A 3 BHK villa seen from the street, planting spilling from the upper balconies',
       blurb:'The compact plan. Living, dining and kitchen wrap a single-height court with the waterfall at its head; three bedrooms above, all facing the valley.',
       features:['Private garden','15 ft indoor waterfall','Jacuzzi','Covered parking for two'] },
     { id:'4bhk', name:'4 BHK', area:'3,100', price:'₹3.6 Cr',
       beds:4, baths:4, verified:false,   /* ⚠ area interpolated — verify */
       photo:'images/villa-4bhk.jpg',
+      photoAlt:'A 4 BHK villa standing against the wooded hillside, palms either side',
       blurb:'A second court opens the plan east, so the morning sun reaches the dining room before it clears the ridge. Family room on the upper floor.',
       features:['Private garden','15 ft indoor waterfall','Jacuzzi','Family lounge','Covered parking for three'] },
     { id:'5bhk', name:'5 BHK', area:'3,800', price:'₹4 Cr',
       beds:5, baths:5, verified:true,
       photo:'images/villa-5bhk.jpg',
+      photoAlt:'The pool below the 5 BHK villas, the valley opening beyond it',
       blurb:'The full plan. A guest suite sits apart across the court, the primary bedroom takes the whole west end, and the terrace runs the length of the ridge face.',
       features:['Private garden','15 ft indoor waterfall','Jacuzzi','Guest suite','Ridge terrace','Covered parking for three'] }
   ],
@@ -118,25 +121,25 @@ const DATA = {
      so it should be the strongest photograph you have. */
   choreography: [
     {src:'images/choreo-1.jpg',
-     alt:'A family on the bedroom balcony, looking out over the wooded hillside'},
+     alt:'The living room, the water wall and seated Buddha behind the seating'},
     {src:'images/choreo-2.jpg',
-     alt:'The living room, the waterfall wall and seated Buddha behind the seating'},
+     alt:'The water court from the side, the hammock and the garden beyond the glass'},
     {src:'images/choreo-3.jpg',
-     alt:'The double-height living volume at dusk, opening to the garden'},
+     alt:'Lunch laid out on the street between two villa rows'},
     {src:'images/choreo-4.jpg',
-     alt:'The living room gathered around the water court',
+     alt:'A family in the living room, the water wall and the garden behind them',
      caption:'The living room, gathered around the water court'}
   ],
 
   /* Replace every src with project photography. The frame keeps its shape
      and caption whether or not the image loads. */
   gallery: [
-    {src:'images/gallery-1.jpg', cap:'The internal street between the villa rows'},
-    {src:'images/gallery-2.jpg', cap:'The infinity pool, looking across the valley'},
-    {src:'images/gallery-3.jpg', cap:'A balcony above the tree line'},
-    {src:'images/gallery-4.jpg', cap:'Villa frontage from the approach'},
-    {src:'images/gallery-5.jpg', cap:'The waterfall wall, seen from the seating'},
-    {src:'images/gallery-6.jpg', cap:'Terrace lanterns, the hill in cloud beyond'}
+    {src:'images/gallery-1.jpg', cap:'The internal street between the two villa rows'},
+    {src:'images/gallery-2.jpg', cap:'The pool at first light, looking down the valley'},
+    {src:'images/gallery-3.jpg', cap:'The wooded slope from a bedroom window'},
+    {src:'images/gallery-4.jpg', cap:'On site: the first row, structure complete'},
+    {src:'images/gallery-5.jpg', cap:'On site: the rows from the approach road'},
+    {src:'images/gallery-6.jpg', cap:'On site: looking back up the street under construction'}
   ]
 };
 
@@ -248,8 +251,8 @@ $('#villa-list').innerHTML = DATA.villas.map(v => `
         <button type="button" class="btn btn-ink mt-8" data-enquire="Villa ${v.name}" data-villa="${v.name}">Enquire about the ${v.name}</button>
       </div>
       <div class="grid gap-5">
-        <div class="villa-shot relative aspect-[16/10] overflow-hidden bg-cloud-2">
-          <img alt="${v.name} villa interior" data-src="${v.photo}" loading="lazy"
+        <div class="villa-shot relative aspect-[3/4] overflow-hidden bg-cloud-2">
+          <img alt="${v.photoAlt}" data-src="${v.photo}" loading="lazy"
                decoding="async" class="h-full w-full object-cover opacity-0
                transition-opacity duration-700">
         </div>

@@ -1,33 +1,35 @@
-DROP YOUR PHOTOGRAPHS IN THIS FOLDER
-====================================
-Use exactly these filenames. Any that are missing simply fall back to the
-artwork drawn in code — nothing breaks, you just lose that photograph.
+PROJECT PHOTOGRAPHY
+===================
+These files are already in place — upload the folder as it is and the site
+displays them. Nothing else needs changing.
 
-  hero.jpg          the aerial of the villa street at sunrise, hill behind
-                    very wide, ~2400px. Sits behind the headline.
+Filenames are fixed. To swap a photograph, save the new one over the old file
+using exactly the same name; to change which photograph goes where, or its
+caption, edit the DATA object at the top of ../js/site.js.
 
-  band.jpg          the misty terrace with the lanterns and two chairs
-                    very wide, ~2400px. Full-width strip after "The land".
+  hero.jpg          2400x1340  the aerial down the internal street at sunset
+                               sits behind the headline, full bleed
 
-  villa-3bhk.jpg    one photograph per villa type, 16:10
-  villa-4bhk.jpg
-  villa-5bhk.jpg
+  band.jpg          1376x768   the rows in monsoon cloud
+                               full-width strip after "The land"
 
-  choreo-1.jpg      the four-frame scroll sequence in the Inside section, 3:2
-  choreo-2.jpg
-  choreo-3.jpg
-  choreo-4.jpg      ← this one opens to fill the screen. Your strongest shot.
+  villa-3bhk.jpg     600x800   one elevation per villa type, portrait 3:4
+  villa-4bhk.jpg    1200x1600
+  villa-5bhk.jpg    1200x1600
 
-  gallery-1.jpg     the grid below that sequence, 4:3
-  gallery-2.jpg
-  gallery-3.jpg
-  gallery-4.jpg
-  gallery-5.jpg
-  gallery-6.jpg
+  choreo-1.jpg      1500x1000  the four-frame scroll sequence in "Inside", 3:2
+  choreo-2.jpg      1500x1000
+  choreo-3.jpg      1500x1000
+  choreo-4.jpg      1792x1195  <- this one opens to fill the screen
+
+  gallery-1.jpg     1400x1050  the grid below that sequence
+  gallery-2.jpg     1400x1050
+  gallery-3.jpg     1400x1050
+  gallery-4.jpg     1280x596   taken on site, June 2026
+  gallery-5.jpg     1280x596   taken on site, June 2026
+  gallery-6.jpg      480x1040  taken on site, June 2026
 
 Largest useful width is about 2400px. Bigger files only slow the page down.
 Everything is cropped to fill its frame, so the subject only needs to be
-roughly centred.
-
-To change which photograph goes where, or its caption, edit the DATA object
-at the top of ../js/site.js — the filenames are all listed there.
+roughly centred. Any file that is missing falls back to artwork drawn in
+code — nothing breaks, you just lose that photograph.

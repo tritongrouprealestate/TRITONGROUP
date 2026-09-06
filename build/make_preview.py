@@ -3,37 +3,54 @@
 The deployed site loads its stylesheet and four scripts from its own server.
 An artifact is a single document, so everything is folded in: the compiled
 CSS inline, the libraries from the two CDN hosts the artifact CSP admits, and
-the site's own script inline with the photography swapped for the generated
-artwork in build/art.json.
+the site's own script inline and every photograph folded in as a data: URI,
+because an artifact's CSP blocks external image hosts.
 
 Nothing about the design changes. This only alters how the same files are
 delivered, so what the preview shows is what the uploaded site does.
 """
-import json, re, pathlib
+import re, pathlib
 
 root = pathlib.Path('triton-humming-valley')
 html = (root / 'index.html').read_text()
 css  = (root / 'css/styles.css').read_text()
 js   = (root / 'js/site.js').read_text()
-art  = json.loads(pathlib.Path('build/art.json').read_text())
 
-# ── photography → generated artwork ─────────────────────────────────────
-swaps = [
-  ('photo-1464822759023-fed622ff2c3b', art['hero']),
-  ('photo-1439066615861-d1af74d74000', art['band']),
-  ('photo-1600585154340-be6161a56a0c', art['ch3']),
-  ('photo-1600596542815-ffad4c1539a9', art['villa4']),
-  ('photo-1613977257363-707ba9348227', art['ch0']),
-  ('photo-1600607687939-ce8a6c25118c', art['ch1']),
-  ('photo-1502005229762-cf1b2da7c5d6', art['ch2']),
-  ('photo-1600566753086-00f18fb6b3ea', art['g0']),
-  ('photo-1416331108676-a22ccb276e35', art['g5']),
-]
+# ── photography → inline data URIs ──────────────────────────────────────
+# The uploaded site fetches images/*.jpg from its own server. An artifact is
+# a single document and its CSP blocks every external image host, so each
+# photograph is folded in as a data: URI. They are re-encoded smaller than
+# the deployed files — a preview should open quickly; the uploaded site keeps
+# the full-resolution originals.
+import base64
+from io import BytesIO
+try:
+    from PIL import Image
+except ImportError:
+    Image = None
+
+PREVIEW_MAXW, PREVIEW_Q = 1400, 70
+
+def data_uri(path):
+    if Image is None:
+        return 'data:image/jpeg;base64,' + base64.b64encode(path.read_bytes()).decode()
+    im = Image.open(path)
+    if im.width > PREVIEW_MAXW:
+        im = im.resize((PREVIEW_MAXW, round(im.height * PREVIEW_MAXW / im.width)),
+                       Image.LANCZOS)
+    buf = BytesIO()
+    im.convert('RGB').save(buf, 'JPEG', quality=PREVIEW_Q, optimize=True, progressive=True)
+    return 'data:image/jpeg;base64,' + base64.b64encode(buf.getvalue()).decode()
+
+photos = {}
+for f in sorted((root / 'images').glob('*.jpg')):
+    photos['images/' + f.name] = data_uri(f)
+
 def swap(text):
-    for frag, data in swaps:
-        text = re.sub(r'https://images\.unsplash\.com/' + frag + r'[^\'"\s]*', data, text)
-    # anything not named above falls back to an interior
-    text = re.sub(r'https://images\.unsplash\.com/[^\'"\s]*', art['g3'], text)
+    for ref, uri in photos.items():
+        text = text.replace(ref, uri)
+    # any photograph that was never dropped in keeps its path and falls back
+    # to the drawn artwork the site already handles.
     return text
 html, js = swap(html), swap(js)
 
@@ -96,4 +113,5 @@ out = out.replace("document.body.classList.remove('no-js');",
 
 pathlib.Path('build/preview.html').write_text(out)
 print('preview.html: %.0f KB' % (len(out)/1024))
-print('unsplash refs remaining:', out.count('images.unsplash.com'))
+print('photographs inlined:', len(photos))
+print('missing photographs:', out.count('"images/'))
