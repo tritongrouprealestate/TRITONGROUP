@@ -18,8 +18,11 @@ return [
     // project an enquiry came from.
     'property' => 'Triton Humming Valley',
 
-    // Optional: also send a copy to this address. Leave empty to skip.
-    // Uses PHP mail(); if your host does not have it configured this fails
-    // silently and the lead still reaches Leadi5.
-    'notify_email' => '',
+    // Where enquiries are emailed. This is the primary destination.
+    'notify_email' => 'you@example.com',
+
+    // The address enquiries are sent FROM. It must be on this domain —
+    // sending from a gmail.com address fails SPF and Gmail bins the message.
+    // Leave empty and no-reply@<your domain> is used automatically.
+    'mail_from' => '',
 ];

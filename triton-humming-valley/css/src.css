@@ -67,38 +67,18 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
 .alt-tick::before{content:"";position:absolute;left:0;top:.62em;width:.7rem;height:1px;
   background:currentColor;opacity:.6}
 
-/* ── Hero: layered sky. Every layer is drawn in CSS/SVG, so the hero is
-   complete before a single photograph loads — the photo fades in on top
-   only once it has decoded. A 404 costs atmosphere, never the design.   */
-#ascent{position:relative;overflow:clip;background:#0E1621}
-.sky{position:absolute;inset:0;
-  background:
-    radial-gradient(120% 75% at 50% 108%, #23384B 0%, transparent 62%),
-    linear-gradient(to bottom, #070C13 0%, #0E1621 42%, #17242F 78%, #24313A 100%)}
-.sunwash{position:absolute;left:50%;bottom:14%;width:min(150vw,1500px);aspect-ratio:2/1;
-  translate:-50% 0;pointer-events:none;opacity:0;
-  background:radial-gradient(closest-side, rgba(201,150,46,.62), rgba(201,150,46,.14) 45%, transparent 72%);
-  filter:blur(14px)}
-.stars{position:absolute;inset:0;opacity:.55;
-  background-image:
-    radial-gradient(1.4px 1.4px at 12% 18%, #fff, transparent),
-    radial-gradient(1.1px 1.1px at 32% 9%,  #dfe8f2, transparent),
-    radial-gradient(1.6px 1.6px at 58% 22%, #fff, transparent),
-    radial-gradient(1.2px 1.2px at 74% 12%, #cfe0ee, transparent),
-    radial-gradient(1.3px 1.3px at 88% 27%, #fff, transparent),
-    radial-gradient(1px 1px   at 22% 34%, #c9d6e4, transparent),
-    radial-gradient(1px 1px   at 66% 38%, #dbe6f0, transparent)}
-.ridge{position:absolute;left:-6%;width:112%;bottom:0;display:block;will-change:transform}
-.cloudbank{position:absolute;left:-10%;width:120%;pointer-events:none;will-change:transform;
-  filter:blur(.4px)}
-.hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  opacity:0;transition:opacity 1.6s var(--ease-out);mix-blend-mode:screen}
-.hero-photo.is-loaded{opacity:.34}
-
 /* ── Reveal primitives. Applied to a handful of elements, not to every
    section — a page of identical fade-and-slide-ups is the generated look. */
 [data-anim="rise"]{opacity:0;transform:translate3d(0,14px,0)}
 [data-anim="wipe"]{clip-path:inset(0 0 100% 0)}
+/* The dawn wash behind the enquiry section — the one place gold floods the
+   page, which is why the accent is held back everywhere else. */
+.sunwash{position:absolute;left:50%;bottom:14%;width:min(150vw,1500px);aspect-ratio:2/1;
+  translate:-50% 0;pointer-events:none;opacity:0;
+  background:radial-gradient(closest-side, rgba(201,150,46,.62), rgba(201,150,46,.14) 45%, transparent 72%);
+  filter:blur(14px)}
+@media (prefers-reduced-motion: reduce){ .sunwash{opacity:.5} }
+
 .word{display:inline-block;will-change:transform}
 .word-mask{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.08em}
 
@@ -194,57 +174,19 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
   .sunwash{opacity:.5}
 }
 
-/* ── Sticky reveal footer ──────────────────────────────────────────────────
-   The footer is fixed at the back of the stack; .page-shell is an opaque
-   sheet that slides up off it as you reach the end. .footer-spacer reserves
-   exactly the scroll distance the reveal needs.
-
-   The page has climbed from valley dark to dawn, so the footer is the
-   fullest the light gets — the reveal uncovers sunrise, not another dark
-   slab. Below 768px it reverts to an ordinary footer in flow: a viewport-
-   tall fixed element fights mobile address-bar resizing for no benefit. */
-.page-shell{position:relative;z-index:2;background:var(--color-night)}
-
-#site-footer{position:relative;z-index:1;background:#120E08;overflow:hidden}
-.footer-glow{position:absolute;left:50%;bottom:-28%;width:min(180vw,1800px);
-  aspect-ratio:2/1;translate:-50% 0;pointer-events:none;
-  background:radial-gradient(closest-side,
-    rgba(201,150,46,.55), rgba(201,150,46,.16) 46%, transparent 74%);
-  filter:blur(10px)}
-
-.wordmark{font-size:clamp(3.2rem,13.4vw,13rem);
-  color:transparent;-webkit-text-stroke:1px rgba(238,241,244,.30);
-  background:linear-gradient(to bottom, rgba(238,241,244,.14), rgba(201,150,46,.30));
-  -webkit-background-clip:text;background-clip:text}
-
-@media (min-width:768px){
-  #site-footer{position:fixed;left:0;bottom:0;width:100%;z-index:0}
-  .footer-spacer{height:100svh}   /* replaced with the measured height in JS */
-}
-@media (max-width:767.98px){
-  .footer-spacer{display:none}
-  #site-footer > div{min-height:0}
-}
-
-/* The reveal is a scroll position, not an animation — with reduced motion it
-   still uncovers correctly; only the content's entrance is dropped. */
-@media (prefers-reduced-motion: reduce){
-  [data-foot]{opacity:1!important;transform:none!important}
-}
-
 /* ══════════════════════════════════════════════════════════════════════════
    MOTION LAYER
    The page's fluidity comes from one decision, not from many effects: a
-   smooth-scroll layer under everything, so every movement on the page
-   inherits the same weight and easing. The individual effects below are
-   tuned to that rhythm rather than each carrying its own.
+   smooth-scroll layer under everything, so every movement inherits the same
+   weight and easing. The effects below are tuned to that rhythm rather than
+   each carrying its own.
    ══════════════════════════════════════════════════════════════════════ */
 
 /* ── Custom cursor ────────────────────────────────────────────────────────
    A dot that tracks precisely plus a ring that lags behind it. The lag is
    the whole effect — the ring easing toward the dot is what reads as weight.
-   Fine pointers only: on touch there is no cursor to augment, and on a
-   coarse pointer the native cursor must never be hidden. */
+   Fine pointers only: on touch there is no cursor to augment, and a coarse
+   pointer must never have the native cursor taken away. */
 @media (hover:hover) and (pointer:fine){
   .has-cursor, .has-cursor *{cursor:none}
   /* Text inputs keep a real caret — hiding it makes a form feel broken. */
@@ -254,58 +196,45 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
   pointer-events:none;border-radius:50%;opacity:0;
   will-change:transform;mix-blend-mode:difference}
 #cursor-dot{width:7px;height:7px;background:#EEF1F4;margin:-3.5px 0 0 -3.5px}
-/* Fixed box, resized with transform: scale rather than width/height, which
-   would run layout on every frame of an effect that follows the pointer —
-   the one place on the page that can least afford it.
 
-   Position and scale live on DIFFERENT elements on purpose. Both were on the
-   ring at first and the scale silently never applied: the x/y tweens driving
-   the position and the scale tween were writing to one transform and
-   overwriting each other. The outer element carries position, the inner
-   carries scale, so the two can no longer collide. */
+/* Position and scale live on DIFFERENT elements on purpose. Both were on the
+   ring at first and the scale silently never applied: the x/y tweens and the
+   scale tween were writing to one transform and overwriting each other. */
 #cursor-ring{width:38px;height:38px;margin:-19px 0 0 -19px;background:none;border:0}
 #cursor-ring > i{display:block;width:100%;height:100%;border-radius:50%;
   border:1px solid rgba(238,241,244,.55);will-change:transform;
   transition:border-color .32s var(--ease-out), background-color .32s var(--ease-out)}
-/* Over something interactive the ring opens up and fills faintly. */
 #cursor-ring.is-active > i{border-color:rgba(201,150,46,.9);background:rgba(201,150,46,.12)}
-/* Over the site plan it tightens instead — a plot needs precision, and a
-   64px ring over a 54px plot would obscure the thing being pointed at. */
+/* Over the site plan it tightens instead — a 64px ring over a 54px plot
+   would cover the thing being pointed at. */
 #cursor-ring.is-precise > i{border-color:rgba(201,150,46,.95)}
 
 /* ── Magnetic elements ───────────────────────────────────────────────── */
 [data-magnetic]{will-change:transform}
 
-/* ── Line and word reveals ───────────────────────────────────────────────
+/* ── Line reveals ────────────────────────────────────────────────────────
    Headings arrive from behind a mask rather than fading. A fade says the
-   text appeared; a mask says it was already there and has been uncovered,
-   which is the difference between motion that decorates and motion that
-   describes. */
+   text appeared; a mask says it was already there and has been uncovered. */
 .line-mask{display:block;overflow:hidden}
 .line-inner{display:block;will-change:transform}
 
 /* ── Image reveals ───────────────────────────────────────────────────────
-   A clip wipe with the image counter-scaling inside it, so the picture
-   holds still while the frame opens. Fading an image in makes it look like
-   it loaded late; wiping it in looks intentional. */
+   A clip wipe with the image counter-scaling inside it, so the picture holds
+   still while the frame opens. Fading an image in makes it look like it
+   loaded late; wiping it in looks intentional. */
 [data-reveal-img]{overflow:hidden}
 [data-reveal-img] > img{will-change:transform}
 
-/* ── Link sweep ─────────────────────────────────────────────────────────
-   Underlines wipe out to the right and back in from the left, so the
-   pointer's direction of travel is carried through. */
+/* ── Link sweep and card hover ───────────────────────────────────────── */
 .nav-link::after{transition:transform .45s var(--ease-out)}
-
-/* ── Card hover ─────────────────────────────────────────────────────── */
 .villa-shot img{transition:transform .9s var(--ease-out)}
 .villa:hover .villa-shot img{transform:scale(1.045)}
 .frame img{transition:opacity 1s var(--ease-out), transform 1.2s var(--ease-out)}
 .frame:hover img.is-loaded{transform:scale(1.05)}
 
 /* ── Scroll progress ─────────────────────────────────────────────────────
-   A hairline at the top edge. It is the one piece of chrome that earns a
-   permanent place: on a page this long, how far through you are is real
-   information. */
+   The one piece of permanent chrome that earns its place: on a page this
+   long, how far through you are is real information. */
 #scroll-progress{position:fixed;top:0;left:0;height:2px;width:100%;z-index:60;
   transform:scaleX(0);transform-origin:0 50%;
   background:linear-gradient(to right,#7A5A12,#C9962E);will-change:transform}
@@ -316,9 +245,7 @@ html.lenis,html.lenis body{height:auto}
 .lenis.lenis-smooth{scroll-behavior:auto !important}
 .lenis.lenis-stopped{overflow:hidden}
 
-/* ── Reduced motion switches the whole layer off ──────────────────────────
-   Not softened — off. Everything below renders at its end state, the custom
-   cursor is removed and the native one comes back. */
+/* ── Reduced motion switches the whole layer off ──────────────────────── */
 @media (prefers-reduced-motion: reduce){
   .has-cursor,.has-cursor *{cursor:auto !important}
   #cursor-dot,#cursor-ring,#scroll-progress{display:none !important}
@@ -380,3 +307,142 @@ html.lenis,html.lenis body{height:auto}
 #gallery .frame{position:relative;width:auto;aspect-ratio:4/3;overflow:hidden;
   background:var(--color-frond)}
 #gallery .frame img{width:100%;height:100%;object-fit:cover}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   HERO — photograph, headline, enquiry card
+   ══════════════════════════════════════════════════════════════════════ */
+#hero{display:grid;background:var(--color-night)}
+.hero-ground{position:absolute;inset:0;
+  background:radial-gradient(120% 80% at 70% 20%, #24313E 0%, transparent 60%),
+             linear-gradient(160deg,#0B121B 0%,#16232F 55%,#22303B 100%)}
+.hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;transition:opacity 1.4s var(--ease-out);will-change:transform}
+.hero-photo.is-loaded{opacity:1}
+/* Two scrims, not one: a vertical wash so the headline holds at the bottom
+   left, and a horizontal one so the card's own panel is not fighting the
+   picture behind it. */
+.hero-scrim{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(to top, rgba(8,13,20,.92) 0%, rgba(8,13,20,.45) 42%, rgba(8,13,20,.15) 70%, rgba(8,13,20,.5) 100%),
+             linear-gradient(to right, rgba(8,13,20,.75) 0%, rgba(8,13,20,.15) 45%, transparent 70%)}
+
+.hero-grid{position:relative;z-index:2;display:grid;align-items:end;gap:clamp(2rem,4vw,4rem);
+  width:100%;max-width:1600px;margin-inline:auto;
+  padding:8rem clamp(1.25rem,4vw,3rem) clamp(2.5rem,6vh,4.5rem);
+  min-height:100svh;grid-template-columns:1fr}
+@media (min-width:1024px){
+  .hero-grid{grid-template-columns:minmax(0,1.25fr) minmax(360px,.75fr)}
+}
+
+.hero-eyebrow{color:var(--color-dawn);font-size:var(--step--1);letter-spacing:.04em;
+  margin:0 0 1.25rem}
+#hero h1{font-size:var(--display);color:var(--color-cloud);max-width:13ch;margin:0}
+#hero .lede{margin-top:1.5rem;color:var(--color-haze);max-width:44ch}
+
+.hero-facts{display:flex;flex-wrap:wrap;gap:2rem 2.75rem;margin:2.25rem 0 0;padding:1.5rem 0 0;
+  border-top:1px solid rgba(168,182,194,.22)}
+.hero-facts dt{font-size:.82rem;color:var(--color-haze);margin-bottom:.3rem}
+.hero-facts dd{margin:0;font-family:var(--font-display);font-size:var(--step-2);
+  color:var(--color-cloud);line-height:1}
+.hero-facts dd span{font-family:var(--font-sans);font-size:.42em;font-weight:500;
+  color:var(--color-haze);margin-left:.35rem}
+.hero-actions{display:flex;flex-wrap:wrap;gap:1rem;margin-top:2.5rem}
+
+/* ── The enquiry card ──────────────────────────────────────────────────── */
+.hero-card{background:rgba(11,18,27,.72);backdrop-filter:blur(18px) saturate(1.2);
+  border:1px solid rgba(168,182,194,.2);padding:clamp(1.5rem,2.4vw,2rem);
+  align-self:end;box-shadow:0 30px 70px -40px rgba(0,0,0,.9)}
+.hero-card h2{font-family:var(--font-display);font-size:var(--step-2);
+  color:var(--color-cloud);margin:0}
+.hero-card > p{color:var(--color-haze);font-size:.9rem;margin:.6rem 0 1.4rem;max-width:34ch}
+.hero-card-alt{margin:1.25rem 0 0;font-size:.85rem;color:var(--color-haze)}
+.hero-card-alt a{color:var(--color-dawn)}
+.hero-scrollcue{position:absolute;left:clamp(1.25rem,4vw,3rem);bottom:1rem;z-index:2;
+  margin:0;font-size:.78rem;letter-spacing:.12em;color:rgba(168,182,194,.6)}
+@media (max-width:1023.98px){ .hero-scrollcue{display:none} }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ENQUIRY FORM  (hero card, popup, enquiry section)
+   ══════════════════════════════════════════════════════════════════════ */
+.enquiry .fields{display:grid;gap:1.25rem}
+.enquiry .fields.is-full{grid-template-columns:1fr}
+@media (min-width:560px){
+  .enquiry .fields.is-full{grid-template-columns:1fr 1fr}
+  .enquiry .field-wide{grid-column:1 / -1}
+}
+.enquiry label{display:block;font-size:.82rem;color:var(--color-haze);margin-bottom:.3rem}
+.enquiry .req{color:var(--color-dawn)}
+.enquiry input,.enquiry select,.enquiry textarea{
+  width:100%;min-height:46px;background:transparent;color:var(--color-cloud);
+  border:0;border-bottom:1px solid rgba(168,182,194,.4);padding:.55rem .1rem;
+  font:inherit;font-size:var(--step-0);border-radius:0;
+  transition:border-color .25s var(--ease-out)}
+.enquiry textarea{min-height:auto;resize:vertical}
+.enquiry input:hover,.enquiry select:hover,.enquiry textarea:hover{border-bottom-color:rgba(168,182,194,.75)}
+.enquiry input:focus,.enquiry select:focus,.enquiry textarea:focus{
+  outline:none;border-bottom-color:var(--color-dawn)}
+.enquiry [aria-invalid="true"]{border-bottom-color:#F0806A}
+.enquiry select option{background:#16232F;color:#EEF1F4}
+.enquiry .err{display:none;color:#F0806A;font-size:.8rem;margin:.4rem 0 0}
+.enquiry .field.is-invalid .err{display:block}
+.enquiry .form-submit{margin-top:1.75rem;width:100%}
+.enquiry .form-note{margin:.9rem 0 0;font-size:.78rem;color:rgba(168,182,194,.75)}
+.enquiry .form-summary{display:none;margin-bottom:1.5rem;padding:1rem 1.15rem;
+  border-left:2px solid #F0806A;background:rgba(240,128,106,.1)}
+.enquiry .form-summary.is-shown{display:block}
+.enquiry .form-summary h3{margin:0;font-size:.9rem;font-weight:600;color:#F0806A;font-family:var(--font-sans)}
+.enquiry .form-summary ul{margin:.5rem 0 0;padding-left:1.1rem;font-size:.86rem}
+.enquiry .form-summary a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+.enquiry .form-done{border-left:2px solid var(--color-dawn);background:rgba(201,150,46,.12);padding:1.25rem}
+.enquiry .form-done h3{margin:0;font-family:var(--font-display);font-size:var(--step-1);color:var(--color-cloud)}
+.enquiry .form-done p{margin:.5rem 0 0;color:var(--color-haze);font-size:.9rem}
+/* Honeypot: out of sight, out of the accessibility tree, out of the tab order. */
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+/* On the light enquiry section the same component needs dark text. */
+.on-light .enquiry label,.on-light .enquiry .form-note{color:var(--color-mist)}
+.on-light .enquiry input,.on-light .enquiry select,.on-light .enquiry textarea{
+  color:var(--color-ink);border-bottom-color:rgba(16,24,32,.28)}
+.on-light .enquiry input:focus,.on-light .enquiry select:focus,
+.on-light .enquiry textarea:focus{border-bottom-color:var(--color-dawn-deep)}
+.on-light .enquiry .req{color:var(--color-dawn-deep)}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   POPUP
+   ══════════════════════════════════════════════════════════════════════ */
+#enquiry-modal[hidden]{display:none}
+#enquiry-modal{position:fixed;inset:0;z-index:200;display:grid;place-items:center;
+  padding:clamp(1rem,4vw,2.5rem)}
+.modal-scrim{position:absolute;inset:0;background:rgba(6,10,16,.82);
+  backdrop-filter:blur(6px)}
+.modal-panel{position:relative;width:min(560px,100%);max-height:88svh;overflow-y:auto;
+  background:#111C27;border:1px solid rgba(168,182,194,.2);
+  padding:clamp(1.75rem,3vw,2.5rem);box-shadow:0 40px 90px -50px rgba(0,0,0,.95)}
+.modal-panel:focus{outline:none}
+.modal-panel h2{font-family:var(--font-display);font-size:var(--step-3);
+  color:var(--color-cloud);margin:0;max-width:16ch}
+.modal-sub{color:var(--color-haze);font-size:.92rem;margin:.75rem 0 1.75rem;max-width:46ch}
+.modal-close{position:absolute;top:.9rem;right:.9rem;width:44px;height:44px;
+  display:grid;place-items:center;background:transparent;border:0;cursor:pointer;
+  color:var(--color-haze);transition:color .25s var(--ease-out)}
+.modal-close:hover{color:var(--color-dawn)}
+.modal-close svg{width:20px;height:20px}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   FOOTER — plain on purpose
+   ══════════════════════════════════════════════════════════════════════ */
+#site-footer{background:var(--color-night-2);color:var(--color-haze);
+  padding:clamp(3rem,7vh,4.5rem) 0 2rem}
+.foot-inner,.foot-legal{max-width:1600px;margin-inline:auto;padding-inline:clamp(1.25rem,4vw,3rem)}
+.foot-inner{display:grid;gap:2.5rem;align-items:start}
+@media (min-width:768px){ .foot-inner{grid-template-columns:1.2fr 1fr 1fr} }
+.foot-name{font-family:var(--font-display);font-size:1.25rem;color:var(--color-cloud);margin:0}
+.foot-by{margin:.5rem 0 0;font-size:.88rem}
+.foot-nav{display:flex;flex-direction:column;gap:.65rem}
+.foot-nav a,.foot-contact a{color:var(--color-haze);text-decoration:none;
+  transition:color .25s var(--ease-out)}
+.foot-nav a:hover,.foot-contact a:hover{color:var(--color-dawn)}
+.foot-contact{display:flex;flex-direction:column;gap:.65rem;font-size:.95rem}
+.foot-contact p{margin:.35rem 0 0;font-size:.88rem;line-height:1.6}
+.foot-legal{margin-top:3rem;padding-top:1.5rem;border-top:1px solid rgba(168,182,194,.15);
+  display:grid;gap:.6rem;font-size:.78rem;line-height:1.6}
+.foot-legal p{max-width:78ch;margin:0}

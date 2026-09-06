@@ -175,7 +175,7 @@ $('#villa-list').innerHTML = DATA.villas.map(v => `
             <svg viewBox="0 0 24 24" fill="none" stroke="#7A5A12" stroke-width="2" class="mt-1 h-3.5 w-3.5 shrink-0" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
             <span>${f}</span></li>`).join('')}
         </ul>
-        <a href="#viewing" class="btn btn-ink mt-8" data-villa="${v.name}">See this villa</a>
+        <button type="button" class="btn btn-ink mt-8" data-enquire="Villa ${v.name}" data-villa="${v.name}">Enquire about the ${v.name}</button>
       </div>
       <div class="grid gap-5">
         <div class="villa-shot relative aspect-[16/10] overflow-hidden bg-cloud-2">
@@ -226,12 +226,6 @@ $$('.villa').forEach(d => {
   });
 });
 
-/* Choosing a villa from a card pre-selects it in the form. */
-$$('[data-villa]').forEach(a => a.addEventListener('click', () => {
-  const sel = $('#f-villa');
-  const opt = Array.from(sel.options).find(o => o.value === a.dataset.villa);
-  if (opt) sel.value = opt.value;
-}));
 })();
 
 (() => {
@@ -332,17 +326,7 @@ function selectPlot(p, node){
       <div class="flex justify-between gap-4 py-3"><dt class="text-mist">Aspect</dt><dd>${p.a}</dd></div>
       <div class="flex justify-between gap-4 py-3"><dt class="text-mist">From</dt><dd class="text-dawn-deep font-medium">${villa ? villa.price : '—'}</dd></div>
     </dl>
-    <a href="#viewing" class="btn btn-ink mt-7 w-full" data-plot-cta="${p.n}">Enquire about plot ${p.n}</a>`;
-
-  const cta = $('[data-plot-cta]', detail);
-  if (cta) cta.addEventListener('click', () => {
-    const note = $('#f-note');
-    const line = `Interested in plot ${p.n} (${p.t}).`;
-    if (!note.value.includes(line)) note.value = (note.value ? note.value.trim() + '\n' : '') + line;
-    const sel = $('#f-villa');
-    const opt = Array.from(sel.options).find(o => o.value === p.t);
-    if (opt) sel.value = opt.value;
-  });
+    <button type="button" class="btn btn-ink mt-7 w-full" data-enquire="Plot ${p.n}" data-plot-cta="${p.n}">Enquire about plot ${p.n}</button>`;
 
   if (hasGSAP && !reduced.matches)
     gsap.from(detail.children, {opacity:0, y:10, duration:.4, stagger:.05, ease:'power2.out'});
@@ -396,14 +380,16 @@ function openLB(i){
   lbImg.src = g.src; lbImg.alt = g.cap; lbCap.textContent = g.cap;
   lastFocus = document.activeElement;
   lb.hidden = false;
-  document.body.style.overflow = 'hidden';
+  if (window.lenisInstance) window.lenisInstance.stop();
+  else document.body.style.overflow = 'hidden';
   lbClose.focus();
   if (hasGSAP && !reduced.matches)
     gsap.fromTo(lb, {opacity:0}, {opacity:1, duration:.3, ease:'power2.out'});
 }
 function closeLB(){
   lb.hidden = true;
-  document.body.style.overflow = '';
+  if (window.lenisInstance) window.lenisInstance.start();
+  else document.body.style.overflow = '';
   if (lastFocus) lastFocus.focus();
 }
 $$('[data-lb]').forEach(b => b.addEventListener('click', () => openLB(+b.dataset.lb)));
@@ -416,134 +402,9 @@ document.addEventListener('keydown', e => {
 });
 })();
 
-(() => {
-'use strict';
-const $  = (s, r=document) => r.querySelector(s);
-const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
-
-/* ═══ FORM ═════════════════════════════════════════════════════════════
-   Validates on blur, not on keystroke. On a failed submit the summary is
-   focused and each item links to its field; inline errors stay in place.
-   ═══════════════════════════════════════════════════════════════════ */
-const form = $('#viewing-form');
-const summary = $('#form-summary');
-const summaryList = $('#form-summary-list');
-const formOpenedAt = Date.now();
-
-const RULES = {
-  'f-name':  { msg:'Enter your name so we know who to expect.',
-               label:'Your name',
-               test: v => v.trim().length >= 2 },
-  'f-phone': { msg:'Enter a phone number of at least 10 digits.',
-               label:'Phone',
-               test: v => (v.replace(/\D/g,'').length >= 10) },
-  'f-email': { msg:'Enter an email address in the form name@example.com.',
-               label:'Email',
-               test: v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) }
-};
-
-function validate(id, showError=true){
-  const el = $('#' + id), rule = RULES[id];
-  const ok = rule.test(el.value);
-  const field = el.closest('.field');
-  if (showError){
-    field.classList.toggle('is-invalid', !ok);
-    el.setAttribute('aria-invalid', String(!ok));
-  }
-  return ok;
-}
-
-Object.keys(RULES).forEach(id => {
-  const el = $('#' + id);
-  el.addEventListener('blur', () => { if (el.value !== '') validate(id); });
-  /* Once a field is marked invalid, correct it live so the error clears
-     the moment it is fixed — but never nag before first blur. */
-  el.addEventListener('input', () => {
-    if (el.getAttribute('aria-invalid') === 'true') validate(id);
-  });
-});
-
-form.addEventListener('submit', e => {
-  e.preventDefault();
-  const failed = Object.keys(RULES).filter(id => !validate(id));
-
-  if (failed.length){
-    summaryList.innerHTML = failed.map(id =>
-      `<li><a class="underline underline-offset-2" href="#${id}">${RULES[id].label} — ${RULES[id].msg}</a></li>`
-    ).join('');
-    summary.classList.add('is-shown');
-    summary.focus();
-    $$('#form-summary-list a').forEach(a => a.addEventListener('click', ev => {
-      ev.preventDefault();
-      $(a.getAttribute('href')).focus();
-    }));
-    return;
-  }
-
-  summary.classList.remove('is-shown');
-  const btn = $('#f-submit');
-  const label = btn.textContent;
-  btn.disabled = true;
-  btn.textContent = 'Sending…';
-
-  /* Posts to submit.php, which holds the Leadi5 API key server-side and
-     forwards the lead. The key is deliberately not in this file: everything
-     under js/ is served to the browser and readable by any visitor. */
-  fetch('submit.php', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({
-      name:  $('#f-name').value.trim(),
-      phone: $('#f-phone').value.trim(),
-      email: $('#f-email').value.trim(),
-      villa: $('#f-villa').value,
-      date:  $('#f-date').value,
-      note:  $('#f-note').value.trim(),
-      source: location.pathname + location.hash,
-      company: $('#f-company').value,          // honeypot — must stay empty
-      elapsed: Date.now() - formOpenedAt       // bots submit in under 2s
-    })
-  })
-  .then(async res => {
-    const data = await res.json().catch(() => ({}));
-    if (res.ok && data.ok) return showSuccess();
-
-    /* The server validates independently of the browser. If it rejects a
-       field, show that against the field rather than a generic failure. */
-    if (data.fields) {
-      Object.entries(data.fields).forEach(([k, msg]) => {
-        const el = $('#f-' + k);
-        if (!el) return;
-        el.setAttribute('aria-invalid', 'true');
-        const field = el.closest('.field');
-        field.classList.add('is-invalid');
-        const err = $('.err', field);
-        if (err) err.textContent = msg;
-      });
-    }
-    throw new Error(data.error || 'That did not send.');
-  })
-  .catch(err => {
-    /* Never strand the visitor on a dead button. Restore it, say what
-       happened, and leave the phone number as the way through. */
-    btn.disabled = false;
-    btn.textContent = label;
-    summaryList.innerHTML =
-      '<li>' + (err && err.message ? err.message : 'That did not send.') +
-      ' You can also call <a class="underline underline-offset-2" href="tel:' +
-      DATA.contact.phone.replace(/[^\d+]/g, '') + '">' + DATA.contact.phone + '</a>.</li>';
-    summary.classList.add('is-shown');
-    summary.focus();
-  });
-
-  function showSuccess(){
-    form.querySelectorAll(':scope > .grid, :scope > #f-submit, :scope > p').forEach(n => n.hidden = true);
-    const done = $('#form-done');
-    done.hidden = false;
-    done.focus();
-  }
-});
-})();
+/* The enquiry form is built by the component in the block below, which
+   serves the hero card, the popup and the enquiry section from one
+   implementation. */
 
 (() => {
 'use strict';
@@ -557,7 +418,6 @@ if (typeof window.gsap === 'undefined' || typeof window.ScrollTrigger === 'undef
     el.style.opacity = '1'; el.style.transform = 'none'; el.style.clipPath = 'none';
   });
   $$('.word').forEach(el => { el.style.transform = 'none'; });
-  const a = $('#alt-readout'); if (a) a.textContent = '1,478';
   const sw = $('.sunwash'); if (sw) sw.style.opacity = '.5';
   return;
 }
@@ -578,7 +438,6 @@ mm.add('(prefers-reduced-motion: reduce)', () => {
   gsap.set('[data-anim]', {opacity:1, y:0, clipPath:'none'});
   gsap.set('.word', {y:0});
   gsap.set('.sunwash', {opacity:.5});
-  $('#alt-readout').textContent = '1,478';
 });
 
 mm.add('(prefers-reduced-motion: no-preference)', () => {
@@ -588,40 +447,26 @@ mm.add('(prefers-reduced-motion: no-preference)', () => {
   intro
     .set('.word', {yPercent:110})
     .to('.word', {yPercent:0, duration:1.5, stagger:.075}, .15)
-    .fromTo('#ascent [data-anim="rise"]',
-            {opacity:0, y:16}, {opacity:1, y:0, duration:1, stagger:.09}, .55)
+    .fromTo('.hero-eyebrow, #hero .lede, .hero-facts > div, .hero-actions',
+            {opacity:0, y:18}, {opacity:1, y:0, duration:1, stagger:.07}, .5)
+    .fromTo('.hero-card', {opacity:0, y:30}, {opacity:1, y:0, duration:1.1}, .75)
     .fromTo('#nav', {opacity:0}, {opacity:1, duration:.9}, .3);
 
-  /* ── The ascent: scroll drives altitude ────────────────────────────── */
-  const alt = $('#alt-readout');
-  const climb = gsap.timeline({
-    scrollTrigger:{
-      trigger:'#ascent', start:'top top', end:'+=140%',
-      scrub:1, pin:true, pinSpacing:true, anticipatePin:1
-    }
+  /* ── The hero ─────────────────────────────────────────────────────────
+     The photograph drifts slowly as you leave, which reads as depth without
+     holding you in place. The previous version pinned the hero and scrubbed
+     an altitude counter through it — that made the first thing a visitor met
+     a scroll they could not skip, on a page whose job is to collect an
+     enquiry. */
+  gsap.to('.hero-photo', {
+    yPercent: 8, scale: 1.06, ease: 'none',
+    scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 1 }
+  });
+  gsap.to('.hero-grid', {
+    opacity: 0, y: -20, ease: 'none',
+    scrollTrigger: { trigger: '#hero', start: '55% top', end: 'bottom top', scrub: 1 }
   });
 
-  /* Ridges and cloud part at diverging rates — background slowest,
-     foreground fastest — which is what sells the depth. */
-  $$('[data-parallax]').forEach(el => {
-    const depth = parseFloat(el.dataset.parallax);
-    climb.to(el, {yPercent: depth * 46, ease:'none'}, 0);
-  });
-
-  climb
-    .to('.cloudbank', {opacity:.35, ease:'none'}, 0)
-    .to('.stars',     {opacity:0,   ease:'none'}, 0)
-    .to('.sunwash',   {opacity:.85, ease:'none'}, .15)
-    .to('.hero-photo',{opacity:0,   ease:'none'}, .55)
-    .to('#ascent .relative.z-10', {opacity:0, y:-30, ease:'none'}, .68);
-
-  /* The elevation readout is the hero's live element: real numbers,
-     920 m at the city to 1,478 m on the ridge. */
-  const counter = {v:920};
-  climb.to(counter, {
-    v:1478, ease:'none', duration:1,
-    onUpdate: () => { alt.textContent = Math.round(counter.v).toLocaleString('en-IN'); }
-  }, 0);
 
   /* ── Nav: darkens over dark ground, lightens above the cloud line ──── */
   ScrollTrigger.create({
@@ -637,13 +482,13 @@ mm.add('(prefers-reduced-motion: no-preference)', () => {
 
   /* ── Section reveals: a short fade, applied only to headings, ledes and
         data rows. Small y offset so it reads as a fade, not a slide. ─── */
-  ScrollTrigger.batch('main > section:not(#ascent) [data-anim="rise"]', {
+  ScrollTrigger.batch('main > section:not(#hero) [data-anim="rise"]', {
     start: 'top 88%',
     onEnter: batch => gsap.to(batch, {
       opacity:1, y:0, duration:.6, stagger:.06, ease:'power2.out', overwrite:true
     })
   });
-  gsap.set('main > section:not(#ascent) [data-anim="rise"]', {opacity:0, y:14});
+  gsap.set('main > section:not(#hero) [data-anim="rise"]', {opacity:0, y:14});
 
   /* The interior choreography lives in its own block below, driven by CSS
      sticky rather than a pin, which leaves the hero as the page's only
@@ -665,57 +510,8 @@ window.addEventListener('load', () => ScrollTrigger.refresh());
 })();
 
 
-/* ═══ STICKY REVEAL FOOTER ═════════════════════════════════════════════════
-   The footer is fixed behind the page; the content sheet slides up off it.
-   All this needs from JS is (a) a spacer matching the footer's real height,
-   so the reveal ends exactly as the footer is fully uncovered, and (b) the
-   entrance for the footer's own content once it comes into view.
-   ═══════════════════════════════════════════════════════════════════════ */
-(() => {
-  'use strict';
-  const $ = (s, r=document) => r.querySelector(s);
-  const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
-  const footer = $('#site-footer');
-  const spacer = $('.footer-spacer');
-  if (!footer || !spacer) return;
-
-  const desktop = window.matchMedia('(min-width: 768px)');
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const hasST = typeof window.gsap !== 'undefined' && typeof window.ScrollTrigger !== 'undefined';
-
-  /* Measure rather than guess: a hard-coded 100vh spacer leaves a gap or a
-     clipped footer the moment the content reflows at a different width. */
-  function sizeSpacer(){
-    if (!desktop.matches) { spacer.style.height = ''; return; }
-    spacer.style.height = footer.offsetHeight + 'px';
-    if (hasST) ScrollTrigger.refresh();
-  }
-
-  let t;
-  const onResize = () => { clearTimeout(t); t = setTimeout(sizeSpacer, 150); };
-  window.addEventListener('resize', onResize);
-  desktop.addEventListener('change', sizeSpacer);
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(sizeSpacer);
-  window.addEventListener('load', sizeSpacer);
-  sizeSpacer();
-
-  if (!hasST || reduced.matches) return;
-
-  /* Footer content rises as the sheet clears it. Scrubbed, so it tracks the
-     reveal rather than firing once and finishing out of step with it. */
-  gsap.set('[data-foot]', {opacity:0, y:24});
-  gsap.to('[data-foot]', {
-    opacity:1, y:0, stagger:.06, ease:'power2.out',
-    scrollTrigger:{ trigger:'.footer-spacer', start:'top 72%', end:'top 12%', scrub:.8 }
-  });
-
-  /* The wordmark drifts up a little slower than the rest, which reads as
-     depth without moving far enough to be noticed as an effect. */
-  gsap.fromTo('.wordmark', {yPercent:16}, {
-    yPercent:0, ease:'none',
-    scrollTrigger:{ trigger:'.footer-spacer', start:'top bottom', end:'bottom bottom', scrub:1 }
-  });
-})();
+/* The sticky reveal footer was removed: it competed with the enquiry form
+   directly above it for the same attention, and the form is what matters. */
 
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -756,6 +552,7 @@ window.addEventListener('load', () => ScrollTrigger.refresh());
       smoothTouch: false,
       touchMultiplier: 1.6
     });
+    window.lenisInstance = lenis;   // the popup stops it while open
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add(time => lenis.raf(time * 1000));
     gsap.ticker.lagSmoothing(0);
@@ -864,7 +661,7 @@ window.addEventListener('load', () => ScrollTrigger.refresh());
      The original text is kept and restored on resize, because a line split
      is only valid for the width it was measured at. */
   const splitTargets = $$('main h2, #inside h2, .display:not(h1)')
-    .filter(el => !el.closest('#ascent'));
+    .filter(el => !el.closest('#hero'));
 
   function splitLines(el){
     if (el.dataset.origHtml === undefined) el.dataset.origHtml = el.innerHTML;
@@ -1080,5 +877,298 @@ window.addEventListener('load', () => ScrollTrigger.refresh());
         hero.style.willChange = self.isActive ? 'width, height, transform' : 'auto';
       }
     });
+  });
+})();
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ENQUIRY FORM — one component, three placements
+
+   The same form appears in the hero card, in the popup that every call to
+   action opens, and in the enquiry section. Writing it once and mounting it
+   three times is not just less code: it means validation, error handling and
+   the success state cannot drift apart between them, which is exactly what
+   happens when a form gets copied.
+
+   Every instance gets its own field ids, so three copies can sit in one
+   document without their labels pointing at each other's inputs.
+   ═══════════════════════════════════════════════════════════════════════ */
+const Enquiry = (() => {
+  'use strict';
+  let seq = 0;
+
+  const RULES = {
+    name:  { label:'Your name', msg:'Enter your name so we know who to expect.',
+             test: v => v.trim().length >= 2 },
+    phone: { label:'Phone', msg:'Enter a phone number of at least 10 digits.',
+             test: v => v.replace(/\D/g,'').length >= 10 },
+    email: { label:'Email', msg:'Enter an email address in the form name@example.com.',
+             test: v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) }
+  };
+
+  function build(mount, opts){
+    const o = Object.assign({ variant:'full', source:'', tone:'dark' }, opts);
+    const id = 'e' + (++seq);
+    const full = o.variant === 'full';
+
+    const field = (key, type, label, extra='') => `
+      <div class="field" data-field="${key}">
+        <label for="${id}-${key}">${label}${RULES[key] ? ' <span aria-hidden="true" class="req">*</span>' : ''}</label>
+        <input id="${id}-${key}" name="${key}" type="${type}"
+               ${type==='tel' ? 'inputmode="tel" autocomplete="tel"' : ''}
+               ${type==='email' ? 'inputmode="email" autocomplete="email"' : ''}
+               ${key==='name' ? 'autocomplete="name"' : ''}
+               ${RULES[key] ? 'required' : ''} aria-describedby="${id}-${key}-err" ${extra}>
+        <p class="err" id="${id}-${key}-err">${RULES[key] ? RULES[key].msg : ''}</p>
+      </div>`;
+
+    mount.innerHTML = `
+      <form class="enquiry" novalidate data-source="${o.source}">
+        <div class="form-summary" id="${id}-summary" tabindex="-1" role="alert">
+          <h3>Check these before sending</h3>
+          <ul></ul>
+        </div>
+
+        <div aria-hidden="true" class="hp">
+          <label for="${id}-company">Company</label>
+          <input id="${id}-company" name="company" type="text" tabindex="-1" autocomplete="off">
+        </div>
+
+        <div class="fields ${full ? 'is-full' : 'is-compact'}">
+          ${field('name','text','Your name')}
+          ${field('phone','tel','Phone')}
+          ${field('email','email','Email')}
+          ${full ? `
+          <div class="field">
+            <label for="${id}-villa">Villa type</label>
+            <select id="${id}-villa" name="villa">
+              <option value="">No preference yet</option>
+              ${DATA.villas.map(v => `<option value="${v.name}">${v.name} — ${v.area} sq ft</option>`).join('')}
+            </select>
+          </div>
+          <div class="field">
+            <label for="${id}-date">Preferred date</label>
+            <input id="${id}-date" name="date" type="date">
+          </div>
+          <div class="field field-wide">
+            <label for="${id}-note">Anything we should know</label>
+            <textarea id="${id}-note" name="note" rows="3"></textarea>
+          </div>` : ''}
+        </div>
+
+        <button type="submit" class="btn btn-dawn form-submit">Request a viewing</button>
+        <p class="form-note">We use these details only to arrange your viewing.</p>
+
+        <div class="form-done" hidden tabindex="-1">
+          <h3>Request sent</h3>
+          <p>We will confirm your viewing within one working day.</p>
+        </div>
+      </form>`;
+
+    const form    = mount.querySelector('form');
+    const summary = mount.querySelector('.form-summary');
+    const openedAt = Date.now();
+    const get = k => mount.querySelector('#' + id + '-' + k);
+
+    function check(key, show=true){
+      const el = get(key), ok = RULES[key].test(el.value);
+      if (show){
+        el.closest('.field').classList.toggle('is-invalid', !ok);
+        el.setAttribute('aria-invalid', String(!ok));
+      }
+      return ok;
+    }
+
+    Object.keys(RULES).forEach(key => {
+      const el = get(key);
+      el.addEventListener('blur',  () => { if (el.value !== '') check(key); });
+      /* Correct live once a field is already marked wrong, but never nag
+         before the person has finished with it. */
+      el.addEventListener('input', () => { if (el.getAttribute('aria-invalid') === 'true') check(key); });
+    });
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const bad = Object.keys(RULES).filter(k => !check(k));
+
+      if (bad.length){
+        summary.querySelector('ul').innerHTML = bad.map(k =>
+          `<li><a href="#${id}-${k}">${RULES[k].label} — ${RULES[k].msg}</a></li>`).join('');
+        summary.classList.add('is-shown');
+        summary.focus();
+        summary.querySelectorAll('a').forEach(a => a.addEventListener('click', ev => {
+          ev.preventDefault(); get(a.getAttribute('href').split('-').pop()).focus();
+        }));
+        return;
+      }
+
+      summary.classList.remove('is-shown');
+      const btn = form.querySelector('.form-submit');
+      const label = btn.textContent;
+      btn.disabled = true; btn.textContent = 'Sending…';
+
+      const done = () => {
+        form.querySelectorAll('.fields, .form-submit, .form-note').forEach(n => n.hidden = true);
+        const d = form.querySelector('.form-done');
+        d.hidden = false; d.focus();
+      };
+
+      if (window.__PREVIEW__) { setTimeout(done, 700); return; }
+
+      fetch('submit.php', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          name: get('name').value.trim(),
+          phone: get('phone').value.trim(),
+          email: get('email').value.trim(),
+          villa: full ? get('villa').value : '',
+          date:  full ? get('date').value  : '',
+          note:  full ? get('note').value.trim() : '',
+          source: o.source || (location.pathname + location.hash),
+          company: get('company').value,
+          elapsed: Date.now() - openedAt
+        })
+      })
+      .then(async res => {
+        const data = await res.json().catch(() => ({}));
+        if (res.ok && data.ok) return done();
+        if (data.fields) Object.entries(data.fields).forEach(([k, msg]) => {
+          const el = get(k); if (!el) return;
+          el.setAttribute('aria-invalid','true');
+          el.closest('.field').classList.add('is-invalid');
+          const err = el.closest('.field').querySelector('.err'); if (err) err.textContent = msg;
+        });
+        throw new Error(data.error || 'That did not send.');
+      })
+      .catch(err => {
+        /* Never leave a dead button. Restore it and give the phone number as
+           the way through. */
+        btn.disabled = false; btn.textContent = label;
+        summary.querySelector('ul').innerHTML =
+          '<li>' + (err && err.message ? err.message : 'That did not send.') +
+          ' You can also call <a href="tel:' + DATA.contact.phone.replace(/[^\d+]/g,'') +
+          '">' + DATA.contact.phone + '</a>.</li>';
+        summary.classList.add('is-shown');
+        summary.focus();
+      });
+    });
+
+    return { form, focusFirst: () => get('name').focus() };
+  }
+
+  return { build };
+})();
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOUNTING THE FORMS, AND THE POPUP
+   ═══════════════════════════════════════════════════════════════════════ */
+(() => {
+  'use strict';
+  const $  = (s, r=document) => r.querySelector(s);
+  const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+
+  /* Every [data-enquiry-mount] gets its own instance. */
+  const instances = new Map();
+  $$('[data-enquiry-mount]').forEach(m => {
+    instances.set(m, Enquiry.build(m, {
+      variant: m.dataset.variant || 'full',
+      source:  m.dataset.source  || ''
+    }));
+  });
+
+  /* ── Popup ──────────────────────────────────────────────────────────── */
+  const modal = $('#enquiry-modal');
+  if (!modal) return;
+  const panel = $('.modal-panel', modal);
+  const inst  = instances.get($('[data-enquiry-mount]', modal));
+  let lastFocus = null;
+
+  const focusable = () => $$('a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])', panel)
+    .filter(el => el.offsetParent !== null);
+
+  /* Freezing the page behind the popup.
+
+     Setting overflow:hidden on <html> looked like the obvious way and was
+     wrong: Lenis owns the scroll and sets its own rules on that element, and
+     forcing overflow on it left the document 1305px wider than the viewport
+     — permanently, even after the popup closed. Lenis's own stop() holds the
+     page without touching layout. The overflow fallback is only for when
+     Lenis is not running at all (reduced motion), where it is applied to
+     <body>, which no library is managing. */
+  function lockScroll(on){
+    if (window.lenisInstance){
+      on ? window.lenisInstance.stop() : window.lenisInstance.start();
+    } else {
+      document.body.style.overflow = on ? 'hidden' : '';
+    }
+  }
+
+  function open(source, ctx){
+    lastFocus = document.activeElement;
+    modal.hidden = false;
+    lockScroll(true);
+
+    /* Carry the button's context into the form, so an enquiry from a villa
+       card or a plot arrives saying which one. */
+    const form = inst && inst.form;
+    if (form){
+      form.dataset.source = source || 'Popup';
+      if (ctx && ctx.villa){
+        const sel = form.querySelector('select[name="villa"]');
+        const opt = sel && Array.from(sel.options).find(o => o.value === ctx.villa);
+        if (opt) sel.value = opt.value;
+      }
+      if (ctx && ctx.plot){
+        const note = form.querySelector('textarea[name="note"]');
+        const line = `Interested in plot ${ctx.plot}.`;
+        if (note && !note.value.includes(line)) note.value = (note.value ? note.value.trim() + '\n' : '') + line;
+      }
+    }
+
+    if (typeof gsap !== 'undefined' && !matchMedia('(prefers-reduced-motion: reduce)').matches){
+      gsap.fromTo(modal, {opacity:0}, {opacity:1, duration:.25, ease:'power2.out'});
+      gsap.fromTo(panel, {y:24, scale:.985}, {y:0, scale:1, duration:.45, ease:'expo.out'});
+    }
+    /* Focus the panel, not the first input: dropping straight into a text
+       field skips the heading and a screen reader never hears what the
+       dialog is for. */
+    panel.setAttribute('tabindex','-1');
+    panel.focus();
+  }
+
+  function close(){
+    modal.hidden = true;
+    lockScroll(false);
+    if (lastFocus) lastFocus.focus();
+  }
+
+  /* Delegated, so CTAs rendered later (villa cards, plot panel) work too. */
+  document.addEventListener('click', e => {
+    const trigger = e.target.closest('[data-enquire]');
+    if (trigger){
+      e.preventDefault();
+      open(trigger.dataset.enquire, {
+        villa: trigger.dataset.villa,
+        plot:  trigger.dataset.plotCta
+      });
+      return;
+    }
+    if (e.target.closest('[data-close]')) close();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (modal.hidden) return;
+    if (e.key === 'Escape'){ close(); return; }
+    if (e.key !== 'Tab') return;
+    /* Keep Tab inside the dialog while it is open. */
+    const items = focusable();
+    if (!items.length) return;
+    const first = items[0], last = items[items.length - 1];
+    if (e.shiftKey && (document.activeElement === first || document.activeElement === panel)){
+      e.preventDefault(); last.focus();
+    } else if (!e.shiftKey && document.activeElement === last){
+      e.preventDefault(); first.focus();
+    }
   });
 })();

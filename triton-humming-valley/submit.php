@@ -96,48 +96,112 @@ $payload = ['leads' => [[
     'leadStatus'           => 'New Lead',
 ]]];
 
-/* ── Forward to Leadi5 ──────────────────────────────────────────────── */
-$ch = curl_init($config['webhook_url']);
-curl_setopt_array($ch, [
-    CURLOPT_POST           => true,
-    CURLOPT_POSTFIELDS     => json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
-    CURLOPT_HTTPHEADER     => [
-        'Content-Type: application/json',
-        'X-API-Key: ' . $config['api_key'],
-    ],
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_TIMEOUT        => 15,
-    CURLOPT_CONNECTTIMEOUT => 8,
-]);
-$response = curl_exec($ch);
-$httpCode = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
-$curlErr  = curl_error($ch);
-curl_close($ch);
+/* ── Deliver ────────────────────────────────────────────────────────────
+   Two destinations, and the enquiry counts as delivered if EITHER accepts
+   it. A CRM outage must not cost a lead that the inbox would have caught,
+   and vice versa. Whatever fails is logged with the full lead so nothing is
+   ever only half-recorded. */
+$delivered = [];
+$failed    = [];
 
-if ($curlErr !== '' || $httpCode < 200 || $httpCode >= 300) {
-    /* The lead is written to a local file before the error is returned, so a
-       Leadi5 outage costs a delay rather than the enquiry itself. */
-    @file_put_contents(
-        __DIR__ . '/leads-failed.log',
-        $now->format('c') . ' ' . $httpCode . ' ' . $curlErr . ' ' .
-        json_encode($payload, JSON_UNESCAPED_UNICODE) . PHP_EOL,
-        FILE_APPEND | LOCK_EX
-    );
-    error_log("submit.php: Leadi5 responded $httpCode $curlErr $response");
-    reply(502, ['ok' => false, 'error' =>
-        'We could not send that just now. Please call us on the number above, or try again shortly.']);
+/* 1 · Email. This is the one that has to work.
+
+   The From address MUST be on this site's own domain. Sending "From:
+   someone@gmail.com" through your host's mail server fails Gmail's SPF check
+   and the message is binned or spam-foldered — the single most common reason
+   a contact form appears to work and delivers nothing. Reply-To carries the
+   enquirer's address instead, so hitting reply in the inbox answers them
+   directly. */
+if (!empty($config['notify_email'])) {
+    $host = preg_replace('/^www\./', '', $_SERVER['HTTP_HOST'] ?? 'localhost');
+    /* ?: not ?? — the config documents an EMPTY string as "use the default",
+       and ?? only falls back on null, so the header went out as "From: <>".
+       An empty envelope sender gets a message refused by most receivers. */
+    $from = !empty($config['mail_from']) ? $config['mail_from'] : ('no-reply@' . $host);
+
+    $subject = 'Viewing enquiry — ' . $name;
+    $lines = "New viewing enquiry from the website\n"
+           . str_repeat('=', 44) . "\n\n"
+           . "Name    : $name\n"
+           . "Phone   : $phone\n"
+           . "Email   : $email\n"
+           . 'Villa   : ' . ($extra['villaType']     ?? '—') . "\n"
+           . 'Date    : ' . ($extra['preferredDate'] ?? '—') . "\n"
+           . 'Page    : ' . ($extra['sourcePage']    ?? '—') . "\n\n"
+           . "Message :\n" . ($extra['note'] ?? '—') . "\n\n"
+           . str_repeat('-', 44) . "\n"
+           . 'Received ' . $now->format('d M Y, H:i') . " IST\n";
+
+    /* Header injection guard: a newline in either field would let a crafted
+       submission append its own headers and use this form as a relay. */
+    $safeName  = preg_replace('/[\r\n]+/', ' ', $name);
+    $safeEmail = preg_replace('/[\r\n]+/', '', $email);
+
+    $headers  = 'From: Triton Humming Valley <' . $from . ">\r\n";
+    $headers .= 'Reply-To: ' . $safeName . ' <' . $safeEmail . ">\r\n";
+    $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+    $headers .= "X-Mailer: PHP/" . phpversion();
+
+    /* The fifth argument sets the envelope sender, which is what an SPF check
+       actually inspects — so it is worth having. But some hosts disable that
+       parameter, and there mail() simply returns false. Falling back to a
+       plain call means a restrictive host costs us SPF alignment rather than
+       the entire enquiry. */
+    $sent = @mail($config['notify_email'], $subject, $lines, $headers, '-f' . $from);
+    if (!$sent) {
+        $sent = @mail($config['notify_email'], $subject, $lines, $headers);
+        if ($sent) error_log('submit.php: envelope sender rejected; sent without -f');
+    }
+
+    if ($sent) {
+        $delivered[] = 'email';
+    } else {
+        $failed[] = 'email';
+        error_log('submit.php: mail() failed to ' . $config['notify_email']);
+    }
 }
 
-/* Optional copy to the sales inbox. Failure here must not fail the request:
-   the lead is already safely in Leadi5. */
-if (!empty($config['notify_email'])) {
-    $lines = "New viewing enquiry\n\n"
-           . "Name:   $name\nPhone:  $phone\nEmail:  $email\n"
-           . 'Villa:  ' . ($extra['villaType'] ?? '—') . "\n"
-           . 'Date:   ' . ($extra['preferredDate'] ?? '—') . "\n"
-           . 'Note:   ' . ($extra['note'] ?? '—') . "\n";
-    @mail($config['notify_email'], 'Viewing enquiry — ' . $name, $lines,
-          'From: no-reply@' . ($_SERVER['HTTP_HOST'] ?? 'localhost'));
+/* 2 · Leadi5, when a webhook is configured. */
+if (!empty($config['webhook_url']) && !empty($config['api_key'])
+    && strpos($config['webhook_url'], '...') === false) {
+    $ch = curl_init($config['webhook_url']);
+    curl_setopt_array($ch, [
+        CURLOPT_POST           => true,
+        CURLOPT_POSTFIELDS     => json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+        CURLOPT_HTTPHEADER     => ['Content-Type: application/json',
+                                   'X-API-Key: ' . $config['api_key']],
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT        => 15,
+        CURLOPT_CONNECTTIMEOUT => 8,
+    ]);
+    $response = curl_exec($ch);
+    $httpCode = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curlErr  = curl_error($ch);
+    curl_close($ch);
+
+    if ($curlErr === '' && $httpCode >= 200 && $httpCode < 300) {
+        $delivered[] = 'leadi5';
+    } else {
+        $failed[] = 'leadi5';
+        error_log("submit.php: Leadi5 responded $httpCode $curlErr $response");
+    }
+}
+
+/* Anything that did not arrive is written to disk with the whole lead, so a
+   failure is recoverable rather than merely reported. */
+if ($failed) {
+    @file_put_contents(
+        __DIR__ . '/leads-failed.log',
+        $now->format('c') . '  FAILED[' . implode(',', $failed) . ']'
+        . '  OK[' . implode(',', $delivered) . ']  '
+        . json_encode($payload, JSON_UNESCAPED_UNICODE) . PHP_EOL,
+        FILE_APPEND | LOCK_EX
+    );
+}
+
+if (!$delivered) {
+    reply(502, ['ok' => false, 'error' =>
+        'We could not send that just now. Please call us on the number above, or try again shortly.']);
 }
 
 reply(200, ['ok' => true]);

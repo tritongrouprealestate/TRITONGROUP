@@ -67,122 +67,67 @@
       <li><a class="nav-link" href="#inside">Inside</a></li>
       <li><a class="nav-link" href="#assurance">Assurance</a></li>
     </ul>
-    <a href="#viewing" class="btn btn-dawn ml-auto lg:ml-0 min-h-[44px]! px-4! sm:px-5! py-2.5! text-[.85rem] sm:text-[.9rem] whitespace-nowrap">
+    <button type="button" data-enquire="Nav" class="btn btn-dawn ml-auto lg:ml-0 min-h-[44px]! px-4! sm:px-5! py-2.5! text-[.85rem] sm:text-[.9rem] whitespace-nowrap">
       Book a viewing
-    </a>
+    </button>
   </nav>
 </header>
 
 <div class="page-shell">
 <main id="main">
 
-<!-- ══ 1 · THE ASCENT ════════════════════════════════════════════════════
-     The one place this page raises its voice. Scroll is altitude: four
-     ridgelines part at different rates, the cloud bank sinks below you,
-     and the sky turns from pre-dawn to first light. The elevation readout
-     is real — Bengaluru sits at ~920 m, the Nandi ridge at 1,478 m.     -->
-<section id="ascent" class="relative min-h-[100svh]">
-  <div class="sky"></div>
-  <div class="stars" data-parallax="0.06" aria-hidden="true"></div>
-  <div class="sunwash" aria-hidden="true"></div>
-
-  <!-- Optional photograph. Drawn layers below are the real design; this
-       only deepens it. Swap the URL for your own site photography. -->
+<!-- ══ 1 · HERO ═════════════════════════════════════════════════════════
+     A photograph carries the whole frame, with the enquiry card sitting in
+     the corner over it. The card is the point: on a project selling by
+     private viewing, the first screen should let someone ask for one without
+     scrolling or hunting for a button. -->
+<section id="hero" class="relative min-h-[100svh] overflow-clip">
+  <!-- Drawn ground beneath the photograph, so the frame is never empty
+       while the image loads and never broken if it fails. -->
+  <div class="hero-ground" aria-hidden="true"></div>
   <img class="hero-photo" alt=""
-       data-src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=2000&q=75"
-       aria-hidden="true" decoding="async">
+       data-src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=2400&q=78"
+       aria-hidden="true" decoding="async" fetchpriority="high">
+  <div class="hero-scrim" aria-hidden="true"></div>
 
-  <!-- The inversion layer you wake up above. Soft overlapping ellipses
-       under a blur, not a wave-shaped fill — a filled wave reads as a slab. -->
-  <svg class="cloudbank" data-parallax="0.30" style="bottom:23%" viewBox="0 0 1200 200"
-       preserveAspectRatio="none" aria-hidden="true" height="190">
-    <defs><filter id="soft1" x="-25%" y="-60%" width="150%" height="240%">
-      <feGaussianBlur stdDeviation="17"/></filter></defs>
-    <g filter="url(#soft1)" fill="#C9D8E5" fill-opacity=".17">
-      <ellipse cx="150" cy="128" rx="240" ry="42"/>
-      <ellipse cx="470" cy="112" rx="290" ry="36"/>
-      <ellipse cx="810" cy="132" rx="250" ry="44"/>
-      <ellipse cx="1090" cy="116" rx="215" ry="34"/>
-    </g>
-  </svg>
-  <svg class="cloudbank" data-parallax="0.46" style="bottom:13%" viewBox="0 0 1200 200"
-       preserveAspectRatio="none" aria-hidden="true" height="220">
-    <defs><filter id="soft2" x="-25%" y="-60%" width="150%" height="240%">
-      <feGaussianBlur stdDeviation="22"/></filter></defs>
-    <g filter="url(#soft2)" fill="#E4EDF5" fill-opacity=".2">
-      <ellipse cx="60"  cy="150" rx="300" ry="46"/>
-      <ellipse cx="420" cy="136" rx="330" ry="40"/>
-      <ellipse cx="790" cy="152" rx="300" ry="48"/>
-      <ellipse cx="1150" cy="138" rx="270" ry="38"/>
-    </g>
-  </svg>
-
-  <!-- Four ridgelines, back to front. Cubic curves with irregular peak
-       spacing — a range reads wrong the moment its rhythm becomes regular.
-       Speeds diverge on scroll, which is what sells the depth. -->
-  <svg class="ridge" data-parallax="0.10" viewBox="0 0 1200 300" preserveAspectRatio="none"
-       aria-hidden="true" height="47%">
-    <path fill="#2E4257" d="M0,206 C58,188 96,152 148,132 C188,117 226,144 268,122
-      C318,96 358,58 412,70 C452,79 482,122 524,112 C572,100 604,56 654,64
-      C702,72 734,122 784,118 C832,114 864,68 914,78 C962,88 994,132 1044,126
-      C1094,120 1146,152 1200,142 L1200,300 L0,300 Z"/>
-  </svg>
-  <svg class="ridge" data-parallax="0.21" viewBox="0 0 1200 300" preserveAspectRatio="none"
-       aria-hidden="true" height="39%">
-    <path fill="#213347" d="M0,232 C66,220 108,186 166,170 C214,157 254,182 306,166
-      C362,148 398,112 456,122 C502,130 532,168 582,162 C636,155 668,116 724,126
-      C772,134 802,172 856,168 C906,164 938,126 992,136 C1042,145 1078,176 1132,170
-      C1160,167 1180,172 1200,178 L1200,300 L0,300 Z"/>
-  </svg>
-  <svg class="ridge" data-parallax="0.35" viewBox="0 0 1200 300" preserveAspectRatio="none"
-       aria-hidden="true" height="31%">
-    <path fill="#15242F" d="M0,254 C74,246 122,220 186,208 C240,198 282,216 340,206
-      C400,196 438,168 500,176 C548,182 578,208 632,204 C690,200 722,172 782,180
-      C832,187 860,210 916,208 C968,206 1000,182 1056,190 C1108,197 1152,214 1200,210
-      L1200,300 L0,300 Z"/>
-  </svg>
-  <svg class="ridge" data-parallax="0.52" viewBox="0 0 1200 300" preserveAspectRatio="none"
-       aria-hidden="true" height="23%">
-    <path fill="#0A1017" d="M0,272 C82,268 138,254 208,248 C268,243 314,254 378,250
-      C444,246 486,232 552,236 C606,239 638,252 698,250 C760,248 794,236 856,240
-      C910,243 942,254 1000,252 C1060,250 1108,240 1200,244 L1200,300 L0,300 Z"/>
-  </svg>
-
-  <!-- Hero content, hung on the same left rail everything else uses -->
-  <div class="relative z-10 flex min-h-[100svh] flex-col justify-end
-              px-[clamp(1.25rem,4vw,3rem)] pb-[clamp(3rem,9vh,7rem)] pt-32">
-    <div class="mx-auto w-full max-w-[1600px]">
-      <div class="relative pl-[var(--rail)]">
-        <div class="rail-line text-haze" aria-hidden="true"></div>
-
-        <p class="alt text-dawn mb-7 flex items-baseline gap-2" data-anim="rise">
-          <span class="tabular-nums" id="alt-readout" aria-hidden="true">920</span>
-          <span>metres and climbing</span>
-        </p>
-
-        <h1 class="display max-w-[16ch] text-cloud" style="font-size:var(--display)">
-          <span class="word-mask"><span class="word">Wake</span></span>
-          <span class="word-mask"><span class="word">above</span></span>
-          <span class="word-mask"><span class="word">the</span></span>
-          <span class="word-mask"><span class="word">weather.</span></span>
-        </h1>
-
-        <p class="lede mt-8 text-haze" data-anim="rise">
-          Thirty-two Balinese villas on the slope below Nandi Hills, where the valley
-          fills with cloud before sunrise and you are already above it.
-          Possession from October 2026.
-        </p>
-
-        <div class="mt-10 flex flex-wrap items-center gap-4" data-anim="rise">
-          <a href="#viewing" class="btn btn-dawn">Book a private viewing</a>
-          <a href="#land" class="btn btn-quiet">See the land</a>
-        </div>
+  <div class="hero-grid">
+    <div class="hero-copy">
+      <p class="hero-eyebrow">Kuduvathi &nbsp;·&nbsp; below Nandi Hills</p>
+      <h1 class="display">
+        <span class="word-mask"><span class="word">Wake</span></span>
+        <span class="word-mask"><span class="word">above</span></span>
+        <span class="word-mask"><span class="word">the</span></span>
+        <span class="word-mask"><span class="word">weather.</span></span>
+      </h1>
+      <p class="lede">
+        Thirty-two Balinese villas on the slope below Nandi Hills, where the valley
+        fills with cloud before sunrise and you are already above it.
+      </p>
+      <dl class="hero-facts">
+        <div><dt>Villas</dt><dd>32</dd></div>
+        <div><dt>Built-up</dt><dd>2,400&ndash;3,800<span>sq ft</span></dd></div>
+        <div><dt>From</dt><dd>₹2.5<span>Cr</span></dd></div>
+        <div data-possession-row><dt>Possession</dt><dd data-possession>October 2026</dd></div>
+      </dl>
+      <div class="hero-actions">
+        <button type="button" class="btn btn-dawn" data-enquire="Hero — book a viewing">Book a private viewing</button>
+        <a href="#land" class="btn btn-quiet">See the land</a>
       </div>
     </div>
+
+    <!-- The enquiry card. Three fields only: asking for more on a first
+         screen costs more enquiries than the extra detail is worth. -->
+    <aside class="hero-card" aria-labelledby="hero-card-h">
+      <h2 id="hero-card-h">Arrange a viewing</h2>
+      <p>One party at a time. We confirm within a working day.</p>
+      <div data-enquiry-mount data-variant="compact" data-source="Hero card"></div>
+      <p class="hero-card-alt">
+        Or call <a href="tel:+918000000000" data-field="phone">+91 80 0000 0000</a>
+      </p>
+    </aside>
   </div>
 
-  <p class="absolute bottom-6 right-[clamp(1.25rem,4vw,3rem)] z-10 alt text-haze/70"
-     data-anim="rise" aria-hidden="true">Scroll to climb</p>
+  <p class="hero-scrollcue" aria-hidden="true">Scroll</p>
 </section>
 
 <!-- ══ 2 · THE DRIVE UP  (still below the cloud line) ═════════════════════ -->
@@ -603,82 +548,7 @@
           </dl>
         </div>
 
-        <form id="viewing-form" novalidate class="max-w-xl">
-          <!-- Error summary: focused after a failed submit, each item links
-               to its field. Inline field errors stay in place as well. -->
-          <div id="form-summary" tabindex="-1" role="alert"
-               class="mb-8 border-l-2 border-[#F0806A] bg-[#F0806A]/10 p-5">
-            <h3 class="font-medium text-[#F0806A]">Check these before sending</h3>
-            <ul id="form-summary-list" class="mt-2 list-disc pl-5 text-[.92rem] space-y-1"></ul>
-          </div>
-
-          <!-- Honeypot. Hidden from sight and from assistive technology, and
-               removed from the tab order, so only automated fills reach it. -->
-          <div aria-hidden="true" style="position:absolute;left:-9999px;top:auto;
-               width:1px;height:1px;overflow:hidden">
-            <label for="f-company">Company</label>
-            <input id="f-company" name="company" type="text" tabindex="-1" autocomplete="off">
-          </div>
-
-          <div class="grid gap-7 sm:grid-cols-2">
-            <div class="field sm:col-span-2">
-              <label for="f-name" class="block text-[.85rem] text-haze mb-1">Your name <span aria-hidden="true" class="text-dawn">*</span></label>
-              <input id="f-name" name="name" type="text" autocomplete="name" required
-                     aria-describedby="f-name-err">
-              <p class="err" id="f-name-err">Enter your name so we know who to expect.</p>
-            </div>
-
-            <div class="field">
-              <label for="f-phone" class="block text-[.85rem] text-haze mb-1">Phone <span aria-hidden="true" class="text-dawn">*</span></label>
-              <input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required
-                     aria-describedby="f-phone-hint f-phone-err" placeholder="+91">
-              <p id="f-phone-hint" class="mt-1.5 text-[.8rem] text-haze/70">We confirm viewings by phone.</p>
-              <p class="err" id="f-phone-err">Enter a phone number of at least 10 digits.</p>
-            </div>
-
-            <div class="field">
-              <label for="f-email" class="block text-[.85rem] text-haze mb-1">Email <span aria-hidden="true" class="text-dawn">*</span></label>
-              <input id="f-email" name="email" type="email" inputmode="email" autocomplete="email" required
-                     aria-describedby="f-email-err">
-              <p class="err" id="f-email-err">Enter an email address in the form name@example.com.</p>
-            </div>
-
-            <div class="field">
-              <label for="f-villa" class="block text-[.85rem] text-haze mb-1">Villa type</label>
-              <select id="f-villa" name="villa">
-                <option value="">No preference yet</option>
-                <option value="3 BHK">3 BHK &mdash; 2,400 sq ft</option>
-                <option value="4 BHK">4 BHK &mdash; 3,100 sq ft</option>
-                <option value="5 BHK">5 BHK &mdash; 3,800 sq ft</option>
-              </select>
-            </div>
-
-            <div class="field">
-              <label for="f-date" class="block text-[.85rem] text-haze mb-1">Preferred date</label>
-              <input id="f-date" name="date" type="date" aria-describedby="f-date-hint">
-              <p id="f-date-hint" class="mt-1.5 text-[.8rem] text-haze/70">Sunrise slots start at 06:00.</p>
-            </div>
-
-            <div class="field sm:col-span-2">
-              <label for="f-note" class="block text-[.85rem] text-haze mb-1">Anything we should know</label>
-              <textarea id="f-note" name="note" rows="3"></textarea>
-            </div>
-          </div>
-
-          <button type="submit" class="btn btn-dawn mt-9 w-full sm:w-auto" id="f-submit">
-            Request a viewing
-          </button>
-          <p class="mt-4 text-[.8rem] text-haze/70 max-w-[46ch]">
-            We use these details only to arrange your viewing.
-          </p>
-
-          <!-- Success replaces the form in place; focus moves to it. -->
-          <div id="form-done" hidden tabindex="-1" class="border-l-2 border-dawn bg-dawn/10 p-6">
-            <h3 class="font-display text-[1.4rem]">Request sent</h3>
-            <p class="mt-2 text-haze">We will confirm your viewing within one working day.
-              If it is urgent, call <a class="text-dawn nav-link" href="tel:+918000000000">+91 80 0000 0000</a>.</p>
-          </div>
-        </form>
+        <div data-enquiry-mount data-variant="full" data-source="Enquiry section"></div>
       </div>
     </div>
   </div>
@@ -686,73 +556,52 @@
 </main>
 </div><!-- /.page-shell -->
 
-<!-- Reserves the scroll distance the reveal travels. Height is set from the
-     footer's own measured height, so the two can never disagree. -->
-<div class="footer-spacer" aria-hidden="true"></div>
-
-<!-- ══ FOOTER ════════════════════════════════════════════════════════════ -->
-<footer id="site-footer" class="text-cloud">
-  <div class="footer-glow" aria-hidden="true"></div>
-
-  <div class="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-[1600px] flex-col
-              justify-between px-[clamp(1.25rem,4vw,3rem)] pb-8 pt-[clamp(4rem,12vh,8rem)]">
-
-    <div class="grid gap-12 sm:grid-cols-2 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)]">
-      <div data-foot>
-        <p class="alt text-dawn">First light &middot; 06:14</p>
-        <p class="font-display mt-5 max-w-[16ch]" style="font-size:var(--step-2);line-height:1.15">
-          Viewings are one party at a time.
-        </p>
-        <a href="#viewing" class="btn btn-dawn mt-8">Book a private viewing</a>
-      </div>
-
-      <nav aria-label="Footer" data-foot>
-        <h2 class="text-[.85rem] text-haze">The project</h2>
-        <ul class="mt-5 space-y-3">
-          <li><a class="nav-link" href="#land">The land</a></li>
-          <li><a class="nav-link" href="#masterplan">Masterplan</a></li>
-          <li><a class="nav-link" href="#villas">Villas</a></li>
-          <li><a class="nav-link" href="#inside">Inside</a></li>
-          <li><a class="nav-link" href="#assurance">Assurance</a></li>
-        </ul>
-      </nav>
-
-      <div data-foot>
-        <h2 class="text-[.85rem] text-haze">Get in touch</h2>
-        <ul class="mt-5 space-y-3">
-          <li><a class="nav-link" href="tel:+918000000000" data-field="phone">+91 80 0000 0000</a></li>
-          <li><a class="nav-link" href="mailto:sales@tritongroup.in" data-field="email">sales@tritongroup.in</a></li>
-        </ul>
-        <p class="mt-5 text-haze text-[.9rem]">Kuduvathi, near Nandi Hills,<br>Bangalore North, Karnataka</p>
-      </div>
+<!-- ══ FOOTER ════════════════════════════════════════════════════════════
+     Deliberately plain. The reveal that used to sit here competed with the
+     enquiry form directly above it for the same attention, and the form is
+     what matters. -->
+<footer id="site-footer">
+  <div class="foot-inner">
+    <div class="foot-brand">
+      <p class="foot-name">Triton Humming Valley</p>
+      <p class="foot-by">Developed by Triton Group, Bengaluru</p>
     </div>
-
-    <div class="mt-16" data-foot>
-      <div class="grid gap-6 border-t border-haze/20 pt-7 md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
-        <p class="text-[.82rem] text-haze" id="rera-line">RERA registration &mdash; not yet configured.</p>
-        <p class="text-[.82rem] leading-relaxed text-haze">
-          Images, plans and areas on this page are indicative and subject to change.
-          They do not form part of any offer or contract. All areas are super built-up
-          unless stated otherwise.
-        </p>
-      </div>
+    <nav class="foot-nav" aria-label="Footer">
+      <a href="#land">The land</a>
+      <a href="#masterplan">Masterplan</a>
+      <a href="#villas">Villas</a>
+      <a href="#inside">Inside</a>
+      <a href="#assurance">Assurance</a>
+    </nav>
+    <div class="foot-contact">
+      <a href="tel:+918000000000" data-field="phone">+91 80 0000 0000</a>
+      <a href="mailto:tritonhomz@gmail.com" data-field="email">tritonhomz@gmail.com</a>
+      <p>Kuduvathi, near Nandi Hills,<br>Bangalore North, Karnataka</p>
     </div>
-
-    <!-- The wordmark runs the full width and is cropped by the viewport edge.
-         It is set as an image of the name rather than a heading, so it is
-         hidden from assistive tech — the name is already in the page title,
-         the nav and the copyright line below. -->
-    <div class="mt-12 select-none" aria-hidden="true">
-      <p class="wordmark font-display leading-[.82] tracking-[-.02em] whitespace-nowrap">
-        Humming&nbsp;Valley
-      </p>
-    </div>
-
-    <p class="mt-6 text-[.8rem] text-haze">
-      &copy; <span id="year">2026</span> Triton Group. Triton Humming Valley, Bengaluru.
-    </p>
+  </div>
+  <div class="foot-legal">
+    <p id="rera-line">RERA registration &mdash; not yet configured.</p>
+    <p>Images, plans and areas are indicative and subject to change. They do not
+       form part of any offer or contract.</p>
+    <p>&copy; <span id="year">2026</span> Triton Group. All rights reserved.</p>
   </div>
 </footer>
+
+<!-- ══ ENQUIRY POPUP ═════════════════════════════════════════════════════
+     Opened by every call to action on the page. -->
+<div id="enquiry-modal" hidden>
+  <div class="modal-scrim" data-close></div>
+  <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modal-h">
+    <button type="button" class="modal-close" data-close aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+        <path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <h2 id="modal-h">Book a private viewing</h2>
+    <p class="modal-sub">Viewings are by appointment, one party at a time.
+       Tell us when suits and we will confirm within a working day.</p>
+    <div data-enquiry-mount data-variant="full" data-source="Popup"></div>
+  </div>
+</div>
 
 <!-- Lightbox -->
 <div id="lightbox" hidden role="dialog" aria-modal="true" aria-labelledby="lb-cap">
