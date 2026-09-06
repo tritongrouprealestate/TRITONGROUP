@@ -1119,22 +1119,28 @@ window.addEventListener('load', () => ScrollTrigger.refresh());
     caption.textContent = DATA.choreography[3].caption;
   }
 
-  /* Offsets differ by screen: 36vw is a postage stamp on a phone, and the
-     quadrant spread has to shrink with it or the frames leave the viewport. */
-  /* Desktop only. Below 768px the stylesheet lays the four photographs out
-     as a grid: the effect needs room either side of centre to read as
-     depth, and a phone has none — it drifted four thumbnails across three
-     screens of empty ground and showed the pictures smaller than the grid
-     does. */
+  /* The spread has to match the frame, and the frame differs by screen.
+     The first mobile version kept the desktop spread against a much smaller
+     frame: the four sat in a narrow band with a third of the screen empty
+     above and below, and the sequence read as four stamps adrift rather
+     than as a composition gathering.
+
+     Landscape: a 42vw frame is 21vw either side of its centre, so 23vw of
+     spread leaves a 4vw channel between the columns and 6vw of air outside.
+     Portrait: 44vw x 32vh frames at 23vw and 17vh fill 90vw and 66vh —
+     the same two-by-two, proportioned for a screen that is taller than it
+     is wide. */
   const mm = gsap.matchMedia();
   mm.add({
-    isDesktop: '(min-width: 768px) and (prefers-reduced-motion: no-preference)'
-  }, () => {
-    /* Half of a 42vw frame is 21vw, so the spread has to clear that or the
-       two columns meet in the middle. 23 leaves a 4vw channel between them
-       and 6vw of air outside. */
-    const X = 23;   // vw from centre
-    const Y = 15;   // vh from centre
+    isDesktop: '(min-width: 768px) and (prefers-reduced-motion: no-preference)',
+    isMobile:  '(max-width: 767.98px) and (prefers-reduced-motion: no-preference)'
+  }, ctx => {
+    const { isDesktop } = ctx.conditions;
+    /* The two gaps are set to match in pixels, not in units: 1vw and 1vh are
+       different distances on a portrait screen, and a grid whose columns sit
+       closer than its rows looks like a mistake rather than a grid. */
+    const X = isDesktop ? 23 : 24;     // vw from centre
+    const Y = isDesktop ? 15 : 16.9;   // vh from centre
 
     const [topLeft, bottomRight, bottomLeft, hero] = frames;
 

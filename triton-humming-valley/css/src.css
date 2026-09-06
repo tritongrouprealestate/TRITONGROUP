@@ -483,6 +483,13 @@ html.lenis,html.lenis body{height:auto}
   transform:translate(-50%,-50%);will-change:transform,width,height}
 .choreo-frame img{width:100%;height:100%;object-fit:cover;display:block}
 
+/* A phone is portrait, so the four frames are squarer and taller: at
+   44vw x 32vh the two-by-two block fills 90vw and 66vh, which is a
+   composition rather than four stamps adrift in a field. */
+@media (max-width:767.98px){
+  .choreo-frame{width:44vw;height:32vh}
+}
+
 
 
 /* The caption belongs to the final full-screen frame, so it only appears
@@ -493,18 +500,11 @@ html.lenis,html.lenis body{height:auto}
   background:linear-gradient(to top,rgba(11,18,14,.85),transparent);
   pointer-events:none}
 
-/* ── Where the choreography does not belong ─────────────────────────────
-   Two cases, one layout.
-
-   With motion reduced, the choreography is the presentation and the
-   photographs are the content, so the presentation goes.
-
-   On a phone it went for a different reason: the effect needs room either
-   side of centre to read as depth, and a 390px screen has none. Four
-   thumbnails drifted across three screens of empty green and the sequence
-   was unreadable — the trick was invisible and the pictures were tiny. A
-   grid shows all four, large, in a third of the scrolling. */
-@media (prefers-reduced-motion: reduce), (max-width: 767.98px){
+/* ── Reduced motion, and the no-JS case ─────────────────────────────────
+   The choreography is the presentation; the photographs are the content.
+   With motion off, the section collapses from a 300vh scroll region to an
+   ordinary grid so the pictures are still all there, at rest. */
+@media (prefers-reduced-motion: reduce){
   #choreo{height:auto}
   .choreo-stage{position:static;height:auto;overflow:visible}
   .choreo-inner{position:static;display:grid;gap:1rem;
