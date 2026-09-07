@@ -47,13 +47,13 @@ async function pdf(html, path) {
 
 /* ============ 1. project covers + hero stills ============ */
 const COVERS = [
-  { path: 'collaterals/Sanvi/cover.jpg', title: 'Sanvi Aero Gardens',
+  { path: 'Sales Kit/Sanvi/cover.jpg', title: 'Sanvi Aero Gardens',
     sub: '1, 2 & 3 BHK · Near Bengaluru Airport', kind: 'towers',
     sky: '#8fa6bd', land: '#243546', accent: '#e2b877', mass: '#1b2733' },
-  { path: 'collaterals/Hummingvalley/cover.jpg', title: 'Triton Humming Valley',
+  { path: 'Sales Kit/Hummingvalley/cover.jpg', title: 'Triton Humming Valley',
     sub: 'Luxury Villas · Near Nandi Hills', kind: 'villas',
     sky: '#9db99b', land: '#22301f', accent: '#e8d296', mass: '#1d2a1c' },
-  { path: 'collaterals/Triton Branded/cover.jpg', title: 'Triton Group',
+  { path: 'Sales Kit/Triton Branded/cover.jpg', title: 'Triton Group',
     sub: 'Corporate · Brand Collateral', kind: 'towers',
     sky: '#c0aa86', land: '#33291a', accent: '#f0dcae', mass: '#2a2216' }
 ];
@@ -62,8 +62,8 @@ for (const c of COVERS) await shot(scene({ w: 1600, h: 1200, ...c }), { w: 1600,
 
 const HERO = { title: 'Triton Group', sub: 'Sales Deck · Kit', kind: 'towers',
                sky: '#7f97b0', land: '#151f2b', accent: '#e6c186', mass: '#101821' };
-await shot(scene({ w: 1920, h: 1080, ...HERO }), { w: 1920, h: 1080, path: 'assets/media/hero-bg.jpg' });
-await shot(scene({ w: 1920, h: 1080, ...HERO }), { w: 1920, h: 1080, path: 'assets/media/hero-poster.jpg' });
+await shot(scene({ w: 1920, h: 1080, ...HERO }), { w: 1920, h: 1080, path: 'Sales Kit/_Portal/hero-bg.jpg' });
+await shot(scene({ w: 1920, h: 1080, ...HERO }), { w: 1920, h: 1080, path: 'Sales Kit/_Portal/hero-poster.jpg' });
 
 /* ============ 2. sheets rendered as PNG ============ */
 function sheet({ title, sub, cols, rows, highlight }) {
@@ -92,7 +92,7 @@ await shot(sheet({
          ['2 BHK — Premium', '742', '1,102', '₹ 56,90,000', '₹ 62,00,000'],
          ['3 BHK', '1,038', '1,540', '₹ 79,50,000', '₹ 86,70,000'],
          ['3 BHK — Corner', '1,104', '1,638', '₹ 84,20,000', '₹ 91,80,000']]
-}), { w: 1400, h: 900, path: 'collaterals/Sanvi/Cost Sheet/Main Cost Sheet 62 Lakhs.png' });
+}), { w: 1400, h: 900, path: 'Sales Kit/Sanvi/Cost Sheet/Cost Sheet.png' });
 
 for (const n of [20, 21]) {
   await shot(sheet({
@@ -103,7 +103,7 @@ for (const n of [20, 21]) {
            ['Amenities & club', 'Lump sum', '₹ 8,50,000'],
            ['Statutory & legal', 'At actuals', '₹ 6,20,000'],
            ['Total', '—', '₹ 2,36,70,000']]
-  }), { w: 1400, h: 900, path: `collaterals/Hummingvalley/Cost Sheet/Villa ${n}.png` });
+  }), { w: 1400, h: 900, path: `Sales Kit/Hummingvalley/Cost Sheet/Villa ${n}.png` });
 }
 
 await shot(`<style>${DOC_CSS}
@@ -129,7 +129,7 @@ await shot(`<style>${DOC_CSS}
     <div class="lbl" style="left:6%;bottom:3%">Triton Humming Valley — Master Plan</div>
     <div class="lbl" style="right:6%;bottom:3%">Indicative only</div>
   </div>${BADGE}`,
-  { w: 1600, h: 1100, path: 'collaterals/Hummingvalley/Master Plan/Master Plan THV.png' });
+  { w: 1600, h: 1100, path: 'Sales Kit/Hummingvalley/Master Plan/Master Plan.png' });
 
 
 /* ============ 3. brochures & forms as real PDFs ============ */
@@ -179,7 +179,7 @@ await pdf(
   prosePage('Amenities', [
     'Clubhouse, pool, gym and landscaped decks would be described here with real photography.',
     'Replace this file with the approved brochure before showing it to anyone.'], 4),
-  'collaterals/Sanvi/Brochure/Sanvi Brochure September.pdf');
+  'Sales Kit/Sanvi/Brochure/Brochure.pdf');
 
 await pdf(
   coverPage('Triton Humming Valley', 'Humming Valley Brochure', 'Luxury villas near Nandi Hills',
@@ -193,7 +193,7 @@ await pdf(
   prosePage('The valley', [
     'Placeholder copy about the setting, elevation and the drive from the city.',
     'Replace this file with the approved brochure before use.'], 3),
-  'collaterals/Hummingvalley/Brochure/Brochure - HummingValley.pdf');
+  'Sales Kit/Hummingvalley/Brochure/Brochure.pdf');
 
 await pdf(
   coverPage('Triton Group', 'Main Brochure', 'Corporate — placeholder cover',
@@ -202,7 +202,7 @@ await pdf(
   prosePage('About Triton Group', [
     'Company overview copy would sit here, followed by the leadership note.',
     'Replace with the approved corporate brochure.'], 2),
-  'collaterals/Triton Branded/General/MAIN BROCHURE.pdf');
+  'Sales Kit/Triton Branded/General/Main Brochure.pdf');
 
 await pdf(
   `<div class="pg"><div class="stamp">PLACEHOLDER</div>
@@ -215,7 +215,7 @@ await pdf(
        <div style="height:26px;border-bottom:1px solid rgba(0,0,0,.28)"></div></div>`).join('')}
    <div class="note">Placeholder — not the approved form.</div>
    <div class="foot"><span>Triton Group</span><span>Placeholder · page 1</span></div></div>`,
-  'collaterals/Triton Branded/General/Sales Team Feedback Form.pdf');
+  'Sales Kit/Triton Branded/General/Feedback Form.pdf');
 
 /* ============ 4. the Location Advantage HTML page ============ */
 const LOC = [['Kempegowda International Airport', '8 km', '15 min'],
@@ -224,7 +224,7 @@ const LOC = [['Kempegowda International Airport', '8 km', '15 min'],
              ['Hebbal Metro (proposed)', '11 km', '18 min'],
              ['International school', '3 km', '7 min'],
              ['Multi-speciality hospital', '5 km', '11 min']];
-writeFileSync(out('collaterals/Sanvi/Location Advantage/Triton_Project_Advantage.html'),
+writeFileSync(out('Sales Kit/Sanvi/Location Advantage/Location Advantage.html'),
 `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Location Advantage — Placeholder</title><style>${DOC_CSS}
@@ -241,7 +241,7 @@ body{padding:56px 60px;max-width:900px;margin:0 auto;background:#fff}
 <tbody>${LOC.map(r => `<tr><td>${r[0]}</td><td class="n">${r[1]}</td><td class="n">${r[2]}</td></tr>`).join('')}</tbody></table>
 <div class="note">Replace with the approved location page.</div>
 </body></html>`);
-log('html', 'collaterals/Sanvi/Location Advantage/Triton_Project_Advantage.html');
+log('html', 'Sales Kit/Sanvi/Location Advantage/Location Advantage.html');
 
 await browser.close();
 

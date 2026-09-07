@@ -12,7 +12,7 @@ pan () {  # $1 still  $2 out  $3 seconds  $4 WxH
   printf '  video  %s  (%s)\n' "$2" "$(du -h "$ROOT/$2" | cut -f1)"
 }
 
-pan assets/media/hero-bg.jpg                        assets/media/hero.mp4                12 1280x720
-pan "collaterals/Sanvi/cover.jpg"                   "collaterals/Sanvi/Sanvi Video/Sanvi Aero Gardens _ 1, 2 & 3 BHK Luxury Apartments Near Bengaluru Airport.mp4" 16 1280x720
-pan "collaterals/Hummingvalley/cover.jpg"           "collaterals/Hummingvalley/Video/New AV Video.mp4" 14 1280x720
-pan "collaterals/Hummingvalley/Master Plan/Master Plan THV.png" "collaterals/Hummingvalley/Video/Triton Humming Valley Bangalore _ Luxury Villas Near Nandi Hills.mp4" 14 1280x720
+pan "Sales Kit/_Portal/hero-bg.jpg"                          "Sales Kit/_Portal/hero.mp4"                             12 1280x720
+pan "Sales Kit/Sanvi/cover.jpg"                              "Sales Kit/Sanvi/Video/Walkthrough.mp4"                  16 1280x720
+pan "Sales Kit/Hummingvalley/cover.jpg"                      "Sales Kit/Hummingvalley/Video/AV Film.mp4"              14 1280x720
+pan "Sales Kit/Hummingvalley/Master Plan/Master Plan.png"    "Sales Kit/Hummingvalley/Video/Walkthrough.mp4"          14 1280x720

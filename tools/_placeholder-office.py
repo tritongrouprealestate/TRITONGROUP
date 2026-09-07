@@ -72,11 +72,11 @@ PRICE = [["1 BHK", 452, 672, 4210000], ["2 BHK Compact", 684, 1015, 5720000],
          ["2 BHK Premium", 742, 1102, 6200000], ["3 BHK", 1038, 1540, 8670000],
          ["3 BHK Corner", 1104, 1638, 9180000]]
 
-xlsx("collaterals/Sanvi/Cost Sheet/SANVI AERO GARDENS PRICE LIST.xlsx",
+xlsx("Sales Kit/Sanvi/Cost Sheet/Price List.xlsx",
      "Sanvi Aero Gardens — Price List (placeholder)",
      ["Configuration", "Carpet (sq ft)", "SBA (sq ft)", "All-inclusive (₹)"], PRICE)
 
-xlsx("collaterals/Sanvi/Availability Sheet/SANVI AERO GARDENS LATEST AVAILABILITY SHEET.xlsx",
+xlsx("Sales Kit/Sanvi/Availability Sheet/Availability.xlsx",
      "Sanvi Aero Gardens — Availability (placeholder)",
      ["Unit", "Tower", "Floor", "Config", "Status"],
      [[f"{t}-{f:02d}0{u}", t, f, c, s]
@@ -85,7 +85,7 @@ xlsx("collaterals/Sanvi/Availability Sheet/SANVI AERO GARDENS LATEST AVAILABILIT
                             ("C", 2, 2, "2 BHK", "Available"), ("C", 11, 1, "3 BHK", "Available"),
                             ("D", 6, 4, "2 BHK", "Blocked"), ("D", 12, 2, "3 BHK", "Available")]])
 
-xlsx("collaterals/Sanvi/Comparision Sheet/Comparison Sheet.xlsx",
+xlsx("Sales Kit/Sanvi/Comparison Sheet/Comparison.xlsx",
      "Competitor Comparison (placeholder)",
      ["Project", "Distance", "Config", "Price / sq ft (₹)", "Possession"],
      [["Sanvi Aero Gardens", "—", "1/2/3 BHK", 6270, "Placeholder"],
@@ -93,7 +93,7 @@ xlsx("collaterals/Sanvi/Comparision Sheet/Comparison Sheet.xlsx",
       ["Competitor B", "3.4 km", "1/2 BHK", 5940, "Placeholder"],
       ["Competitor C", "4.8 km", "2/3 BHK", 7120, "Placeholder"]])
 
-pptx("collaterals/Sanvi/Brochure/Sanvi Brochure PPT.pptx",
+pptx("Sales Kit/Sanvi/Brochure/Presentation.pptx",
      "Sanvi Aero Gardens", "1, 2 & 3 BHK · Near Bengaluru Airport — placeholder deck",
      [("Why Sanvi", ["Placeholder positioning line", "Placeholder connectivity line",
                      "Placeholder amenity line", "Placeholder investment line"]),
@@ -101,7 +101,7 @@ pptx("collaterals/Sanvi/Brochure/Sanvi Brochure PPT.pptx",
                           "3 BHK · 1,540 – 1,638 sq ft SBA"]),
       ("Next steps", ["Replace this deck with the approved brochure PPT"])])
 
-pptx("collaterals/Hummingvalley/Brochure/PPT - Humming valley.pptx",
+pptx("Sales Kit/Hummingvalley/Brochure/Presentation.pptx",
      "Triton Humming Valley", "Luxury villas near Nandi Hills — placeholder deck",
      [("The setting", ["Placeholder elevation line", "Placeholder drive-time line",
                        "Placeholder landscape line"]),

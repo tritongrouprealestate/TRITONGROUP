@@ -1,90 +1,101 @@
 # Triton Group — Offline Sales Portal
 
-A self-contained sales portal for the field team. **Double-click `index.html`** — it opens in
-Chrome with no internet, no server and nothing to install. Copy the whole folder to a laptop
-or a USB stick and it works anywhere.
+Two things make up the whole product:
 
-It currently ships with **placeholder content** so it can be demonstrated immediately.
-Every placeholder is visibly marked. See *What to replace* below.
+```
+Triton Sales Portal.html      ← one file. Double-click it.
+Sales Kit/                    ← one folder. All the content.
+```
 
----
-
-## For the sales team: the only thing you ever do
-
-1. Put the new file into the right folder inside `collaterals/`.
-2. Open the portal, press **Update** (top right), and choose the `collaterals` folder.
-3. Done.
-
-The portal reads the folder and remembers it — including after you close the browser or
-restart the laptop. You only press Update when files have changed. There is nothing to
-install and no command to run.
-
-> Keep the `collaterals` folder next to `index.html`. If you move it elsewhere on the disk
-> the portal can list the files but will not be able to open them.
+Keep them **next to each other**. Copy both onto every sales laptop, or onto a USB
+stick. No internet, no server, nothing to install. It opens in Chrome or Edge.
 
 ---
 
-## What to replace
+## Updating content — the whole procedure
 
-Everything below is a placeholder. Replace each file **keeping the same name**, then press
-Update. Names must match Google Drive so the team recognises them.
+**Replace the file in `Sales Kit/`, keeping the same file name. That's it.**
 
-### Project collateral
+Every file has a fixed name. The portal is wired to those names, so a new brochure
+saved as `Brochure.pdf` simply becomes the brochure. Nothing to re-run, nothing to
+re-link. Close and reopen the portal to see it.
 
-| Replace this file | With |
+If you **add** a file that isn't in the standard list, or add a whole new project
+folder, press **Update** in the top right and pick the `Sales Kit` folder once. The
+portal remembers it from then on, including after restarting the laptop.
+
+---
+
+## The file names
+
+Save files under exactly these names. Case does not matter; spelling does.
+
+### Sanvi
+
+| Put the file here | Named |
 |---|---|
-| `collaterals/Sanvi/Brochure/Sanvi Brochure September.pdf` | the real brochure (144 MB in Drive) |
-| `collaterals/Sanvi/Brochure/Sanvi Brochure PPT.pptx` | the real deck (116 MB) |
-| `collaterals/Sanvi/Cost Sheet/Main Cost Sheet 62 Lakhs.png` | the real cost sheet image |
-| `collaterals/Sanvi/Cost Sheet/SANVI AERO GARDENS PRICE LIST.xlsx` | the real price list |
-| `collaterals/Sanvi/Availability Sheet/SANVI AERO GARDENS LATEST AVAILABILITY SHEET.xlsx` | **export from Drive** — it is a Google Sheet |
-| `collaterals/Sanvi/Comparision Sheet/Comparison Sheet.xlsx` | **export from Drive** — it is a Google Sheet |
-| `collaterals/Sanvi/Location Advantage/Triton_Project_Advantage.html` | the real HTML page |
-| `collaterals/Sanvi/Sanvi Video/Sanvi Aero Gardens _ 1, 2 & 3 BHK … .mp4` | the real film (62 MB) |
-| `collaterals/Hummingvalley/Brochure/Brochure - HummingValley.pdf` | the real brochure (23 MB) |
-| `collaterals/Hummingvalley/Brochure/PPT - Humming valley.pptx` | the real deck (43 MB) |
-| `collaterals/Hummingvalley/Cost Sheet/Villa 20.png` · `Villa 21.png` | the real villa cost sheets |
-| `collaterals/Hummingvalley/Master Plan/Master Plan THV.png` | the real master plan |
-| `collaterals/Hummingvalley/Video/New AV Video.mp4` | the real film (102 MB) |
-| `collaterals/Hummingvalley/Video/Triton Humming Valley … .mp4` | the real film (89 MB) |
-| `collaterals/Triton Branded/General/MAIN BROCHURE.pdf` | the real brochure (116 MB) |
-| `collaterals/Triton Branded/General/Sales Team Feedback Form.pdf` | the real form |
+| `Sales Kit/Sanvi/` | `cover.jpg` — the photo on the project card |
+| `Sales Kit/Sanvi/Brochure/` | `Brochure.pdf` |
+| `Sales Kit/Sanvi/Brochure/` | `Presentation.pptx` |
+| `Sales Kit/Sanvi/Cost Sheet/` | `Cost Sheet.png` |
+| `Sales Kit/Sanvi/Cost Sheet/` | `Price List.xlsx` |
+| `Sales Kit/Sanvi/Availability Sheet/` | `Availability.xlsx` |
+| `Sales Kit/Sanvi/Comparison Sheet/` | `Comparison.xlsx` |
+| `Sales Kit/Sanvi/Location Advantage/` | `Location Advantage.html` |
+| `Sales Kit/Sanvi/Video/` | `Walkthrough.mp4` |
 
-The two **Google Sheets** have no offline equivalent. Open each in Drive and use
-**File → Download → Microsoft Excel (.xlsx)**, saving under the exact name above.
+### Hummingvalley
 
-### Card photography — worth doing first
+| Put the file here | Named |
+|---|---|
+| `Sales Kit/Hummingvalley/` | `cover.jpg` |
+| `Sales Kit/Hummingvalley/Brochure/` | `Brochure.pdf` |
+| `Sales Kit/Hummingvalley/Brochure/` | `Presentation.pptx` |
+| `Sales Kit/Hummingvalley/Cost Sheet/` | `Villa 20.png`, `Villa 21.png` |
+| `Sales Kit/Hummingvalley/Master Plan/` | `Master Plan.png` |
+| `Sales Kit/Hummingvalley/Video/` | `Walkthrough.mp4` |
+| `Sales Kit/Hummingvalley/Video/` | `AV Film.mp4` |
 
-One landscape photo per project becomes the card image. This is the single biggest visual
-improvement you can make.
+### Triton Branded
 
-| Replace | With | Ideal |
-|---|---|---|
-| `collaterals/Sanvi/cover.jpg` | Sanvi hero shot | ~1600×1200, under 500 KB |
-| `collaterals/Hummingvalley/cover.jpg` | Humming Valley hero shot | same |
-| `collaterals/Triton Branded/cover.jpg` | a corporate/brand image | same |
+| Put the file here | Named |
+|---|---|
+| `Sales Kit/Triton Branded/` | `cover.jpg` |
+| `Sales Kit/Triton Branded/General/` | `Main Brochure.pdf` |
+| `Sales Kit/Triton Branded/General/` | `Feedback Form.pdf` |
 
 ### Front screen
 
-| Replace | With |
+| Put the file here | Named |
 |---|---|
-| `assets/media/hero.mp4` | the background film — muted loop, keep under ~20 MB |
-| `assets/media/hero-poster.jpg` | its first frame |
-| `assets/media/hero-bg.jpg` | the still behind the film |
+| `Sales Kit/_Portal/` | `hero.mp4` — background film, muted loop, under ~20 MB |
+| `Sales Kit/_Portal/` | `hero-poster.jpg` — its first frame |
+| `Sales Kit/_Portal/` | `hero-bg.jpg` — the still behind the film |
 
-All three are optional; without them the hero falls back to a gradient.
+`_Portal` starts with an underscore, so the portal treats it as its own and never
+shows it as a project.
 
-### Wording
-
-`assets/js/data.js` holds each project's tagline, location line and tag (RESIDENTIAL /
-VILLAS / CORPORATE). Edit it in any text editor. Pressing Update never overwrites this copy.
+If a file is missing, its tile still appears, greyed, reading **"Not added yet"** with
+the name it is waiting for. Nothing breaks.
 
 ---
 
-## Total size
+## Everything in here now is a placeholder
 
-The real collateral is roughly **730 MB** — the three big brochures alone are 144 MB, 116 MB
-and 116 MB. Use a 2 GB or larger stick. The placeholders are about 5 MB.
+The portal ships populated so it can be demonstrated straight away. Every placeholder
+is stamped **PLACEHOLDER** — on the artwork it is a repeating diagonal watermark, so it
+stays visible however the image is cropped. **Never show one to a client.**
+
+Replace them using the tables above. Two notes:
+
+- **The two Google Sheets** — Sanvi's Availability and Comparison sheets — have no
+  offline form. Open each in Drive, choose **File → Download → Microsoft Excel
+  (.xlsx)**, and save it under the name in the table.
+- **Card photos first.** Replacing the three `cover.jpg` files is the single biggest
+  visual improvement, and takes a minute.
+
+The real collateral is roughly **730 MB** — Sanvi's brochure alone is 144 MB. Use a
+2 GB or larger USB stick. The placeholders are about 5 MB.
 
 ---
 
@@ -93,72 +104,45 @@ and 116 MB. Use a 2 GB or larger stick. The placeholders are about 5 MB.
 | Key | Does |
 |-----|------|
 | scroll | expands the hero film, then enters the portal |
-| `/` or `Ctrl/Cmd-K` | search every project, folder and file |
+| `/` or `Ctrl-K` | search every project, folder and file |
 | `P` | presentation mode — hides all chrome |
 | `U` | update library |
-| `Esc` | close viewer / search, or go back |
+| `Esc` | close the viewer or search, or go back |
 | `H` | jump home |
-| `Shift-R` | reset to the list that shipped with the portal |
+| `Shift-R` | reset to the built-in list |
 
-PDFs, videos, images and HTML pages open **inside** the portal, on-brand. Office files
-(`.pptx`, `.xlsx`) open in their native app via the **Open** button — no browser can render
-those offline.
-
----
-
-## Folder rules
-
-```
-collaterals/
-└── <Project>/            → becomes a card on the front screen
-    ├── cover.jpg         → that card's photo (not listed as a file)
-    └── <Folder>/         → becomes a folder tile inside the project
-        └── <any files>   → listed, and opened in the viewer
-```
-
-Loose files sitting directly in a project folder are gathered into a **General** folder.
-A project named `Old` or `Archive` is hidden automatically. Empty folders stay visible so
-you can see what is still missing.
+PDFs, videos, images and HTML pages open **inside** the portal, on-brand. Word, Excel
+and PowerPoint files open in their own app via the **Open** button — no browser can
+display those offline.
 
 ---
 
-## For whoever prepares the master copy
+## Changing the wording
 
-Two optional Node scripts. The sales team never needs either.
+Project taglines, location lines and the tags (RESIDENTIAL / VILLAS / CORPORATE) live
+in `src/data.js`. Edit it in any text editor, then rebuild (below). Pressing Update in
+the portal never overwrites this wording.
+
+---
+
+## Rebuilding the HTML file
+
+Only needed if you change the portal itself. Requires Node.
 
 ```bash
-node tools/generate-manifest.mjs    # bake the current folder tree into data.js,
-                                    # so even the very first open is populated
-node tools/make-placeholders.mjs    # regenerate all placeholder artwork and documents
+node tools/build.mjs             # src/ -> "Triton Sales Portal.html"
+node tools/make-placeholders.mjs # regenerate all placeholder content
 ```
 
-`generate-manifest.mjs` preserves hand-written taglines, tags, covers and ordering.
-
-### Note on git
-
-The placeholder files are committed so the portal demos from a fresh clone. **Before you
-copy the real 730 MB of collateral in, run this once** so it never gets committed:
-
-```bash
-git rm -r --cached collaterals
-```
-
-`.gitignore` already excludes anything new under `collaterals/`.
-
----
-
-## Layout
+`Triton Sales Portal.html` is generated — edit `src/`, never the built file.
 
 ```
-index.html                    the whole app shell
-assets/css/styles.css         theme tokens live in :root — 8 lines to re-brand
-assets/js/data.js             project / folder / file manifest and wording
-assets/js/app.js              router, hero, library scanner, viewer, search
-tools/                        optional prep scripts
-collaterals/                  the actual files
+src/index.html    page structure
+src/styles.css    all styling; the palette is eight lines at the top
+src/data.js       projects, folders, file names and wording
+src/app.js        router, hero, folder scanner, viewer, search
 ```
 
-No build step, no framework, no dependencies. The hero's scroll-expand effect and the
-project cards were hand-ported to vanilla JS/CSS specifically so the portal keeps working
-from `file://` with no server. The Update button uses a directory input, which is the only
-way to read a folder listing without one.
+The hero's scroll-expand effect and the project cards were written in plain JS and CSS
+rather than React, because the portal has to run from a double-clicked file with no
+server behind it.

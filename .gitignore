@@ -3,10 +3,3 @@ package.json
 package-lock.json
 .DS_Store
 Thumbs.db
-
-# Real collateral (~730 MB) must never be committed. The small placeholder files
-# were force-added so the portal demos from a fresh clone; anything NEW added here
-# stays ignored. Before copying the real files in, run once:
-#     git rm -r --cached collaterals
-collaterals/**/*
-!collaterals/**/
