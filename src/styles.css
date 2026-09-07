@@ -524,3 +524,20 @@ a.tile{text-decoration:none;color:inherit}
 a.tile{text-decoration:none;color:inherit}
 a.tile:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 div.tile.missing{cursor:default}
+
+/* ---------- document images previewed on their own tile ---------- */
+.tile-shot.doc{background:#fff}
+.tile-shot.doc::after{                  /* no scrim — it would dim the sheet */
+  background:linear-gradient(to bottom,transparent 62%,rgba(0,0,0,.05));
+}
+.shot.doc{object-position:center top}
+.tile-zoom{
+  position:absolute;right:11px;bottom:11px;z-index:2;
+  display:grid;place-items:center;width:32px;height:32px;border-radius:9px;
+  background:rgba(255,255,255,.94);color:#111214;
+  box-shadow:0 3px 12px rgba(0,0,0,.2);
+  opacity:0;transform:translateY(5px);
+  transition:opacity .35s var(--ease),transform .35s var(--ease);
+}
+.tile-zoom svg{width:15px;height:15px;stroke-width:2}
+.tile:hover .tile-zoom{opacity:1;transform:none}

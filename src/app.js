@@ -38,7 +38,8 @@ var I = {
   arch:  '<rect x="3" y="4" width="18" height="4" rx="1"/><path d="M5 8v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8M10 12h4"/>',
   sync:  '<path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/>',
   youtube: '<rect x="2" y="5" width="20" height="14" rx="4"/><path d="m10 9 5 3-5 3z"/>',
-  play:  '<path d="M8 5.5v13l11-6.5z" fill="currentColor" stroke="none"/>'
+  play:  '<path d="M8 5.5v13l11-6.5z" fill="currentColor" stroke="none"/>',
+  expand:'<path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>'
 };
 var svg = function (k, cls) {
   return '<svg class="' + (cls || '') + '" viewBox="0 0 24 24">' + (I[k] || I.file) + '</svg>';
@@ -235,10 +236,15 @@ function bindInteractive(root) {
    connection, then nothing — the panel behind it carries the play mark either way.
    Local film: the browser draws a frame from the file itself, so it needs no
    generated poster and keeps working when the film is replaced. */
-function preview(file) {
+function preview(file, k) {
   if (file.youtube)
     return '<img class="shot" alt="" src="' + esc(uri(file.thumb || '')) + '" data-fb="' +
            'https://img.youtube.com/vi/' + esc(file.youtube) + '/hqdefault.jpg">';
+  if (k === 'image')
+    /* the sheet itself, anchored to its top edge so the heading that identifies
+       it is always the part on show */
+    return '<img class="shot doc" alt="" loading="lazy" decoding="async" src="' +
+           esc(uri(file.path)) + '">';
   return '<video class="shot" muted playsinline preload="metadata" tabindex="-1" src="' +
          esc(uri(file.path)) + '#t=1"></video>';
 }
@@ -380,10 +386,13 @@ function renderFolder(p, f) {
                     : file.note   ? file.note
                     : file.size   ? file.name + '  ·  ' + file.size
                     : file.name;
-            var media = !file.missing && k === 'video';
+            var media = !file.missing && (k === 'video' || k === 'image');
             var head = media
-              ? '<span class="tile-shot">' + preview(file) +
-                '<span class="tile-play">' + svg('play') + '</span></span>'
+              ? '<span class="tile-shot' + (k === 'image' ? ' doc' : '') + '">' +
+                preview(file, k) +
+                (k === 'video' ? '<span class="tile-play">' + svg('play') + '</span>'
+                               : '<span class="tile-zoom">' + svg('expand') + '</span>') +
+                '</span>'
               : '<span class="tile-ico">' + svg(k) + '</span>';
             var inner = head +
                    '<span class="tile-badge">' + KIND_LABEL[k] + '</span>' +

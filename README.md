@@ -143,7 +143,11 @@ The real collateral is roughly **730 MB** — Sanvi's brochure alone is 144 MB. 
 | `Shift-R` | reset to the built-in list |
 
 **One click opens a file.** Clicking any tile opens that file straight away in a new
-browser tab — no preview step in between. PDFs, images, videos and HTML pages display
+browser tab — no preview step in between.
+
+Image and video tiles show the file itself as their picture, anchored to the top edge
+so a sheet's heading is the part on show. Reps can tell two cost sheets apart without
+opening either. PDFs, images, videos and HTML pages display
 in the tab. Word, Excel and PowerPoint cannot be shown by a browser, so Chrome saves
 them to Downloads and they open from there in their own app.
 
