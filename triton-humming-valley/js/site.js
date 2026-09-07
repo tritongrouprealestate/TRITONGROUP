@@ -53,6 +53,17 @@ const DATA = {
   /* Google Maps pin for the site. Written into every address on the page. */
   mapUrl: 'https://maps.app.goo.gl/qKgAu1p8eE1tc8KK6',
 
+  /* Drive times from the gate, and where each place sits from it. `min` is
+     what the label says; `deg` is a compass bearing, 0 being north, used
+     only to place the point on the dial. The dial's outer ring is 60 min, so
+     anything further away needs the ring scale below changed with it. */
+  reach: [
+    { name:'Nandi valley vineyards',   label:'15 min', min:15, deg:310 },
+    { name:'Nandi Hills summit',       label:'20 min', min:20, deg:8   },
+    { name:'Kempegowda International', label:'35 min', min:35, deg:214 },
+    { name:'Hebbal, north Bengaluru',  label:'1 hr',   min:60, deg:176 }
+  ],
+
   /* Read off the project's own floor-plan sheets. `land` is the plot, `area`
      the built-up figure printed beside it. `levels` is the layout in the
      order you climb it — enough for someone to picture the villa, not enough
@@ -397,7 +408,7 @@ $('#villa-list').innerHTML = DATA.villas.map(v => `
         <button type="button" class="btn btn-ink mt-8" data-enquire="Villa ${v.name}" data-villa="${v.name}">Enquire about the ${v.name}</button>
       </div>
       <div class="grid gap-5">
-        <div class="villa-shot relative aspect-[3/4] overflow-hidden bg-cloud-2">
+        <div class="villa-shot relative aspect-square overflow-hidden bg-cloud-2">
           <img alt="${v.photoAlt}" data-src="${v.photo}" loading="lazy"
                decoding="async" width="1200" height="1600" class="h-full w-full object-cover opacity-0
                transition-opacity duration-700">
@@ -596,6 +607,109 @@ if (chips) {
   $$('#plot-chips [data-chip]').forEach(node => {
     const p = DATA.plots.find(x => x.n === node.dataset.chip);
     node.addEventListener('click', () => selectPlot(p, node));
+  });
+}
+
+/* ═══ THE REACH DIAL ═══════════════════════════════════════════════════
+   Four drive times, drawn as distance from the gate. Rings every fifteen
+   minutes, each place on its own bearing, so the vineyards sitting inside
+   the airport is a thing you see rather than a pair of numbers you compare.
+
+   The list beside it carries the same four facts as text. That is what a
+   screen reader reads and what anyone gets if this never draws — the
+   diagram is aria-hidden, and nothing is only in the picture. */
+const reach = $('[data-reach]');
+if (reach && DATA.reach) {
+  const NSVG = 'http://www.w3.org/2000/svg';
+  const C = 210, R = 186, MAX = 60;          // centre, outer radius, minutes at it
+  const rings = $('.reach-rings', reach);
+  const ticks = $('.reach-ticks', reach);
+  const spokes = $('.reach-spokes', reach);
+  const dots  = $('.reach-dots', reach);
+
+  const at = (deg, r) => {
+    const a = (deg - 90) * Math.PI / 180;    // 0deg is north, not east
+    return [C + Math.cos(a) * r, C + Math.sin(a) * r];
+  };
+  const el = (n, attrs) => {
+    const e = document.createElementNS(NSVG, n);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  };
+
+  /* Rings at 15, 30, 45 and 60 minutes, the outer one solid so the edge of
+     the hour reads as an edge. */
+  [15, 30, 45, 60].forEach(m => {
+    const r = R * m / MAX;
+    rings.appendChild(el('circle', {
+      cx:C, cy:C, r, 'stroke-opacity': m === MAX ? .35 : .16,
+      'stroke-dasharray': m === MAX ? 'none' : '2 6'
+    }));
+    const [tx, ty] = at(45, r);
+    const t = el('text', {x:tx + 6, y:ty - 4, 'font-size':10,
+      'font-family':'Manrope, sans-serif', fill:'currentColor', 'fill-opacity':.45});
+    t.textContent = m === MAX ? '60 min' : m;
+    ticks.appendChild(t);
+  });
+
+  DATA.reach.forEach((d, i) => {
+    const r = R * Math.min(d.min, MAX) / MAX;
+    const [x, y] = at(d.deg, r);
+    const line = el('line', {x1:C, y1:C, x2:x, y2:y, 'stroke-opacity':.3,
+                            'data-reach-spoke':i});
+    spokes.appendChild(line);
+
+    const g = el('g', {'data-reach-dot':i});
+    g.appendChild(el('circle', {cx:x, cy:y, r:14, fill:'transparent'}));
+    g.appendChild(el('circle', {cx:x, cy:y, r:5.5, class:'reach-dot'}));
+    dots.appendChild(g);
+  });
+
+  /* Each stroke gets its own length, so every ring and spoke draws at the
+     same speed rather than the long ones lagging. */
+  $$('.reach-rings circle', reach).forEach(c =>
+    c.style.setProperty('--len', 2 * Math.PI * (+c.getAttribute('r'))));
+  $$('.reach-spokes line', reach).forEach(l =>
+    l.style.setProperty('--len',
+      Math.hypot(+l.getAttribute('x2') - C, +l.getAttribute('y2') - C)));
+
+  /* Drawn when it is actually on screen, not 600px ahead of it — this one is
+     an animation to watch, not an image to have ready. */
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(es => {
+      if (!es.some(e => e.isIntersecting)) return;
+      io.disconnect();
+      reach.classList.add('is-drawn');
+    }, { threshold: .35 });
+    io.observe(reach);
+  } else {
+    reach.classList.add('is-drawn');
+  }
+
+  $('.reach-list', reach).innerHTML = DATA.reach.map((d, i) => `
+    <div class="reach-row" data-reach-row="${i}" tabindex="0">
+      <dt>${d.name}</dt>
+      <dd>${d.label}</dd>
+    </div>`).join('');
+
+  /* Pointing at either half lights the other. The row is the focusable one:
+     the dot is decoration, inside an aria-hidden drawing. */
+  const rows = $$('[data-reach-row]', reach);
+  const mark = (i, on) => {
+    const row = reach.querySelector(`[data-reach-row="${i}"]`);
+    const dot = reach.querySelector(`[data-reach-dot="${i}"]`);
+    const spoke = reach.querySelector(`[data-reach-spoke="${i}"]`);
+    if (row) row.classList.toggle('is-lit', on);
+    if (dot) dot.classList.toggle('is-lit', on);
+    if (spoke) spoke.classList.toggle('is-lit', on);
+  };
+  rows.forEach((row, i) => {
+    ['mouseenter','focus'].forEach(ev => row.addEventListener(ev, () => mark(i, true)));
+    ['mouseleave','blur'].forEach(ev => row.addEventListener(ev, () => mark(i, false)));
+  });
+  $$('[data-reach-dot]', reach).forEach((g, i) => {
+    g.addEventListener('mouseenter', () => mark(i, true));
+    g.addEventListener('mouseleave', () => mark(i, false));
   });
 }
 
@@ -1771,4 +1885,93 @@ const measure = () => { width = cards[0].offsetWidth; paint(); };
 measure();
 new ResizeObserver(measure).observe(frame);
 select(0);
+})();
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   THE FILM
+
+   Ported from a React component. Three things changed, all because the page
+   around it is not React:
+
+   1. The trigger is a real <button>. The original was a div with tabindex and
+      a keydown handler listening for Enter — three lines of code to get back
+      what a button already does, and it still would not have answered Space.
+   2. Scroll is locked through the same path as the enquiry popup. The
+      original set document.body.style.overflow directly, which on this page
+      would fight Lenis for the scroll and lose.
+   3. The iframe is written on open and cleared on close. React unmounts it
+      for you; here it has to be removed by hand or the audio keeps playing
+      behind a closed dialog.
+
+   The player is never on the page until someone asks for it: a YouTube embed
+   is around half a megabyte and sets cookies before a visitor has decided to
+   watch anything.
+   ═══════════════════════════════════════════════════════════════════════ */
+(() => {
+'use strict';
+const card  = document.querySelector('.video-card');
+const modal = document.getElementById('video-modal');
+if (!card || !modal) return;
+
+const frame = modal.querySelector('.video-frame');
+const closeBtn = modal.querySelector('.video-close');
+let lastFocus = null;
+
+/* Same scroll lock as the enquiry popup: Lenis owns the page scroll, so
+   stopping it is the only thing that works. */
+function lock(on){
+  if (window.lenisInstance) on ? window.lenisInstance.stop() : window.lenisInstance.start();
+  else document.body.style.overflow = on ? 'hidden' : '';
+}
+
+function openFilm(){
+  const id = card.dataset.video;
+  if (!id) return;
+  lastFocus = document.activeElement;
+
+  /* nocookie, and no related videos from other channels at the end. */
+  const src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(id)
+            + '?autoplay=1&rel=0&modestbranding=1&playsinline=1';
+  frame.innerHTML =
+    '<iframe src="' + src + '" title="Triton Humming Valley, the film" '
+    + 'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" '
+    + 'allowfullscreen></iframe>';
+
+  modal.hidden = false;
+  lock(true);
+  closeBtn.focus();
+
+  if (typeof gsap !== 'undefined' && !matchMedia('(prefers-reduced-motion: reduce)').matches){
+    gsap.fromTo(modal, {opacity:0}, {opacity:1, duration:.25, ease:'power2.out'});
+    gsap.fromTo(modal.querySelector('.video-panel'),
+      {y:20, scale:.98}, {y:0, scale:1, duration:.45, ease:'expo.out'});
+  }
+}
+
+function shutFilm(){
+  if (modal.hidden) return;
+  modal.hidden = true;
+  frame.innerHTML = '';        // stops the audio; the player is gone until next time
+  lock(false);
+  if (lastFocus) lastFocus.focus();
+}
+
+card.addEventListener('click', openFilm);
+modal.addEventListener('click', e => { if (e.target.closest('[data-video-close]')) shutFilm(); });
+
+document.addEventListener('keydown', e => {
+  if (modal.hidden) return;
+  if (e.key === 'Escape'){ shutFilm(); return; }
+  /* One focusable thing inside, so the trap is a single line: anything that
+     leaves the close button comes straight back to it. */
+  if (e.key === 'Tab'){ e.preventDefault(); closeBtn.focus(); }
+});
+
+/* The poster follows the same rule as every other photograph on the page. */
+const poster = card.querySelector('.video-poster');
+if (poster && poster.dataset.src) {
+  if (typeof loadWhenNear === 'function') loadWhenNear(poster, poster.dataset.src, null, card);
+  else { poster.src = poster.dataset.src; poster.classList.add('is-loaded'); }
+}
 })();
