@@ -6,8 +6,8 @@
 'use strict';
 
 var D  = window.PORTAL_DATA || { projects: [] };
-var ALL = D.projects || [];
-var VISIBLE = ALL.filter(function (p) { return !p.hidden; });
+var BASELINE = (D.projects || []).slice();   // what shipped in data.js
+function visible() { return (D.projects || []).filter(function (p) { return !p.hidden; }); }
 var $  = function (s, r) { return (r || document).querySelector(s); };
 var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
 var esc = function (s) {
@@ -35,7 +35,8 @@ var I = {
   back:  '<path d="M19 12H5M11 18l-6-6 6-6"/>',
   bld:   '<path d="M3 21h18M5 21V7l7-4 7 4v14"/><path d="M9 9h1M14 9h1M9 13h1M14 13h1M9 17h1M14 17h1"/>',
   mtn:   '<path d="m3 20 6.5-11 4 6 2.5-4L21 20z"/><circle cx="7.5" cy="6.5" r="1.6"/>',
-  arch:  '<rect x="3" y="4" width="18" height="4" rx="1"/><path d="M5 8v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8M10 12h4"/>'
+  arch:  '<rect x="3" y="4" width="18" height="4" rx="1"/><path d="M5 8v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8M10 12h4"/>',
+  sync:  '<path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/>'
 };
 var svg = function (k, cls) {
   return '<svg class="' + (cls || '') + '" viewBox="0 0 24 24">' + (I[k] || I.file) + '</svg>';
@@ -275,9 +276,9 @@ function renderHome() {
           '<p class="sec-sub">Every brochure, cost sheet, availability chart and film — ' +
             'stored on this machine and ready to present without a connection.</p>' +
         '</div>' +
-        '<span class="sec-count">' + VISIBLE.length + ' Projects</span>' +
+        '<span class="sec-count">' + visible().length + ' Projects</span>' +
       '</div>' +
-      '<div class="projects">' + VISIBLE.map(projectCard).join('') + '</div>' +
+      '<div class="projects">' + visible().map(projectCard).join('') + '</div>' +
     '</div>';
   paint(body);
 }
@@ -339,9 +340,10 @@ function renderFolder(p, f) {
                    '</button>';
           }).join('') + '</div>'
         : emptyState(
-            'Drop the files for <b>' + esc(p.name) + ' → ' + esc(f.name) + '</b> into<br>' +
-            '<code>collaterals/' + esc(p.name) + '/' + esc(f.name) + '/</code><br><br>' +
-            'then run <code>node tools/generate-manifest.mjs</code> and refresh.')) +
+            'Put the files for <b>' + esc(p.name) + ' → ' + esc(f.name) + '</b> into<br>' +
+            '<code>collaterals/' + esc(p.name) + '/' + esc(f.name) + '/</code><br>' +
+            'then press Update and pick the <code>collaterals</code> folder.' +
+            '<br><button class="empty-cta" data-update>' + svg('sync') + ' Update library</button>')) +
     '</div>';
   paint(body);
 }
@@ -381,7 +383,7 @@ function crumbs(path) {
 var Route = { away: false };
 
 function findProject(id) {
-  return VISIBLE.filter(function (p) { return p.id === id; })[0];
+  return visible().filter(function (p) { return p.id === id; })[0];
 }
 function findFolder(p, id) {
   return (p.folders || []).filter(function (f) { return f.id === id; })[0];
@@ -413,6 +415,178 @@ addEventListener('hashchange', route);
 addEventListener('scroll', function () {
   $('#topbar').classList.toggle('solid', scrollY > 30);
 }, { passive: true });
+
+
+/* ============================================================
+   LIBRARY — scan the collaterals folder, no server, no commands
+   ------------------------------------------------------------
+   A <input webkitdirectory> hands us the whole recursive tree with
+   relative paths. We only use it to LEARN filenames; files are then
+   opened by relative path (not blob URLs), so videos stay seekable
+   and nothing expires. The result is kept in localStorage, which
+   survives a browser restart on file://, so the pick is a one-off.
+   ============================================================ */
+var Library = (function () {
+  var KEY = 'triton.library.v1';
+
+  var SKIP = /^(\.|~\$|desktop\.ini$|thumbs\.db$|\.ds_store$)/i;
+  var COVER = /^cover\.(jpe?g|png|webp)$/i;
+
+  function slug(s) {
+    return String(s).toLowerCase().trim()
+      .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'item';
+  }
+  function human(b) {
+    return b < 1024 ? b + ' B'
+         : b < 1048576 ? Math.round(b / 1024) + ' KB'
+         : b < 1073741824 ? (b / 1048576).toFixed(1) + ' MB'
+         : (b / 1073741824).toFixed(2) + ' GB';
+  }
+
+  /* ---- turn a flat FileList into the project/folder/file tree ---- */
+  function build(files) {
+    var root = '', tree = {}, covers = {};
+
+    for (var i = 0; i < files.length; i++) {
+      var f = files[i];
+      var parts = (f.webkitRelativePath || f.name).split('/');
+      if (!root) root = parts[0];
+
+      var project = parts[1];
+      if (!project || SKIP.test(project) || parts.length < 3) continue;   // stray file at the top
+
+      /* register the project/folder from the path even when the file itself is
+         skipped, so empty folders still appear and show what is missing */
+      tree[project] = tree[project] || {};
+
+      if (parts.length === 3 && COVER.test(parts[2])) { covers[project] = parts.join('/'); continue; }
+
+      var folder = parts.length >= 4 ? parts[2] : 'General';
+      if (SKIP.test(folder)) continue;
+      tree[project][folder] = tree[project][folder] || [];
+
+      var name = parts[parts.length - 1];
+      if (SKIP.test(name)) continue;
+      /* files nested deeper than one level are flattened into their top folder
+         rather than dropped, so nothing on disk goes missing */
+
+      tree[project][folder].push({ name: name, path: parts.join('/'), size: human(f.size) });
+    }
+
+    /* keep the copy someone wrote by hand in data.js */
+    var prev = {};
+    BASELINE.forEach(function (p) { prev[p.id] = p; });
+
+    var projects = Object.keys(tree).map(function (pname) {
+      var id  = slug(pname);
+      var old = prev[id] || {};
+      var oldF = {};
+      (old.folders || []).forEach(function (f) { oldF[f.id] = f; });
+
+      var folders = Object.keys(tree[pname]).map(function (fname) {
+        var fid = slug(fname);
+        var notes = {};
+        ((oldF[fid] || {}).files || []).forEach(function (x) { if (x.note) notes[x.name] = x.note; });
+        return {
+          id: fid, name: fname,
+          files: tree[pname][fname]
+            .map(function (x) { return notes[x.name] ? Object.assign({}, x, { note: notes[x.name] }) : x; })
+            .sort(function (a, b) { return a.name.localeCompare(b.name, undefined, { numeric: true }); })
+        };
+      }).sort(function (a, b) {
+        var oa = (old.folders || []).findIndex(function (f) { return f.id === a.id; });
+        var ob = (old.folders || []).findIndex(function (f) { return f.id === b.id; });
+        if (oa < 0) oa = 999; if (ob < 0) ob = 999;
+        return oa !== ob ? oa - ob : a.name.localeCompare(b.name);
+      });
+
+      var archived = old.archive !== undefined ? old.archive : /^(old|archive|backup)$/i.test(pname);
+      return {
+        id: id, name: old.name || pname,
+        location: old.location || '',
+        tagline:  old.tagline  || (folders.length + ' folders of sales collateral.'),
+        tag:      old.tag      || (archived ? 'Archive' : 'Project'),
+        cover:    covers[pname] || old.cover || '',
+        accent:   old.accent   || 'linear-gradient(155deg,#6d8399,#3b4a5c 55%,#8a7a52)',
+        archive:  archived || undefined,
+        hidden:   old.hidden !== undefined ? old.hidden : archived,
+        folders:  folders
+      };
+    }).sort(function (a, b) {
+      var oa = BASELINE.findIndex(function (p) { return p.id === a.id; });
+      var ob = BASELINE.findIndex(function (p) { return p.id === b.id; });
+      if (oa < 0) oa = 999; if (ob < 0) ob = 999;
+      if (!!a.hidden !== !!b.hidden) return a.hidden ? 1 : -1;
+      return oa !== ob ? oa - ob : a.name.localeCompare(b.name);
+    });
+
+    return { root: root, at: Date.now(), projects: projects };
+  }
+
+  /* ---- persistence ---- */
+  function save(lib) { try { localStorage.setItem(KEY, JSON.stringify(lib)); } catch (e) {} }
+  function load() {
+    try { var v = JSON.parse(localStorage.getItem(KEY)); return v && v.projects && v.projects.length ? v : null; }
+    catch (e) { return null; }
+  }
+  function clear() { try { localStorage.removeItem(KEY); } catch (e) {} }
+
+  function countFiles(ps) {
+    return ps.reduce(function (n, p) {
+      return n + (p.folders || []).reduce(function (m, f) { return m + f.files.length; }, 0); }, 0);
+  }
+
+  function apply(lib) {
+    D.projects = lib.projects;
+    stamp(lib);
+  }
+
+  function stamp(lib) {
+    var el = $('#libStamp');
+    if (!el) return;
+    if (!lib) { el.textContent = 'Built-in list'; return; }
+    var d = new Date(lib.at);
+    el.textContent = 'Updated ' + d.toLocaleDateString(undefined,
+      { day: 'numeric', month: 'short' }) + ' · ' + countFiles(lib.projects) + ' files';
+  }
+
+  /* ---- the one interaction: pick the folder ---- */
+  function scan(files) {
+    if (!files || !files.length) return;
+    var before = countFiles(D.projects || []);
+    var lib = build(files);
+    if (!lib.projects.length) { toast('Nothing found in that folder', 'That folder has no project sub-folders inside it.', true); return; }
+    save(lib); apply(lib);
+    var after = countFiles(lib.projects);
+    var delta = after - before;
+    toast('Library updated',
+      lib.projects.filter(function (p) { return !p.hidden; }).length + ' projects · ' + after + ' files' +
+      (delta > 0 ? ' · ' + delta + ' new' : delta < 0 ? ' · ' + (-delta) + ' removed' : '') +
+      '  —  reading from ' + lib.root + '/');
+    route();
+  }
+
+  function toast(title, body, warn) {
+    var t = $('#toast');
+    t.className = 'toast show' + (warn ? ' warn' : '');
+    t.innerHTML = '<b>' + esc(title) + '</b><span>' + esc(body) + '</span>';
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function () { t.className = 'toast'; }, 6000);
+  }
+
+  function init() {
+    var input = $('#dirInput');
+    $('#updateBtn').onclick = function () { input.value = ''; input.click(); };
+    input.addEventListener('change', function () { scan(this.files); });
+
+    var saved = load();
+    if (saved) apply(saved); else stamp(null);
+  }
+
+  return { init: init, clear: clear, toast: toast, stamp: stamp,
+           reset: function () { clear(); D.projects = BASELINE.slice(); stamp(null);
+                                toast('Reset', 'Back to the list that shipped with the portal.'); route(); } };
+})();
 
 /* ============================================================
    VIEWER
@@ -465,7 +639,8 @@ var Viewer = (function () {
 
 document.addEventListener('click', function (e) {
   var t = e.target.closest('[data-open]');
-  if (t) Viewer.open(t.dataset.open, t.dataset.name);
+  if (t) { Viewer.open(t.dataset.open, t.dataset.name); return; }
+  if (e.target.closest('[data-update]')) $('#updateBtn').click();
 });
 
 /* ============================================================
@@ -477,7 +652,7 @@ var Search = (function () {
 
   function build() {
     index = [];
-    VISIBLE.forEach(function (p) {
+    visible().forEach(function (p) {
       index.push({ t: 'project', name: p.name, path: 'Projects', href: '#/p/' + p.id, icon: 'folder' });
       (p.folders || []).forEach(function (f) {
         index.push({ t: 'folder', name: f.name, path: p.name,
@@ -586,6 +761,8 @@ addEventListener('keydown', function (e) {
   else if (e.key === 'k' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); Search.open(); }
   else if (e.key.toLowerCase() === 'p') document.body.classList.toggle('present');
   else if (e.key.toLowerCase() === 'h') location.hash = '#/';
+  else if (e.key.toLowerCase() === 'u') $('#updateBtn').click();
+  else if (e.key.toLowerCase() === 'r' && e.shiftKey) Library.reset();
 });
 
 /* ============================================================
@@ -605,6 +782,7 @@ addEventListener('keydown', function (e) {
     if (v.readyState === 0 && v.networkState === 3) v.remove();
   }, 1200);
 
+  Library.init();
   Hero.paint();
 
   // deep link straight to a project? skip the hero entirely
