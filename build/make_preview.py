@@ -95,12 +95,8 @@ out = f'''<title>Triton Humming Valley</title>
 {crit}
 /* The artifact wrapper paints its own ground behind the page, so the night
    ground is stated explicitly rather than inherited. */
-html,body{{background:#071A1C;margin:0}}
+html,body{{background:#061A18;margin:0}}
 </style>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Manrope:wght@200..800&display=swap">
 
 <style>
 {css}
