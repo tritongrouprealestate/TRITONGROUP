@@ -11,6 +11,7 @@ window.PORTAL_DATA = {
   brand: {
     name: "Triton Group",
     root: "Sales Kit",
+    logo: "Sales Kit/_Portal/logo.png",
     hero: {
       wordA: "TRITON",
       wordB: "GROUP",

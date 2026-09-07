@@ -98,6 +98,7 @@ you — this build machine has no access to YouTube.
 
 | Put the file here | Named |
 |---|---|
+| `Sales Kit/_Portal/` | `logo.png` — the Triton logo, for the header and footer |
 | `Sales Kit/_Portal/` | `hero.mp4` — background film, muted loop, under ~20 MB |
 | `Sales Kit/_Portal/` | `hero-poster.jpg` — its first frame |
 | `Sales Kit/_Portal/` | `hero-bg.jpg` — the still behind the film |
@@ -105,6 +106,30 @@ you — this build machine has no access to YouTube.
 
 `_Portal` starts with an underscore, so the portal treats it as its own and never
 shows it as a project.
+
+### The logo
+
+Save the Triton logo as `Sales Kit/_Portal/logo.png` and it appears in both the header
+and the footer. Two things matter:
+
+- **A transparent background.** Both bands are near-black, so a logo saved on a white
+  rectangle will show that rectangle. Export a PNG with transparency, or an SVG saved
+  as `logo.png`'s neighbour and renamed in `src/data.js`.
+- **The gold artwork, not a dark version.** The bands were made dark specifically so the
+  gold reads well against them.
+
+Until the file is there, the portal falls back to setting "Triton" and the tagline in the
+display typeface. That fallback is presentable — it is not a broken state — but the real
+logo is better.
+
+### Typeface and colour
+
+Headings are set in **Fraunces**, the working text in **Geist**. Both are embedded in the
+HTML file itself, so they render identically on every machine with no connection and
+nothing to install. The palette is near-black greens, deep teal for anything interactive,
+and the logo's gold kept for brand moments only. To change any of it, edit the token block
+at the top of `src/styles.css` and rebuild — every colour in the portal resolves from
+there. To change the fonts, edit `tools/embed-fonts.mjs` and run it.
 
 If a file is missing, its tile still appears, greyed, reading **"Not added yet"** with
 the name it is waiting for. Nothing breaks.
@@ -174,7 +199,8 @@ node tools/make-placeholders.mjs # regenerate all placeholder content
 
 ```
 src/index.html    page structure
-src/styles.css    all styling; the palette is eight lines at the top
+src/styles.css    all styling; the palette is one token block at the top
+src/fonts.css     the two typefaces, base64-embedded (generated)
 src/data.js       projects, folders, file names and wording
 src/app.js        router, hero, folder scanner, search
 ```

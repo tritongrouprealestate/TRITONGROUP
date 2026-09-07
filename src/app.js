@@ -813,6 +813,11 @@ addEventListener('keydown', function (e) {
   if (b.date)  $('#heroDate').textContent  = b.date;
   if (b.cue)   $('#heroCue').firstChild.nodeValue = b.cue;
 
+  var lg = (D.brand && D.brand.logo) || '';
+  if (lg) { var bl = $('#brandLogo'), fl = $('#footLogo');
+            if (bl) bl.src = uri(lg);
+            if (fl) fl.src = uri(lg); }
+
   var hm = b || {};
   if (hm.video)  $('#heroVideo').src = hm.video;
   if (hm.poster) $('#heroVideo').poster = hm.poster;

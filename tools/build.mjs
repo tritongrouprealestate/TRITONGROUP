@@ -17,7 +17,7 @@ const read = f => readFileSync(join(ROOT, f), 'utf8');
 const OUT = 'Triton Sales Portal.html';
 
 let html = read('src/index.html');
-const css = read('src/styles.css');
+const css = read('src/fonts.css') + '\n' + read('src/styles.css');
 const js  = read('src/data.js') + '\n' + read('src/app.js');
 
 if (!html.includes('<!--STYLES-->') || !html.includes('<!--SCRIPTS-->'))
@@ -38,7 +38,7 @@ html = html
     '     by hand; edit src/ and run: node tools/build.mjs -->');
 
 /* the bundle must be byte-identical to the sources it came from */
-for (const [label, src] of [['styles.css', css], ['js', js]]) {
+for (const [label, src] of [['styles.css', read('src/styles.css')], ['js', js]]) {
   if (!html.includes(src)) throw new Error(`bundling altered ${label} — refusing to write`);
 }
 

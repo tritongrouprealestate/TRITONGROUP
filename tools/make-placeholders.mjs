@@ -49,19 +49,19 @@ async function pdf(html, path) {
 const COVERS = [
   { path: 'Sales Kit/Sanvi/cover.jpg', title: 'Sanvi Aero Gardens',
     sub: '1, 2 & 3 BHK · Near Bengaluru Airport', kind: 'towers',
-    sky: '#8fa6bd', land: '#243546', accent: '#e2b877', mass: '#1b2733' },
+    sky: '#7FA5A1', land: '#0A2E2C', accent: '#E0C384', mass: '#0A1614' },
   { path: 'Sales Kit/Hummingvalley/cover.jpg', title: 'Triton Humming Valley',
     sub: 'Luxury Villas · Near Nandi Hills', kind: 'villas',
-    sky: '#9db99b', land: '#22301f', accent: '#e8d296', mass: '#1d2a1c' },
+    sky: '#8FAE93', land: '#0D2A21', accent: '#E0C384', mass: '#0A1712' },
   { path: 'Sales Kit/Triton Branded/cover.jpg', title: 'Triton Group',
     sub: 'Corporate · Brand Collateral', kind: 'towers',
-    sky: '#c0aa86', land: '#33291a', accent: '#f0dcae', mass: '#2a2216' }
+    sky: '#A79878', land: '#241D0C', accent: '#E8D3A0', mass: '#141310' }
 ];
 console.log('\ncovers + hero');
 for (const c of COVERS) await shot(scene({ w: 1600, h: 1200, ...c }), { w: 1600, h: 1200, path: c.path });
 
 const HERO = { title: 'Triton Group', sub: 'Sales Deck · Kit', kind: 'towers',
-               sky: '#7f97b0', land: '#151f2b', accent: '#e6c186', mass: '#101821' };
+               sky: '#6E9490', land: '#08100E', accent: '#C6A052', mass: '#0A1513' };
 await shot(scene({ w: 1920, h: 1080, ...HERO }), { w: 1920, h: 1080, path: 'Sales Kit/_Portal/hero-bg.jpg' });
 await shot(scene({ w: 1920, h: 1080, ...HERO }), { w: 1920, h: 1080, path: 'Sales Kit/_Portal/hero-poster.jpg' });
 

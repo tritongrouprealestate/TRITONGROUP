@@ -22,8 +22,9 @@
 <!-- ============ top bar ============ -->
 <header class="topbar" id="topbar">
   <a class="brand" href="#/" data-cursor="home">
-    <span class="brand-mark" id="brandMark"></span>
-    <span class="brand-text"><b>TRITON</b><i>GROUP</i></span>
+    <img class="brand-logo" id="brandLogo" src="" alt="Triton Group"
+         onerror="this.remove()" onload="this.closest('.brand').classList.add('has-logo')">
+    <span class="brand-text"><b>Triton</b><i>Villas · Apartments · Commercial</i></span>
   </a>
   <nav class="crumbs" id="crumbs"></nav>
   <div class="topbar-actions">
@@ -78,8 +79,15 @@
 <main class="stage" id="stage" aria-live="polite"></main>
 
 <footer class="foot" id="foot">
-  <span>Triton Group · Internal Sales Kit</span>
-  <span class="foot-hint">Works fully offline · <kbd>/</kbd> search · <kbd>P</kbd> present · <kbd>Esc</kbd> back</span>
+  <div class="foot-brand">
+    <img class="foot-logo" id="footLogo" src="" alt="Triton Group"
+         onerror="this.remove()" onload="this.closest('.foot-brand').classList.add('has-logo')">
+    <span class="foot-word"><b>Triton</b><i>Villas. Apartments. Commercial.</i></span>
+  </div>
+  <div class="foot-meta">
+    <span>Internal Sales Kit · Works fully offline</span>
+    <span class="foot-hint"><kbd>/</kbd> search · <kbd>P</kbd> present · <kbd>Esc</kbd> back</span>
+  </div>
 </footer>
 
 <div class="toast" id="toast" aria-live="polite"></div>

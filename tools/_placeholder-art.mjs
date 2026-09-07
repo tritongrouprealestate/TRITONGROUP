@@ -71,10 +71,10 @@ body{color:#14161a;font-size:11pt;line-height:1.6}
    display:flex;flex-direction:column}
 .pg:last-child{page-break-after:auto}
 .rule{height:1px;background:rgba(0,0,0,.12);margin:14px 0 22px}
-.eyebrow{font:600 9pt/1 Inter,sans-serif;letter-spacing:.34em;text-transform:uppercase;color:#a8762c}
+.eyebrow{font:600 9pt/1 Inter,sans-serif;letter-spacing:.34em;text-transform:uppercase;color:#12514D}
 h1{font-family:Georgia,serif;font-weight:400;font-size:34pt;line-height:1.02;margin:14px 0 0}
 h2{font-family:Georgia,serif;font-weight:400;font-size:20pt;margin:0 0 6px}
-h3{font:600 10pt/1 Inter,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#a8762c;margin:22px 0 10px}
+h3{font:600 10pt/1 Inter,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#12514D;margin:22px 0 10px}
 p{margin:0 0 11px;color:#3a3d44}
 table{width:100%;border-collapse:collapse;font-size:9.5pt;margin-top:6px}
 th{text-align:left;font:600 8pt/1 Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;
@@ -87,7 +87,7 @@ td.n{text-align:right;font-variant-numeric:tabular-nums}
 .stamp{position:absolute;top:12mm;right:20mm;font:700 8pt/1 Inter,sans-serif;letter-spacing:.16em;
    color:#fff;background:rgba(190,60,40,.92);padding:7px 11px;border-radius:99px}
 .hero{height:78mm;border-radius:5mm;margin-bottom:9mm;position:relative;overflow:hidden;
-   background:linear-gradient(160deg,#33495f,#16202c 60%,#4a3a1c)}
+   background:linear-gradient(160deg,#12514D,#0A1614 60%,#3A2E12)}
 .hero .grain{opacity:.2}
 .hero span{position:absolute;left:9mm;bottom:8mm;color:#fff;font:600 13pt/1 Inter,sans-serif;
    letter-spacing:.02em}
