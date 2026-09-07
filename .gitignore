@@ -1,0 +1,11 @@
+node_modules/
+package.json
+package-lock.json
+.DS_Store
+Thumbs.db
+
+# the actual collateral files are large (~730 MB) and live on disk / USB,
+# not in git. Folder structure is kept via .gitkeep.
+collaterals/**/*
+!collaterals/**/.gitkeep
+!collaterals/**/
