@@ -710,17 +710,54 @@ html.lenis,html.lenis body{height:auto}
    POPUP
    ══════════════════════════════════════════════════════════════════════ */
 #enquiry-modal[hidden]{display:none}
-#enquiry-modal{position:fixed;inset:0;z-index:200;display:grid;place-items:center;
-  padding:clamp(1rem,4vw,2.5rem)}
-.modal-scrim{position:absolute;inset:0;background:rgba(6,10,16,.82);
+/* 100dvh rather than inset:0 alone. A fixed box on Android Chrome is laid
+   out against the larger viewport, the one without the address bar, so the
+   bottom of the panel sat behind the browser's own chrome and the form
+   looked cut off at the screen edge. dvh is the height actually on screen,
+   whatever the toolbar is doing. */
+#enquiry-modal{position:fixed;inset:0;height:100dvh;z-index:200;
+  display:grid;place-items:center;padding:clamp(.75rem,4vw,2.5rem)}
+.modal-scrim{position:fixed;inset:0;background:rgba(6,10,16,.82);
   backdrop-filter:blur(6px)}
-.modal-panel{position:relative;width:min(560px,100%);max-height:88svh;overflow-y:auto;
+/* Three rows: the heading, the fields, the button. Only the middle row
+   scrolls.
+
+   Before this the whole panel was one scroll box, and on a phone the form is
+   taller than any screen — so it cut through the middle of a field with no
+   visible edge and no scrollbar (Android draws none until you touch it). It
+   read as a broken layout rather than as something you could scroll, and the
+   button that sends the enquiry was somewhere below the fold. Now the title
+   stays, the fields scroll under it, and the button never leaves. */
+.modal-panel{--pad:clamp(1.5rem,3vw,2.5rem);
+  position:relative;width:min(560px,100%);max-height:100%;
+  display:flex;flex-direction:column;overflow:hidden;
   background:#111C27;border:1px solid rgba(168,182,194,.2);
-  padding:clamp(1.75rem,3vw,2.5rem);box-shadow:0 40px 90px -50px rgba(0,0,0,.95)}
+  box-shadow:0 40px 90px -50px rgba(0,0,0,.95)}
+.modal-head{flex:0 0 auto;padding:var(--pad) var(--pad) 0}
+.modal-panel > [data-enquiry-mount]{display:flex;min-height:0;flex:1 1 auto}
+.modal-panel .enquiry{display:flex;flex-direction:column;min-height:0;flex:1 1 auto}
+.modal-panel .form-summary{flex:0 0 auto;margin-inline:var(--pad)}
+
+/* The scrolling row. overscroll-behavior stops the page behind from taking
+   over the moment this hits its end. */
+.modal-panel .fields{flex:1 1 auto;min-height:0;overflow-y:auto;
+  overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+  padding:0 var(--pad) .25rem;scroll-padding-block:1rem}
+
+/* A hairline and a shadow under the heading, so the edge the fields pass
+   beneath is visible and the row reads as a window rather than a cut. */
+.modal-head{border-bottom:1px solid rgba(168,182,194,.14);
+  padding-bottom:1.25rem;margin-bottom:1.25rem}
+/* width:auto, not the 100% the inline forms use: the button is a flex item
+   with side margins here, and 100% of the panel plus those margins put its
+   right edge 40px past the fields. */
+.modal-panel .form-submit{flex:0 0 auto;width:auto;margin:1.25rem var(--pad) 0}
+.modal-panel .form-note{flex:0 0 auto;margin:.75rem var(--pad) var(--pad)}
+.modal-panel .form-done{padding:var(--pad)}
 .modal-panel:focus{outline:none}
 .modal-panel h2{font-family:var(--font-display);font-size:var(--step-3);
   color:var(--color-cloud);margin:0;max-width:16ch}
-.modal-sub{color:var(--color-haze);font-size:.92rem;margin:.75rem 0 1.75rem;max-width:46ch}
+.modal-sub{color:var(--color-haze);font-size:.92rem;margin:.75rem 0 0;max-width:46ch}
 .modal-close{position:absolute;top:.9rem;right:.9rem;width:44px;height:44px;
   display:grid;place-items:center;background:transparent;border:0;cursor:pointer;
   color:var(--color-haze);transition:color .25s var(--ease-out)}
