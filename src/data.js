@@ -57,6 +57,12 @@ window.PORTAL_DATA = {
       tag: "Villas",
       cover: "Sales Kit/Hummingvalley/cover.jpg",
       accent: "linear-gradient(155deg,#6f8a72,#3a4a3c 55%,#7d8552)",
+      /* Shown on the project page under the folders. These open on YouTube in a
+         new tab — the one thing in the kit that needs an internet connection. */
+      links: [
+        { label: "Old Film", youtube: "1SuGJy0W7fY" },
+        { label: "New Film", youtube: "85QY818IoOc" }
+      ],
       folders: [
         { id: "brochure", name: "Brochure", files: [
           { label: "Brochure",            name: "Brochure.pdf" },
@@ -68,11 +74,7 @@ window.PORTAL_DATA = {
           { label: "Master Plan",         name: "Master Plan.png" } ] },
         { id: "video", name: "Video", files: [
           { label: "Project Walkthrough", name: "Walkthrough.mp4" },
-          { label: "AV Film",             name: "AV Film.mp4" },
-          /* YouTube links — these need an internet connection, unlike everything
-             else in the kit. The portal marks them so nobody is caught out. */
-          { label: "Old Film",  youtube: "1SuGJy0W7fY" },
-          { label: "New Film",  youtube: "85QY818IoOc" } ] }
+          { label: "AV Film",             name: "AV Film.mp4" } ] }
       ]
     },
     {
@@ -97,18 +99,15 @@ window.PORTAL_DATA = {
    manifest above stays readable and the paths can never drift out of sync. */
 (function (D) {
   var root = (D.brand && D.brand.root) || 'Sales Kit';
+  function link(l) {
+    l.url   = 'https://www.youtube.com/watch?v=' + l.youtube;
+    l.thumb = root + '/_Portal/thumbs/' + l.youtube + '.jpg';
+    l.name  = l.name || l.label;
+  }
   D.projects.forEach(function (p) {
+    (p.links || []).forEach(link);
     (p.folders || []).forEach(function (f) {
       (f.files || []).forEach(function (file) {
-        if (file.youtube) {                       // a link, not a file on disk
-          file.url   = 'https://www.youtube.com/watch?v=' + file.youtube;
-          /* Saved thumbnail, so the tile still has a picture with no connection.
-             If it is absent the tile falls back to YouTube's own thumbnail, and
-             failing that to a plain panel — see Viewer/tile in app.js. */
-          file.thumb = root + '/_Portal/thumbs/' + file.youtube + '.jpg';
-          file.name  = file.name || file.label;
-          return;
-        }
         file.path = file.path || [root, p.name, f.name, file.name].join('/');
         file.label = file.label || file.name;
       });

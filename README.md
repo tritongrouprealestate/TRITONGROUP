@@ -56,16 +56,24 @@ Save files under exactly these names. Case does not matter; spelling does.
 | `Sales Kit/Hummingvalley/Video/` | `Walkthrough.mp4` |
 | `Sales Kit/Hummingvalley/Video/` | `AV Film.mp4` |
 
-Hummingvalley's Video folder also carries two **YouTube links**, Old Film and New
-Film. They are the only things in the kit that need an internet connection, and the
-portal marks them in red so nobody is caught out mid-pitch. With a connection they
-play inside the portal; without one you get a card explaining why, and the two
-`.mp4` films in the same folder play regardless. Show those when there is no wifi.
+### Online films
 
-To change which videos they point at, edit the two `youtube:` IDs in `src/data.js`
-and rebuild.
+The Hummingvalley page carries two **YouTube links** — Old Film and New Film —
+shown under the folders in their own *Online Films* row. Clicking one opens YouTube
+in a new browser tab.
 
-**Thumbnails (optional, needs wifi once).** A video tile shows a picture if one is
+They are the only things in the kit that need an internet connection, so the portal
+marks them in red. With no connection the browser shows its usual offline page; the
+two `.mp4` films inside the Video folder play regardless, so show those instead.
+
+They do not play inside the portal, and this is not a setting that can be changed:
+YouTube refuses to embed into a page opened from a local file and returns *Error
+153*. Opening a tab is the only reliable route from an offline HTML file.
+
+To point them at different videos, edit the two `youtube:` IDs under `links:` in
+`src/data.js` and rebuild.
+
+**Thumbnails (optional, needs wifi once).** A film tile shows a picture if one is
 saved here; otherwise it pulls YouTube's own thumbnail when online, and falls back
 to a plain panel with a play mark. To make the tiles look right offline too, save
 each thumbnail once:
