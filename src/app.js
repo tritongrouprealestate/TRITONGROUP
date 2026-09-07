@@ -385,17 +385,18 @@ function renderFolder(p, f) {
               ? '<span class="tile-shot">' + preview(file) +
                 '<span class="tile-play">' + svg('play') + '</span></span>'
               : '<span class="tile-ico">' + svg(k) + '</span>';
-            return '<button class="tile rv' + (file.missing ? ' missing' : '') +
-                   (media ? ' media' : '') + '"' +
-                   ' style="transition-delay:' + (i * 45) + 'ms"' +
-                   ' data-cursor="' + (file.missing ? 'missing' : 'view') + '"' +
-                   (file.missing ? '' : ' data-open="' + esc(file.path) + '"') +
-                   ' data-name="' + esc(file.label) + '">' + head +
+            var inner = head +
                    '<span class="tile-badge">' + KIND_LABEL[k] + '</span>' +
                    '<span class="tile-txt"><h3 class="tile-name">' + esc(file.label) + '</h3>' +
                    '<p class="tile-sub' + (file.missing || file.note ? ' warn' : '') + '">' +
-                   esc(sub) + '</p></span>' +
-                   '</button>';
+                   esc(sub) + '</p></span>';
+            var delay = ' style="transition-delay:' + (i * 45) + 'ms"';
+            /* One click, straight into a new tab. Nothing sits in between. */
+            return file.missing
+              ? '<div class="tile missing rv"' + delay + '>' + inner + '</div>'
+              : '<a class="tile rv' + (media ? ' media' : '') + '"' + delay +
+                ' href="' + esc(uri(file.path)) + '" target="_blank" rel="noopener"' +
+                ' data-cursor="open">' + inner + '</a>';
           }).join('') + '</div>'
         : emptyState(
             'Put the files for <b>' + esc(p.name) + ' → ' + esc(f.name) + '</b> into<br>' +
@@ -671,63 +672,6 @@ var Library = (function () {
 })();
 
 /* ============================================================
-   VIEWER
-   ============================================================ */
-var Viewer = (function () {
-  var el = $('#viewer'), body = $('#viewerBody'), titleEl = $('#viewerTitle');
-  var current = null;
-
-  function open(path, name) {
-    current = path;
-    titleEl.textContent = name;
-    var k = kindOf(name);
-    var html;
-    var u = uri(path);
-    if (k === 'pdf') {
-      html = '<iframe src="' + esc(u) + '#view=FitH" title="' + esc(name) + '"></iframe>';
-    } else if (k === 'page') {
-      html = '<iframe src="' + esc(u) + '" title="' + esc(name) + '"></iframe>';
-    } else if (k === 'video') {
-      html = '<video src="' + esc(u) + '" controls autoplay playsinline></video>';
-    } else if (k === 'image') {
-      html = '<img src="' + esc(u) + '" alt="' + esc(name) + '">';
-    } else {
-      html = '<div class="viewer-note"><h3>' + esc(name) + '</h3>' +
-             '<p>This file type opens in its native application. Press <b>Open</b> to launch it.</p>' +
-             '<p><code>' + esc(path) + '</code></p></div>';
-    }
-    body.innerHTML = html;
-    el.hidden = false;
-    requestAnimationFrame(function () { el.classList.add('show'); });
-    document.body.style.overflow = 'hidden';
-  }
-
-  function close() {
-    el.classList.remove('show');
-    document.body.style.overflow = '';
-    setTimeout(function () { el.hidden = true; body.innerHTML = ''; current = null; }, 320);
-  }
-
-  $('#viewerClose').onclick = close;
-  $('#viewerOpen').onclick  = function () {
-    if (current) window.open(/^https?:\/\//i.test(current) ? current : uri(current), '_blank');
-  };
-  $('#viewerFull').onclick  = function () {
-    var t = body.firstElementChild;
-    if (t && t.requestFullscreen) t.requestFullscreen();
-  };
-  el.addEventListener('click', function (e) { if (e.target === el) close(); });
-
-  return { open: open, close: close, get isOpen() { return !el.hidden; } };
-})();
-
-document.addEventListener('click', function (e) {
-  var t = e.target.closest('[data-open]');
-  if (t) { Viewer.open(t.dataset.open, t.dataset.name); return; }
-  if (e.target.closest('[data-update]')) $('#updateBtn').click();
-});
-
-/* ============================================================
    SEARCH
    ============================================================ */
 var Search = (function () {
@@ -783,12 +727,12 @@ var Search = (function () {
     out.innerHTML = list.map(function (r, i) {
       var tag = r.external ? 'a href="' + esc(r.external) + '" target="_blank" rel="noopener noreferrer"'
               : r.href     ? 'a href="' + r.href + '"'
-              : 'button type="button" data-file="' + esc(r.file) + '" data-name="' + esc(r.name) + '"';
+              : 'a href="' + esc(uri(r.file)) + '" target="_blank" rel="noopener"';
       return '<' + tag + ' class="sr' + (i === 0 ? ' sel' : '') + (r.external ? ' ext' : '') + '">' +
              '<span class="sr-ico">' + svg(r.icon) + '</span>' +
              '<span class="sr-txt"><div class="sr-name">' + mark(r.name, q) + '</div>' +
              '<div class="sr-path">' + esc(r.path) + '</div></span>' +
-             '</' + (r.href || r.external ? 'a' : 'button') + '>';
+             '</a>';
     }).join('');
     rows = $$('.sr', out);
   }
@@ -814,11 +758,7 @@ var Search = (function () {
 
   input.addEventListener('input', render);
   el.addEventListener('click', function (e) { if (e.target === el) close(); });
-  out.addEventListener('click', function (e) {
-    var b = e.target.closest('[data-file]');
-    close();
-    if (b) setTimeout(function () { Viewer.open(b.dataset.file, b.dataset.name); }, 260);
-  });
+  out.addEventListener('click', function () { close(); });
   input.addEventListener('keydown', function (e) {
     if (e.key === 'ArrowDown') { e.preventDefault(); move(1); }
     else if (e.key === 'ArrowUp') { e.preventDefault(); move(-1); }
@@ -838,7 +778,6 @@ addEventListener('keydown', function (e) {
   var typing = /^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName);
 
   if (e.key === 'Escape') {
-    if (Viewer.isOpen) return Viewer.close();
     if (Search.isOpen) return Search.close();
     if (document.body.classList.contains('present'))
       return document.body.classList.remove('present');

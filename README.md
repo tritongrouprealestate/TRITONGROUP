@@ -138,13 +138,14 @@ The real collateral is roughly **730 MB** — Sanvi's brochure alone is 144 MB. 
 | `/` or `Ctrl-K` | search every project, folder and file |
 | `P` | presentation mode — hides all chrome |
 | `U` | update library |
-| `Esc` | close the viewer or search, or go back |
+| `Esc` | close search, or go back |
 | `H` | jump home |
 | `Shift-R` | reset to the built-in list |
 
-PDFs, videos, images and HTML pages open **inside** the portal, on-brand. Word, Excel
-and PowerPoint files open in their own app via the **Open** button — no browser can
-display those offline.
+**One click opens a file.** Clicking any tile opens that file straight away in a new
+browser tab — no preview step in between. PDFs, images, videos and HTML pages display
+in the tab. Word, Excel and PowerPoint cannot be shown by a browser, so Chrome saves
+them to Downloads and they open from there in their own app.
 
 ---
 
@@ -171,7 +172,7 @@ node tools/make-placeholders.mjs # regenerate all placeholder content
 src/index.html    page structure
 src/styles.css    all styling; the palette is eight lines at the top
 src/data.js       projects, folders, file names and wording
-src/app.js        router, hero, folder scanner, viewer, search
+src/app.js        router, hero, folder scanner, search
 ```
 
 The hero's scroll-expand effect and the project cards were written in plain JS and CSS

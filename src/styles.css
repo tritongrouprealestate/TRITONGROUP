@@ -406,31 +406,6 @@ body.cur-hot .cursor{opacity:0}
   color:var(--fg-faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sr-empty{padding:40px 16px;text-align:center;color:var(--fg-faint);font-size:14px}
 
-/* ============ viewer ============ */
-.viewer{position:fixed;inset:0;z-index:9300;display:flex;flex-direction:column;
-  background:rgba(252,252,251,.97);backdrop-filter:blur(10px);
-  opacity:0;transition:opacity .35s var(--ease)}
-.viewer.show{opacity:1}
-.viewer-bar{display:flex;align-items:center;justify-content:space-between;gap:18px;
-  padding:14px clamp(14px,3vw,28px);border-bottom:1px solid var(--line);flex:0 0 auto}
-.viewer-title{min-width:0;font-size:14px;font-weight:500;white-space:nowrap;
-  overflow:hidden;text-overflow:ellipsis}
-.viewer-tools{display:flex;gap:8px;flex:0 0 auto}
-.v-btn{height:34px;padding:0 15px;border-radius:999px;border:1px solid var(--line);
-  font:600 10.5px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--fg-dim);background:var(--paper);
-  transition:background .3s,color .3s,border-color .3s}
-.v-btn:hover{background:var(--fg);border-color:var(--fg);color:#fff}
-.v-close:hover{background:#c0392b;border-color:#c0392b;color:#fff}
-.viewer-body{flex:1;min-height:0;display:grid;place-items:stretch;padding:clamp(10px,2vw,24px)}
-.viewer-body iframe{width:100%;height:100%;border:0;border-radius:12px;background:#fff}
-.viewer-body video{width:100%;height:100%;object-fit:contain;border-radius:12px;
-  box-shadow:0 24px 70px rgba(0,0,0,.28);background:#000}
-.viewer-body img{width:100%;height:100%;object-fit:contain;border-radius:12px}
-.viewer-note{max-width:520px;justify-self:center;align-self:center;text-align:center;color:var(--fg-dim)}
-.viewer-note h3{font-family:var(--serif);font-weight:400;font-size:28px;color:var(--fg);margin:0 0 12px}
-.viewer-note code{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;color:var(--accent);
-  background:rgba(168,118,44,.09);padding:3px 7px;border-radius:5px;word-break:break-all}
-
 /* ============ presentation mode ============ */
 body.present .topbar,body.present .foot,body.present .grain,body.present .vignette{
   opacity:0;pointer-events:none}
@@ -459,9 +434,9 @@ body.present .stage{padding-top:clamp(40px,7vh,80px)}
 .tile-sub.warn{color:var(--accent);letter-spacing:.06em;text-transform:none;
   font-weight:500;font-size:11px}
 
-/* a class-level `display` beats the UA [hidden] rule — restore it,
-   otherwise these overlays sit invisibly over the page and swallow clicks */
-.viewer[hidden],.search[hidden]{display:none!important}
+/* a class-level `display` beats the UA [hidden] rule — restore it, otherwise the
+   overlay sits invisibly over the page and swallows clicks */
+.search[hidden]{display:none!important}
 
 /* ============ update button + toast ============ */
 .tb-update{padding:0 14px 0 12px;gap:9px}
@@ -544,3 +519,8 @@ body.present .stage{padding-top:clamp(40px,7vh,80px)}
 /* the online tile is an <a>, so give it the tile's own layout back */
 a.tile{text-decoration:none;color:inherit}
 .sr.ext .sr-ico{color:#c4302b}
+
+/* a file tile is an anchor now — keep it looking and behaving like a tile */
+a.tile{text-decoration:none;color:inherit}
+a.tile:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+div.tile.missing{cursor:default}

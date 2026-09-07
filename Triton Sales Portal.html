@@ -416,31 +416,6 @@ body.cur-hot .cursor{opacity:0}
   color:var(--fg-faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sr-empty{padding:40px 16px;text-align:center;color:var(--fg-faint);font-size:14px}
 
-/* ============ viewer ============ */
-.viewer{position:fixed;inset:0;z-index:9300;display:flex;flex-direction:column;
-  background:rgba(252,252,251,.97);backdrop-filter:blur(10px);
-  opacity:0;transition:opacity .35s var(--ease)}
-.viewer.show{opacity:1}
-.viewer-bar{display:flex;align-items:center;justify-content:space-between;gap:18px;
-  padding:14px clamp(14px,3vw,28px);border-bottom:1px solid var(--line);flex:0 0 auto}
-.viewer-title{min-width:0;font-size:14px;font-weight:500;white-space:nowrap;
-  overflow:hidden;text-overflow:ellipsis}
-.viewer-tools{display:flex;gap:8px;flex:0 0 auto}
-.v-btn{height:34px;padding:0 15px;border-radius:999px;border:1px solid var(--line);
-  font:600 10.5px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--fg-dim);background:var(--paper);
-  transition:background .3s,color .3s,border-color .3s}
-.v-btn:hover{background:var(--fg);border-color:var(--fg);color:#fff}
-.v-close:hover{background:#c0392b;border-color:#c0392b;color:#fff}
-.viewer-body{flex:1;min-height:0;display:grid;place-items:stretch;padding:clamp(10px,2vw,24px)}
-.viewer-body iframe{width:100%;height:100%;border:0;border-radius:12px;background:#fff}
-.viewer-body video{width:100%;height:100%;object-fit:contain;border-radius:12px;
-  box-shadow:0 24px 70px rgba(0,0,0,.28);background:#000}
-.viewer-body img{width:100%;height:100%;object-fit:contain;border-radius:12px}
-.viewer-note{max-width:520px;justify-self:center;align-self:center;text-align:center;color:var(--fg-dim)}
-.viewer-note h3{font-family:var(--serif);font-weight:400;font-size:28px;color:var(--fg);margin:0 0 12px}
-.viewer-note code{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;color:var(--accent);
-  background:rgba(168,118,44,.09);padding:3px 7px;border-radius:5px;word-break:break-all}
-
 /* ============ presentation mode ============ */
 body.present .topbar,body.present .foot,body.present .grain,body.present .vignette{
   opacity:0;pointer-events:none}
@@ -469,9 +444,9 @@ body.present .stage{padding-top:clamp(40px,7vh,80px)}
 .tile-sub.warn{color:var(--accent);letter-spacing:.06em;text-transform:none;
   font-weight:500;font-size:11px}
 
-/* a class-level `display` beats the UA [hidden] rule — restore it,
-   otherwise these overlays sit invisibly over the page and swallow clicks */
-.viewer[hidden],.search[hidden]{display:none!important}
+/* a class-level `display` beats the UA [hidden] rule — restore it, otherwise the
+   overlay sits invisibly over the page and swallows clicks */
+.search[hidden]{display:none!important}
 
 /* ============ update button + toast ============ */
 .tb-update{padding:0 14px 0 12px;gap:9px}
@@ -554,6 +529,11 @@ body.present .stage{padding-top:clamp(40px,7vh,80px)}
 /* the online tile is an <a>, so give it the tile's own layout back */
 a.tile{text-decoration:none;color:inherit}
 .sr.ext .sr-ico{color:#c4302b}
+
+/* a file tile is an anchor now — keep it looking and behaving like a tile */
+a.tile{text-decoration:none;color:inherit}
+a.tile:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+div.tile.missing{cursor:default}
 
 </style>
 </head>
@@ -645,19 +625,6 @@ a.tile{text-decoration:none;color:inherit}
     </div>
     <div class="search-results" id="searchResults"></div>
   </div>
-</div>
-
-<!-- ============ VIEWER ============ -->
-<div class="viewer" id="viewer" hidden>
-  <div class="viewer-bar">
-    <div class="viewer-title" id="viewerTitle"></div>
-    <div class="viewer-tools">
-      <button class="v-btn" id="viewerOpen"  title="Open in new window">Open</button>
-      <button class="v-btn" id="viewerFull"  title="Fullscreen">Fullscreen</button>
-      <button class="v-btn v-close" id="viewerClose" title="Close  ( Esc )">Close</button>
-    </div>
-  </div>
-  <div class="viewer-body" id="viewerBody"></div>
 </div>
 
 <script>
@@ -1165,17 +1132,18 @@ function renderFolder(p, f) {
               ? '<span class="tile-shot">' + preview(file) +
                 '<span class="tile-play">' + svg('play') + '</span></span>'
               : '<span class="tile-ico">' + svg(k) + '</span>';
-            return '<button class="tile rv' + (file.missing ? ' missing' : '') +
-                   (media ? ' media' : '') + '"' +
-                   ' style="transition-delay:' + (i * 45) + 'ms"' +
-                   ' data-cursor="' + (file.missing ? 'missing' : 'view') + '"' +
-                   (file.missing ? '' : ' data-open="' + esc(file.path) + '"') +
-                   ' data-name="' + esc(file.label) + '">' + head +
+            var inner = head +
                    '<span class="tile-badge">' + KIND_LABEL[k] + '</span>' +
                    '<span class="tile-txt"><h3 class="tile-name">' + esc(file.label) + '</h3>' +
                    '<p class="tile-sub' + (file.missing || file.note ? ' warn' : '') + '">' +
-                   esc(sub) + '</p></span>' +
-                   '</button>';
+                   esc(sub) + '</p></span>';
+            var delay = ' style="transition-delay:' + (i * 45) + 'ms"';
+            /* One click, straight into a new tab. Nothing sits in between. */
+            return file.missing
+              ? '<div class="tile missing rv"' + delay + '>' + inner + '</div>'
+              : '<a class="tile rv' + (media ? ' media' : '') + '"' + delay +
+                ' href="' + esc(uri(file.path)) + '" target="_blank" rel="noopener"' +
+                ' data-cursor="open">' + inner + '</a>';
           }).join('') + '</div>'
         : emptyState(
             'Put the files for <b>' + esc(p.name) + ' → ' + esc(f.name) + '</b> into<br>' +
@@ -1451,63 +1419,6 @@ var Library = (function () {
 })();
 
 /* ============================================================
-   VIEWER
-   ============================================================ */
-var Viewer = (function () {
-  var el = $('#viewer'), body = $('#viewerBody'), titleEl = $('#viewerTitle');
-  var current = null;
-
-  function open(path, name) {
-    current = path;
-    titleEl.textContent = name;
-    var k = kindOf(name);
-    var html;
-    var u = uri(path);
-    if (k === 'pdf') {
-      html = '<iframe src="' + esc(u) + '#view=FitH" title="' + esc(name) + '"></iframe>';
-    } else if (k === 'page') {
-      html = '<iframe src="' + esc(u) + '" title="' + esc(name) + '"></iframe>';
-    } else if (k === 'video') {
-      html = '<video src="' + esc(u) + '" controls autoplay playsinline></video>';
-    } else if (k === 'image') {
-      html = '<img src="' + esc(u) + '" alt="' + esc(name) + '">';
-    } else {
-      html = '<div class="viewer-note"><h3>' + esc(name) + '</h3>' +
-             '<p>This file type opens in its native application. Press <b>Open</b> to launch it.</p>' +
-             '<p><code>' + esc(path) + '</code></p></div>';
-    }
-    body.innerHTML = html;
-    el.hidden = false;
-    requestAnimationFrame(function () { el.classList.add('show'); });
-    document.body.style.overflow = 'hidden';
-  }
-
-  function close() {
-    el.classList.remove('show');
-    document.body.style.overflow = '';
-    setTimeout(function () { el.hidden = true; body.innerHTML = ''; current = null; }, 320);
-  }
-
-  $('#viewerClose').onclick = close;
-  $('#viewerOpen').onclick  = function () {
-    if (current) window.open(/^https?:\/\//i.test(current) ? current : uri(current), '_blank');
-  };
-  $('#viewerFull').onclick  = function () {
-    var t = body.firstElementChild;
-    if (t && t.requestFullscreen) t.requestFullscreen();
-  };
-  el.addEventListener('click', function (e) { if (e.target === el) close(); });
-
-  return { open: open, close: close, get isOpen() { return !el.hidden; } };
-})();
-
-document.addEventListener('click', function (e) {
-  var t = e.target.closest('[data-open]');
-  if (t) { Viewer.open(t.dataset.open, t.dataset.name); return; }
-  if (e.target.closest('[data-update]')) $('#updateBtn').click();
-});
-
-/* ============================================================
    SEARCH
    ============================================================ */
 var Search = (function () {
@@ -1563,12 +1474,12 @@ var Search = (function () {
     out.innerHTML = list.map(function (r, i) {
       var tag = r.external ? 'a href="' + esc(r.external) + '" target="_blank" rel="noopener noreferrer"'
               : r.href     ? 'a href="' + r.href + '"'
-              : 'button type="button" data-file="' + esc(r.file) + '" data-name="' + esc(r.name) + '"';
+              : 'a href="' + esc(uri(r.file)) + '" target="_blank" rel="noopener"';
       return '<' + tag + ' class="sr' + (i === 0 ? ' sel' : '') + (r.external ? ' ext' : '') + '">' +
              '<span class="sr-ico">' + svg(r.icon) + '</span>' +
              '<span class="sr-txt"><div class="sr-name">' + mark(r.name, q) + '</div>' +
              '<div class="sr-path">' + esc(r.path) + '</div></span>' +
-             '</' + (r.href || r.external ? 'a' : 'button') + '>';
+             '</a>';
     }).join('');
     rows = $$('.sr', out);
   }
@@ -1594,11 +1505,7 @@ var Search = (function () {
 
   input.addEventListener('input', render);
   el.addEventListener('click', function (e) { if (e.target === el) close(); });
-  out.addEventListener('click', function (e) {
-    var b = e.target.closest('[data-file]');
-    close();
-    if (b) setTimeout(function () { Viewer.open(b.dataset.file, b.dataset.name); }, 260);
-  });
+  out.addEventListener('click', function () { close(); });
   input.addEventListener('keydown', function (e) {
     if (e.key === 'ArrowDown') { e.preventDefault(); move(1); }
     else if (e.key === 'ArrowUp') { e.preventDefault(); move(-1); }
@@ -1618,7 +1525,6 @@ addEventListener('keydown', function (e) {
   var typing = /^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName);
 
   if (e.key === 'Escape') {
-    if (Viewer.isOpen) return Viewer.close();
     if (Search.isOpen) return Search.close();
     if (document.body.classList.contains('present'))
       return document.body.classList.remove('present');
