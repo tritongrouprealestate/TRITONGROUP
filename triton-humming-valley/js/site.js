@@ -379,7 +379,10 @@ $('#villa-list').innerHTML = DATA.villas.map(v => `
         <span class="max-sm:hidden">${v.land} sq ft plot</span>
       </p>
       <p class="ml-auto flex items-center gap-4">
-        <span class="font-display text-dawn-deep" style="font-size:var(--step-1)">${v.price}</span>
+        <span class="price">
+          <span class="font-display text-dawn-deep" style="font-size:var(--step-1)">${v.price}</span>
+          <small>all inclusive</small>
+        </span>
         <svg class="chev h-5 w-5 text-mist" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
       </p>
     </summary>
@@ -543,7 +546,7 @@ function selectPlot(p, node){
       <div class="flex justify-between gap-4 py-3"><dt class="text-mist">Built-up</dt><dd>${p.sq ? p.sq.toLocaleString('en-IN') + ' sq ft' : '—'}</dd></div>
       ${p.land ? `<div class="flex justify-between gap-4 py-3"><dt class="text-mist">Plot</dt><dd>${p.land.toLocaleString('en-IN')} sq ft</dd></div>` : ''}
       <div class="flex justify-between gap-4 py-3"><dt class="text-mist">Aspect</dt><dd>${p.a}</dd></div>
-      <div class="flex justify-between gap-4 py-3"><dt class="text-mist">From</dt><dd class="text-dawn-deep font-medium">${villa ? villa.price : '—'}</dd></div>
+      <div class="flex justify-between gap-4 py-3"><dt class="text-mist">Price <span class="whitespace-nowrap">(all inclusive)</span></dt><dd class="text-dawn-deep font-medium">${villa ? villa.price : '—'}</dd></div>
     </dl>
     <button type="button" class="btn btn-ink mt-7 w-full" data-enquire="Villa ${p.n}" data-plot-cta="${p.n}">Enquire about villa ${p.n}</button>`;
 

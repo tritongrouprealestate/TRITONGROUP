@@ -663,6 +663,14 @@ html.lenis,html.lenis body{height:auto}
 /* ══════════════════════════════════════════════════════════════════════════
    ENQUIRY FORM  (hero card, popup, enquiry section)
    ══════════════════════════════════════════════════════════════════════ */
+/* The price and the fact that it is all inclusive belong together: read
+   apart, a figure like this is assumed to be a base price with registration,
+   stamp duty and GST still to come. */
+.price{display:inline-flex;flex-direction:column;align-items:flex-end;
+  line-height:1.05}
+.price small{font-size:.66rem;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--color-mist);margin-top:.25rem}
+
 /* ── The layout, as a stack of levels ────────────────────────────────────
    A wireframe rather than a plan: each floor is a row of blocks standing for
    its rooms, in the order you climb them. It tells a buyer how the villa is
