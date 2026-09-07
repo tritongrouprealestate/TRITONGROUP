@@ -36,7 +36,9 @@ var I = {
   bld:   '<path d="M3 21h18M5 21V7l7-4 7 4v14"/><path d="M9 9h1M14 9h1M9 13h1M14 13h1M9 17h1M14 17h1"/>',
   mtn:   '<path d="m3 20 6.5-11 4 6 2.5-4L21 20z"/><circle cx="7.5" cy="6.5" r="1.6"/>',
   arch:  '<rect x="3" y="4" width="18" height="4" rx="1"/><path d="M5 8v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8M10 12h4"/>',
-  sync:  '<path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/>'
+  sync:  '<path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/>',
+  youtube: '<rect x="2" y="5" width="20" height="14" rx="4"/><path d="m10 9 5 3-5 3z"/>',
+  play:  '<path d="M8 5.5v13l11-6.5z" fill="currentColor" stroke="none"/>'
 };
 var svg = function (k, cls) {
   return '<svg class="' + (cls || '') + '" viewBox="0 0 24 24">' + (I[k] || I.file) + '</svg>';
@@ -60,7 +62,7 @@ function kindOf(name) {
   if (['ppt','pptx','key'].indexOf(e) > -1) return 'ppt';
   return 'file';
 }
-var KIND_LABEL = { pdf:'PDF', page:'Page', video:'Video', image:'Image', sheet:'Sheet',
+var KIND_LABEL = { pdf:'PDF', page:'Page', video:'Video', image:'Image', sheet:'Sheet', youtube:'YouTube',
                    doc:'Document', ppt:'Deck', file:'File' };
 
 function fileCount(p) {
@@ -228,6 +230,28 @@ function bindInteractive(root) {
 /* ============================================================
    RENDERERS
    ============================================================ */
+/* The picture on a video tile.
+   YouTube: the saved thumbnail first, then YouTube's own copy if there is a
+   connection, then nothing — the panel behind it carries the play mark either way.
+   Local film: the browser draws a frame from the file itself, so it needs no
+   generated poster and keeps working when the film is replaced. */
+function preview(file, k) {
+  if (k === 'youtube')
+    return '<img class="shot" alt="" src="' + esc(uri(file.thumb || '')) + '" data-fb="' +
+           'https://img.youtube.com/vi/' + esc(file.youtube) + '/hqdefault.jpg">';
+  return '<video class="shot" muted playsinline preload="metadata" tabindex="-1" src="' +
+         esc(uri(file.path)) + '#t=1"></video>';
+}
+
+/* Two-stage image fallback. The error event does not bubble, so it is caught
+   on the way down instead. */
+document.addEventListener('error', function (e) {
+  var t = e.target;
+  if (!t || t.tagName !== 'IMG' || !t.classList.contains('shot')) return;
+  if (t.dataset.fb) { var u = t.dataset.fb; delete t.dataset.fb; t.src = u; }
+  else t.remove();
+}, true);
+
 function projectCard(p, i) {
   var n = fileCount(p), folders = (p.folders || []).length;
   var figure = n > 0
@@ -330,21 +354,28 @@ function renderFolder(p, f) {
       '</div>' +
       (files.length
         ? '<div class="tiles">' + files.map(function (file, i) {
-            var k = kindOf(file.name);
-            var sub = file.missing ? 'Not added yet'
+            var k = file.youtube ? 'youtube' : kindOf(file.name);
+            var sub = file.youtube ? 'YouTube · needs internet'
+                    : file.missing ? 'Not added yet'
                     : file.note   ? file.note
                     : file.size   ? file.name + '  ·  ' + file.size
                     : file.name;
-            return '<button class="tile rv' + (file.missing ? ' missing' : '') + '"' +
+            var media = !file.missing && (k === 'youtube' || k === 'video');
+            var open  = '<button class="tile rv' + (file.missing ? ' missing' : '') +
+                   (file.youtube ? ' online' : '') + (media ? ' media' : '') + '"' +
                    ' style="transition-delay:' + (i * 45) + 'ms"' +
                    ' data-cursor="' + (file.missing ? 'missing' : 'view') + '"' +
-                   (file.missing ? '' : ' data-open="' + esc(file.path) + '"') +
-                   ' data-name="' + esc(file.label) + '">' +
-                   '<span class="tile-ico">' + svg(k) + '</span>' +
+                   (file.missing ? '' : ' data-open="' + esc(file.youtube ? file.url : file.path) + '"') +
+                   ' data-name="' + esc(file.label) + '">';
+            var head = media
+              ? '<span class="tile-shot">' + preview(file, k) +
+                '<span class="tile-play">' + svg('play') + '</span></span>'
+              : '<span class="tile-ico">' + svg(k) + '</span>';
+            return open + head +
                    '<span class="tile-badge">' + KIND_LABEL[k] + '</span>' +
-                   '<span><h3 class="tile-name">' + esc(file.label) + '</h3>' +
-                   '<p class="tile-sub' + (file.missing ? ' warn' : file.note ? ' warn' : '') + '">' +
-                   esc(sub) + '</p></span>' +
+                   '<span class="tile-txt"><h3 class="tile-name">' + esc(file.label) + '</h3>' +
+                   '<p class="tile-sub' + (file.missing || file.note ? ' warn' : '') +
+                   (file.youtube ? ' online' : '') + '">' + esc(sub) + '</p></span>' +
                    '</button>';
           }).join('') + '</div>'
         : emptyState(
@@ -500,6 +531,7 @@ var Library = (function () {
         tree[pname][fname].forEach(function (x) { onDisk[x.name] = x; });
 
         var files = slots.map(function (slot) {
+          if (slot.youtube) return slot;          // a link — nothing on disk to find
           var hit = onDisk[slot.name];
           delete onDisk[slot.name];
           return hit
@@ -522,7 +554,8 @@ var Library = (function () {
       (old.folders || []).forEach(function (of) {
         if (folders.some(function (f) { return f.id === of.id; })) return;
         folders.push({ id: of.id, name: of.name, files: (of.files || []).map(function (x) {
-          return { label: x.label || x.name, name: x.name, path: x.path, missing: true }; }) });
+          return x.youtube ? x
+               : { label: x.label || x.name, name: x.name, path: x.path, missing: true }; }) });
       });
       folders.sort(function (a, b) {
         var oa = (old.folders || []).findIndex(function (f) { return f.id === a.id; });
@@ -629,10 +662,27 @@ var Viewer = (function () {
   function open(path, name) {
     current = path;
     titleEl.textContent = name;
-    var k = kindOf(name);
+    var yt = /^https?:\/\/(www\.)?(youtube\.com|youtu\.be)\//i.test(path);
+    var k = yt ? 'youtube' : kindOf(name);
     var html;
-    var u = uri(path);
-    if (k === 'pdf') {
+    var u = /^https?:\/\//i.test(path) ? path : uri(path);
+    if (k === 'youtube') {
+      var id = (path.match(/[?&]v=([\w-]{6,})/) || path.match(/youtu\.be\/([\w-]{6,})/) || [])[1];
+      /* An embed that cannot reach YouTube renders as a dead grey box, which is a
+         poor thing to have on screen in front of a client. Show a card instead. */
+      html = navigator.onLine
+        ? '<iframe class="yt" src="https://www.youtube-nocookie.com/embed/' + esc(id) +
+          '?rel=0&modestbranding=1" title="' + esc(name) + '" allowfullscreen ' +
+          'allow="accelerometer; encrypted-media; picture-in-picture; fullscreen"></iframe>' +
+          '<p class="viewer-online">Streaming from YouTube. If it does not load, ' +
+          'press <b>Open</b> to watch in a new tab.</p>'
+        : '<div class="viewer-note offline">' + svg('youtube', 'big') +
+          '<h3>' + esc(name) + '</h3>' +
+          '<p>This film streams from YouTube, so it is the one thing in the kit that ' +
+          'needs an internet connection — and this machine is offline right now.</p>' +
+          '<p>Connect, then reopen it. The offline films in this folder play regardless.</p>' +
+          '<p><code>' + esc(path) + '</code></p></div>';
+    } else if (k === 'pdf') {
       html = '<iframe src="' + esc(u) + '#view=FitH" title="' + esc(name) + '"></iframe>';
     } else if (k === 'page') {
       html = '<iframe src="' + esc(u) + '" title="' + esc(name) + '"></iframe>';
@@ -658,7 +708,9 @@ var Viewer = (function () {
   }
 
   $('#viewerClose').onclick = close;
-  $('#viewerOpen').onclick  = function () { if (current) window.open(uri(current), '_blank'); };
+  $('#viewerOpen').onclick  = function () {
+    if (current) window.open(/^https?:\/\//i.test(current) ? current : uri(current), '_blank');
+  };
   $('#viewerFull').onclick  = function () {
     var t = body.firstElementChild;
     if (t && t.requestFullscreen) t.requestFullscreen();
@@ -691,8 +743,10 @@ var Search = (function () {
         (f.files || []).forEach(function (file) {
           if (file.missing) return;
           index.push({ t: 'file', name: file.label, alt: file.name,
-                       path: p.name + ' · ' + f.name,
-                       file: file.path, icon: kindOf(file.name) });
+                       path: p.name + ' · ' + f.name +
+                             (file.youtube ? ' · YouTube' : ''),
+                       file: file.youtube ? file.url : file.path,
+                       icon: file.youtube ? 'youtube' : kindOf(file.name) });
         });
       });
     });

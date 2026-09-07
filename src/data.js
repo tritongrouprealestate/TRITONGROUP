@@ -68,7 +68,11 @@ window.PORTAL_DATA = {
           { label: "Master Plan",         name: "Master Plan.png" } ] },
         { id: "video", name: "Video", files: [
           { label: "Project Walkthrough", name: "Walkthrough.mp4" },
-          { label: "AV Film",             name: "AV Film.mp4" } ] }
+          { label: "AV Film",             name: "AV Film.mp4" },
+          /* YouTube links — these need an internet connection, unlike everything
+             else in the kit. The portal marks them so nobody is caught out. */
+          { label: "Old Film",  youtube: "1SuGJy0W7fY" },
+          { label: "New Film",  youtube: "85QY818IoOc" } ] }
       ]
     },
     {
@@ -96,6 +100,15 @@ window.PORTAL_DATA = {
   D.projects.forEach(function (p) {
     (p.folders || []).forEach(function (f) {
       (f.files || []).forEach(function (file) {
+        if (file.youtube) {                       // a link, not a file on disk
+          file.url   = 'https://www.youtube.com/watch?v=' + file.youtube;
+          /* Saved thumbnail, so the tile still has a picture with no connection.
+             If it is absent the tile falls back to YouTube's own thumbnail, and
+             failing that to a plain panel — see Viewer/tile in app.js. */
+          file.thumb = root + '/_Portal/thumbs/' + file.youtube + '.jpg';
+          file.name  = file.name || file.label;
+          return;
+        }
         file.path = file.path || [root, p.name, f.name, file.name].join('/');
         file.label = file.label || file.name;
       });

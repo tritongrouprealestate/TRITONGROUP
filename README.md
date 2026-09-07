@@ -56,6 +56,28 @@ Save files under exactly these names. Case does not matter; spelling does.
 | `Sales Kit/Hummingvalley/Video/` | `Walkthrough.mp4` |
 | `Sales Kit/Hummingvalley/Video/` | `AV Film.mp4` |
 
+Hummingvalley's Video folder also carries two **YouTube links**, Old Film and New
+Film. They are the only things in the kit that need an internet connection, and the
+portal marks them in red so nobody is caught out mid-pitch. With a connection they
+play inside the portal; without one you get a card explaining why, and the two
+`.mp4` films in the same folder play regardless. Show those when there is no wifi.
+
+To change which videos they point at, edit the two `youtube:` IDs in `src/data.js`
+and rebuild.
+
+**Thumbnails (optional, needs wifi once).** A video tile shows a picture if one is
+saved here; otherwise it pulls YouTube's own thumbnail when online, and falls back
+to a plain panel with a play mark. To make the tiles look right offline too, save
+each thumbnail once:
+
+| Open in a browser | Save as |
+|---|---|
+| `https://img.youtube.com/vi/1SuGJy0W7fY/maxresdefault.jpg` | `Sales Kit/_Portal/thumbs/1SuGJy0W7fY.jpg` |
+| `https://img.youtube.com/vi/85QY818IoOc/maxresdefault.jpg` | `Sales Kit/_Portal/thumbs/85QY818IoOc.jpg` |
+
+(If a link 404s, swap `maxresdefault` for `hqdefault`.) I could not fetch these for
+you — this build machine has no access to YouTube.
+
 ### Triton Branded
 
 | Put the file here | Named |
@@ -71,6 +93,7 @@ Save files under exactly these names. Case does not matter; spelling does.
 | `Sales Kit/_Portal/` | `hero.mp4` — background film, muted loop, under ~20 MB |
 | `Sales Kit/_Portal/` | `hero-poster.jpg` — its first frame |
 | `Sales Kit/_Portal/` | `hero-bg.jpg` — the still behind the film |
+| `Sales Kit/_Portal/thumbs/` | `<youtube-id>.jpg` — saved video thumbnails |
 
 `_Portal` starts with an underscore, so the portal treats it as its own and never
 shows it as a project.

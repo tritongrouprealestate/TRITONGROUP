@@ -492,3 +492,48 @@ body.present .stage{padding-top:clamp(40px,7vh,80px)}
   font:600 12.5px/1 var(--sans);transition:transform .35s var(--ease),opacity .3s}
 .empty-cta:hover{transform:translateY(-2px);opacity:.9}
 .empty-cta svg{width:16px;height:16px;stroke-width:2}
+
+/* ============ YouTube links (the only things here that need internet) ============ */
+.tile.online .tile-ico{color:#c4302b}
+.tile.online:hover .tile-ico{background:#c4302b;border-color:#c4302b;color:#fff}
+.tile.online .tile-badge{color:#c4302b;border-color:rgba(196,48,43,.32)}
+.tile-sub.online{color:#c4302b;letter-spacing:.06em;text-transform:none;
+  font-weight:500;font-size:11px}
+.viewer-online{margin:12px 0 0;text-align:center;font-size:12.5px;color:var(--fg-dim)}
+.viewer-body:has(.viewer-online){grid-template-rows:1fr auto}
+.viewer-body iframe.yt{background:#000;border-radius:12px}
+.viewer-note.offline svg.big{width:46px;height:46px;color:#c4302b;margin:0 auto 16px;stroke-width:1.4}
+.viewer-note.offline p{margin:0 0 10px}
+
+/* ============ media tiles (film + YouTube) ============ */
+.tile.media{padding:0;gap:0;justify-content:flex-start;overflow:hidden}
+.tile-shot{
+  position:relative;display:block;width:100%;aspect-ratio:16/9;overflow:hidden;
+  background:linear-gradient(150deg,#3b4a5c,#1a2029 58%,#4a3d22);
+}
+.tile-shot::after{                      /* keeps the play mark legible on any frame */
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(60% 60% at 50% 50%,rgba(0,0,0,.34),rgba(0,0,0,.12) 70%,transparent);
+}
+.tile-shot .shot{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  transition:transform .7s var(--ease);pointer-events:none;
+}
+.tile.media:hover .tile-shot .shot{transform:scale(1.06)}
+.tile-play{
+  position:absolute;top:50%;left:50%;z-index:2;
+  display:grid;place-items:center;width:46px;height:46px;margin:-23px 0 0 -23px;
+  border-radius:999px;background:rgba(255,255,255,.94);color:#111214;
+  box-shadow:0 6px 22px rgba(0,0,0,.34);
+  transition:transform .4s var(--ease),background .4s;
+}
+.tile-play svg{width:20px;height:20px;margin-left:2px}
+.tile.media:hover .tile-play{transform:scale(1.12)}
+.tile.media.online:hover .tile-play{background:#c4302b;color:#fff}
+.tile.media .tile-badge{top:12px;right:12px;z-index:3;
+  background:rgba(12,14,18,.62);border-color:rgba(255,255,255,.28);color:#fff;
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.tile.media.online .tile-badge{background:rgba(196,48,43,.92);border-color:transparent}
+.tile.media .tile-txt{display:block;padding:15px 18px 17px}
+.tile.media .tile-name{margin:0}
+.tile.media::before{border-radius:0}
