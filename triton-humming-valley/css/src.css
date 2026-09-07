@@ -478,10 +478,23 @@ html.lenis,html.lenis body{height:auto}
 .choreo-stage{position:sticky;top:0;height:100svh;width:100%;overflow:hidden}
 .choreo-inner{position:absolute;inset:0}
 
+/* Light on the ground the frames converge on, so the centre of the stage is
+   somewhere rather than nowhere. It brightens as they gather. */
+.choreo-halo{position:absolute;inset:0;pointer-events:none;opacity:.35;
+  background:radial-gradient(58% 52% at 50% 50%,
+    rgba(143,212,155,.20), rgba(34,56,45,0) 72%)}
+
 .choreo-frame{position:absolute;left:50%;top:50%;margin:0;
   width:42vw;height:25vh;overflow:hidden;background:var(--color-frond);
-  transform:translate(-50%,-50%);will-change:transform,width,height}
-.choreo-frame img{width:100%;height:100%;object-fit:cover;display:block}
+  transform:translate(-50%,-50%);
+  box-shadow:0 40px 80px -42px rgba(0,0,0,.85), 0 4px 18px -8px rgba(0,0,0,.5);
+  will-change:transform,width,height}
+
+/* The photograph is larger than the frame it shows through, so it can drift
+   inside it. That is what makes a frame read as a window onto something
+   rather than as a picture pasted on. */
+.choreo-frame img{width:100%;height:100%;object-fit:cover;display:block;
+  will-change:transform}
 
 /* A phone is portrait, so the four frames are squarer and taller: at
    44vw x 32vh the two-by-two block fills 90vw and 66vh, which is a
@@ -635,6 +648,7 @@ html.lenis,html.lenis body{height:auto}
   .hero-actions .btn{flex:1 1 100%;justify-content:center}
 }
 .hero-facts dt{font-size:.82rem;color:var(--color-haze);margin-bottom:.3rem}
+.hero-facts dt .incl{margin-bottom:.1rem}
 .hero-facts dd{margin:0;font-family:var(--font-display);font-size:var(--step-2);
   color:var(--color-cloud);line-height:1}
 .hero-facts dd span{font-family:var(--font-sans);font-size:.42em;font-weight:500;
@@ -665,11 +679,24 @@ html.lenis,html.lenis body{height:auto}
    ══════════════════════════════════════════════════════════════════════ */
 /* The price and the fact that it is all inclusive belong together: read
    apart, a figure like this is assumed to be a base price with registration,
-   stamp duty and GST still to come. */
+   stamp duty and GST still to come. So it is marked rather than muttered —
+   the one badge on the page, small enough not to shout and coloured enough
+   to be read before the eye moves on.
+
+   Uppercase is set with text-transform, not typed: a screen reader spells
+   typed capitals letter by letter. */
+.incl{display:inline-block;font-family:var(--font-sans);font-size:.62rem;
+  font-weight:700;letter-spacing:.11em;text-transform:uppercase;
+  padding:.2rem .5rem;border-radius:2px;white-space:nowrap;
+  color:var(--color-dawn);background:rgba(201,150,46,.16);
+  border:1px solid rgba(201,150,46,.45)}
+/* On a light ground the gold has to go darker to stay legible. */
+.on-light .incl{color:var(--color-dawn-deep);background:rgba(122,90,18,.10);
+  border-color:rgba(122,90,18,.35)}
+
 .price{display:inline-flex;flex-direction:column;align-items:flex-end;
   line-height:1.05}
-.price small{font-size:.66rem;letter-spacing:.09em;text-transform:uppercase;
-  color:var(--color-mist);margin-top:.25rem}
+.price .incl{margin-top:.4rem}
 
 /* ── The layout, as a stack of levels ────────────────────────────────────
    A wireframe rather than a plan: each floor is a row of blocks standing for

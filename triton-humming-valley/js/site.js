@@ -104,7 +104,7 @@ const DATA = {
      villas numbered 1-30, clubhouse at the south-west corner, approach road
      down the eastern edge. Areas are the figures printed on that plan.
 
-     Statuses are the real ones: villas 8, 20, 22 and 23 are unsold and
+     Statuses are the real ones: villas 8, 11, 20, 22 and 23 are unsold and
      everything else has gone. Nothing is on hold.
 
      Five villas are now confirmed against the client's own floor-plan
@@ -117,8 +117,8 @@ const DATA = {
      Villa 22 was carrying 3,680 sq ft and a 4 BHK label, both wrong.
 
        20  4 BHK   1,389 plot   3,724 built up   east facing
-     which means every villa still for sale is now confirmed from a sheet:
-     8, 22 and 23 are 3 BHK, 20 is the 4 BHK.
+     which means every villa still for sale is confirmed from a sheet:
+     8, 22 and 23 are 3 BHK, 20 is the 4 BHK, 11 is the 5 BHK.
 
      ⚠ The BHK on the twenty-five sold villas is still derived from built-up
      area. It costs nobody anything — none of them can be bought — but it is
@@ -134,7 +134,7 @@ const DATA = {
     {n:'3',x:436,y:46,t:'3 BHK',sq:2553,s:'sold',a:'North row'},
     {n:'2',x:484,y:46,t:'3 BHK',sq:2389,s:'sold',a:'North row'},
     {n:'1',x:532,y:46,t:'4 BHK',sq:3136,s:'sold',a:'North row'},
-    {n:'11',x:100,y:176,t:'5 BHK',sq:4448,land:1555,s:'sold',a:'Central row'},
+    {n:'11',x:100,y:176,t:'5 BHK',sq:4448,land:1555,s:'available',a:'Central row'},
     {n:'12',x:148,y:176,t:'5 BHK',sq:3780,s:'sold',a:'Central row'},
     {n:'13',x:196,y:176,t:'3 BHK',sq:2600,s:'sold',a:'Central row'},
     {n:'14',x:244,y:176,t:'3 BHK',sq:2600,s:'sold',a:'Central row'},
@@ -381,7 +381,7 @@ $('#villa-list').innerHTML = DATA.villas.map(v => `
       <p class="ml-auto flex items-center gap-4">
         <span class="price">
           <span class="font-display text-dawn-deep" style="font-size:var(--step-1)">${v.price}</span>
-          <small>all inclusive</small>
+          <small class="incl">All inclusive</small>
         </span>
         <svg class="chev h-5 w-5 text-mist" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
       </p>
@@ -1197,7 +1197,19 @@ window.addEventListener('load', () => ScrollTrigger.refresh());
     gsap.set(bottomRight, { x:  X + 'vw', y:  Y + 'vh' });
     gsap.set(bottomLeft,  { x: -X + 'vw', y:  Y + 'vh' });
     gsap.set(hero,        { x:  X + 'vw', y: -Y + 'vh' });
-    gsap.set([topLeft, bottomRight, bottomLeft], { opacity: 1 });
+
+    /* At rest the four are laid down like prints on a table rather than set
+       in a grid: a degree or two of rotation each, and the three that are
+       not the hero held a little back in light. Both resolve as they gather,
+       so the squaring-up is what the scroll is doing. */
+    const TILT = [-1.7, 1.3, 1.9, -1.1];
+    frames.forEach((f, i) => gsap.set(f, { rotation: TILT[i] }));
+    gsap.set([topLeft, bottomRight, bottomLeft], { opacity: .82 });
+
+    /* Each photograph starts larger than its frame so it has somewhere to
+       travel. The frame moves one way, the picture inside it the other. */
+    const halo = $('.choreo-halo');
+    gsap.set(imgs, { scale: 1.16, yPercent: -2.5 });
 
     const tl = gsap.timeline({
       defaults: { ease: 'none' },
@@ -1215,8 +1227,16 @@ window.addEventListener('load', () => ScrollTrigger.refresh());
     tl.to(topLeft,     { y:  Y + 'vh', duration: .30 }, 0)
       .to(bottomRight, { y: -Y + 'vh', duration: .30 }, 0)
 
-    /* Phase 2 — everything gathers on the centre and stacks. */
+    /* The photographs settle into their frames across the whole approach,
+       slower than anything else on screen. */
+      .to(imgs, { scale: 1, yPercent: 0, duration: .70, ease: 'power1.out' }, 0)
+
+    /* Phase 2 — everything gathers on the centre and stacks, straightening
+       as it comes. */
       .to(frames, { x: 0, y: 0, duration: .30 }, .35)
+      .to(frames, { rotation: 0, duration: .34, ease: 'power2.out' }, .33)
+      .to([topLeft, bottomRight, bottomLeft], { opacity: 1, duration: .25 }, .35)
+      .to(halo, { opacity: 1, scale: 1.12, duration: .40, ease: 'power1.out' }, .30)
 
     /* Phase 3 — the last frame opens to fill the screen.
        width/height rather than a transform: the frames have different aspect
@@ -1227,7 +1247,8 @@ window.addEventListener('load', () => ScrollTrigger.refresh());
 
     /* The three beneath fade as the hero passes over them — without this the
        stack's edges show through at the corners as it grows. */
-      .to([topLeft, bottomRight, bottomLeft], { opacity: 0, duration: .10 }, .75);
+      .to([topLeft, bottomRight, bottomLeft], { opacity: 0, duration: .10 }, .75)
+      .to(halo, { opacity: 0, duration: .12 }, .72);
 
     if (caption) tl.to(caption, { opacity: 1, duration: .08 }, .88);
 
