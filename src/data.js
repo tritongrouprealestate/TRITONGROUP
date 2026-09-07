@@ -73,6 +73,8 @@ window.PORTAL_DATA = {
           { label: "Villa 21",            name: "Villa 21.png" } ] },
         { id: "master-plan", name: "Master Plan", files: [
           { label: "Master Plan",         name: "Master Plan.png" } ] },
+        { id: "location-advantage", name: "Location Advantage", files: [
+          { label: "Location Advantage",  name: "Location Advantage.html" } ] },
         { id: "video", name: "Video", files: [
           { label: "Project Walkthrough", name: "Walkthrough.mp4" },
           { label: "AV Film",             name: "AV Film.mp4" } ] }

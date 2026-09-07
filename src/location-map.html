@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Triton Humming Valley — Location Advantage</title>
+<!--FONTS-->
+<style>
+:root{
+  --ink:#080C0B; --ink-2:#0E1614; --ink-3:#14201D;
+  --line:rgba(255,255,255,.10); --line-2:rgba(255,255,255,.20);
+  --fg:#F3F7F5; --fg-dim:rgba(243,247,245,.70); --fg-faint:rgba(243,247,245,.52);
+  --teal:#4FB3A8; --gold:#E0C384;
+  --sans:"Geist","Segoe UI",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+  --display:"Fraunces","Georgia",serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--ink);color:var(--fg);font-family:var(--sans);
+  font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow:hidden}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+::selection{background:rgba(79,179,168,.28)}
+
+.page{height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+
+/* ---------- header ---------- */
+.top{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;
+  padding:22px clamp(16px,3vw,34px) 16px;border-bottom:1px solid var(--line);flex:0 0 auto}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;margin:0 0 8px;
+  font:600 10px/1 var(--sans);letter-spacing:.38em;text-transform:uppercase;color:var(--teal)}
+.eyebrow::before{content:"";width:20px;height:2px;background:var(--teal)}
+.h1{margin:0;font-family:var(--display);font-weight:400;font-variation-settings:"opsz" 144;
+  font-size:clamp(26px,3.4vw,42px);line-height:1;letter-spacing:-.015em}
+.h1 span{color:var(--gold)}
+.sub{margin:7px 0 0;font-size:13px;color:var(--fg-faint)}
+.stats{display:flex;gap:clamp(16px,2.4vw,34px);flex-wrap:wrap}
+.stat b{display:block;font-family:var(--display);font-variation-settings:"opsz" 144;
+  font-weight:400;font-size:clamp(24px,2.6vw,34px);line-height:1;color:var(--gold)}
+.stat span{display:block;margin-top:6px;font:600 9px/1.3 var(--sans);letter-spacing:.2em;
+  text-transform:uppercase;color:var(--fg-faint);max-width:12ch}
+
+/* ---------- filter chips ---------- */
+.chips{display:flex;gap:8px;padding:14px clamp(16px,3vw,34px);overflow-x:auto;
+  border-bottom:1px solid var(--line);flex:0 0 auto;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 15px;
+  border-radius:999px;border:1px solid var(--line);white-space:nowrap;
+  font:500 12.5px/1 var(--sans);color:var(--fg-dim);
+  transition:background .3s,border-color .3s,color .3s}
+.chip .dot{width:8px;height:8px;border-radius:99px;background:currentColor;flex:0 0 auto}
+.chip:hover{border-color:var(--line-2);color:var(--fg)}
+.chip[aria-pressed="true"]{background:var(--fg);border-color:var(--fg);color:var(--ink)}
+.chip[aria-pressed="true"] span,.chip[aria-pressed="true"] b{color:var(--ink)!important}
+.chip[aria-pressed="true"] b{opacity:.5}
+.chip[aria-pressed="true"] .dot{background:currentColor}
+.chip b{font-weight:600;opacity:.55;font-size:11px}
+
+/* ---------- body ---------- */
+.body{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 380px}
+.dial{position:relative;min-height:0;min-width:0;padding:clamp(8px,2vw,22px);overflow:hidden}
+/* the SVG keeps its own preserveAspectRatio, so the drawing letterboxes inside
+   whatever box it is given rather than overflowing the shorter side */
+svg.dial-svg{width:100%;height:100%;display:block;touch-action:manipulation}
+
+.ring{fill:none;stroke:rgba(255,255,255,.09);stroke-width:1}
+.ring.major{stroke:rgba(255,255,255,.16)}
+.ring-label{fill:rgba(243,247,245,.42);font:600 11px var(--sans);letter-spacing:.16em}
+.spoke{stroke:rgba(255,255,255,.055);stroke-width:1}
+.sector-label{font:600 10.5px var(--sans);letter-spacing:.26em;text-transform:uppercase;
+  opacity:.85}
+
+.sweep{opacity:.5}
+@keyframes spin{to{transform:rotate(360deg)}}
+.sweep-g{transform-origin:500px 500px;animation:spin 16s linear infinite}
+
+.hub-ring{fill:none;stroke:var(--gold);stroke-width:1.5;opacity:.5}
+@keyframes pulse{0%{r:34;opacity:.55}70%{r:60;opacity:0}100%{r:60;opacity:0}}
+.hub-pulse{fill:none;stroke:var(--gold);stroke-width:1.5;animation:pulse 3.2s var(--ease) infinite}
+.hub-core{fill:var(--gold)}
+.hub-name{fill:var(--fg);font-family:var(--display);font-size:19px;text-anchor:middle;
+  font-variation-settings:"opsz" 144}
+.hub-sub{fill:rgba(243,247,245,.52);font:600 8.5px var(--sans);letter-spacing:.24em;
+  text-anchor:middle;text-transform:uppercase}
+
+.node{cursor:pointer}
+.node{transition:transform .7s var(--ease)}
+.node .link{stroke-width:1;opacity:.28;
+  transition:opacity .35s,stroke-width .35s}
+.links-off .node .link{opacity:0!important}
+.node .halo{opacity:0;transition:opacity .35s var(--ease),r .35s var(--ease)}
+.node .pin{transition:r .3s var(--ease)}
+.node .lbl{font:500 11px var(--sans);opacity:0;pointer-events:none;
+  transition:opacity .35s var(--ease)}
+.node.show-lbl .lbl{opacity:.9}
+.node:hover .halo,.node.sel .halo{opacity:.26}
+.node:hover .pin,.node.sel .pin{r:9}
+.node:hover .link,.node.sel .link{opacity:.85;stroke-width:1.6}
+.node.sel .lbl{opacity:1}
+.node.dim{opacity:.13;pointer-events:none}
+.node.hidden{display:none}
+
+/* entrance — on an inner group, because the outer one carries the position
+   transform and an animation on the same property would win over it */
+.node-in{opacity:0;transform-origin:0 0;animation:pop .55s var(--ease) forwards}
+@keyframes pop{from{opacity:0;transform:scale(.35)}to{opacity:1;transform:scale(1)}}
+
+/* ---------- tooltip ---------- */
+.tip{position:absolute;z-index:5;pointer-events:none;opacity:0;
+  transform:translate(-50%,-140%);transition:opacity .2s;
+  background:rgba(8,12,11,.94);border:1px solid var(--line-2);border-radius:10px;
+  padding:9px 12px;white-space:nowrap;backdrop-filter:blur(8px)}
+.tip.on{opacity:1}
+.tip b{display:block;font-size:12.5px;font-weight:600}
+.tip i{display:block;margin-top:3px;font-style:normal;font:600 11px var(--sans);
+  letter-spacing:.05em;color:var(--gold)}
+
+/* ---------- panel ---------- */
+.panel{border-left:1px solid var(--line);background:var(--ink-2);
+  display:flex;flex-direction:column;min-height:0;
+  min-width:0}   /* grid items default to min-width:auto and would be sized by
+                    the longest place name, pushing the column past the viewport */
+.panel-head{padding:22px 24px 18px;border-bottom:1px solid var(--line);flex:0 0 auto}
+.panel-title{margin:0;font:600 10px/1 var(--sans);letter-spacing:.3em;text-transform:uppercase;
+  color:var(--fg-faint)}
+.detail{padding:24px;border-bottom:1px solid var(--line);flex:0 0 auto;
+  animation:rise .45s var(--ease)}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.detail .cat{display:inline-flex;align-items:center;gap:8px;margin-bottom:14px;
+  font:600 9.5px/1 var(--sans);letter-spacing:.22em;text-transform:uppercase}
+.detail .cat .dot{width:8px;height:8px;border-radius:99px;background:currentColor}
+.detail h2{margin:0;font-family:var(--display);font-variation-settings:"opsz" 144;
+  font-weight:400;font-size:27px;line-height:1.1;letter-spacing:-.012em}
+.metrics{display:flex;gap:12px;margin:20px 0 0}
+.metric{flex:1;padding:16px 14px;border-radius:12px;background:var(--ink-3);
+  border:1px solid var(--line)}
+.metric b{display:block;font-family:var(--display);font-variation-settings:"opsz" 144;
+  font-weight:400;font-size:34px;line-height:1;color:var(--gold)}
+.metric b small{font-family:var(--sans);font-size:14px;font-weight:500;margin-left:3px;
+  letter-spacing:0;color:var(--fg-dim)}
+.metric span{display:block;margin-top:8px;font:600 9px/1 var(--sans);letter-spacing:.22em;
+  text-transform:uppercase;color:var(--fg-faint)}
+.detail p{margin:18px 0 0;font-size:13.5px;line-height:1.7;color:var(--fg-dim)}
+
+.list{flex:1;min-height:0;overflow-y:auto;padding:8px}
+.row{display:flex;align-items:center;gap:12px;width:100%;padding:11px 13px;border-radius:10px;
+  text-align:left;transition:background .2s}
+.row:hover{background:rgba(255,255,255,.05)}
+.row.sel{background:rgba(255,255,255,.08)}
+.row .dot{width:9px;height:9px;border-radius:99px;flex:0 0 auto}
+.row .nm{flex:1;min-width:0;font-size:13px;overflow:hidden;text-overflow:ellipsis;
+  white-space:nowrap}
+.row .km{font:600 12px/1 var(--sans);color:var(--gold);flex:0 0 auto}
+.row .mn{font:500 11px/1 var(--sans);color:var(--fg-faint);flex:0 0 auto;width:52px;
+  text-align:right}
+
+.foot{padding:12px clamp(16px,3vw,34px);border-top:1px solid var(--line);flex:0 0 auto;
+  font:500 10.5px/1.5 var(--sans);color:var(--fg-faint);display:flex;gap:16px;
+  justify-content:space-between;flex-wrap:wrap}
+
+/* ---------- responsive ---------- */
+@media (max-width:1000px){
+  body{overflow:auto}
+  .page{height:auto;min-height:100dvh}
+  .body{grid-template-columns:1fr}
+  .dial{padding:14px 8px 0}
+  svg.dial-svg{width:100%;height:auto;aspect-ratio:1;max-height:none}
+  .panel{border-left:0;border-top:1px solid var(--line)}
+  .list{overflow:visible;max-height:none}
+  .stats{width:100%;justify-content:space-between}
+  .stat span{max-width:none}
+}
+@media (max-width:560px){
+  .top{padding:16px 16px 12px}
+  .metrics{gap:9px}
+  .metric{padding:13px 11px}
+  .metric b{font-size:28px}
+  .chip{height:40px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  .sweep{display:none}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <div>
+      <p class="eyebrow" id="eyebrow">Location Advantage</p>
+      <h1 class="h1" id="title">Triton <span>Humming Valley</span></h1>
+      <p class="sub" id="sub"></p>
+    </div>
+    <div class="stats" id="stats"></div>
+  </header>
+
+  <nav class="chips" id="chips" aria-label="Filter by category"></nav>
+
+  <div class="body">
+    <div class="dial" id="dialWrap">
+      <svg class="dial-svg" id="dial" viewBox="-52 -52 1104 1104" role="img"
+           aria-label="Radial diagram of nearby destinations by distance"></svg>
+      <div class="tip" id="tip" aria-hidden="true"></div>
+    </div>
+    <aside class="panel">
+      <div class="panel-head"><p class="panel-title" id="panelTitle">All destinations</p></div>
+      <div id="detail"></div>
+      <div class="list" id="list"></div>
+    </aside>
+  </div>
+
+  <footer class="foot">
+    <span id="footNote"></span>
+    <span>Triton Group · Internal Sales Kit</span>
+  </footer>
+</div>
+
+<!--DATA-->
+<script>
+(function () {
+'use strict';
+var D = window.LOCATION_DATA;
+var $ = function (s) { return document.querySelector(s); };
+var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) {
+  return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]; }); };
+var SVGNS = 'http://www.w3.org/2000/svg';
+var el = function (t, a) { var e = document.createElementNS(SVGNS, t);
+  for (var k in a) e.setAttribute(k, a[k]); return e; };
+
+var CX = 500, CY = 500, MAXKM = 32, R0 = 62, RSPAN = 372;
+/* A power curve, so the six addresses inside 5 km do not collapse onto the hub
+   while the airport at 24.5 km still fits the frame. */
+function radius(km) { return R0 + Math.pow(Math.min(km, MAXKM) / MAXKM, 0.68) * RSPAN; }
+function pt(km, deg) { var a = (deg - 90) * Math.PI / 180, r = radius(km);
+  return [CX + r * Math.cos(a), CY + r * Math.sin(a)]; }
+
+var CAT = {}; D.categories.forEach(function (c) { CAT[c.id] = c; });
+
+/* Each category gets a wedge in proportion to how many places it holds, so a
+   category of eight is not squeezed into the same arc as one of one. */
+var byCat = {}, total = 0;
+D.categories.forEach(function (c) {
+  byCat[c.id] = D.places.filter(function (p) { return p.c === c.id; })
+                        .sort(function (a, b) { return a.km - b.km; });
+  total += byCat[c.id].length;
+});
+var angle = 0;
+D.categories.forEach(function (c) {
+  var list = byCat[c.id], span = list.length / total * 360;
+  c._from = angle; c._span = span;
+  list.forEach(function (p, i) { p._deg = angle + (i + 0.5) / list.length * span; });
+  angle += span;
+});
+
+var active = null, selected = null;
+
+/* ---------------- build the dial ---------------- */
+var svg = $('#dial');
+function draw() {
+  svg.innerHTML = '';
+  var defs = el('defs');
+  var grad = el('linearGradient', { id:'sweepg', x1:'0', y1:'0', x2:'1', y2:'0' });
+  grad.appendChild(el('stop', { offset:'0', 'stop-color':'#4FB3A8', 'stop-opacity':'0' }));
+  grad.appendChild(el('stop', { offset:'1', 'stop-color':'#4FB3A8', 'stop-opacity':'.5' }));
+  defs.appendChild(grad); svg.appendChild(defs);
+
+  /* rings */
+  [5,10,15,20,25,30].forEach(function (km) {
+    svg.appendChild(el('circle', { cx:CX, cy:CY, r:radius(km),
+      'class':'ring' + (km % 10 === 0 ? ' major' : '') }));
+    var t = el('text', { x:CX + 8, y:CY + radius(km) - 9, 'class':'ring-label' });
+    t.textContent = km + ' km'; svg.appendChild(t);
+  });
+
+  /* sector dividers + labels */
+  D.categories.forEach(function (c) {
+    var a = (c._from - 90) * Math.PI / 180;
+    svg.appendChild(el('line', { x1:CX, y1:CY,
+      x2:CX + 440 * Math.cos(a), y2:CY + 440 * Math.sin(a), 'class':'spoke' }));
+    var mid = c._from + c._span / 2, ma = (mid - 90) * Math.PI / 180, lr = 468;
+    var x = CX + lr * Math.cos(ma), y = CY + lr * Math.sin(ma);
+    var rot = mid > 180 ? mid + 90 : mid - 90;
+    var t = el('text', { x:x, y:y, 'class':'sector-label', fill:c.color,
+      'text-anchor':'middle', transform:'rotate(' + rot + ' ' + x + ' ' + y + ')' });
+    t.textContent = c.short; svg.appendChild(t);
+  });
+
+  /* radar sweep */
+  var sg = el('g', { 'class':'sweep' });
+  var inner = el('g', { 'class':'sweep-g' });
+  inner.appendChild(el('rect', { x:CX, y:CY - 1.5, width:430, height:3, fill:'url(#sweepg)' }));
+  sg.appendChild(inner); svg.appendChild(sg);
+
+  /* hub */
+  svg.appendChild(el('circle', { cx:CX, cy:CY, r:34, 'class':'hub-pulse' }));
+  svg.appendChild(el('circle', { cx:CX, cy:CY, r:30, 'class':'hub-ring' }));
+  svg.appendChild(el('circle', { cx:CX, cy:CY, r:7, 'class':'hub-core' }));
+  var n1 = el('text', { x:CX, y:CY - 46, 'class':'hub-name' });
+  n1.textContent = 'Humming Valley'; svg.appendChild(n1);
+  var n2 = el('text', { x:CX, y:CY + 56, 'class':'hub-sub' });
+  n2.textContent = 'The Project'; svg.appendChild(n2);
+
+  /* nodes, nearest first so the reveal reads outward from the project */
+  D.places.slice().sort(function (a, b) { return a.km - b.km; })
+    .forEach(function (p, i) {
+      var c = CAT[p.c];
+      var g = el('g', { 'class':'node', 'data-n':p.n, tabindex:'0', role:'button',
+        'aria-label':p.n + ', ' + p.km + ' kilometres, ' + p.min + ' minutes' });
+      /* children sit at the local origin and the outer group is moved into place,
+         so a change of layout is a transform transition rather than a redraw */
+      var inner = el('g', { 'class':'node-in' });
+      inner.style.animationDelay = (240 + i * 42) + 'ms';
+      inner.appendChild(el('line', { x1:0, y1:0, x2:0, y2:0, 'class':'link', stroke:c.color }));
+      inner.appendChild(el('circle', { cx:0, cy:0, r:18, 'class':'halo', fill:c.color }));
+      inner.appendChild(el('circle', { cx:0, cy:0, r:6, 'class':'pin', fill:c.color }));
+      var t = el('text', { x:14, y:4, 'class':'lbl', fill:c.color, 'text-anchor':'start' });
+      t.textContent = p.n.length > 26 ? p.n.slice(0, 25) + '…' : p.n;
+      inner.appendChild(t);
+      g.appendChild(inner);
+      g.addEventListener('click', function () { select(p); });
+      g.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(p); } });
+      g.addEventListener('pointerenter', function () { tip(p, p._xy); });
+      g.addEventListener('pointerleave', hideTip);
+      g.addEventListener('focus', function () { tip(p, p._xy); });
+      g.addEventListener('blur', hideTip);
+      p._el = g; p._link = inner.firstChild; p._lbl = t; svg.appendChild(g);
+    });
+  layout(null);
+}
+
+/* Where each node sits. With everything shown they hold their category wedge; with
+   one category shown they fan across the whole dial, which is the only way six
+   addresses inside 4 km can carry readable labels. */
+function layout(cat) {
+  var shown = D.places.filter(function (p) { return !cat || p.c === cat; })
+                      .sort(function (a, b) { return a.km - b.km; });
+  shown.forEach(function (p, i) {
+    p._at = cat ? (i / shown.length) * 360 : p._deg;
+  });
+  D.places.forEach(function (p) {
+    var deg = p._at === undefined ? p._deg : p._at;
+    var xy = pt(p.km, deg), hub = pt(0, deg);
+    p._el.style.transform = 'translate(' + xy[0].toFixed(1) + 'px,' + xy[1].toFixed(1) + 'px)';
+    p._link.setAttribute('x1', (hub[0] - xy[0]).toFixed(1));
+    p._link.setAttribute('y1', (hub[1] - xy[1]).toFixed(1));
+    var right = deg < 180;
+    p._lbl.setAttribute('x', right ? 14 : -14);
+    p._lbl.setAttribute('text-anchor', right ? 'start' : 'end');
+    p._xy = xy;
+  });
+}
+
+/* ---------------- tooltip ---------------- */
+var tipEl = $('#tip');
+function tip(p, xy) {
+  var box = svg.getBoundingClientRect(), wrap = $('#dialWrap').getBoundingClientRect();
+  var sx = box.width / 1000;
+  tipEl.innerHTML = '<b>' + esc(p.n) + '</b><i>' + p.km + ' km · ' + p.min + ' min</i>';
+  tipEl.style.left = (box.left - wrap.left + xy[0] * sx) + 'px';
+  tipEl.style.top  = (box.top - wrap.top + xy[1] * sx) + 'px';
+  tipEl.classList.add('on');
+}
+function hideTip() { tipEl.classList.remove('on'); }
+
+/* ---------------- chips ---------------- */
+function chips() {
+  var box = $('#chips');
+  box.innerHTML = '<button class="chip" data-cat="" aria-pressed="true">All' +
+    ' <b>' + D.places.length + '</b></button>' +
+    D.categories.map(function (c) {
+      return '<button class="chip" data-cat="' + c.id + '" aria-pressed="false" ' +
+        'style="color:' + c.color + '"><span class="dot"></span>' +
+        '<span style="color:var(--fg-dim)">' + esc(c.short) + '</span>' +
+        ' <b style="color:var(--fg-faint)">' + byCat[c.id].length + '</b></button>';
+    }).join('');
+  box.addEventListener('click', function (e) {
+    var b = e.target.closest('.chip'); if (!b) return;
+    setCat(b.dataset.cat || null);
+  });
+}
+function setCat(id) {
+  active = id; selected = null;
+  document.querySelectorAll('.chip').forEach(function (b) {
+    b.setAttribute('aria-pressed', String((b.dataset.cat || null) === id));
+  });
+  var single = !!id;
+  D.places.forEach(function (p) {
+    var on = !id || p.c === id;
+    p._el.classList.toggle('dim', !on);
+    p._el.classList.toggle('show-lbl', on && single);
+    p._el.classList.remove('sel');
+  });
+  $('#panelTitle').textContent = id ? CAT[id].name : 'All destinations';
+  $('#detail').innerHTML = '';
+  svg.classList.add('links-off');
+  layout(id);
+  clearTimeout(setCat._t);
+  setCat._t = setTimeout(function () {
+    if (!active) svg.classList.remove('links-off');
+  }, 720);
+  hideTip();
+  renderList();
+}
+
+/* ---------------- selection ---------------- */
+function select(p) {
+  selected = p;
+  D.places.forEach(function (q) { q._el.classList.toggle('sel', q === p); });
+  var c = CAT[p.c];
+  $('#detail').innerHTML =
+    '<div class="detail">' +
+      '<span class="cat" style="color:' + c.color + '"><span class="dot"></span>' +
+        esc(c.name) + '</span>' +
+      '<h2>' + esc(p.n) + '</h2>' +
+      '<div class="metrics">' +
+        '<div class="metric"><b>' + p.km + '<small>km</small></b><span>Distance</span></div>' +
+        '<div class="metric"><b>' + p.min + '<small>min</small></b><span>Drive time</span></div>' +
+      '</div>' +
+      (p.note ? '<p>' + esc(p.note) + '</p>' : '') +
+    '</div>';
+  renderList();
+  var row = document.querySelector('.row.sel');
+  if (row && row.scrollIntoView) row.scrollIntoView({ block:'nearest' });
+}
+
+/* ---------------- list ---------------- */
+function renderList() {
+  var items = D.places.filter(function (p) { return !active || p.c === active; })
+                      .sort(function (a, b) { return a.km - b.km; });
+  $('#list').innerHTML = items.map(function (p) {
+    return '<button class="row' + (p === selected ? ' sel' : '') + '" data-n="' + esc(p.n) + '">' +
+      '<span class="dot" style="background:' + CAT[p.c].color + '"></span>' +
+      '<span class="nm">' + esc(p.n) + '</span>' +
+      '<span class="km">' + p.km + ' km</span>' +
+      '<span class="mn">' + p.min + ' min</span></button>';
+  }).join('');
+}
+$('#list').addEventListener('click', function (e) {
+  var r = e.target.closest('.row'); if (!r) return;
+  var p = D.places.filter(function (q) { return q.n === r.dataset.n; })[0];
+  if (p) select(p);
+});
+
+/* ---------------- header ---------------- */
+function header() {
+  $('#title').innerHTML = 'Triton <span>Humming Valley</span>';
+  $('#sub').textContent = D.project.sub;
+  var within15 = D.places.filter(function (p) { return p.km <= 15; }).length;
+  var air = D.places.filter(function (p) { return /airport/i.test(p.n); })[0];
+  var near = D.places.reduce(function (a, b) { return a.km < b.km ? a : b; });
+  $('#stats').innerHTML = [
+    [D.places.length, 'Destinations mapped'],
+    [within15, 'Within 15 km'],
+    [air ? air.min + ' min' : '—', 'To the airport'],
+    [near.min + ' min', 'Nearest neighbour']
+  ].map(function (s) {
+    return '<div class="stat"><b>' + s[0] + '</b><span>' + s[1] + '</span></div>';
+  }).join('');
+  $('#footNote').textContent =
+    'Distances and drive times are from the project brochure. Placement is by ' +
+    'category and distance — this is a schematic, not a survey map.';
+}
+
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape') { selected = null; $('#detail').innerHTML = '';
+    D.places.forEach(function (p) { p._el.classList.remove('sel'); }); renderList(); }
+});
+window.addEventListener('resize', hideTip);
+
+header(); draw(); chips(); setCat(null);
+})();
+</script>
+</body>
+</html>

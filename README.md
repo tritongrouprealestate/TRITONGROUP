@@ -53,6 +53,7 @@ Save files under exactly these names. Case does not matter; spelling does.
 | `Sales Kit/Hummingvalley/Brochure/` | `Presentation.pptx` |
 | `Sales Kit/Hummingvalley/Cost Sheet/` | `Villa 20.png`, `Villa 21.png` |
 | `Sales Kit/Hummingvalley/Master Plan/` | `Master Plan.png` |
+| `Sales Kit/Hummingvalley/Location Advantage/` | `Location Advantage.html` — **generated, do not replace** |
 | `Sales Kit/Hummingvalley/Video/` | `Walkthrough.mp4` |
 | `Sales Kit/Hummingvalley/Video/` | `AV Film.mp4` |
 
@@ -121,6 +122,28 @@ and the footer. Two things matter:
 Until the file is there, the portal falls back to setting "Triton" and the tagline in the
 display typeface. That fallback is presentable — it is not a broken state — but the real
 logo is better.
+
+### The Hummingvalley location map
+
+`Hummingvalley → Location Advantage` is an interactive page, not a file to swap out.
+The project sits at the centre of a dial and every destination is plotted by its real
+distance, with drive time and a line of positioning copy on tap. Filtering to one
+category fans those places around the whole dial so their names stay readable.
+
+Every distance and drive time comes from the project brochure — nothing is estimated.
+Placement is by category and distance, so it is a schematic rather than a survey map,
+and the page says so at the foot. If you want places positioned by true compass bearing
+I need the project's latitude and longitude, plus coordinates for each destination.
+
+To add or edit a place, open `src/location-data.js` and rebuild. You need its real km
+and minutes; do not estimate them, because the sales team quotes these numbers. Twelve
+places on the brochure map carry no distance in its tables — Prestige Tech Cloud, KIADB
+Aerospace SEZ, Taj, Signature Park, NAFL National Public School, Vidyashilp University,
+Stonehill International School and others — so they are not on the dial yet. Send the
+numbers and they go in.
+
+The positioning copy under each place is a first draft written for HNI and investor
+audiences. Read it before the team uses it in front of clients.
 
 ### Typeface and colour
 

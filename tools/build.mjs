@@ -7,7 +7,7 @@
 
    Usage:  node tools/build.mjs
    ============================================================ */
-import { readFileSync, writeFileSync, statSync } from 'node:fs';
+import { readFileSync, writeFileSync, statSync, mkdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -44,7 +44,22 @@ for (const [label, src] of [['styles.css', read('src/styles.css')], ['js', js]])
 
 writeFileSync(join(ROOT, OUT), html, 'utf8');
 
+/* ---- the Hummingvalley location map, a second self-contained page ---- */
+const MAP_OUT = 'Sales Kit/Hummingvalley/Location Advantage/Location Advantage.html';
+let map = read('src/location-map.html');
+if (!map.includes('<!--FONTS-->') || !map.includes('<!--DATA-->'))
+  throw new Error('src/location-map.html is missing its <!--FONTS--> / <!--DATA--> markers');
+const mapData = read('src/location-data.js');
+map = map
+  .replace('<!--FONTS-->', () => '<style>\n' + read('src/fonts.css') + '\n</style>')
+  .replace('<!--DATA-->',  () => '<script>\n' + guard(mapData) + '\n</script>');
+if (!map.includes(mapData)) throw new Error('bundling altered the location data');
+mkdirSync(dirname(join(ROOT, MAP_OUT)), { recursive: true });
+writeFileSync(join(ROOT, MAP_OUT), map, 'utf8');
+
 const kb = (statSync(join(ROOT, OUT)).size / 1024).toFixed(0);
-console.log(`\n  ✓ ${OUT}  (${kb} KB, self-contained)\n`);
+const mapKb = (statSync(join(ROOT, MAP_OUT)).size / 1024).toFixed(0);
+console.log(`\n  ✓ ${OUT}  (${kb} KB, self-contained)`);
+console.log(`  ✓ ${MAP_OUT}  (${mapKb} KB)\n`);
 console.log('  Ship this one file together with the "Sales Kit" folder.');
 console.log('  They must sit next to each other.\n');
