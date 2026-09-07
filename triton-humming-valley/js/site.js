@@ -53,25 +53,51 @@ const DATA = {
   /* Google Maps pin for the site. Written into every address on the page. */
   mapUrl: 'https://maps.app.goo.gl/qKgAu1p8eE1tc8KK6',
 
+  /* Read off the project's own floor-plan sheets. `land` is the plot, `area`
+     the built-up figure printed beside it. `levels` is the layout in the
+     order you climb it — enough for someone to picture the villa, not enough
+     to hand a competitor the drawings. */
   villas: [
-    { id:'3bhk', name:'3 BHK', area:'2,400', price:'₹2.9 Cr',
-      beds:3, baths:3, verified:true,
+    { id:'3bhk', name:'3 BHK', area:'2,350&ndash;2,700', land:'1,000&ndash;1,115',
+      price:'₹2.9 Cr', beds:3, baths:3, facing:'North and east facing',
       photo:'images/villa-3bhk.jpg',
       photoAlt:'A 3 BHK villa seen from the street, planting spilling from the upper balconies',
-      blurb:'The compact plan. Living, dining and kitchen wrap a single-height court with the waterfall at its head; three bedrooms above, all facing the valley.',
-      features:['Private garden','15 ft indoor waterfall','Jacuzzi','Covered parking for two'] },
-    { id:'4bhk', name:'4 BHK', area:'3,100', price:'₹3.5 Cr',
-      beds:4, baths:4, verified:false,   /* ⚠ area interpolated — verify */
+      blurb:'Three levels on a compact plot. The ground floor is one room &mdash; living, dining and kitchen running together to the garden &mdash; with a bedroom and a lounge above it, and the top floor given over to the primary suite and a terrace with the plunge pool.',
+      levels:[
+        {n:'Ground', rooms:['Living', 'Kitchen &amp; dining', 'Garden', 'Car porch']},
+        {n:'First',  rooms:['Bedroom', 'Lounge', 'Balcony']},
+        {n:'Second', rooms:['Primary suite', 'Lounge', 'Terrace &amp; pool']}
+      ],
+      features:['Lift to every floor','Private garden','15 ft indoor waterfall',
+                'Roof terrace with plunge pool','Bar counter','Covered car porch'] },
+
+    { id:'4bhk', name:'4 BHK', area:'3,474', land:'1,356',
+      price:'₹3.5 Cr', beds:4, baths:4, facing:'North facing',
       photo:'images/villa-4bhk.jpg',
       photoAlt:'A 4 BHK villa standing against the wooded hillside, palms either side',
-      blurb:'A second court opens the plan east, so the morning sun reaches the dining room before it clears the ridge. Family room on the upper floor.',
-      features:['Private garden','15 ft indoor waterfall','Jacuzzi','Family lounge','Covered parking for three'] },
-    { id:'5bhk', name:'5 BHK', area:'3,800', price:'₹4.5 Cr',
-      beds:5, baths:5, verified:true,
+      blurb:'The four-bedroom plan, with a home theatre. Living and dining open to the garden on the ground floor; three bedrooms and a walk-in closet on the first; the top floor holds the last bedroom and an open terrace nearly twenty-seven feet across.',
+      levels:[
+        {n:'Ground', rooms:['Living', 'Kitchen &amp; dining', 'Garden', 'Parking']},
+        {n:'First',  rooms:['Three bedrooms', 'Walk-in closet', 'Balconies']},
+        {n:'Second', rooms:['Bedroom', 'Home theatre', 'Terrace &amp; pool']}
+      ],
+      features:['Home theatre','Lift to every floor','Walk-in closet',
+                'Private garden','15 ft indoor waterfall',
+                'Open terrace with plunge pool','Bar counter'] },
+
+    { id:'5bhk', name:'5 BHK', area:'4,448', land:'1,555',
+      price:'₹4.5 Cr', beds:5, baths:5, facing:'North facing',
       photo:'images/villa-5bhk.jpg',
       photoAlt:'The pool below the 5 BHK villas, the valley opening beyond it',
-      blurb:'The full plan. A guest suite sits apart across the court, the primary bedroom takes the whole west end, and the terrace runs the length of the ridge face.',
-      features:['Private garden','15 ft indoor waterfall','Jacuzzi','Guest suite','Ridge terrace','Covered parking for three'] }
+      blurb:'The largest plan on the site, and the only one with a two-car porch. Five bedrooms over two upper floors, every one with its own balcony, and a top-floor terrace that runs the width of the villa around the pool and the bar.',
+      levels:[
+        {n:'Ground', rooms:['Living', 'Kitchen cum dining', 'Utility', 'Two-car porch']},
+        {n:'First',  rooms:['Three bedrooms', 'Wardrobes', 'Balconies']},
+        {n:'Second', rooms:['Two bedrooms', 'Terrace &amp; pool', 'Bar counter']}
+      ],
+      features:['Two-car porch','Lift to every floor','Private garden',
+                '15 ft indoor waterfall','Utility and staff toilet',
+                'Roof terrace with plunge pool','Bar counter'] }
   ],
 
   /* Real site layout, read from the project masterplan: three rows of ten,
@@ -81,12 +107,18 @@ const DATA = {
      Statuses are the real ones: villas 8, 20, 22 and 23 are unsold and
      everything else has gone. Nothing is on hold.
 
-     ⚠ The BHK against each villa is still derived from its area, because
-     the plan does not state configurations. Of the four that remain, two
-     are 3 BHK and two are 4 BHK; 8 and 23 are ~2,670 sq ft and 20 and 22
-     are ~3,690, which puts the thresholds at 2,700 and 3,700 and leaves
-     villas 10, 11 and 12 as the only 5 BHKs. Send the real configurations
-     and this stops being an inference. */
+     Five villas are now confirmed against the client's own floor-plan
+     sheets, and `land` is the plot figure printed on them:
+       11  5 BHK   1,555 plot   4,448 built up   north facing
+       21  4 BHK   1,356 plot   3,474 built up   north facing, home theatre
+       17  3 BHK   1,080 plot   2,680 built up   north facing
+       22  3 BHK   1,080 plot   2,680 built up   north facing
+       23  3 BHK   1,080 plot   2,680 built up   north facing
+     Villa 22 was carrying 3,680 sq ft and a 4 BHK label, both wrong.
+
+     ⚠ The BHK on every other villa is still derived from its built-up area.
+     Villa 20 matters most: it is one of the four still for sale and there
+     is no sheet for it. */
   plots: [
     {n:'10',x:100,y:46,t:'5 BHK',sq:3724,s:'sold',a:'North row'},
     {n:'9',x:148,y:46,t:'4 BHK',sq:2725,s:'sold',a:'North row'},
@@ -98,13 +130,13 @@ const DATA = {
     {n:'3',x:436,y:46,t:'3 BHK',sq:2553,s:'sold',a:'North row'},
     {n:'2',x:484,y:46,t:'3 BHK',sq:2389,s:'sold',a:'North row'},
     {n:'1',x:532,y:46,t:'4 BHK',sq:3136,s:'sold',a:'North row'},
-    {n:'11',x:100,y:176,t:'5 BHK',sq:4448,s:'sold',a:'Central row'},
+    {n:'11',x:100,y:176,t:'5 BHK',sq:4448,land:1555,s:'sold',a:'Central row'},
     {n:'12',x:148,y:176,t:'5 BHK',sq:3780,s:'sold',a:'Central row'},
     {n:'13',x:196,y:176,t:'3 BHK',sq:2600,s:'sold',a:'Central row'},
     {n:'14',x:244,y:176,t:'3 BHK',sq:2600,s:'sold',a:'Central row'},
     {n:'15',x:292,y:176,t:'3 BHK',sq:2680,s:'sold',a:'Central row'},
     {n:'16',x:340,y:176,t:'3 BHK',sq:2680,s:'sold',a:'Central row'},
-    {n:'17',x:388,y:176,t:'3 BHK',sq:2600,s:'sold',a:'Central row'},
+    {n:'17',x:388,y:176,t:'3 BHK',sq:2680,land:1080,s:'sold',a:'Central row'},
     {n:'18',x:436,y:176,t:'3 BHK',sq:2680,s:'sold',a:'Central row'},
     {n:'19',x:484,y:176,t:'3 BHK',sq:2680,s:'sold',a:'Central row'},
     {n:'20',x:532,y:176,t:'4 BHK',sq:3695,s:'available',a:'Central row'},
@@ -115,9 +147,9 @@ const DATA = {
     {n:'26',x:292,y:306,t:'3 BHK',sq:2680,s:'sold',a:'South row, clubhouse side'},
     {n:'25',x:340,y:306,t:'3 BHK',sq:2680,s:'sold',a:'South row, clubhouse side'},
     {n:'24',x:388,y:306,t:'3 BHK',sq:2680,s:'sold',a:'South row, clubhouse side'},
-    {n:'23',x:436,y:306,t:'3 BHK',sq:2680,s:'available',a:'South row, clubhouse side'},
-    {n:'22',x:484,y:306,t:'4 BHK',sq:3680,s:'available',a:'South row, clubhouse side'},
-    {n:'21',x:532,y:306,t:'4 BHK',sq:3474,s:'sold',a:'South row, clubhouse side'}
+    {n:'23',x:436,y:306,t:'3 BHK',sq:2680,land:1080,s:'available',a:'South row, clubhouse side'},
+    {n:'22',x:484,y:306,t:'3 BHK',sq:2680,land:1080,s:'available',a:'South row, clubhouse side'},
+    {n:'21',x:532,y:306,t:'4 BHK',sq:3474,land:1356,s:'sold',a:'South row, clubhouse side'}
   ],
 
   /* The four frames of the scroll choreography in the Inside section. The
@@ -340,6 +372,7 @@ $('#villa-list').innerHTML = DATA.villas.map(v => `
         <span class="flex items-center gap-1.5">${bedIcon}${v.beds}</span>
         <span class="flex items-center gap-1.5">${bathIcon}${v.baths}</span>
         <span>${v.area} sq ft</span>
+        <span class="max-sm:hidden">${v.land} sq ft plot</span>
       </p>
       <p class="ml-auto flex items-center gap-4">
         <span class="font-display text-dawn-deep" style="font-size:var(--step-1)">${v.price}</span>
@@ -362,23 +395,22 @@ $('#villa-list').innerHTML = DATA.villas.map(v => `
                decoding="async" width="1200" height="1600" class="h-full w-full object-cover opacity-0
                transition-opacity duration-700">
         </div>
-      <!-- Indicative plan diagram, drawn rather than photographed so it is
-           always present and always legible in both grounds. -->
-      <svg viewBox="0 0 320 240" class="w-full h-auto border border-ink/12" role="img"
-           aria-label="Indicative plan of the ${v.name} villa: living volume around a central water court.">
-        <rect width="320" height="240" fill="#F6F8F9"/>
-        <g stroke="#101820" stroke-opacity=".55" fill="none" stroke-width="1.5">
-          <rect x="24" y="24" width="272" height="192"/>
-          <path d="M24,132 H132 M132,24 V216 M212,24 V132 M212,132 H296"/>
-        </g>
-        <rect x="140" y="60" width="64" height="64" fill="#2F4A3C" fill-opacity=".18" stroke="#2F4A3C" stroke-width="1.5"/>
-        <path d="M172,60 V124" stroke="#7A5A12" stroke-width="2.5" stroke-linecap="round"/>
-        <text x="172" y="146" text-anchor="middle" font-size="9" font-family="Manrope, sans-serif" fill="#5A6B7A">water court</text>
-        <text x="78"  y="80"  text-anchor="middle" font-size="9" font-family="Manrope, sans-serif" fill="#5A6B7A">living</text>
-        <text x="78"  y="180" text-anchor="middle" font-size="9" font-family="Manrope, sans-serif" fill="#5A6B7A">dining</text>
-        <text x="254" y="80"  text-anchor="middle" font-size="9" font-family="Manrope, sans-serif" fill="#5A6B7A">kitchen</text>
-        <text x="254" y="180" text-anchor="middle" font-size="9" font-family="Manrope, sans-serif" fill="#5A6B7A">terrace</text>
-      </svg>
+      <!-- The layout as a stack, not as a plan. Three levels, the rooms
+           named in the order you climb them, drawn rather than photographed
+           so it is always present and legible on either ground. It says what
+           is on each floor without handing over the drawings. -->
+      <div class="levels" role="group" aria-label="How the ${v.name} is arranged over three levels">
+        ${v.levels.map((l, i) => `
+          <div class="level">
+            <p class="level-name">${l.n}</p>
+            <div class="level-plan" aria-hidden="true">
+              ${l.rooms.map(() => '<i></i>').join('')}
+            </div>
+            <p class="level-rooms">${l.rooms.join(' &middot; ')}</p>
+          </div>`).join('')}
+        <p class="levels-note">${v.facing} &middot; ${v.land} sq ft plot &middot;
+           ${v.area} sq ft built up</p>
+      </div>
       </div>
     </div>
   </details>`).join('');
@@ -469,7 +501,7 @@ function renderSummary(){
     <dl class="mt-7 divide-y divide-ink/12 border-y border-ink/12 text-[.95rem]">
       ${DATA.villas.map(v => `
         <div class="flex justify-between gap-4 py-3">
-          <dt class="text-mist">${v.name} &middot; ${v.area} sq ft</dt>
+          <dt class="text-mist">${v.name} &middot; ${v.area} sq ft built up</dt>
           <dd>${byType(v.name)} available</dd>
         </div>`).join('')}
       ${count('held') ? `
@@ -505,6 +537,7 @@ function selectPlot(p, node){
     <dl class="mt-6 divide-y divide-ink/12 border-y border-ink/12 text-[.95rem]">
       <div class="flex justify-between gap-4 py-3"><dt class="text-mist">Villa type</dt><dd>${p.t}</dd></div>
       <div class="flex justify-between gap-4 py-3"><dt class="text-mist">Built-up</dt><dd>${p.sq ? p.sq.toLocaleString('en-IN') + ' sq ft' : '—'}</dd></div>
+      ${p.land ? `<div class="flex justify-between gap-4 py-3"><dt class="text-mist">Plot</dt><dd>${p.land.toLocaleString('en-IN')} sq ft</dd></div>` : ''}
       <div class="flex justify-between gap-4 py-3"><dt class="text-mist">Aspect</dt><dd>${p.a}</dd></div>
       <div class="flex justify-between gap-4 py-3"><dt class="text-mist">From</dt><dd class="text-dawn-deep font-medium">${villa ? villa.price : '—'}</dd></div>
     </dl>
@@ -1262,13 +1295,16 @@ const Enquiry = (() => {
           ${field('phone','tel','Phone')}
           ${field('email','email','Email')}
           ${full ? `
-          <div class="field">
-            <label for="${id}-villa">Villa type</label>
-            <select id="${id}-villa" name="villa">
-              <option value="">No preference yet</option>
-              ${DATA.villas.map(v => `<option value="${v.name}">${v.name} — ${v.area} sq ft</option>`).join('')}
-            </select>
-          </div>
+          <fieldset class="field field-wide choice" data-fieldname="villa">
+            <legend>Villa type <span class="choice-hint">&mdash; choose any that interest you</span></legend>
+            <div class="choice-set">
+              ${DATA.villas.map((v, n) => `
+                <label class="choice-chip">
+                  <input type="checkbox" name="villa" value="${v.name}" id="${id}-villa-${n}">
+                  <span>${v.name}<small>${v.area} sq ft</small></span>
+                </label>`).join('')}
+            </div>
+          </fieldset>
           <div class="field">
             <label for="${id}-date">Preferred date</label>
             <input id="${id}-date" name="date" type="date">
@@ -1344,7 +1380,8 @@ const Enquiry = (() => {
           name: get('name').value.trim(),
           phone: get('phone').value.trim(),
           email: get('email').value.trim(),
-          villa: full ? get('villa').value : '',
+          villa: full ? Array.from(form.querySelectorAll('input[name="villa"]:checked'))
+                             .map(c => c.value).join(', ') : '',
           date:  full ? get('date').value  : '',
           note:  full ? get('note').value.trim() : '',
           source: o.source || (location.pathname + location.hash),
@@ -1438,9 +1475,8 @@ const Enquiry = (() => {
     if (form){
       form.dataset.source = source || 'Popup';
       if (ctx && ctx.villa){
-        const sel = form.querySelector('select[name="villa"]');
-        const opt = sel && Array.from(sel.options).find(o => o.value === ctx.villa);
-        if (opt) sel.value = opt.value;
+        const box = form.querySelector(`input[name="villa"][value="${ctx.villa}"]`);
+        if (box) box.checked = true;
       }
       if (ctx && ctx.plot){
         const note = form.querySelector('textarea[name="note"]');

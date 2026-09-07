@@ -663,6 +663,65 @@ html.lenis,html.lenis body{height:auto}
 /* ══════════════════════════════════════════════════════════════════════════
    ENQUIRY FORM  (hero card, popup, enquiry section)
    ══════════════════════════════════════════════════════════════════════ */
+/* ── The layout, as a stack of levels ────────────────────────────────────
+   A wireframe rather than a plan: each floor is a row of blocks standing for
+   its rooms, in the order you climb them. It tells a buyer how the villa is
+   arranged and how much of it there is, without publishing the drawings.
+   The blocks carry no dimensions and no doors on purpose. */
+.levels{border:1px solid rgba(16,24,32,.12);background:#F6F8F9;padding:1.25rem}
+.level + .level{margin-top:.9rem;padding-top:.9rem;
+  border-top:1px dashed rgba(16,24,32,.16)}
+.level-name{margin:0;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--color-dawn-deep)}
+.level-plan{display:flex;gap:.35rem;margin:.55rem 0 .5rem;height:1.6rem}
+/* The first block is the room you arrive in, so it takes the most width. */
+.level-plan i{flex:1 1 0;background:rgba(47,74,60,.13);
+  border:1px solid rgba(47,74,60,.3)}
+.level-plan i:first-child{flex:1.9 1 0;background:rgba(47,74,60,.22)}
+.level-plan i:last-child{flex:.8 1 0;background:rgba(122,90,18,.13);
+  border-color:rgba(122,90,18,.35)}
+.level-rooms{margin:0;font-size:.86rem;color:var(--color-mist);line-height:1.5}
+.levels-note{margin:1.1rem 0 0;padding-top:.9rem;
+  border-top:1px solid rgba(16,24,32,.12);
+  font-size:.78rem;letter-spacing:.01em;color:var(--color-mist)}
+
+/* ── Villa type, as a set of chips ────────────────────────────────────────
+   A dropdown asks for one answer, and someone weighing a 3 against a 4 has
+   two. A native multiple-select is worse than either on a phone — it is a
+   scrolling box with no affordance and ctrl-click on a desktop. Checkboxes
+   drawn as chips take as many answers as the person actually has, and every
+   one of them is a 44px target.
+
+   The input is the state; the span is the paint. :has() would be neater but
+   the sibling selector works everywhere. */
+.choice{border:0;padding:0;margin:0;min-width:0}
+.choice legend{padding:0;font-size:.82rem;color:var(--color-haze);
+  letter-spacing:.01em}
+.choice-hint{color:var(--color-mist)}
+.choice-set{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.85rem}
+.choice-chip{position:relative;display:inline-flex}
+.choice-chip input{position:absolute;inset:0;width:100%;height:100%;
+  margin:0;opacity:0;cursor:pointer}
+.choice-chip span{display:flex;flex-direction:column;gap:.15rem;
+  min-height:44px;justify-content:center;padding:.5rem 1rem;
+  border:1px solid rgba(168,182,194,.32);color:var(--color-cloud);
+  font-size:.95rem;line-height:1.15;
+  transition:border-color .25s var(--ease-out),background-color .25s var(--ease-out),
+             color .25s var(--ease-out)}
+.choice-chip small{font-size:.72rem;color:var(--color-haze);font-weight:500}
+.choice-chip input:hover + span{border-color:rgba(168,182,194,.7)}
+.choice-chip input:focus-visible + span{outline:2px solid var(--color-dawn);
+  outline-offset:2px}
+.choice-chip input:checked + span{background:var(--color-dawn);
+  border-color:var(--color-dawn);color:var(--color-night);font-weight:600}
+.choice-chip input:checked + span small{color:rgba(7,26,28,.75)}
+
+/* On a light ground the same chips need the ink palette. */
+.on-light .choice legend{color:var(--color-mist)}
+.on-light .choice-chip span{border-color:rgba(16,24,32,.22);color:var(--color-ink)}
+.on-light .choice-chip small{color:var(--color-mist)}
+.on-light .choice-chip input:checked + span{color:var(--color-night)}
+
 .enquiry .fields{display:grid;gap:1.25rem}
 .enquiry .fields.is-full{grid-template-columns:1fr}
 @media (min-width:560px){
