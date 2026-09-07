@@ -159,7 +159,7 @@ body.cur-hot .cursor{opacity:0}
 .crumbs a:hover{color:var(--gold-2)}
 .crumbs .sep{color:var(--fg-faint);opacity:.5}
 .crumbs .cur{color:var(--d-fg)}
-.topbar-actions{display:flex;gap:8px;flex:0 0 auto}
+.topbar-actions{display:flex;gap:8px;flex:0 0 auto;margin-left:auto}
 .tb-btn{
   display:flex;align-items:center;gap:7px;height:36px;padding:0 12px;border-radius:999px;
   border:1px solid var(--d-line);color:var(--d-fg-dim);background:rgba(255,255,255,.05);
@@ -352,10 +352,26 @@ body.cur-hot .cursor{opacity:0}
   font:600 9.5px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;
   color:rgba(255,255,255,.82)}
 
-@media (max-width:560px){
-  .pcard{min-height:400px;aspect-ratio:auto}
-  .pcard-top{height:80px}
-  .pcard:hover .pcard-body{transform:translateY(-58px)}
+/* On touch there is no hover, so the reveal choreography cannot be the only way
+   to reach the file count and the CTA. Below this width the card lays itself out
+   in normal flow with everything already visible. */
+@media (hover:none),(max-width:680px){
+  .pcard{display:flex;flex-direction:column;aspect-ratio:auto;min-height:0}
+  .pcard-inner{position:relative;height:auto;flex:0 0 auto;padding:20px 20px 4px}
+  .pcard-top{height:clamp(64px,13vw,96px)}
+  .pcard-body,.pcard:hover .pcard-body{transform:none}
+  .pcard-line,.pcard:hover .pcard-line{opacity:1;max-height:none}
+  .pcard-ov p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;
+    overflow:hidden}
+  .pcard-foot,.pcard:hover .pcard-foot{
+    position:relative;bottom:auto;opacity:1;z-index:4;
+    margin-top:18px;padding:16px 20px 20px;
+    border-top:1px solid rgba(255,255,255,.16)}
+  .pcard-foot::before{display:none}
+  .pcard-name{font-size:clamp(26px,6.6vw,32px)}
+  .pcard-figure b{font-size:30px}
+  .pcard-cta{height:44px;padding:0 18px}
+  .pcard.archive{filter:none}
 }
 
 /* ---------- folder / file tiles ---------- */
@@ -457,15 +473,38 @@ body.present .stage{padding-top:clamp(40px,7vh,80px)}
 
 /* ============ responsive ============ */
 @media (max-width:900px){
-  :root{--topbar-h:58px}
+  :root{--topbar-h:60px}
   .crumbs{display:none}
   .hero-title{gap:0}
+  .topbar{gap:12px}
+  .brand{min-width:0}
+  .brand-logo{height:28px}
+}
+/* the tagline is the first thing to go — it is wide, and losing it keeps the
+   search and update controls on screen instead of pushed past the edge */
+@media (max-width:680px){
+  .brand-text i{display:none}
+  .brand-text b{font-size:21px}
+  .topbar-actions{gap:6px}
+  .tb-btn{height:44px;min-width:44px;padding:0 12px;justify-content:center}  /* 44px touch minimum */
 }
 @media (max-width:560px){
-  .tiles{grid-template-columns:1fr 1fr}
-  .tile{min-height:150px;padding:16px;gap:16px}
-  .tile-name{font-size:14.5px}
+  .tiles{grid-template-columns:1fr 1fr;gap:11px}
+  .tile{min-height:132px;padding:15px;gap:14px}
+  .tile.media{padding:0}
+  .tile-name{font-size:14px}
+  .tile-sub{font-size:9.5px;letter-spacing:.12em}
+  .tile-ico{width:38px;height:38px;border-radius:10px}
+  .tile-ico svg{width:17px;height:17px}
+  .tile.media .tile-txt{padding:12px 13px 14px}
+  .sec-head{margin-bottom:26px}
   .foot-hint{display:none}
+}
+@media (hover:none){
+  .tile,.pcard,.tb-btn,.back,.empty-cta,.brand{min-height:44px}  /* 44px touch minimum */
+  .tile-zoom{display:none}   /* the whole tile is the tap target — the chip adds nothing */
+  .tile-play{width:40px;height:40px;margin:-20px 0 0 -20px}
+  .tile-play svg{width:17px;height:17px}
 }
 
 /* ============ reduced motion ============ */
@@ -604,6 +643,18 @@ div.tile.missing{cursor:default}
 @media (max-width:700px){
   .foot{flex-direction:column;align-items:flex-start;gap:20px}
   .foot-meta{align-items:flex-start;text-align:left}
+}
+
+/* keyboard hints are meaningless without a keyboard — and this has to come after
+   the .foot-hint layout rule above, which was overriding the earlier hide */
+@media (max-width:640px),(hover:none){
+  .foot-hint{display:none}
+  .foot-meta{gap:0}
+}
+@media (hover:none){
+  /* declared here rather than beside the other touch rules, because the
+     .tile-zoom block further up the file would otherwise win on source order */
+  .tile-zoom{display:none}
 }
 
 </style>

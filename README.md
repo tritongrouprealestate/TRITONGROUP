@@ -167,6 +167,11 @@ The real collateral is roughly **730 MB** — Sanvi's brochure alone is 144 MB. 
 | `H` | jump home |
 | `Shift-R` | reset to the built-in list |
 
+**On a phone or tablet** the layout adapts: the project cards lay themselves out with
+the file count and button already visible instead of revealing them on hover, which does
+not exist on touch. The keyboard shortcuts above are hidden there, since there is no
+keyboard to use them with.
+
 **One click opens a file.** Clicking any tile opens that file straight away in a new
 browser tab — no preview step in between.
 
