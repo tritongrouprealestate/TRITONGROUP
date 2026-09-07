@@ -6,6 +6,11 @@ node_modules/
 # Holds the live Leadi5 API key — never commit
 triton-humming-valley/config.php
 triton-humming-valley/leads-failed.log
+# Every enquiry lands here too, delivered or not — real names,
+# phone numbers and email addresses.
+triton-humming-valley/leads.log
+# One-off diagnostic, uploaded by hand and deleted after use.
+triton-humming-valley/mailtest.php
 # Upload archives are built with config.php inside them, so they carry the
 # live API key and must never be committed. Rebuild with:
 #   zip -r triton-humming-valley.zip triton-humming-valley

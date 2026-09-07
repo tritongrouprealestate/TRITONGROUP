@@ -3,8 +3,9 @@
 # Never serve the credential file or the failed-lead log. config.php is
 # executed rather than printed under normal conditions, but if PHP handling
 # is ever broken or misconfigured the file would otherwise be served as plain
-# text with the API key in it. leads-failed.log holds enquirers' names,
-# phone numbers and email addresses.
+# text with the API key in it. leads.log and leads-failed.log hold
+# enquirers' names, phone numbers and email addresses; the .log rule
+# below is what keeps those off the public web.
 <FilesMatch "^(config\.php|config\.sample\.php)$">
   <IfModule mod_authz_core.c>
     Require all denied

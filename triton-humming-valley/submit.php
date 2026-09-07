@@ -113,6 +113,13 @@ $failed    = [];
    enquirer's address instead, so hitting reply in the inbox answers them
    directly. */
 if (!empty($config['notify_email'])) {
+    /* One address or several. mail() takes a comma-separated list, but a
+       stray space breaks it on some MTAs, so the list is normalised here —
+       a second address is the cheapest insurance there is against one inbox
+       filtering the site into spam. */
+    $recipients = implode(', ', array_filter(array_map(
+        'trim', explode(',', (string)$config['notify_email']))));
+
     $host = preg_replace('/^www\./', '', $_SERVER['HTTP_HOST'] ?? 'localhost');
     /* ?: not ?? — the config documents an EMPTY string as "use the default",
        and ?? only falls back on null, so the header went out as "From: <>".
@@ -147,9 +154,9 @@ if (!empty($config['notify_email'])) {
        parameter, and there mail() simply returns false. Falling back to a
        plain call means a restrictive host costs us SPF alignment rather than
        the entire enquiry. */
-    $sent = @mail($config['notify_email'], $subject, $lines, $headers, '-f' . $from);
+    $sent = @mail($recipients, $subject, $lines, $headers, '-f' . $from);
     if (!$sent) {
-        $sent = @mail($config['notify_email'], $subject, $lines, $headers);
+        $sent = @mail($recipients, $subject, $lines, $headers);
         if ($sent) error_log('submit.php: envelope sender rejected; sent without -f');
     }
 
@@ -157,7 +164,7 @@ if (!empty($config['notify_email'])) {
         $delivered[] = 'email';
     } else {
         $failed[] = 'email';
-        error_log('submit.php: mail() failed to ' . $config['notify_email']);
+        error_log('submit.php: mail() failed to ' . $recipients);
     }
 }
 
@@ -187,8 +194,20 @@ if (!empty($config['webhook_url']) && !empty($config['api_key'])
     }
 }
 
-/* Anything that did not arrive is written to disk with the whole lead, so a
-   failure is recoverable rather than merely reported. */
+/* Every lead is written to disk, delivered or not. Email is the one link in
+   this chain nobody here controls — a host can disable mail(), an SPF record
+   can go stale, a mailbox can fill — and a lead that only ever existed as an
+   email is a lead that can be lost silently. This file is the record of
+   record; the inbox is a convenience on top of it. */
+@file_put_contents(
+    __DIR__ . '/leads.log',
+    $now->format('c') . '  ' . str_pad(implode(',', $delivered) ?: 'NOTHING', 14)
+    . '  ' . json_encode($payload['leads'][0], JSON_UNESCAPED_UNICODE) . PHP_EOL,
+    FILE_APPEND | LOCK_EX
+);
+
+/* Anything that did not arrive is written separately too, so a failure is
+   recoverable rather than merely reported. */
 if ($failed) {
     @file_put_contents(
         __DIR__ . '/leads-failed.log',

@@ -19,6 +19,8 @@ return [
     'property' => 'Triton Humming Valley',
 
     // Where enquiries are emailed. This is the primary destination.
+    // Several addresses may be given, separated by commas:
+    //   'notify_email' => 'sales@example.com, owner@gmail.com',
     'notify_email' => 'you@example.com',
 
     // The address enquiries are sent FROM. It must be on this domain —
