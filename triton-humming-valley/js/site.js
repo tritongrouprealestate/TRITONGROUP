@@ -71,19 +71,19 @@ const DATA = {
       features:['Lift to every floor','Private garden','15 ft indoor waterfall',
                 'Roof terrace with plunge pool','Bar counter','Covered car porch'] },
 
-    { id:'4bhk', name:'4 BHK', area:'3,474', land:'1,356',
-      price:'₹3.5 Cr', beds:4, baths:4, facing:'North facing',
+    { id:'4bhk', name:'4 BHK', area:'3,474&ndash;3,724', land:'1,356&ndash;1,389',
+      price:'₹3.5 Cr', beds:4, baths:4, facing:'North and east facing',
       photo:'images/villa-4bhk.jpg',
       photoAlt:'A 4 BHK villa standing against the wooded hillside, palms either side',
-      blurb:'The four-bedroom plan, with a home theatre. Living and dining open to the garden on the ground floor; three bedrooms and a walk-in closet on the first; the top floor holds the last bedroom and an open terrace nearly twenty-seven feet across.',
+      blurb:'Two layouts, both four bedrooms over three floors. Living and kitchen-dining run the length of the ground floor to the garden; three bedrooms, their balconies and a walk-in closet sit above; the top floor keeps one bedroom and gives the rest of itself to the terrace, the bar and the pool. One of the two adds a home theatre.',
       levels:[
-        {n:'Ground', rooms:['Living', 'Kitchen &amp; dining', 'Garden', 'Parking']},
+        {n:'Ground', rooms:['Living', 'Kitchen &amp; dining', 'Garden', 'Car porch']},
         {n:'First',  rooms:['Three bedrooms', 'Walk-in closet', 'Balconies']},
-        {n:'Second', rooms:['Bedroom', 'Home theatre', 'Terrace &amp; pool']}
+        {n:'Second', rooms:['Bedroom', 'Walk-in closet', 'Terrace &amp; pool']}
       ],
-      features:['Home theatre','Lift to every floor','Walk-in closet',
-                'Private garden','15 ft indoor waterfall',
-                'Open terrace with plunge pool','Bar counter'] },
+      features:['Lift to every floor','Walk-in closets','Private garden',
+                '15 ft indoor waterfall','Open terrace with plunge pool',
+                'Bar counter','Covered car porch'] },
 
     { id:'5bhk', name:'5 BHK', area:'4,448', land:'1,555',
       price:'₹4.5 Cr', beds:5, baths:5, facing:'North facing',
@@ -116,9 +116,13 @@ const DATA = {
        23  3 BHK   1,080 plot   2,680 built up   north facing
      Villa 22 was carrying 3,680 sq ft and a 4 BHK label, both wrong.
 
-     ⚠ The BHK on every other villa is still derived from its built-up area.
-     Villa 20 matters most: it is one of the four still for sale and there
-     is no sheet for it. */
+       20  4 BHK   1,389 plot   3,724 built up   east facing
+     which means every villa still for sale is now confirmed from a sheet:
+     8, 22 and 23 are 3 BHK, 20 is the 4 BHK.
+
+     ⚠ The BHK on the twenty-five sold villas is still derived from built-up
+     area. It costs nobody anything — none of them can be bought — but it is
+     an inference, not a fact. */
   plots: [
     {n:'10',x:100,y:46,t:'5 BHK',sq:3724,s:'sold',a:'North row'},
     {n:'9',x:148,y:46,t:'4 BHK',sq:2725,s:'sold',a:'North row'},
@@ -139,7 +143,7 @@ const DATA = {
     {n:'17',x:388,y:176,t:'3 BHK',sq:2680,land:1080,s:'sold',a:'Central row'},
     {n:'18',x:436,y:176,t:'3 BHK',sq:2680,s:'sold',a:'Central row'},
     {n:'19',x:484,y:176,t:'3 BHK',sq:2680,s:'sold',a:'Central row'},
-    {n:'20',x:532,y:176,t:'4 BHK',sq:3695,s:'available',a:'Central row'},
+    {n:'20',x:532,y:176,t:'4 BHK',sq:3724,land:1389,s:'available',a:'Central row'},
     {n:'30',x:100,y:306,t:'3 BHK',sq:2680,s:'sold',a:'South row, clubhouse side'},
     {n:'29',x:148,y:306,t:'4 BHK',sq:3473,s:'sold',a:'South row, clubhouse side'},
     {n:'28',x:196,y:306,t:'3 BHK',sq:2673,s:'sold',a:'South row, clubhouse side'},
