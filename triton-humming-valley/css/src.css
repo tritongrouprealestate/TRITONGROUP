@@ -1,32 +1,42 @@
 /* ── Typefaces, served from this domain ───────────────────────────────────
-   These were loaded from Google Fonts, which cost a preconnect, a DNS
-   lookup, a TLS handshake and a render-blocking stylesheet before the first
-   letter could be drawn — on a slow Indian mobile connection, most of a
-   second of nothing. The four files are 82 KB in total and now come off the
-   same server as the page, on the connection the browser already has open.
+   Cormorant Garamond for everything that carries the brand, Jost for
+   everything that carries information. The pairing is deliberate: the logo
+   is an inscriptional Roman capital, and Cormorant is the only Garamond
+   revival whose capitals hold that same flared, high-contrast weight at
+   display size. Jost is a Futura, which is what the villas themselves are —
+   flat planes, right angles, no ornament.
 
-   Only latin and latin-ext are shipped. The Cyrillic, Greek and Vietnamese
-   subsets Google serves are 60 KB nobody on this site will read. */
-@font-face{font-family:Marcellus;font-style:normal;font-weight:400;
-  font-display:swap;src:url(../fonts/marcellus-latin.woff2) format("woff2");
-  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,
-    U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,
-    U+2212,U+2215,U+FEFF,U+FFFD}
-@font-face{font-family:Marcellus;font-style:normal;font-weight:400;
-  font-display:swap;src:url(../fonts/marcellus-latin-ext.woff2) format("woff2");
-  unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,
-    U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,
-    U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
-@font-face{font-family:Manrope;font-style:normal;font-weight:200 800;
-  font-display:swap;src:url(../fonts/manrope-latin.woff2) format("woff2");
-  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,
-    U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,
-    U+2212,U+2215,U+FEFF,U+FFFD}
-@font-face{font-family:Manrope;font-style:normal;font-weight:200 800;
-  font-display:swap;src:url(../fonts/manrope-latin-ext.woff2) format("woff2");
-  unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,
-    U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,
-    U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+   Both are variable, so 300-600 arrives in one file per subset instead of
+   four. Only latin and latin-ext are shipped; the Cyrillic, Greek and
+   Vietnamese subsets Google serves are 60 KB nobody on this site will read.
+
+   Loaded from this server rather than Google's: a render-blocking
+   stylesheet on fonts.googleapis.com cost a DNS lookup, a TLS handshake and
+   most of a second of blank page on a slow Indian mobile connection. */
+@font-face{font-family:Cormorant;font-style:normal;font-weight:300 600;
+  font-display:swap;src:url(../fonts/cormorant-latin.woff2) format("woff2");
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:Cormorant;font-style:normal;font-weight:300 600;
+  font-display:swap;src:url(../fonts/cormorant-latin-ext.woff2) format("woff2");
+  unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:Cormorant;font-style:italic;font-weight:400;
+  font-display:swap;src:url(../fonts/cormorant-italic-latin.woff2) format("woff2");
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+/* One glyph was costing 33 KB. The rupee sign lives in Google's latin-ext
+   subset, so a page whose only non-latin character is ₹ still downloaded
+   the whole Central-European alphabet to draw it. This face carries ₹ and →
+   and nothing else, and is declared after latin-ext so it wins the overlap.
+   latin-ext stays defined for the day a name needs an accent — it simply
+   is not fetched any more. */
+@font-face{font-family:Cormorant;font-style:normal;font-weight:300 600;
+  font-display:swap;src:url(../fonts/cormorant-symbols.woff2) format("woff2");
+  unicode-range:U+2192,U+20B9}
+@font-face{font-family:Jost;font-style:normal;font-weight:200 600;
+  font-display:swap;src:url(../fonts/jost-latin.woff2) format("woff2");
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:Jost;font-style:normal;font-weight:200 600;
+  font-display:swap;src:url(../fonts/jost-latin-ext.woff2) format("woff2");
+  unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
 
 @import "tailwindcss";
 
@@ -34,21 +44,26 @@
 @source "../js/site.js";
 
   @theme {
-    /* Three grounds, one journey: cold night below the cloud line,
-       cloud light at the inversion, warm frond-dark inside the villas. */
-    --color-night:      #071A1C;
-    --color-night-2:    #0E2A2D;
-    --color-haze:       #A8B6C2;   /* 8.8:1 on night  */
-    --color-cloud:      #EEF1F4;
-    --color-cloud-2:    #DFE5EB;
-    --color-ink:        #101820;   /* 17:1  on cloud  */
-    --color-mist:       #5A6B7A;   /* 4.9:1 on cloud  */
-    --color-frond:      #2F4A3C;   /* 8.6:1 on cloud  */
-    --color-frond-2:    #22382D;
-    --color-dawn:       #C9962E;   /* 6.8:1 on night  */
-    --color-dawn-deep:  #7A5A12;   /* 5.6:1 on cloud  */
-    --font-display: Marcellus, Georgia, "Times New Roman", serif;
-    --font-sans: Manrope, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    /* The brand is three darks and a gold. Black-green for the deepest
+       ground, pine and teal for the surfaces that sit on it, and the gold
+       lifted straight out of the Triton mark so the page has one gold
+       rather than two. Everything else is white, or as close to it as a
+       green-cast neutral gets. */
+    --color-obsidian:   #03100F;   /* 17.7:1 under cloud — the deepest ground */
+    --color-night:      #061A18;   /* 16.4:1 under cloud                      */
+    --color-night-2:    #0B2A25;   /* pine: cards and panels on the dark      */
+    --color-teal:       #0C3330;   /* the one surface that reads teal         */
+    --color-haze:       #A3B7AF;   /* 8.4:1 on night — secondary text on dark */
+    --color-cloud:      #F3F5F2;   /* 16.4:1 on night                         */
+    --color-cloud-2:    #E4EAE4;
+    --color-ink:        #08191A;   /* 16.5:1 on cloud                         */
+    --color-mist:       #55676A;   /* 5.4:1  on cloud                         */
+    --color-frond:      #16564A;   /* 7.8:1  on cloud — jade, for light rules */
+    --color-frond-2:    #0F3F37;
+    --color-dawn:       #DFB441;   /* the mark's gold. 9.2:1 on night         */
+    --color-dawn-deep:  #7A5A12;   /* 5.8:1  on cloud — gold that reads as ink*/
+    --font-display: Cormorant, "Cormorant Garamond", Georgia, "Times New Roman", serif;
+    --font-sans: Jost, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 
 /* ── Type scale ────────────────────────────────────────────────────────────
@@ -57,11 +72,15 @@
 :root{
   --step--1: clamp(.82rem, .79rem + .12vw, .89rem);
   --step-0 : clamp(1rem, .96rem + .2vw, 1.13rem);
-  --step-1 : clamp(1.25rem, 1.17rem + .38vw, 1.5rem);
-  --step-2 : clamp(1.56rem, 1.41rem + .74vw, 2.11rem);
-  --step-3 : clamp(1.95rem, 1.69rem + 1.3vw, 3rem);
-  --step-4 : clamp(2.44rem, 1.99rem + 2.24vw, 4.5rem);
-  --display: clamp(2.9rem, 1.6rem + 6.2vw, 8rem);
+  /* Steps 1 and up are set in Cormorant, whose cap height is about 12%
+     shorter than Marcellus at the same size. The scale is the same major
+     third; the whole run is simply lifted so the headings look the size
+     they looked before. */
+  --step-1 : clamp(1.4rem, 1.31rem + .43vw, 1.68rem);
+  --step-2 : clamp(1.75rem, 1.58rem + .83vw, 2.36rem);
+  --step-3 : clamp(2.18rem, 1.89rem + 1.46vw, 3.36rem);
+  --step-4 : clamp(2.73rem, 2.23rem + 2.51vw, 5rem);
+  --display: clamp(3rem, 1.7rem + 6.4vw, 8.6rem);
   --rail: 4.5rem;                     /* left altitude rail gutter          */
   --ease-out: cubic-bezier(.16,1,.3,1);
   --ease-in-out: cubic-bezier(.65,0,.35,1);
@@ -72,12 +91,21 @@
    the widest rows fitting and not. */
 @media (max-width:639.98px){ :root{ --rail: 2.75rem } }
 
-body{font-size:var(--step-0);line-height:1.65;font-weight:300;
-     font-variant-numeric:tabular-nums}
-h1,h2,h3,.display{font-family:var(--font-display);font-weight:400;line-height:1.04;
-     letter-spacing:-.012em;text-wrap:balance}
+/* lining-nums, and not only on the headings: Cormorant ships old-style
+   figures by default, so a 15 renders with the 1 at x-height and the 5
+   below the baseline. Charming in a sentence, wrong for a price, an area,
+   a drive time or a plot number — and on this page every figure is one of
+   those. Set once here so it reaches the parts drawn by script too. */
+body{font-size:var(--step-0);line-height:1.7;font-weight:300;
+     font-variant-numeric:lining-nums tabular-nums;letter-spacing:.004em}
+/* Cormorant is already a narrow face; the negative tracking Marcellus
+   needed at display size would close it up. 500 rather than 400 because a
+   Garamond at 400 goes thin the moment it is set in white on black.       */
+h1,h2,h3,.display,.font-display{font-family:var(--font-display);font-weight:500;
+     line-height:1.06;letter-spacing:0;text-wrap:balance}
+.display,h1{font-weight:400;letter-spacing:-.006em}
 p{max-width:62ch}                      /* under 80 chars, per the brief     */
-.lede{font-size:var(--step-1);line-height:1.5;font-weight:200;max-width:48ch}
+.lede{font-size:var(--step-1);line-height:1.55;font-weight:300;max-width:48ch}
 
 /* ── Focus: one visible treatment everywhere, never removed ─────────────── */
 :where(a,button,input,textarea,select,summary,[tabindex]):focus-visible{
@@ -85,7 +113,7 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
 .on-light :where(a,button,input,textarea,select,summary,[tabindex]):focus-visible{
   outline-color:var(--color-dawn-deep)}
 .skip{position:absolute;left:-9999px;top:0;z-index:100;background:var(--color-dawn);
-  color:#071A1C;padding:.75rem 1.25rem;font-weight:600}
+  color:#061A18;padding:.75rem 1.25rem;font-weight:600}
 .skip:focus{left:1rem;top:1rem}
 
 /* ── The altitude rail ─────────────────────────────────────────────────────
@@ -109,7 +137,7 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
    page, which is why the accent is held back everywhere else. */
 .sunwash{position:absolute;left:50%;bottom:14%;width:min(150vw,1500px);aspect-ratio:2/1;
   translate:-50% 0;pointer-events:none;opacity:0;
-  background:radial-gradient(closest-side, rgba(201,150,46,.62), rgba(201,150,46,.14) 45%, transparent 72%);
+  background:radial-gradient(closest-side, rgba(223,180,65,.62), rgba(223,180,65,.14) 45%, transparent 72%);
   filter:blur(14px)}
 @media (prefers-reduced-motion: reduce){ .sunwash{opacity:.5} }
 
@@ -119,19 +147,19 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
 /* ── Masterplan plots ──────────────────────────────────────────────────── */
 .plot{cursor:pointer;transition:fill .28s var(--ease-out), stroke .28s var(--ease-out);
   stroke-width:1.25;outline:none}
-.plot[data-status="available"]{fill:rgba(47,74,60,.16);stroke:#2F4A3C}
+.plot[data-status="available"]{fill:rgba(22,86,74,.16);stroke:#16564A}
 .plot[data-status="held"]     {fill:rgba(122,90,18,.18);stroke:#7A5A12}
-.plot[data-status="sold"]     {fill:rgba(90,107,122,.14);stroke:#8A99A6;cursor:not-allowed}
-.plot:hover[data-status="available"],.plot[aria-pressed="true"]{fill:rgba(47,74,60,.42)}
+.plot[data-status="sold"]     {fill:rgba(85,103,106,.14);stroke:#7E9188;cursor:not-allowed}
+.plot:hover[data-status="available"],.plot[aria-pressed="true"]{fill:rgba(22,86,74,.42)}
 .plot:focus-visible{stroke:#7A5A12;stroke-width:2.5;
   outline:2px solid #7A5A12;outline-offset:2px}
 
 /* ── Villa cards. Deliberately not one uniform radius + one grey shadow on
    everything: the open card earns depth, the closed ones stay flat.      */
-.villa{border:1px solid rgba(16,24,32,.14);background:#fff;
+.villa{border:1px solid rgba(8,25,26,.14);background:#fff;
   transition:border-color .3s var(--ease-out), box-shadow .4s var(--ease-out)}
 .villa:hover{border-color:rgba(122,90,18,.5)}
-.villa[open]{box-shadow:0 24px 60px -28px rgba(16,24,32,.45);border-color:rgba(122,90,18,.6)}
+.villa[open]{box-shadow:0 24px 60px -28px rgba(8,25,26,.45);border-color:rgba(122,90,18,.6)}
 .villa summary{list-style:none;cursor:pointer}
 .villa summary::-webkit-details-marker{display:none}
 .villa .chev{transition:transform .35s var(--ease-out)}
@@ -148,7 +176,7 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
 .glow-ground::before{content:"";position:absolute;inset:0;z-index:-1;
   pointer-events:none;opacity:0;transition:opacity .55s var(--ease-out);
   background:radial-gradient(26rem 26rem at var(--gx,50%) var(--gy,50%),
-    rgba(96,214,205,.22), rgba(74,166,168,.08) 45%, rgba(74,166,168,0) 72%)}
+    rgba(110,205,180,.22), rgba(48,140,120,.08) 45%, rgba(48,140,120,0) 72%)}
 .glow-ground.is-lit::before{opacity:1}
 @media (prefers-reduced-motion:reduce){ .glow-ground::before{display:none} }
 
@@ -194,14 +222,14 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
 .reach-list{display:grid;gap:0;margin:0}
 .reach-row{display:flex;align-items:baseline;justify-content:space-between;
   gap:1.5rem;padding:1.1rem .75rem;margin-inline:-.75rem;
-  border-top:1px solid rgba(168,182,194,.22);cursor:default;
+  border-top:1px solid rgba(163,183,175,.22);cursor:default;
   transition:background-color .3s var(--ease-out)}
-.reach-row:last-child{border-bottom:1px solid rgba(168,182,194,.22)}
+.reach-row:last-child{border-bottom:1px solid rgba(163,183,175,.22)}
 .reach-row dt{color:var(--color-haze);font-size:.95rem}
 .reach-row dd{margin:0;font-family:var(--font-display);color:var(--color-cloud);
   font-size:var(--step-1);white-space:nowrap;
   transition:color .3s var(--ease-out)}
-.reach-row.is-lit,.reach-row:hover{background:rgba(201,150,46,.09)}
+.reach-row.is-lit,.reach-row:hover{background:rgba(223,180,65,.09)}
 .reach-row.is-lit dd,.reach-row:hover dd{color:var(--color-dawn)}
 .reach-row:focus-visible{outline:2px solid var(--color-dawn);outline-offset:-2px}
 
@@ -228,13 +256,13 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
 .video-poster.is-loaded{opacity:1}
 .video-card:hover .video-poster{transform:scale(1.035)}
 .video-scrim{position:absolute;inset:0;
-  background:linear-gradient(to top,rgba(6,16,18,.78) 0%,
-             rgba(6,16,18,.22) 45%,rgba(6,16,18,.28) 100%)}
+  background:linear-gradient(to top,rgba(3,16,15,.78) 0%,
+             rgba(3,16,15,.22) 45%,rgba(3,16,15,.28) 100%)}
 
 .video-play{position:absolute;top:50%;left:50%;translate:-50% -50%;
   display:grid;place-items:center;width:5rem;height:5rem;border-radius:50%;
-  color:var(--color-cloud);background:rgba(238,241,244,.16);
-  backdrop-filter:blur(8px);border:1px solid rgba(238,241,244,.35);
+  color:var(--color-cloud);background:rgba(243,245,242,.16);
+  backdrop-filter:blur(8px);border:1px solid rgba(243,245,242,.35);
   transition:transform .4s var(--ease-out),background-color .4s var(--ease-out),
              border-color .4s var(--ease-out),color .4s var(--ease-out)}
 .video-play svg{width:2rem;height:2rem;margin-left:.2rem}
@@ -257,8 +285,8 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
   .video-play svg{width:1.35rem;height:1.35rem}
   .video-title{font-size:1.05rem}
   .video-desc{font-size:.78rem;max-width:24ch}
-  .video-scrim{background:linear-gradient(to top,rgba(6,16,18,.85) 0%,
-               rgba(6,16,18,.3) 52%,rgba(6,16,18,.3) 100%)}
+  .video-scrim{background:linear-gradient(to top,rgba(3,16,15,.85) 0%,
+               rgba(3,16,15,.3) 52%,rgba(3,16,15,.3) 100%)}
 }
 
 /* The player. 100dvh for the same reason the enquiry popup needs it: a fixed
@@ -272,8 +300,8 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
 .video-frame{position:absolute;inset:0}
 .video-frame iframe{width:100%;height:100%;border:0;display:block}
 .video-close{position:absolute;top:-3.25rem;right:0;width:44px;height:44px;
-  display:grid;place-items:center;background:rgba(238,241,244,.12);
-  border:1px solid rgba(238,241,244,.3);border-radius:50%;cursor:pointer;
+  display:grid;place-items:center;background:rgba(243,245,242,.12);
+  border:1px solid rgba(243,245,242,.3);border-radius:50%;cursor:pointer;
   color:var(--color-cloud);transition:background-color .25s var(--ease-out),
                                       color .25s var(--ease-out)}
 .video-close:hover{background:var(--color-dawn);color:var(--color-night);
@@ -282,7 +310,7 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
 /* On a short screen the button has nowhere above the video to sit, so it
    moves inside the frame rather than off the top of it. */
 @media (max-height:520px), (max-width:520px){
-  .video-close{top:.6rem;right:.6rem;background:rgba(6,16,18,.6)}
+  .video-close{top:.6rem;right:.6rem;background:rgba(3,16,15,.6)}
 }
 
 /* ── The ownership cards ──────────────────────────────────────────────────
@@ -311,7 +339,7 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
 /* The two drifting squares. They are the only thing here that moves on its
    own, and they only exist once the card is open. */
 .skew-blob{position:absolute;width:0;height:0;border-radius:2px;opacity:0;
-  background:rgba(238,241,244,.10);backdrop-filter:blur(10px);
+  background:rgba(243,245,242,.10);backdrop-filter:blur(10px);
   box-shadow:0 5px 15px rgba(0,0,0,.2);pointer-events:none;z-index:10;
   transition:all .5s var(--ease-out);animation:skew-drift 3.4s ease-in-out infinite}
 .skew-blob-a{top:0;left:0}
@@ -323,14 +351,14 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
 @keyframes skew-drift{0%,100%{transform:translateY(8px)}50%{transform:translateY(-8px)}}
 
 .skew-body{position:relative;z-index:20;left:0;padding:2rem 2.25rem;
-  border-radius:2px;background:rgba(7,26,28,.55);
-  backdrop-filter:blur(14px);border:1px solid rgba(238,241,244,.12);
+  border-radius:2px;background:rgba(6,26,24,.55);
+  backdrop-filter:blur(14px);border:1px solid rgba(243,245,242,.12);
   box-shadow:0 24px 60px -30px rgba(0,0,0,.8);
   transition:left .6s var(--ease-out), padding .6s var(--ease-out),
              background-color .6s var(--ease-out)}
 .skew-card:hover .skew-body,
 .skew-card:focus-within .skew-body{left:-1.5rem;padding:2.75rem 2.25rem;
-  background:rgba(7,26,28,.68)}
+  background:rgba(6,26,24,.68)}
 
 .skew-kicker{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
   color:var(--color-dawn);margin:0}
@@ -375,8 +403,8 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
    from --cf-card, so the whole rake scales with one number. */
 #views{isolation:isolate}
 .views-scrim{position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(180deg,rgba(6,20,22,.82) 0%,rgba(6,20,22,.62) 38%,
-                             rgba(6,20,22,.86) 100%)}
+  background:linear-gradient(180deg,rgba(6,26,24,.82) 0%,rgba(6,26,24,.62) 38%,
+                             rgba(6,26,24,.86) 100%)}
 .views-lead{position:relative;max-width:42ch;margin-inline:auto;text-align:center;
   font-family:var(--font-display);font-size:var(--step-2);line-height:1.3;
   color:var(--color-cloud);text-wrap:balance}
@@ -402,8 +430,8 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
    phone, where there is no outside to sit in. */
 .cf-nav{position:absolute;top:calc(50% - 1.4rem);z-index:200;
   display:grid;place-items:center;width:2.75rem;height:2.75rem;
-  color:var(--color-cloud);background:rgba(6,20,22,.45);
-  border:1px solid rgba(238,241,244,.22);border-radius:50%;
+  color:var(--color-cloud);background:rgba(6,26,24,.45);
+  border:1px solid rgba(243,245,242,.22);border-radius:50%;
   backdrop-filter:blur(6px);cursor:pointer;
   transition:background-color .3s var(--ease-out),border-color .3s var(--ease-out),
              transform .3s var(--ease-out)}
@@ -430,8 +458,8 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
 .cf-dot:focus-visible{outline:2px solid var(--color-dawn);outline-offset:-2px}
 
 /* ── Horizontal gallery track ─────────────────────────────────────────── */
-#inside{background:#22382D}
-.frame{position:relative;overflow:hidden;background:#2F4A3C}
+#inside{background:#0F3F37}
+.frame{position:relative;overflow:hidden;background:#16564A}
 .frame img{width:100%;height:100%;object-fit:cover;opacity:0;
   transition:opacity 1s var(--ease-out),transform 1.2s var(--ease-out);transform:scale(1.06)}
 .frame img.is-loaded{opacity:1;transform:scale(1)}
@@ -441,17 +469,17 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
 /* ── Form ─────────────────────────────────────────────────────────────── */
 .field input,.field select,.field textarea{
   width:100%;min-height:48px;background:transparent;color:inherit;
-  border:0;border-bottom:1px solid rgba(168,182,194,.42);padding:.7rem .1rem;
+  border:0;border-bottom:1px solid rgba(163,183,175,.42);padding:.7rem .1rem;
   font:inherit;font-size:var(--step-0);border-radius:0;
   transition:border-color .25s var(--ease-out)}
-.field input:hover,.field select:hover,.field textarea:hover{border-bottom-color:rgba(168,182,194,.8)}
+.field input:hover,.field select:hover,.field textarea:hover{border-bottom-color:rgba(163,183,175,.8)}
 .field input:focus,.field select:focus,.field textarea:focus{
   outline:none;border-bottom-color:var(--color-dawn)}
 .field input[aria-invalid="true"],.field textarea[aria-invalid="true"],
 .field select[aria-invalid="true"]{border-bottom-color:#F0806A}
 .field .err{display:none;color:#F0806A;font-size:var(--step--1);margin-top:.45rem}
 .field.is-invalid .err{display:block}
-.field select option{background:#0E2A2D;color:#EEF1F4}
+.field select option{background:#0B2A25;color:#F3F5F2}
 #form-summary{display:none}
 #form-summary.is-shown{display:block}
 
@@ -462,9 +490,9 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
   transition:background-color .3s var(--ease-out),color .3s var(--ease-out),
              border-color .3s var(--ease-out),transform .18s var(--ease-out)}
 .btn:active{transform:scale(.985)}
-.btn-dawn{background:var(--color-dawn);color:#071A1C}
-.btn-dawn:hover{background:#DBAA45}
-.btn-quiet{background:transparent;color:var(--color-cloud);border-color:rgba(168,182,194,.45)}
+.btn-dawn{background:var(--color-dawn);color:#061A18}
+.btn-dawn:hover{background:#E8C25A}
+.btn-quiet{background:transparent;color:var(--color-cloud);border-color:rgba(163,183,175,.45)}
 .btn-quiet:hover{border-color:var(--color-dawn);color:var(--color-dawn)}
 .btn-ink{background:var(--color-ink);color:var(--color-cloud)}
 .btn-ink:hover{background:var(--color-frond)}
@@ -478,22 +506,67 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
   border-color:rgba(37,211,102,.55)}
 .btn-whatsapp .wa-icon{width:20px;height:20px;color:#25D366;
   transition:color .3s var(--ease-out)}
-.btn-whatsapp:hover{background:#25D366;color:#0B1F12;border-color:#25D366}
-.btn-whatsapp:hover .wa-icon{color:#0B1F12}
+.btn-whatsapp:hover{background:#25D366;color:#04120E;border-color:#25D366}
+.btn-whatsapp:hover .wa-icon{color:#04120E}
 
 .call-icon{width:18px;height:18px}
 /* The number stays on one line with its label — a phone number broken across
    two lines is unreadable and unmemorable. */
 .btn-dawn [data-call-label]{white-space:nowrap}
 
+
+/* ── The brand lockup ──────────────────────────────────────────────────────
+   The Triton mark, then the group name, then the project under it. The
+   hierarchy matters: Triton is the developer and the reason to trust the
+   page, Humming Valley is the thing being sold. Setting them at two sizes
+   says that without a word of explanation.
+
+   The mark is drawn from one <symbol>, so it takes its colour from
+   currentColor and turns gold on hover along with everything else.        */
+.brand{display:flex;align-items:center;gap:.6rem;min-width:0;
+  text-decoration:none;color:inherit;padding-block:.25rem}
+.brand-mark{width:auto;height:1.75rem;flex:0 0 auto;fill:currentColor;color:var(--color-dawn);
+  transition:color .35s var(--ease-out), transform .5s var(--ease-out)}
+.brand:hover .brand-mark{transform:translateY(-1px)}
+.brand-words{display:flex;flex-direction:column;min-width:0;gap:.1em}
+.brand-name{font-family:var(--font-display);font-weight:500;
+  font-size:.98rem;line-height:1;letter-spacing:.22em;text-transform:uppercase;
+  white-space:nowrap}
+/* text-transform, not typed capitals: a screen reader spells out T-R-I-T-O-N
+   when the letters are capitals in the markup. */
+.brand-sub{font-family:var(--font-sans);font-weight:400;font-size:.5rem;
+  line-height:1;letter-spacing:.2em;text-transform:uppercase;white-space:nowrap;
+  opacity:.72}
+@media (min-width:640px){
+  .brand{gap:.75rem}
+  .brand-mark{height:2.1rem}
+  .brand-name{font-size:1.12rem}
+  .brand-sub{font-size:.58rem;letter-spacing:.24em}
+}
+/* Below 360px the nav has the lockup and the enquiry button to fit into
+   280 usable pixels. The tracking is what gives way first — it is the part
+   that is decoration rather than information. */
+@media (max-width:359.98px){
+  .brand{gap:.45rem}
+  .brand-mark{height:1.55rem}
+  .brand-name{font-size:.86rem;letter-spacing:.14em}
+  .brand-sub{font-size:.46rem;letter-spacing:.1em}
+}
+.brand:hover .brand-name{color:var(--color-dawn)}
+
 /* ── Nav ──────────────────────────────────────────────────────────────── */
 #nav{transition:background-color .45s var(--ease-out),
                 border-color .45s var(--ease-out), color .45s var(--ease-out)}
-#nav.is-stuck{background:rgba(14,22,33,.82);backdrop-filter:blur(14px) saturate(1.3);
-  border-bottom-color:rgba(168,182,194,.16)}
-#nav.is-light.is-stuck{background:rgba(238,241,244,.86);color:var(--color-ink);
-  border-bottom-color:rgba(16,24,32,.12)}
-#nav.is-light.is-stuck .nav-link:hover{color:var(--color-dawn-deep)}
+/* The bar stays dark over every section, light ones included. It used to
+   invert to cloud over the pale sections, which meant the mark had to
+   invert with it — and a gold logo on white is a different logo. Holding
+   one dark bar also gives the pale half of the page an edge to sit under,
+   which it was missing. is-light now only deepens the glass a little, so
+   the bar reads as solid rather than smoky against white. */
+#nav.is-stuck{background:rgba(6,26,24,.86);backdrop-filter:blur(16px) saturate(1.25);
+  border-bottom-color:rgba(223,180,65,.22)}
+#nav.is-light.is-stuck{background:rgba(3,16,15,.93);
+  border-bottom-color:rgba(223,180,65,.3)}
 .nav-link{position:relative;padding:.35rem 0}
 .nav-link::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:100%;
   background:currentColor;transform:scaleX(0);transform-origin:right;
@@ -502,7 +575,7 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
 
 /* ── Lightbox ─────────────────────────────────────────────────────────── */
 #lightbox[hidden]{display:none}
-#lightbox{position:fixed;inset:0;z-index:90;background:rgba(7,12,19,.94);
+#lightbox{position:fixed;inset:0;z-index:90;background:rgba(3,16,15,.94);
   display:grid;place-items:center;padding:clamp(1rem,4vw,3rem)}
 #lightbox img{max-width:100%;max-height:82vh;object-fit:contain}
 
@@ -537,19 +610,19 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
 #cursor-dot,#cursor-ring{position:fixed;top:0;left:0;z-index:9999;
   pointer-events:none;border-radius:50%;opacity:0;
   will-change:transform;mix-blend-mode:difference}
-#cursor-dot{width:7px;height:7px;background:#EEF1F4;margin:-3.5px 0 0 -3.5px}
+#cursor-dot{width:7px;height:7px;background:#F3F5F2;margin:-3.5px 0 0 -3.5px}
 
 /* Position and scale live on DIFFERENT elements on purpose. Both were on the
    ring at first and the scale silently never applied: the x/y tweens and the
    scale tween were writing to one transform and overwriting each other. */
 #cursor-ring{width:38px;height:38px;margin:-19px 0 0 -19px;background:none;border:0}
 #cursor-ring > i{display:block;width:100%;height:100%;border-radius:50%;
-  border:1px solid rgba(238,241,244,.55);will-change:transform;
+  border:1px solid rgba(243,245,242,.55);will-change:transform;
   transition:border-color .32s var(--ease-out), background-color .32s var(--ease-out)}
-#cursor-ring.is-active > i{border-color:rgba(201,150,46,.9);background:rgba(201,150,46,.12)}
+#cursor-ring.is-active > i{border-color:rgba(223,180,65,.9);background:rgba(223,180,65,.12)}
 /* Over the site plan it tightens instead — a 64px ring over a 54px plot
    would cover the thing being pointed at. */
-#cursor-ring.is-precise > i{border-color:rgba(201,150,46,.95)}
+#cursor-ring.is-precise > i{border-color:rgba(223,180,65,.95)}
 
 /* ── Magnetic elements ───────────────────────────────────────────────── */
 [data-magnetic]{will-change:transform}
@@ -579,7 +652,7 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
    long, how far through you are is real information. */
 #scroll-progress{position:fixed;top:0;left:0;height:2px;width:100%;z-index:60;
   transform:scaleX(0);transform-origin:0 50%;
-  background:linear-gradient(to right,#7A5A12,#C9962E);will-change:transform}
+  background:linear-gradient(to right,#7A5A12,#DFB441);will-change:transform}
 
 /* Lenis needs these to own the scroll; without them the wheel and the
    library fight each other. */
@@ -690,29 +763,29 @@ html.lenis,html.lenis body{height:auto}
 
 .plot-chip{display:flex;flex-direction:column;align-items:center;
   justify-content:center;gap:.1rem;min-height:3.25rem;padding:.4rem .2rem;
-  border:1px solid rgba(16,24,32,.16);background:#fff;cursor:pointer;
+  border:1px solid rgba(8,25,26,.16);background:#fff;cursor:pointer;
   font-family:var(--font-display);font-size:1.05rem;color:var(--color-ink);
   transition:border-color .25s var(--ease-out),background-color .25s var(--ease-out)}
 .plot-chip small{font-family:var(--font-sans);font-size:.6rem;font-weight:600;
   letter-spacing:.04em;color:var(--color-frond)}
 .plot-chip[data-status="available"]{border-color:var(--color-frond);
-  background:rgba(47,74,60,.07)}
+  background:rgba(22,86,74,.07)}
 .plot-chip[data-status="held"]{border-color:var(--color-dawn-deep);
   background:rgba(122,90,18,.07)}
 .plot-chip[data-status="held"] small{color:var(--color-dawn-deep)}
-.plot-chip[data-status="sold"]{color:#96A3AD;background:rgba(16,24,32,.03);
+.plot-chip[data-status="sold"]{color:#93A79F;background:rgba(8,25,26,.03);
   border-style:dashed;cursor:default}
 .plot-chip[aria-pressed="true"]{background:var(--color-frond);color:var(--color-cloud);
   border-color:var(--color-frond)}
-.plot-chip[aria-pressed="true"] small{color:rgba(238,241,244,.85)}
+.plot-chip[aria-pressed="true"] small{color:rgba(243,245,242,.85)}
 
 .chip-key{display:flex;flex-wrap:wrap;gap:1rem;margin-top:1.25rem;
   font-size:.78rem;color:var(--color-mist)}
 .chip-key span{display:inline-flex;align-items:center;gap:.4rem}
 .chip-key i{width:.7rem;height:.7rem;border:1px solid currentColor;
   font-style:normal}
-.chip-key .k-open{color:var(--color-frond);background:rgba(47,74,60,.07)}
-.chip-key .k-sold{color:#96A3AD;border-style:dashed}
+.chip-key .k-open{color:var(--color-frond);background:rgba(22,86,74,.07)}
+.chip-key .k-sold{color:#93A79F;border-style:dashed}
 
 /* ── The gallery, now a calm grid ─────────────────────────────────────────
    It follows the choreography, so it should be still: two scroll-driven
@@ -727,7 +800,7 @@ html.lenis,html.lenis body{height:auto}
 #hero{display:grid;background:var(--color-night)}
 .hero-ground{position:absolute;inset:0;
   background:radial-gradient(120% 80% at 70% 20%, #17383A 0%, transparent 60%),
-             linear-gradient(160deg,#051417 0%,#0E2A2D 55%,#123336 100%)}
+             linear-gradient(160deg,#051417 0%,#0B2A25 55%,#123336 100%)}
 .hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
   opacity:0;transition:opacity 1.4s var(--ease-out);will-change:transform}
 .hero-photo.is-loaded{opacity:1}
@@ -735,8 +808,8 @@ html.lenis,html.lenis body{height:auto}
    left, and a horizontal one so the card's own panel is not fighting the
    picture behind it. */
 .hero-scrim{position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(to top, rgba(8,13,20,.92) 0%, rgba(8,13,20,.45) 42%, rgba(8,13,20,.15) 70%, rgba(8,13,20,.5) 100%),
-             linear-gradient(to right, rgba(8,13,20,.75) 0%, rgba(8,13,20,.15) 45%, transparent 70%)}
+  background:linear-gradient(to top, rgba(3,16,15,.92) 0%, rgba(3,16,15,.45) 42%, rgba(3,16,15,.15) 70%, rgba(3,16,15,.5) 100%),
+             linear-gradient(to right, rgba(3,16,15,.75) 0%, rgba(3,16,15,.15) 45%, transparent 70%)}
 
 .hero-grid{position:relative;z-index:2;display:grid;align-items:end;gap:clamp(2rem,4vw,4rem);
   width:100%;max-width:1600px;margin-inline:auto;
@@ -749,6 +822,11 @@ html.lenis,html.lenis body{height:auto}
 .hero-eyebrow,.eyebrow{color:var(--color-dawn);font-size:.8rem;font-weight:600;
   text-transform:uppercase;letter-spacing:.1em;margin:0 0 1.25rem}
 .on-light .eyebrow{color:var(--color-dawn-deep)}
+/* Each chapter on a dark ground opens with the mark, small enough to read
+   as a mason's stamp rather than a sticker. It is the same <symbol> as the
+   nav and the footer, so there is one logo on this page, used three ways. */
+.eyebrow:has(.eyebrow-mark){display:flex;align-items:center;gap:.6rem}
+.eyebrow-mark{height:1.15rem;width:auto;flex:0 0 auto;fill:currentColor;opacity:.9}
 
 #hero h1{font-size:var(--display);color:var(--color-cloud);max-width:15ch;margin:0}
 /* Two sentences, each on its own line. The second is set a step smaller so
@@ -764,7 +842,7 @@ html.lenis,html.lenis body{height:auto}
 #hero .lede{margin-top:1.5rem;color:var(--color-haze);max-width:52ch}
 
 .hero-facts{display:flex;flex-wrap:wrap;gap:2rem 2.75rem;margin:2.25rem 0 0;padding:1.5rem 0 0;
-  border-top:1px solid rgba(168,182,194,.22)}
+  border-top:1px solid rgba(163,183,175,.22)}
 
 /* On a phone the scrim carries the copy on its own: the second gradient
    here darkens from the left, which does nothing when the text runs the
@@ -773,8 +851,8 @@ html.lenis,html.lenis body{height:auto}
    than three cramped ones. */
 @media (max-width:767.98px){
   .hero-scrim{background:linear-gradient(to top,
-    rgba(6,16,18,.94) 0%, rgba(6,16,18,.78) 45%, rgba(6,16,18,.62) 72%,
-    rgba(6,16,18,.72) 100%)}
+    rgba(3,16,15,.94) 0%, rgba(3,16,15,.78) 45%, rgba(3,16,15,.62) 72%,
+    rgba(3,16,15,.72) 100%)}
   .hero-facts{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem 1.5rem}
   .hero-facts dd{font-size:var(--step-1)}
   .hero-actions{gap:.75rem}
@@ -796,7 +874,7 @@ html.lenis,html.lenis body{height:auto}
 
 /* ── The enquiry card ──────────────────────────────────────────────────── */
 .hero-card{background:rgba(11,18,27,.72);backdrop-filter:blur(18px) saturate(1.2);
-  border:1px solid rgba(168,182,194,.2);padding:clamp(1.5rem,2.4vw,2rem);
+  border:1px solid rgba(163,183,175,.2);padding:clamp(1.5rem,2.4vw,2rem);
   align-self:end;box-shadow:0 30px 70px -40px rgba(0,0,0,.9)}
 /* Set uppercase through text-transform rather than typing capitals into the
    markup: several screen readers spell out short all-caps strings letter by
@@ -810,7 +888,7 @@ html.lenis,html.lenis body{height:auto}
 .hero-card-alt{margin:1.25rem 0 0;font-size:.85rem;color:var(--color-haze)}
 .hero-card-alt a{color:var(--color-dawn)}
 .hero-scrollcue{position:absolute;left:clamp(1.25rem,4vw,3rem);bottom:1rem;z-index:2;
-  margin:0;font-size:.78rem;letter-spacing:.12em;color:rgba(168,182,194,.6)}
+  margin:0;font-size:.78rem;letter-spacing:.12em;color:rgba(163,183,175,.6)}
 @media (max-width:1023.98px){ .hero-scrollcue{display:none} }
 
 /* ══════════════════════════════════════════════════════════════════════════
@@ -827,8 +905,8 @@ html.lenis,html.lenis body{height:auto}
 .incl{display:inline-block;font-family:var(--font-sans);font-size:.62rem;
   font-weight:700;letter-spacing:.11em;text-transform:uppercase;
   padding:.2rem .5rem;border-radius:2px;white-space:nowrap;
-  color:var(--color-dawn);background:rgba(201,150,46,.16);
-  border:1px solid rgba(201,150,46,.45)}
+  color:var(--color-dawn);background:rgba(223,180,65,.16);
+  border:1px solid rgba(223,180,65,.45)}
 /* On a light ground the gold has to go darker to stay legible. */
 .on-light .incl{color:var(--color-dawn-deep);background:rgba(122,90,18,.10);
   border-color:rgba(122,90,18,.35)}
@@ -842,21 +920,21 @@ html.lenis,html.lenis body{height:auto}
    its rooms, in the order you climb them. It tells a buyer how the villa is
    arranged and how much of it there is, without publishing the drawings.
    The blocks carry no dimensions and no doors on purpose. */
-.levels{border:1px solid rgba(16,24,32,.12);background:#F6F8F9;padding:1.25rem}
+.levels{border:1px solid rgba(8,25,26,.12);background:#F6F8F5;padding:1.25rem}
 .level + .level{margin-top:.9rem;padding-top:.9rem;
-  border-top:1px dashed rgba(16,24,32,.16)}
+  border-top:1px dashed rgba(8,25,26,.16)}
 .level-name{margin:0;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
   color:var(--color-dawn-deep)}
 .level-plan{display:flex;gap:.35rem;margin:.55rem 0 .5rem;height:1.6rem}
 /* The first block is the room you arrive in, so it takes the most width. */
-.level-plan i{flex:1 1 0;background:rgba(47,74,60,.13);
-  border:1px solid rgba(47,74,60,.3)}
-.level-plan i:first-child{flex:1.9 1 0;background:rgba(47,74,60,.22)}
+.level-plan i{flex:1 1 0;background:rgba(22,86,74,.13);
+  border:1px solid rgba(22,86,74,.3)}
+.level-plan i:first-child{flex:1.9 1 0;background:rgba(22,86,74,.22)}
 .level-plan i:last-child{flex:.8 1 0;background:rgba(122,90,18,.13);
   border-color:rgba(122,90,18,.35)}
 .level-rooms{margin:0;font-size:.86rem;color:var(--color-mist);line-height:1.5}
 .levels-note{margin:1.1rem 0 0;padding-top:.9rem;
-  border-top:1px solid rgba(16,24,32,.12);
+  border-top:1px solid rgba(8,25,26,.12);
   font-size:.78rem;letter-spacing:.01em;color:var(--color-mist)}
 
 /* ── Villa type, as a set of chips ────────────────────────────────────────
@@ -878,21 +956,21 @@ html.lenis,html.lenis body{height:auto}
   margin:0;opacity:0;cursor:pointer}
 .choice-chip span{display:flex;flex-direction:column;gap:.15rem;
   min-height:44px;justify-content:center;padding:.5rem 1rem;
-  border:1px solid rgba(168,182,194,.32);color:var(--color-cloud);
+  border:1px solid rgba(163,183,175,.32);color:var(--color-cloud);
   font-size:.95rem;line-height:1.15;
   transition:border-color .25s var(--ease-out),background-color .25s var(--ease-out),
              color .25s var(--ease-out)}
 .choice-chip small{font-size:.72rem;color:var(--color-haze);font-weight:500}
-.choice-chip input:hover + span{border-color:rgba(168,182,194,.7)}
+.choice-chip input:hover + span{border-color:rgba(163,183,175,.7)}
 .choice-chip input:focus-visible + span{outline:2px solid var(--color-dawn);
   outline-offset:2px}
 .choice-chip input:checked + span{background:var(--color-dawn);
   border-color:var(--color-dawn);color:var(--color-night);font-weight:600}
-.choice-chip input:checked + span small{color:rgba(7,26,28,.75)}
+.choice-chip input:checked + span small{color:rgba(6,26,24,.75)}
 
 /* On a light ground the same chips need the ink palette. */
 .on-light .choice legend{color:var(--color-mist)}
-.on-light .choice-chip span{border-color:rgba(16,24,32,.22);color:var(--color-ink)}
+.on-light .choice-chip span{border-color:rgba(8,25,26,.22);color:var(--color-ink)}
 .on-light .choice-chip small{color:var(--color-mist)}
 .on-light .choice-chip input:checked + span{color:var(--color-night)}
 
@@ -906,26 +984,26 @@ html.lenis,html.lenis body{height:auto}
 .enquiry .req{color:var(--color-dawn)}
 .enquiry input,.enquiry select,.enquiry textarea{
   width:100%;min-height:46px;background:transparent;color:var(--color-cloud);
-  border:0;border-bottom:1px solid rgba(168,182,194,.4);padding:.55rem .1rem;
+  border:0;border-bottom:1px solid rgba(163,183,175,.4);padding:.55rem .1rem;
   font:inherit;font-size:var(--step-0);border-radius:0;
   transition:border-color .25s var(--ease-out)}
 .enquiry textarea{min-height:auto;resize:vertical}
-.enquiry input:hover,.enquiry select:hover,.enquiry textarea:hover{border-bottom-color:rgba(168,182,194,.75)}
+.enquiry input:hover,.enquiry select:hover,.enquiry textarea:hover{border-bottom-color:rgba(163,183,175,.75)}
 .enquiry input:focus,.enquiry select:focus,.enquiry textarea:focus{
   outline:none;border-bottom-color:var(--color-dawn)}
 .enquiry [aria-invalid="true"]{border-bottom-color:#F0806A}
-.enquiry select option{background:#0E2A2D;color:#EEF1F4}
+.enquiry select option{background:#0B2A25;color:#F3F5F2}
 .enquiry .err{display:none;color:#F0806A;font-size:.8rem;margin:.4rem 0 0}
 .enquiry .field.is-invalid .err{display:block}
 .enquiry .form-submit{margin-top:1.75rem;width:100%}
-.enquiry .form-note{margin:.9rem 0 0;font-size:.78rem;color:rgba(168,182,194,.75)}
+.enquiry .form-note{margin:.9rem 0 0;font-size:.78rem;color:rgba(163,183,175,.75)}
 .enquiry .form-summary{display:none;margin-bottom:1.5rem;padding:1rem 1.15rem;
   border-left:2px solid #F0806A;background:rgba(240,128,106,.1)}
 .enquiry .form-summary.is-shown{display:block}
 .enquiry .form-summary h3{margin:0;font-size:.9rem;font-weight:600;color:#F0806A;font-family:var(--font-sans)}
 .enquiry .form-summary ul{margin:.5rem 0 0;padding-left:1.1rem;font-size:.86rem}
 .enquiry .form-summary a{color:inherit;text-decoration:underline;text-underline-offset:2px}
-.enquiry .form-done{border-left:2px solid var(--color-dawn);background:rgba(201,150,46,.12);padding:1.25rem}
+.enquiry .form-done{border-left:2px solid var(--color-dawn);background:rgba(223,180,65,.12);padding:1.25rem}
 .enquiry .form-done h3{margin:0;font-family:var(--font-display);font-size:var(--step-1);color:var(--color-cloud)}
 .enquiry .form-done p{margin:.5rem 0 0;color:var(--color-haze);font-size:.9rem}
 /* Honeypot: out of sight, out of the accessibility tree, out of the tab order. */
@@ -934,7 +1012,7 @@ html.lenis,html.lenis body{height:auto}
 /* On the light enquiry section the same component needs dark text. */
 .on-light .enquiry label,.on-light .enquiry .form-note{color:var(--color-mist)}
 .on-light .enquiry input,.on-light .enquiry select,.on-light .enquiry textarea{
-  color:var(--color-ink);border-bottom-color:rgba(16,24,32,.28)}
+  color:var(--color-ink);border-bottom-color:rgba(8,25,26,.28)}
 .on-light .enquiry input:focus,.on-light .enquiry select:focus,
 .on-light .enquiry textarea:focus{border-bottom-color:var(--color-dawn-deep)}
 .on-light .enquiry .req{color:var(--color-dawn-deep)}
@@ -964,7 +1042,7 @@ html.lenis,html.lenis body{height:auto}
 .modal-panel{--pad:clamp(1.5rem,3vw,2.5rem);
   position:relative;width:min(560px,100%);max-height:100%;
   display:flex;flex-direction:column;overflow:hidden;
-  background:#111C27;border:1px solid rgba(168,182,194,.2);
+  background:#0A1F1C;border:1px solid rgba(163,183,175,.2);
   box-shadow:0 40px 90px -50px rgba(0,0,0,.95)}
 .modal-head{flex:0 0 auto;padding:var(--pad) var(--pad) 0}
 .modal-panel > [data-enquiry-mount]{display:flex;min-height:0;flex:1 1 auto}
@@ -979,7 +1057,7 @@ html.lenis,html.lenis body{height:auto}
 
 /* A hairline and a shadow under the heading, so the edge the fields pass
    beneath is visible and the row reads as a window rather than a cut. */
-.modal-head{border-bottom:1px solid rgba(168,182,194,.14);
+.modal-head{border-bottom:1px solid rgba(163,183,175,.14);
   padding-bottom:1.25rem;margin-bottom:1.25rem}
 /* width:auto, not the 100% the inline forms use: the button is a flex item
    with side margins here, and 100% of the panel plus those margins put its
@@ -1005,14 +1083,27 @@ html.lenis,html.lenis body{height:auto}
 .foot-inner,.foot-legal{max-width:1600px;margin-inline:auto;padding-inline:clamp(1.25rem,4vw,3rem)}
 .foot-inner{display:grid;gap:2.5rem;align-items:start}
 @media (min-width:768px){ .foot-inner{grid-template-columns:1.2fr 1fr 1fr} }
-.foot-name{font-family:var(--font-display);font-size:1.25rem;color:var(--color-cloud);margin:0}
+
+/* The mark again in the footer, at the size it deserves when nothing is
+   competing with it, plus one oversized ghost of it behind the legal type.
+   The ghost is decoration and is hidden from the accessibility tree. */
+.foot-mark{display:block;width:auto;height:3.25rem;fill:currentColor;color:var(--color-dawn);
+  margin:0 0 1.4rem}
+.foot-watermark{position:absolute;right:-3rem;bottom:-6rem;height:18rem;width:auto;
+  fill:currentColor;color:var(--color-cloud);opacity:.04;pointer-events:none;z-index:0}
+#site-footer{position:relative;overflow:clip}
+.foot-legal,.foot-inner{position:relative;z-index:1}
+@media (min-width:768px){ .foot-watermark{right:3.5rem;bottom:-7rem;height:26rem} }
+
+.foot-name{font-family:var(--font-display);font-size:1.5rem;font-weight:500;
+  letter-spacing:.01em;color:var(--color-cloud);margin:0}
 .foot-by{margin:.5rem 0 0;font-size:.88rem}
 /* The one outward link in the footer: quiet enough not to compete with the
    enquiry form above it, but a target rather than a line of text. */
 .foot-site{display:inline-flex;align-items:center;gap:.5rem;margin-top:1.25rem;
   padding:.6rem 1.1rem;font-size:.85rem;letter-spacing:.02em;
   color:var(--color-cloud);text-decoration:none;
-  border:1px solid rgba(168,182,194,.35);
+  border:1px solid rgba(163,183,175,.35);
   transition:border-color .3s var(--ease-out), color .3s var(--ease-out),
              background-color .3s var(--ease-out)}
 .foot-site svg{width:.9rem;height:.9rem;transition:transform .3s var(--ease-out)}
@@ -1042,6 +1133,6 @@ a[data-field]{display:inline-block;padding-block:.2rem}
 .map-link em{display:block;margin-top:.4rem;font-style:normal;font-size:.8rem;
   letter-spacing:.02em;color:var(--color-dawn);opacity:.85}
 .map-link:hover em{opacity:1}
-.foot-legal{margin-top:3rem;padding-top:1.5rem;border-top:1px solid rgba(168,182,194,.15);
+.foot-legal{margin-top:3rem;padding-top:1.5rem;border-top:1px solid rgba(163,183,175,.15);
   display:grid;gap:.6rem;font-size:.78rem;line-height:1.6}
 .foot-legal p{max-width:78ch;margin:0}

@@ -196,7 +196,7 @@ const DATA = {
       head:'We manage the rest.',
       body:'No day-to-day maintenance. No property management headaches. Your '
          + 'residence is managed through the hotel-managed residence program.',
-      cta:'Discover', from:'#5FC8C2', to:'#1B5F63' },
+      cta:'Discover', from:'#5FC8B4', to:'#1B5F63' },
     { n:'03', kicker:'Let it earn.',
       head:'Zero inventory tension.',
       body:'When you are away, your residence can be offered to guests. Revenue '
@@ -440,7 +440,7 @@ $$('.villa-shot img, .band-photo').forEach(img => {
   loadWhenNear(img, img.dataset.src, ok => {
     if (ok) { img.style.opacity = img.classList.contains('band-photo') ? '.55' : '1'; return; }
     const w = img.closest('.villa-shot');
-    if (w) w.style.background = 'linear-gradient(150deg,#DFE5EB,#C9D3DC)';
+    if (w) w.style.background = 'linear-gradient(150deg,#E4EAE4,#C7D6CC)';
     img.remove();
   }, wrap);
 });
@@ -494,9 +494,9 @@ DATA.plots.forEach(p => {
   const t = document.createElementNS(NS,'text');
   t.setAttribute('x', p.x + PW/2); t.setAttribute('y', p.y + PH/2 + 4);
   t.setAttribute('text-anchor','middle');
-  t.setAttribute('font-size','11'); t.setAttribute('font-family','Manrope, sans-serif');
+  t.setAttribute('font-size','11'); t.setAttribute('font-family','Jost, sans-serif');
   t.setAttribute('font-weight','600');
-  t.setAttribute('fill', p.s === 'sold' ? '#8A99A6' : p.s === 'held' ? '#7A5A12' : '#2F4A3C');
+  t.setAttribute('fill', p.s === 'sold' ? '#7E9188' : p.s === 'held' ? '#7A5A12' : '#16564A');
   t.setAttribute('pointer-events','none');
   t.textContent = p.n;
 
@@ -547,7 +547,7 @@ function selectPlot(p, node){
       <h4 class="font-display" style="font-size:var(--step-2)">Villa ${p.n}</h4>
       <span class="text-[.8rem] font-medium px-2.5 py-1 border"
             style="${p.s === 'available'
-              ? 'color:#2F4A3C;border-color:#2F4A3C;background:rgba(47,74,60,.08)'
+              ? 'color:#16564A;border-color:#16564A;background:rgba(22,86,74,.08)'
               : 'color:#7A5A12;border-color:#7A5A12;background:rgba(122,90,18,.08)'}">
         ${p.s === 'held' ? 'On hold' : 'Available'}
       </span>
@@ -647,7 +647,7 @@ if (reach && DATA.reach) {
     }));
     const [tx, ty] = at(45, r);
     const t = el('text', {x:tx + 6, y:ty - 4, 'font-size':10,
-      'font-family':'Manrope, sans-serif', fill:'currentColor', 'fill-opacity':.45});
+      'font-family':'Jost, sans-serif', fill:'currentColor', 'fill-opacity':.45});
     t.textContent = m === MAX ? '60 min' : m;
     ticks.appendChild(t);
   });
@@ -756,7 +756,7 @@ $$('#gallery img').forEach(img => {
     if (!frame) return;
     const f = document.createElement('div');
     f.className = 'absolute inset-0';
-    f.style.background = 'linear-gradient(160deg,#2F4A3C,#22382D 60%,#1A2C23)';
+    f.style.background = 'linear-gradient(160deg,#16564A,#0F3F37 60%,#092A22)';
     f.setAttribute('aria-hidden','true');
     frame.prepend(f);
   }, frame);

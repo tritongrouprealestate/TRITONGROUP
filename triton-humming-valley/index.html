@@ -5,7 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Triton Humming Valley — Boutique villas above the Nandi cloud line</title>
 <meta name="description" content="Thirty Bali-inspired boutique villas in North Bangalore, at the foothills of Nandi Hills. 3, 4 and 5 BHK. Possession October 2026. Private viewings by appointment.">
-<meta name="theme-color" content="#071A1C">
+<meta name="theme-color" content="#061A18">
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="images/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="images/favicon-180.png">
 <meta property="og:title" content="Triton Humming Valley — Boutique villas near Nandi Hills">
 <meta property="og:description" content="Thirty Bali-inspired villas in North Bangalore, at the foothills of Nandi Hills. Private viewings by appointment.">
 <meta property="og:type" content="website">
@@ -35,7 +38,7 @@
        js/gsap.min.js      animation library (bundled, no CDN)
        js/ScrollTrigger.min.js
        js/lenis.min.js
-       fonts/*.woff2       Marcellus and Manrope, served from this domain
+       fonts/*.woff2       Cormorant Garamond and Jost, from this domain
        images/             the photographs — see images/README.txt
        submit.php          receives the enquiry forms
        config.php          your API key and notification address (never commit)
@@ -60,9 +63,9 @@
      stylesheet resolves, so a slow connection never flashes white over a
      night-sky hero. -->
 <style>
-  html{background:#071A1C;color-scheme:dark}
-  body{margin:0;background:#071A1C;color:#EEF1F4;-webkit-font-smoothing:antialiased;
-       font-family:Manrope,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  html{background:#061A18;color-scheme:dark}
+  body{margin:0;background:#061A18;color:#F3F5F2;-webkit-font-smoothing:antialiased;
+       font-family:Jost,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
   .no-js [data-anim]{opacity:1!important;transform:none!important;clip-path:none!important}
 </style>
 
@@ -70,10 +73,10 @@
      party to resolve, connect to and wait for before the first letter is
      drawn. Both latin files are preloaded because the stylesheet only
      discovers them after it has parsed, which is a request too late. -->
-<link rel="preload" href="fonts/marcellus-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/cormorant-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/jost-latin.woff2" as="font" type="font/woff2" crossorigin>
 
-<link rel="stylesheet" href="css/styles.css?v=2">
+<link rel="stylesheet" href="css/styles.css?v=3">
 
 <!-- The hero photograph is the largest thing on the first screen, and it is
      fetched by script rather than found in the markup, so the browser is
@@ -231,9 +234,9 @@
      engines render the page and see them; a person with scripting off would
      not, and the facts they would want are the ones below. -->
 <noscript>
-  <div style="background:#0E2A2D;color:#EEF1F4;padding:1.5rem clamp(1.25rem,4vw,3rem);
-              font:400 15px/1.6 Manrope,system-ui,sans-serif">
-    <p style="margin:0 0 .75rem;font-family:Marcellus,Georgia,serif;font-size:1.25rem">
+  <div style="background:#0B2A25;color:#F3F5F2;padding:1.5rem clamp(1.25rem,4vw,3rem);
+              font:400 15px/1.6 Jost,system-ui,sans-serif">
+    <p style="margin:0 0 .75rem;font-family:Cormorant,Georgia,serif;font-size:1.4rem">
       Triton Humming Valley &mdash; villas in Nandi Hills, Bangalore
     </p>
     <p style="margin:0 0 .5rem">
@@ -243,19 +246,30 @@
     </p>
     <p style="margin:0">
       To arrange a viewing, call
-      <a href="tel:+919036682626" style="color:#C9962E">+91&nbsp;90366&nbsp;82626</a>
+      <a href="tel:+919036682626" style="color:#DFB441">+91&nbsp;90366&nbsp;82626</a>
       or email
-      <a href="mailto:sales@tritongroup.in" style="color:#C9962E">sales@tritongroup.in</a>.
+      <a href="mailto:sales@tritongroup.in" style="color:#DFB441">sales@tritongroup.in</a>.
       RERA PRM/KA/RERA/1254/460/PR/131224/007292.
     </p>
   </div>
 </noscript>
 
+<!-- The Triton mark, defined once. Every <use href="#triton-mark"> on the
+     page draws this path and inherits its colour from currentColor, so the
+     logo costs 3 KB of markup in total rather than 3 KB per placement. -->
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <symbol id="triton-mark" viewBox="0 0 100 146.97"><path d="M33.21 146.8C33.21 146.55 33.84 146.01 34.41 145.78C34.68 145.66 35.2 145.3 35.54 144.96C35.89 144.63 36.46 144.14 36.81 143.89C37.21 143.58 37.73 142.98 38.26 142.19C39.33 140.6 40.26 138.02 40.65 135.57C40.91 133.97 40.91 133.58 40.91 90.14C40.91 50.84 40.89 46.27 40.71 45.9C40.61 45.68 40.37 45.42 40.19 45.34C39.94 45.23 37.74 45.19 31.59 45.2C21.35 45.21 20.62 45.27 17.93 46.33C17.27 46.6 16.43 46.88 16.07 46.96C15.71 47.05 15.09 47.32 14.68 47.57C14.28 47.82 13.64 48.19 13.26 48.4C10.63 49.84 6.02 54.57 4.74 57.13C4.03 58.58 3.3 60.36 3.03 61.35C2.57 63 2.05 63.39 1.54 62.45C1.36 62.11 1.32 61.58 1.28 58.78C1.23 54.2 1.44 52.41 2.39 49.43C2.59 48.81 2.88 47.64 3.03 46.84C3.29 45.46 4.22 42.62 4.65 41.89C5.11 41.1 1.37 41.16 50 41.16C98.63 41.16 94.89 41.1 95.35 41.89C95.78 42.62 96.71 45.46 96.97 46.84C97.12 47.64 97.41 48.81 97.61 49.43C98.56 52.41 98.77 54.2 98.72 58.78C98.68 61.58 98.64 62.11 98.46 62.45C97.95 63.39 97.43 63 96.97 61.35C96.7 60.36 95.97 58.58 95.26 57.13C93.98 54.57 89.37 49.84 86.74 48.4C86.36 48.19 85.72 47.82 85.32 47.57C84.91 47.32 84.29 47.05 83.93 46.96C83.57 46.88 82.73 46.6 82.07 46.33C79.38 45.27 78.65 45.21 68.41 45.2C62.26 45.19 60.06 45.23 59.81 45.34C59.63 45.42 59.39 45.68 59.29 45.9C59.11 46.27 59.09 50.84 59.09 90.14C59.09 133.58 59.09 133.97 59.35 135.57C59.74 138.02 60.67 140.6 61.74 142.19C62.27 142.98 62.79 143.58 63.19 143.89C63.54 144.14 64.11 144.63 64.46 144.96C64.8 145.3 65.32 145.66 65.59 145.78C66.16 146.01 66.79 146.55 66.79 146.8C66.79 146.94 63.78 146.97 50 146.97C36.22 146.97 33.21 146.94 33.21 146.8ZM37.53 32.07L32.58 32.01L32.2 31.63C31.93 31.35 31.77 31.01 31.62 30.37C31.51 29.88 31.26 28.94 31.06 28.28C30.86 27.62 30.55 26.4 30.37 25.56C30.2 24.73 29.88 23.53 29.67 22.91C29.45 22.29 29.09 20.93 28.85 19.89C28.62 18.84 28.26 17.5 28.05 16.89C27.84 16.29 27.48 14.84 27.26 13.69C26.89 11.78 26.86 11.55 27.03 11.25C27.25 10.87 27.74 10.66 28.19 10.78C28.65 10.89 30.19 12.14 31.53 13.47C33.22 15.15 34.51 16.97 35.38 18.85C36.5 21.29 36.62 22.65 35.86 24.26C35.11 25.85 35.23 26.35 36.6 27.45C37.97 28.54 38.14 28.61 40.47 29.04C43.54 29.6 43.94 29.63 45.19 29.31C46.38 29.01 46.89 28.75 47.25 28.27C47.48 27.97 47.49 27.7 47.48 23.5L47.47 19.05L46.98 17.76C46.09 15.44 46.03 15.13 46.03 13.19C46.04 11.22 46.16 10.28 46.8 7.47C47.11 6.07 47.39 5.2 47.78 4.37C48.08 3.74 48.42 2.95 48.54 2.63C49.18 0.83 50.82 0.83 51.46 2.63C51.58 2.95 51.92 3.74 52.22 4.37C52.61 5.2 52.89 6.07 53.2 7.47C53.84 10.28 53.96 11.22 53.97 13.19C53.97 15.13 53.91 15.44 53.02 17.76L52.53 19.05L52.52 23.5C52.51 27.7 52.52 27.97 52.75 28.27C53.11 28.75 53.62 29.01 54.81 29.31C56.06 29.63 56.46 29.6 59.53 29.04C61.86 28.61 62.03 28.54 63.4 27.45C64.77 26.35 64.89 25.85 64.14 24.26C63.38 22.65 63.5 21.29 64.62 18.85C65.49 16.97 66.78 15.15 68.47 13.47C69.81 12.14 71.35 10.89 71.81 10.78C72.26 10.66 72.75 10.87 72.97 11.25C73.14 11.55 73.11 11.78 72.74 13.69C72.52 14.84 72.16 16.29 71.95 16.89C71.74 17.5 71.38 18.84 71.15 19.89C70.91 20.93 70.55 22.29 70.33 22.91C70.12 23.53 69.8 24.73 69.63 25.56C69.45 26.4 69.14 27.62 68.94 28.28C68.74 28.94 68.49 29.88 68.38 30.36C68.15 31.36 67.74 31.9 67.12 32.01C66.59 32.1 43.69 32.15 37.53 32.07Z"/></symbol>
+</svg>
+
 <!-- ══ NAV ═══════════════════════════════════════════════════════════════ -->
 <header id="nav" class="fixed inset-x-0 top-0 z-50 border-b border-transparent text-cloud">
   <nav aria-label="Primary" class="mx-auto flex max-w-[1600px] items-center gap-3 sm:gap-6 px-[clamp(1.25rem,4vw,3rem)] py-4">
-    <a href="#ascent" class="font-display min-w-0 py-1 text-[.95rem] leading-tight tracking-[.01em] sm:text-[1.05rem]">
-      Triton <span class="opacity-70">Humming Valley</span>
+    <a href="#ascent" class="brand" aria-label="Triton Humming Valley, back to the top">
+      <svg class="brand-mark" viewBox="0 0 100 146.97" aria-hidden="true"><use href="#triton-mark"/></svg>
+      <span class="brand-words">
+        <span class="brand-name">Triton</span>
+        <span class="brand-sub">Humming Valley</span>
+      </span>
     </a>
     <ul class="ml-auto hidden items-center gap-8 text-[.9rem] font-medium lg:flex">
       <li><a class="nav-link" href="#masterplan">Masterplan</a></li>
@@ -341,7 +355,7 @@
     <div class="relative pl-[var(--rail)]">
       <div class="rail-line text-haze" aria-hidden="true"></div>
 
-      <p class="eyebrow" data-anim="rise" style="color:#C9962E">The film</p>
+      <p class="eyebrow" data-anim="rise"><svg class="eyebrow-mark" viewBox="0 0 100 146.97" aria-hidden="true"><use href="#triton-mark"/></svg><span>The film</span></p>
       <h2 style="font-size:var(--step-3)" class="max-w-[18ch]" data-anim="rise">
         Watch the valley.
       </h2>
@@ -395,105 +409,13 @@
             <g class="reach-spokes" fill="none" stroke="currentColor"></g>
             <g class="reach-dots"></g>
             <g class="reach-home">
-              <circle cx="210" cy="210" r="6" fill="#C9962E"/>
-              <circle cx="210" cy="210" r="13" fill="none" stroke="#C9962E" stroke-opacity=".45"/>
+              <circle cx="210" cy="210" r="6" fill="#DFB441"/>
+              <circle cx="210" cy="210" r="13" fill="none" stroke="#DFB441" stroke-opacity=".45"/>
             </g>
           </svg>
         </div>
         <dl class="reach-list"><!-- from DATA.reach --></dl>
       </div>
-      <div class="hero-actions">
-        <a class="btn btn-dawn" data-call href="tel:+919036682626"><svg class="call-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8.1 9.6a16 16 0 0 0 6 6l1.2-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z"/></svg>Call <span data-call-label>+91 90366 82626</span></a>
-        <a class="btn btn-whatsapp" data-whatsapp href="https://wa.me/919036682626"><svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.65-2.05-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.53.15-.18.2-.3.3-.5.1-.2.05-.38-.02-.53-.08-.15-.67-1.6-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.53.07-.8.38-.28.3-1.05 1.02-1.05 2.5s1.08 2.9 1.23 3.1c.15.2 2.12 3.24 5.15 4.54.72.31 1.28.5 1.72.63.72.23 1.38.2 1.9.12.58-.09 1.75-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35Z"/><path d="M12.04 2.5c-5.24 0-9.5 4.26-9.5 9.5 0 1.67.44 3.3 1.27 4.74L2.5 21.5l4.9-1.28a9.46 9.46 0 0 0 4.64 1.2h.01c5.23 0 9.49-4.26 9.49-9.5 0-2.54-.99-4.92-2.78-6.71a9.42 9.42 0 0 0-6.72-2.79Zm5.55 15.05a7.87 7.87 0 0 1-5.55 2.3h-.01a7.9 7.9 0 0 1-4.02-1.1l-.29-.17-2.98.78.8-2.9-.19-.3a7.87 7.87 0 0 1-1.21-4.2 7.9 7.9 0 0 1 13.48-5.58 7.83 7.83 0 0 1 2.31 5.58c0 2.1-.82 4.08-2.3 5.57Z"/></svg>WhatsApp us</a>
-      </div>
-    </div>
-
-    <!-- The enquiry card. Three fields only: asking for more on a first
-         screen costs more enquiries than the extra detail is worth. -->
-    <aside class="hero-card" aria-labelledby="hero-card-h">
-      <h2 id="hero-card-h">Step into Humming Valley <span aria-hidden="true">&rarr;</span></h2>
-      <p>One party at a time. We confirm within a working day.</p>
-      <div data-enquiry-mount data-variant="compact" data-source="Hero card"></div>
-      <p class="hero-card-alt">
-        Or call <a href="tel:+919036682626" data-field="phone">+91 90366 82626</a>
-      </p>
-    </aside>
-  </div>
-
-  <p class="hero-scrollcue" aria-hidden="true">Scroll</p>
-</section>
-
-<!-- ══ 1b · THE FILM ═════════════════════════════════════════════════════
-     A poster and a play button. The YouTube player is not on the page until
-     someone asks for it: an embed costs about half a megabyte and sets
-     cookies before a visitor has decided to watch anything. The poster is
-     one of the project's own stills, served from this domain. -->
-<section id="film" class="relative bg-night text-cloud py-[clamp(4rem,10vh,7rem)]">
-  <div class="mx-auto w-full max-w-[1600px] px-[clamp(1.25rem,4vw,3rem)]">
-    <div class="relative pl-[var(--rail)]">
-      <div class="rail-line text-haze" aria-hidden="true"></div>
-
-      <p class="eyebrow" data-anim="rise" style="color:#C9962E">The film</p>
-      <h2 style="font-size:var(--step-3)" class="max-w-[18ch]" data-anim="rise">
-        Watch the valley.
-      </h2>
-
-      <button type="button" class="video-card mt-10" data-video="85QY818IoOc"
-              aria-label="Play the film about Triton Humming Valley">
-        <img class="video-poster" data-src="images/video-poster.jpg" alt=""
-             width="1400" height="788" decoding="async" loading="lazy">
-        <span class="video-scrim" aria-hidden="true"></span>
-        <span class="video-play" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>
-        </span>
-        <span class="video-meta">
-          <span class="video-title">Triton Humming Valley</span>
-          <span class="video-desc">A short film of the project and the land it stands on</span>
-        </span>
-      </button>
-    </div>
-  </div>
-</section>
-
-<!-- ══ 2 · THE DRIVE UP  (still below the cloud line) ═════════════════════ -->
-<section id="approach" class="relative bg-night-2 py-[clamp(5rem,12vh,9rem)]">
-  <div class="mx-auto w-full max-w-[1600px] px-[clamp(1.25rem,4vw,3rem)]">
-    <div class="relative pl-[var(--rail)]">
-      <div class="rail-line text-haze" aria-hidden="true"></div>
-
-      <p class="eyebrow mb-10" data-anim="rise">The world around you</p>
-
-      <h2 class="text-cloud max-w-[18ch]" style="font-size:var(--step-4)" data-anim="rise">
-        Close to what matters.
-      </h2>
-
-      <p class="lede mt-7 text-haze" data-anim="rise">
-        From the airport to the vineyards, everything you need is within reach. Yet
-        once you arrive, Bengaluru feels beautifully distant. Spend the morning in the
-        hills, take an afternoon drive through the vineyards, or simply stay home and
-        let the day unfold slowly.
-      </p>
-
-      <!-- Drive times as a definition list: it is reference data people will
-           scan and compare, so it is typeset as data, not as three cards. -->
-      <dl class="mt-14 grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-4 max-w-5xl">
-        <div class="border-t border-haze/25 pt-5" data-anim="rise">
-          <dt class="text-haze text-[.9rem]">Kempegowda International</dt>
-          <dd class="font-display text-cloud mt-2" style="font-size:var(--step-2)">35 min</dd>
-        </div>
-        <div class="border-t border-haze/25 pt-5" data-anim="rise">
-          <dt class="text-haze text-[.9rem]">Nandi Hills summit</dt>
-          <dd class="font-display text-cloud mt-2" style="font-size:var(--step-2)">20 min</dd>
-        </div>
-        <div class="border-t border-haze/25 pt-5" data-anim="rise">
-          <dt class="text-haze text-[.9rem]">Hebbal, north Bengaluru</dt>
-          <dd class="font-display text-cloud mt-2" style="font-size:var(--step-2)">1 hr</dd>
-        </div>
-        <div class="border-t border-haze/25 pt-5" data-anim="rise">
-          <dt class="text-haze text-[.9rem]">Nandi valley vineyards</dt>
-          <dd class="font-display text-cloud mt-2" style="font-size:var(--step-2)">15 min</dd>
-        </div>
-      </dl>
     </div>
   </div>
 </section>
@@ -554,7 +476,7 @@
      are built from DATA.coverflow; the carriage is at the foot of site.js. -->
 <section id="views" class="relative overflow-hidden bg-night pt-[clamp(5.5rem,12vh,8.5rem)] pb-[clamp(3.5rem,8vh,6rem)]">
   <div class="absolute inset-0"
-       style="background:linear-gradient(140deg,#0E2A2D,#1B4145 45%,#4E606B)" aria-hidden="true"></div>
+       style="background:linear-gradient(140deg,#0B2A25,#0F3F37 45%,#3E6B5E)" aria-hidden="true"></div>
   <img class="band-photo absolute inset-0 h-full w-full object-cover opacity-0"
        data-src="images/band.jpg"
        alt="The villa rows along the internal street, the hillside standing in monsoon cloud behind them."
@@ -594,32 +516,32 @@
             <defs>
               <pattern id="canopy" width="16" height="16" patternUnits="userSpaceOnUse">
                 <rect width="16" height="16" fill="#EDF1EC"/>
-                <circle cx="5" cy="5" r="3.1" fill="#2F4A3C" fill-opacity=".10"/>
-                <circle cx="13" cy="12" r="2.6" fill="#2F4A3C" fill-opacity=".08"/>
+                <circle cx="5" cy="5" r="3.1" fill="#16564A" fill-opacity=".10"/>
+                <circle cx="13" cy="12" r="2.6" fill="#16564A" fill-opacity=".08"/>
               </pattern>
             </defs>
 
             <!-- Coconut canopy surrounds the site on three sides -->
             <rect width="640" height="460" fill="url(#canopy)"/>
-            <rect x="16" y="30" width="604" height="404" fill="#F7F9F7" stroke="#2F4A3C" stroke-opacity=".28"/>
+            <rect x="16" y="30" width="604" height="404" fill="#F6F8F5" stroke="#16564A" stroke-opacity=".28"/>
 
             <!-- Landscaped strip and clubhouse along the western edge -->
-            <rect x="24" y="38" width="68" height="256" fill="#2F4A3C" fill-opacity=".12"/>
-            <text x="58" y="170" text-anchor="middle" fill="#5A6B7A" font-size="9"
-                  font-family="Manrope, sans-serif" transform="rotate(-90 58 170)">landscaped green</text>
-            <rect x="24" y="306" width="68" height="76" fill="#2F4A3C" fill-opacity=".9"/>
-            <text x="58" y="338" text-anchor="middle" fill="#EEF1F4" font-size="10"
-                  font-family="Manrope, sans-serif" font-weight="600">Clubhouse</text>
-            <text x="58" y="352" text-anchor="middle" fill="#EEF1F4" fill-opacity=".8" font-size="8.5"
-                  font-family="Manrope, sans-serif">6,900 sq ft</text>
+            <rect x="24" y="38" width="68" height="256" fill="#16564A" fill-opacity=".12"/>
+            <text x="58" y="170" text-anchor="middle" fill="#55676A" font-size="9"
+                  font-family="Jost, sans-serif" transform="rotate(-90 58 170)">landscaped green</text>
+            <rect x="24" y="306" width="68" height="76" fill="#16564A" fill-opacity=".9"/>
+            <text x="58" y="338" text-anchor="middle" fill="#F3F5F2" font-size="10"
+                  font-family="Jost, sans-serif" font-weight="600">Clubhouse</text>
+            <text x="58" y="352" text-anchor="middle" fill="#F3F5F2" fill-opacity=".8" font-size="8.5"
+                  font-family="Jost, sans-serif">6,900 sq ft</text>
 
             <!-- Internal driveways between the rows -->
             <rect x="96" y="126" width="490" height="46" fill="#7A5A12" fill-opacity=".12"/>
             <rect x="96" y="256" width="490" height="46" fill="#7A5A12" fill-opacity=".12"/>
             <!-- Approach road along the eastern boundary -->
             <rect x="592" y="38" width="18" height="344" fill="#7A5A12" fill-opacity=".2"/>
-            <text x="601" y="215" text-anchor="middle" fill="#5A6B7A" font-size="8.5"
-                  font-family="Manrope, sans-serif" transform="rotate(-90 601 215)">approach road</text>
+            <text x="601" y="215" text-anchor="middle" fill="#55676A" font-size="8.5"
+                  font-family="Jost, sans-serif" transform="rotate(-90 601 215)">approach road</text>
 
             <g id="plots"><!-- injected from DATA.plots --></g>
           </svg>
@@ -673,7 +595,7 @@
   <div class="mx-auto w-full max-w-[1600px] px-[clamp(1.25rem,4vw,3rem)]">
     <div class="relative pl-[var(--rail)]">
       <div class="rail-line text-cloud" aria-hidden="true"></div>
-      <p class="eyebrow" data-anim="rise" style="color:#C9962E">A waterfall at the heart of home.</p>
+      <p class="eyebrow" data-anim="rise"><svg class="eyebrow-mark" viewBox="0 0 100 146.97" aria-hidden="true"><use href="#triton-mark"/></svg><span>A waterfall at the heart of home.</span></p>
       <h2 style="font-size:var(--step-4)" class="max-w-[17ch]" data-anim="rise">
         Come home to the sound of water.
       </h2>
@@ -712,7 +634,7 @@
     <div class="relative pl-[var(--rail)]">
       <div class="rail-line text-haze" aria-hidden="true"></div>
 
-      <p class="eyebrow" data-anim="rise" style="color:#C9962E">The ownership model</p>
+      <p class="eyebrow" data-anim="rise"><svg class="eyebrow-mark" viewBox="0 0 100 146.97" aria-hidden="true"><use href="#triton-mark"/></svg><span>The ownership model</span></p>
       <h2 style="font-size:var(--step-4)" class="max-w-[18ch]" data-anim="rise"
           data-lines="Own it. Forget it.|Let it earn.">
         Own it. Forget it. Let it earn.
@@ -892,6 +814,8 @@
 <footer id="site-footer">
   <div class="foot-inner">
     <div class="foot-brand">
+      <svg class="foot-mark" viewBox="0 0 100 146.97" role="img"
+           aria-label="Triton Group"><use href="#triton-mark"/></svg>
       <p class="foot-name">Triton Humming Valley</p>
       <p class="foot-by">Developed by Triton Group, Bengaluru</p>
       <a class="foot-site" href="https://tritongroup.in/" target="_blank" rel="noopener">
@@ -915,6 +839,7 @@
       </a></p>
     </div>
   </div>
+  <svg class="foot-watermark" viewBox="0 0 100 146.97" aria-hidden="true"><use href="#triton-mark"/></svg>
   <div class="foot-legal">
     <p id="rera-line">RERA registration &mdash; not yet configured.</p>
     <p>Images, plans and areas are indicative and subject to change. They do not

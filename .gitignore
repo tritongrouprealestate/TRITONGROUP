@@ -20,6 +20,9 @@ build/preview.html
 
 # Stray screenshots from local verification runs
 *.png
+# ...but the favicons are build output, not a screenshot, and the site
+# does not work without them.
+!triton-humming-valley/images/favicon-*.png
 triton-humming-valley-update.tar.gz
 cover-images.tar.gz
 images-update.tar.gz
