@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/</loc>
+    <lastmod>2026-09-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/images/hero.jpg</image:loc>
+      <image:title>Triton Humming Valley, North Bangalore</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/images/cover-1.jpg</image:loc>
+      <image:title>The pool, looking down the valley</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/images/cover-4.jpg</image:loc>
+      <image:title>The living room and the water wall</image:title>
+    </image:image>
+  </url>
+</urlset>
