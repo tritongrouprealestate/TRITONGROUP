@@ -33,3 +33,6 @@ cover-images.tar.gz
 images-update.tar.gz
 images.zip
 images-folder.tar.gz
+# The full-site zip is every file already in this repo, zipped. No point
+# storing a second 5 MB copy of the photographs.
+triton-humming-valley-complete.zip
