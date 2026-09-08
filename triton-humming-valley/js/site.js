@@ -191,18 +191,18 @@ const DATA = {
       head:'Own the residence.',
       body:'A private residence in Humming Valley, created for a life closer to '
          + 'nature, hospitality and the hills.',
-      cta:'Discover', from:'#E6B84F', to:'#B4791C' },
+      cta:'Discover', from:'#DCE8E0', to:'#26463C' },
     { n:'02', kicker:'Forget the maintenance.',
       head:'We manage the rest.',
       body:'No day-to-day maintenance. No property management headaches. Your '
          + 'residence is managed through the hotel-managed residence program.',
-      cta:'Discover', from:'#5FC8B4', to:'#1B5F63' },
+      cta:'Discover', from:'#6FCBB0', to:'#12474A' },
     { n:'03', kicker:'Let it earn.',
       head:'Zero inventory tension.',
       body:'When you are away, your residence can be offered to guests. Revenue '
          + 'generated through the hotel-managed residence contributes to your '
          + 'defined owner share.',
-      cta:'See how it works', from:'#8FD49B', to:'#2F6B4A' }
+      cta:'See how it works', from:'#8FD49B', to:'#1F5540' }
   ],
 
   /* The seven photographs in the coverflow above the masterplan. Point
@@ -366,14 +366,22 @@ $$('[data-possession]').forEach(el => {
   else el.closest('[data-possession-row]')?.remove();
 });
 
-/* ── Contact details flow from DATA ────────────────────────────────────── */
-$$('a[data-field="phone"]').forEach(a => {
-  a.textContent = DATA.contact.phone;
-  a.href = 'tel:' + DATA.contact.phone.replace(/[^\d+]/g,'');
-});
-$$('a[data-field="email"]').forEach(a => {
-  a.textContent = DATA.contact.email; a.href = 'mailto:' + DATA.contact.email;
-});
+/* ── Contact details flow from DATA ──────────────────────────────────────
+   Setting textContent on the whole anchor wipes out anything inside it. The
+   dock's call button is an icon and the menu's is an icon plus a label, and
+   both lost their <svg> the moment this ran. The rule now: the href is
+   always rewritten, and the number is written into a <span> if there is
+   one, or into the anchor only when the anchor is nothing but text. */
+function setContact(a, value, href) {
+  a.href = href;
+  const slot = a.querySelector('span:not(.sr-only)');
+  if (slot) slot.textContent = value;
+  else if (!a.firstElementChild) a.textContent = value;
+}
+$$('a[data-field="phone"]').forEach(a =>
+  setContact(a, DATA.contact.phone, 'tel:' + DATA.contact.phone.replace(/[^\d+]/g,'')));
+$$('a[data-field="email"]').forEach(a =>
+  setContact(a, DATA.contact.email, 'mailto:' + DATA.contact.email));
 
 /* ═══ VILLAS ═══════════════════════════════════════════════════════════ */
 const bedIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4" aria-hidden="true"><path d="M2 17v-5h20v5M2 17v3M22 17v3M4 12V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4M8 12V9h8v3"/></svg>';
@@ -381,28 +389,35 @@ const bathIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
 
 $('#villa-list').innerHTML = DATA.villas.map(v => `
   <details class="villa" id="villa-${v.id}">
-    <summary class="flex flex-wrap items-baseline gap-x-8 gap-y-3 p-6 sm:p-8">
-      <h3 class="font-display shrink-0" style="font-size:var(--step-2)">${v.name}</h3>
-      <p class="text-mist text-[.95rem] flex items-center gap-5">
-        <span class="flex items-center gap-1.5">${bedIcon}${v.beds}</span>
-        <span class="flex items-center gap-1.5">${bathIcon}${v.baths}</span>
-        <span>${v.area} sq ft</span>
-        <span class="max-sm:hidden">${v.land} sq ft plot</span>
-      </p>
-      <p class="ml-auto flex items-center gap-4">
-        <span class="price">
-          <span class="font-display text-dawn-deep" style="font-size:var(--step-1)">${v.price}</span>
-          <small class="incl">All inclusive</small>
+    <summary class="villa-summary">
+      <!-- The photograph belongs in the closed state. It used to live inside
+           the panel, so a shut card was a white rectangle with type in it,
+           which on a phone is the whole section. -->
+      <span class="villa-thumb villa-shot">
+        <img alt="" data-src="${v.photo}" loading="lazy" decoding="async"
+             width="400" height="400" class="opacity-0 transition-opacity duration-700">
+      </span>
+      <span class="villa-id">
+        <h3 class="font-display" style="font-size:var(--step-2)">${v.name}</h3>
+        <span class="villa-specs">
+          <span>${bedIcon}${v.beds}</span>
+          <span>${bathIcon}${v.baths}</span>
+          <span>${v.area} sq ft</span>
+          <span class="villa-plot">${v.land} sq ft plot</span>
         </span>
-        <svg class="chev h-5 w-5 text-mist" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-      </p>
+      </span>
+      <span class="villa-price">
+        <span class="font-display" style="font-size:var(--step-1)">${v.price}</span>
+        <small class="incl">All inclusive</small>
+      </span>
+      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
     </summary>
     <div class="villa-body grid gap-10 border-t border-ink/12 p-6 sm:p-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
       <div>
         <p class="text-mist">${v.blurb}</p>
         <ul class="mt-6 grid gap-2.5 sm:grid-cols-2">
           ${v.features.map(f => `<li class="flex items-start gap-2.5 text-[.94rem]">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#7A5A12" stroke-width="2" class="mt-1 h-3.5 w-3.5 shrink-0" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="#0B3B33" stroke-width="2" class="mt-1 h-3.5 w-3.5 shrink-0" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
             <span>${f}</span></li>`).join('')}
         </ul>
         <button type="button" class="btn btn-ink mt-8" data-enquire="Villa ${v.name}" data-villa="${v.name}">Enquire about the ${v.name}</button>
@@ -441,6 +456,7 @@ $$('.villa-shot img, .band-photo').forEach(img => {
     if (ok) { img.style.opacity = img.classList.contains('band-photo') ? '.55' : '1'; return; }
     const w = img.closest('.villa-shot');
     if (w) w.style.background = 'linear-gradient(150deg,#E4EAE4,#C7D6CC)';
+    if (w) w.classList.add('is-blank');
     img.remove();
   }, wrap);
 });
@@ -496,7 +512,7 @@ DATA.plots.forEach(p => {
   t.setAttribute('text-anchor','middle');
   t.setAttribute('font-size','11'); t.setAttribute('font-family','Jost, sans-serif');
   t.setAttribute('font-weight','600');
-  t.setAttribute('fill', p.s === 'sold' ? '#7E9188' : p.s === 'held' ? '#7A5A12' : '#16564A');
+  t.setAttribute('fill', p.s === 'sold' ? '#7E9188' : p.s === 'held' ? '#0B3B33' : '#16564A');
   t.setAttribute('pointer-events','none');
   t.textContent = p.n;
 
@@ -548,7 +564,7 @@ function selectPlot(p, node){
       <span class="text-[.8rem] font-medium px-2.5 py-1 border"
             style="${p.s === 'available'
               ? 'color:#16564A;border-color:#16564A;background:rgba(22,86,74,.08)'
-              : 'color:#7A5A12;border-color:#7A5A12;background:rgba(122,90,18,.08)'}">
+              : 'color:#0B3B33;border-color:#0B3B33;background:rgba(11,59,51,.08)'}">
         ${p.s === 'held' ? 'On hold' : 'Available'}
       </span>
     </div>
@@ -865,6 +881,26 @@ mm.add('(prefers-reduced-motion: no-preference)', () => {
     start: 'top -80',
     onUpdate: self => $('#nav').classList.toggle('is-stuck', self.scroll() > 80)
   });
+
+  /* ── The dock rises once the hero's own call to action has gone by ────
+        Showing it over the hero would be two of the same button on one
+        screen; showing it never would leave a phone with no way to ask for
+        a viewing between the hero and the footer, which is nine sections. */
+  const dock = $('.dock');
+  if (dock) {
+    ScrollTrigger.create({
+      trigger: '#hero', start: 'bottom 85%', end: 'max',
+      onToggle: self => dock.classList.toggle('is-up', self.isActive)
+    });
+    /* The choreography is a full-screen composition pinned to the viewport.
+       A bar across the bottom of it covers the lower half of the frames, so
+       the dock stands down for the length of that section and comes back
+       after. */
+    ScrollTrigger.create({
+      trigger: '#choreo', start: 'top top', end: 'bottom bottom',
+      onToggle: self => dock.classList.toggle('is-hidden', self.isActive)
+    });
+  }
   ['#land','#masterplan','#villas','#case','#assurance'].forEach(sel => {
     ScrollTrigger.create({
       trigger: sel, start:'top 64px', end:'bottom 64px',
@@ -1751,10 +1787,23 @@ const caption = $('.cf-caption');
 
 /* Same loading rule as the rest of the page: show the photograph once it has
    decoded, and leave the card's own colour if it never arrives. */
-$$('.cf-card img').forEach(img => {
-  const card = img.closest('.cf-card');
-  loadWhenNear(img, img.dataset.src, ok => { if (!ok) img.remove(); }, card);
-});
+/* The gallery is watched as one thing, not seven. Each card used to observe
+   itself, and the cards away from the centre are translated far off to the
+   sides — on a phone four of the seven never intersected the viewport at
+   all, so their pictures never loaded and swiping reached empty frames.
+   The track is what the visitor can see; when it arrives, all seven load. */
+(() => {
+  const track = document.querySelector('.cf-track') || document.querySelector('.cf-stage')
+             || (cards[0] && cards[0].parentElement);
+  const imgs = $$('.cf-card img');
+  if (!track || !imgs.length) return;
+  const start = () => imgs.forEach(img => {
+    const card = img.closest('.cf-card');
+    loadImage(img, img.dataset.src, ok => { if (!ok) img.remove(); });
+    if (card) card.dataset.loading = '1';
+  });
+  near(track, start);
+})();
 
 let pos = 0;        // fractional index at the centre — the single source of truth
 let target = 0;     // where the current settle is headed
@@ -1974,4 +2023,90 @@ if (poster && poster.dataset.src) {
   if (typeof loadWhenNear === 'function') loadWhenNear(poster, poster.dataset.src, null, card);
   else { poster.src = poster.dataset.src; poster.classList.add('is-loaded'); }
 }
+})();
+
+/* ══════════════════════════════════════════════════════════════════════════
+   THE MENU SHEET
+   ──────────────────────────────────────────────────────────────────────────
+   Below 1024px the page's eleven sections were unreachable: the link list
+   was display:none there and nothing replaced it, so a phone had a brand,
+   one button, and 19,000 pixels of scrolling.
+
+   The sheet is markup, not a template string, so it exists before this file
+   runs and for anyone whose JS never arrives. All this adds is the opening.
+   ══════════════════════════════════════════════════════════════════════ */
+(() => {
+  const toggle = document.querySelector('.nav-toggle');
+  const sheet  = document.getElementById('nav-sheet');
+  const dock   = document.querySelector('.dock');
+  if (!toggle || !sheet) return;
+
+  const links = Array.from(sheet.querySelectorAll('a, button'));
+  let open = false, lastFocus = null;
+
+  /* Lenis owns the page's scroll, so hiding the overflow on <body> does
+     nothing — the smooth-scroll layer keeps scrolling underneath. It has to
+     be told to stop, with the overflow rule kept as the fallback for the
+     case where Lenis failed to load. */
+  const lock = on => {
+    if (window.lenisInstance) on ? window.lenisInstance.stop() : window.lenisInstance.start();
+    else document.body.style.overflow = on ? 'hidden' : '';
+  };
+
+  function setOpen(next) {
+    if (next === open) return;
+    open = next;
+    toggle.setAttribute('aria-expanded', String(open));
+    if (open) {
+      lastFocus = document.activeElement;
+      sheet.hidden = false;
+      /* One frame between display and the class, or the transition has
+         nothing to move from and the sheet simply appears. */
+      requestAnimationFrame(() => sheet.classList.add('is-open'));
+      lock(true);
+      dock && dock.classList.remove('is-up');
+      links[0] && links[0].focus({ preventScroll: true });
+    } else {
+      sheet.classList.remove('is-open');
+      lock(false);
+      const done = () => { sheet.hidden = true; };
+      /* Wait for the fade out, but never longer than it should take —
+         transitionend does not fire if the element is display:none'd or the
+         user prefers reduced motion. */
+      const t = setTimeout(done, 340);
+      sheet.addEventListener('transitionend', function once(e) {
+        if (e.target !== sheet) return;
+        clearTimeout(t); sheet.removeEventListener('transitionend', once); done();
+      });
+      if (lastFocus) lastFocus.focus({ preventScroll: true });
+    }
+  }
+
+  toggle.addEventListener('click', () => setOpen(!open));
+
+  /* A link inside the sheet has to close it before the scroll starts, or
+     the page moves behind a full-screen panel and arrives somewhere the
+     visitor cannot see. */
+  sheet.addEventListener('click', e => {
+    const a = e.target.closest('a[href^="#"], [data-enquire]');
+    if (a) setOpen(false);
+  });
+
+  document.addEventListener('keydown', e => {
+    if (!open) return;
+    if (e.key === 'Escape') { setOpen(false); return; }
+    if (e.key !== 'Tab') return;
+    /* Trap: a full-screen sheet that lets Tab reach the page behind it is a
+       sheet a keyboard user gets lost in. */
+    const first = links[0], last = links[links.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+
+  /* Rotating a phone to landscape can put the viewport above the breakpoint
+     where the toggle no longer exists, which would leave the sheet open with
+     no way to shut it. */
+  matchMedia('(min-width: 1024px)').addEventListener('change', e => {
+    if (e.matches) setOpen(false);
+  });
 })();

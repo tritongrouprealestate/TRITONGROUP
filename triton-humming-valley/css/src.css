@@ -60,8 +60,16 @@
     --color-mist:       #55676A;   /* 5.4:1  on cloud                         */
     --color-frond:      #16564A;   /* 7.8:1  on cloud — jade, for light rules */
     --color-frond-2:    #0F3F37;
-    --color-dawn:       #DFB441;   /* the mark's gold. 9.2:1 on night         */
-    --color-dawn-deep:  #7A5A12;   /* 5.8:1  on cloud — gold that reads as ink*/
+    /* There is no gold on this page any more. What the gold was doing —
+       marking the primary action and the one accent — is done by white on
+       the dark grounds and by ink on the light ones, which is how a page
+       gets emphasis without spending a colour on it. Mint is kept for the
+       one job that is information rather than decoration: telling you what
+       is still available. */
+    --color-dawn:       #F5F7F4;   /* 16.7:1 on night — the primary action    */
+    --color-dawn-deep:  #0B3B33;   /* 11.4:1 on cloud — the same on light     */
+    --color-mint:       #6FCBB0;   /* 9.3:1  on night                         */
+    --color-mint-deep:  #0E6E5A;   /* 5.6:1  on cloud                         */
     --font-display: Cormorant, "Cormorant Garamond", Georgia, "Times New Roman", serif;
     --font-sans: Jost, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
@@ -71,7 +79,7 @@
    purpose — the hero is the one place this page raises its voice.          */
 :root{
   --step--1: clamp(.82rem, .79rem + .12vw, .89rem);
-  --step-0 : clamp(1rem, .96rem + .2vw, 1.13rem);
+  --step-0 : clamp(.95rem, .91rem + .2vw, 1.13rem);
   /* Steps 1 and up are set in Cormorant, whose cap height is about 12%
      shorter than Marcellus at the same size. The scale is the same major
      third; the whole run is simply lifted so the headings look the size
@@ -86,10 +94,14 @@
   --ease-in-out: cubic-bezier(.65,0,.35,1);
 }
 @media (min-width:1024px){ :root{ --rail: 7.5rem } }
-/* 4.5rem of rail is a quarter of a 320px screen. The line still reads as a
-   margin at 2.75rem, and the 28px it gives back is the difference between
-   the widest rows fitting and not. */
-@media (max-width:639.98px){ :root{ --rail: 2.75rem } }
+/* The rail is a desktop device. On a phone it was spending 44 of 390
+   pixels — eleven per cent of the screen — on a decorative hairline, and
+   every heading and paragraph started that far in from the edge. Below
+   768px there is no rail and the content uses the page's own gutter. */
+@media (max-width:767.98px){
+  :root{ --rail: 0rem }
+  .rail-line{display:none}
+}
 
 /* lining-nums, and not only on the headings: Cormorant ships old-style
    figures by default, so a 15 renders with the 1 at x-height and the 5
@@ -106,6 +118,11 @@ h1,h2,h3,.display,.font-display{font-family:var(--font-display);font-weight:500;
 .display,h1{font-weight:400;letter-spacing:-.006em}
 p{max-width:62ch}                      /* under 80 chars, per the brief     */
 .lede{font-size:var(--step-1);line-height:1.55;font-weight:300;max-width:48ch}
+/* A lede set at the heading scale is a paragraph pretending to be a
+   headline. At 390px it filled seven lines and half the first screen. */
+@media (max-width:767.98px){
+  .lede{font-size:calc(var(--step-0) * 1.06);line-height:1.6}
+}
 
 /* ── Focus: one visible treatment everywhere, never removed ─────────────── */
 :where(a,button,input,textarea,select,summary,[tabindex]):focus-visible{
@@ -133,11 +150,12 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
    section — a page of identical fade-and-slide-ups is the generated look. */
 [data-anim="rise"]{opacity:0;transform:translate3d(0,14px,0)}
 [data-anim="wipe"]{clip-path:inset(0 0 100% 0)}
-/* The dawn wash behind the enquiry section — the one place gold floods the
-   page, which is why the accent is held back everywhere else. */
+/* A wash of cool light behind the enquiry section. It used to be a flood
+   of gold; now it is the same light the photographs are lit by, which is
+   what the section is actually about. */
 .sunwash{position:absolute;left:50%;bottom:14%;width:min(150vw,1500px);aspect-ratio:2/1;
   translate:-50% 0;pointer-events:none;opacity:0;
-  background:radial-gradient(closest-side, rgba(223,180,65,.62), rgba(223,180,65,.14) 45%, transparent 72%);
+  background:radial-gradient(closest-side, rgba(111,203,176,.30), rgba(111,203,176,.08) 45%, transparent 72%);
   filter:blur(14px)}
 @media (prefers-reduced-motion: reduce){ .sunwash{opacity:.5} }
 
@@ -148,22 +166,57 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
 .plot{cursor:pointer;transition:fill .28s var(--ease-out), stroke .28s var(--ease-out);
   stroke-width:1.25;outline:none}
 .plot[data-status="available"]{fill:rgba(22,86,74,.16);stroke:#16564A}
-.plot[data-status="held"]     {fill:rgba(122,90,18,.18);stroke:#7A5A12}
+.plot[data-status="held"]     {fill:rgba(11,59,51,.18);stroke:#0B3B33}
 .plot[data-status="sold"]     {fill:rgba(85,103,106,.14);stroke:#7E9188;cursor:not-allowed}
 .plot:hover[data-status="available"],.plot[aria-pressed="true"]{fill:rgba(22,86,74,.42)}
-.plot:focus-visible{stroke:#7A5A12;stroke-width:2.5;
-  outline:2px solid #7A5A12;outline-offset:2px}
+.plot:focus-visible{stroke:#0B3B33;stroke-width:2.5;
+  outline:2px solid #0B3B33;outline-offset:2px}
 
 /* ── Villa cards. Deliberately not one uniform radius + one grey shadow on
    everything: the open card earns depth, the closed ones stay flat.      */
-.villa{border:1px solid rgba(8,25,26,.14);background:#fff;
+.villa{border:1px solid rgba(8,25,26,.14);background:#fff;border-radius:16px;
   transition:border-color .3s var(--ease-out), box-shadow .4s var(--ease-out)}
-.villa:hover{border-color:rgba(122,90,18,.5)}
-.villa[open]{box-shadow:0 24px 60px -28px rgba(8,25,26,.45);border-color:rgba(122,90,18,.6)}
+.villa:hover{border-color:rgba(11,59,51,.5)}
+.villa[open]{box-shadow:0 24px 60px -28px rgba(8,25,26,.45);border-color:rgba(11,59,51,.6)}
+.villa{overflow:hidden}
 .villa summary{list-style:none;cursor:pointer}
 .villa summary::-webkit-details-marker{display:none}
-.villa .chev{transition:transform .35s var(--ease-out)}
+.villa .chev{width:1.25rem;height:1.25rem;flex:0 0 auto;color:var(--color-mist);
+  transition:transform .35s var(--ease-out)}
 .villa[open] .chev{transform:rotate(180deg)}
+
+/* ── The closed card ──────────────────────────────────────────────────────
+   A photograph, what it is, what it costs, and one affordance. On a phone
+   the price drops under the name rather than being squeezed against the
+   chevron, because a two-line row is better than a cramped one.          */
+.villa-summary{display:grid;align-items:center;gap:0 1rem;padding:.85rem;
+  grid-template-columns:auto minmax(0,1fr) auto;
+  grid-template-areas:"thumb id chev" "thumb price chev"}
+@media (min-width:768px){
+  .villa-summary{gap:0 1.5rem;padding:1.1rem 1.5rem;
+    grid-template-columns:auto minmax(0,1fr) auto auto;
+    grid-template-areas:"thumb id price chev"}
+}
+.villa-thumb{grid-area:thumb;display:block;width:74px;aspect-ratio:1;overflow:hidden;
+  border-radius:10px;background:var(--color-cloud-2)}
+@media (min-width:768px){ .villa-thumb{width:96px;border-radius:12px} }
+.villa-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.villa-thumb.is-blank img{display:none}
+
+.villa-id{grid-area:id;min-width:0}
+.villa-id h3{margin:0;line-height:1.1}
+.villa-specs{display:flex;flex-wrap:wrap;align-items:center;gap:.15rem .9rem;
+  margin-top:.3rem;color:var(--color-mist);font-size:.86rem}
+.villa-specs > span{display:inline-flex;align-items:center;gap:.35rem}
+.villa-specs svg{width:1rem;height:1rem}
+@media (max-width:639.98px){ .villa-specs > .villa-plot{display:none} }
+@media (min-width:768px){ .villa-specs{font-size:.94rem;gap:.15rem 1.25rem} }
+
+.villa-price{grid-area:price;display:flex;align-items:center;gap:.6rem;
+  margin-top:.45rem;color:var(--color-dawn-deep);white-space:nowrap}
+@media (min-width:768px){
+  .villa-price{flex-direction:column;align-items:flex-end;gap:.35rem;margin-top:0}
+}
 
 /* ── Pointer light ────────────────────────────────────────────────────────
    A soft teal light that follows the pointer across the dark grounds. It is
@@ -229,7 +282,7 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
 .reach-row dd{margin:0;font-family:var(--font-display);color:var(--color-cloud);
   font-size:var(--step-1);white-space:nowrap;
   transition:color .3s var(--ease-out)}
-.reach-row.is-lit,.reach-row:hover{background:rgba(223,180,65,.09)}
+.reach-row.is-lit,.reach-row:hover{background:rgba(243,245,242,.07)}
 .reach-row.is-lit dd,.reach-row:hover dd{color:var(--color-dawn)}
 .reach-row:focus-visible{outline:2px solid var(--color-dawn);outline-offset:-2px}
 
@@ -247,12 +300,18 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
    trigger is a real <button>: the reference used a div with tabindex and a
    keydown handler to fake one, which is three lines of code to get back what
    the element already does. */
-.video-card{position:relative;display:block;width:100%;max-width:1100px;
-  aspect-ratio:16/9;overflow:hidden;padding:0;border:0;cursor:pointer;
-  background:var(--color-night-2);
+.video-card{position:relative;display:flex;flex-direction:column;width:100%;max-width:1100px;
+  overflow:hidden;padding:0;border:0;cursor:pointer;text-align:left;
+  border-radius:14px;background:var(--color-night-2);
   box-shadow:0 50px 100px -55px rgba(0,0,0,.95)}
-.video-poster{width:100%;height:100%;object-fit:cover;display:block;opacity:0;
-  transition:opacity .8s var(--ease-out), transform 1.1s var(--ease-out)}
+/* The frame takes its height from the picture rather than the other way
+   round. A <button> does not grow to fit a child that is sized only by
+   aspect-ratio — the frame came out 197px tall inside a 79px card — but it
+   does grow to fit an image with a real laid-out height. */
+.video-shot{position:relative;display:block;overflow:hidden;border-radius:inherit;
+  background:var(--color-night-2)}
+.video-poster{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;display:block;
+  opacity:0;transition:opacity .8s var(--ease-out), transform 1.1s var(--ease-out)}
 .video-poster.is-loaded{opacity:1}
 .video-card:hover .video-poster{transform:scale(1.035)}
 .video-scrim{position:absolute;inset:0;
@@ -273,6 +332,10 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
 
 .video-meta{position:absolute;left:0;bottom:0;display:block;text-align:left;
   padding:clamp(1.1rem,3vw,2rem)}
+@media (max-width:767.98px){
+  .video-meta{position:static;padding:.95rem 1rem 1.05rem}
+  .video-desc{max-width:none}
+}
 .video-title{display:block;font-family:var(--font-display);
   font-size:var(--step-1);color:var(--color-cloud);line-height:1.15}
 .video-desc{display:block;margin-top:.35rem;font-size:.88rem;
@@ -280,13 +343,15 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
 
 /* On a phone the card is about 220px tall, so a 5rem button in the middle
    and a two-line caption at the bottom end up on top of each other. */
-@media (max-width:639.98px){
-  .video-play{width:3.4rem;height:3.4rem}
-  .video-play svg{width:1.35rem;height:1.35rem}
-  .video-title{font-size:1.05rem}
-  .video-desc{font-size:.78rem;max-width:24ch}
-  .video-scrim{background:linear-gradient(to top,rgba(3,16,15,.85) 0%,
-               rgba(3,16,15,.3) 52%,rgba(3,16,15,.3) 100%)}
+@media (max-width:767.98px){
+  .video-play{width:3.6rem;height:3.6rem;background:rgba(243,245,242,.24)}
+  .video-play svg{width:1.4rem;height:1.4rem}
+  .video-title{font-size:1.1rem}
+  .video-desc{font-size:.83rem;margin-top:.25rem}
+  /* With the caption out of the frame the scrim only has to keep the play
+     button legible, so the photograph is barely touched. */
+  .video-scrim{background:radial-gradient(60% 60% at 50% 50%,
+               rgba(3,16,15,.42) 0%, rgba(3,16,15,.06) 100%)}
 }
 
 /* The player. 100dvh for the same reason the enquiry popup needs it: a fixed
@@ -485,17 +550,24 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
 
 /* ── Buttons ──────────────────────────────────────────────────────────── */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;
-  min-height:52px;padding:.9rem 2rem;font-weight:600;font-size:var(--step-0);
-  letter-spacing:.005em;cursor:pointer;border:1px solid transparent;
-  transition:background-color .3s var(--ease-out),color .3s var(--ease-out),
-             border-color .3s var(--ease-out),transform .18s var(--ease-out)}
-.btn:active{transform:scale(.985)}
+  min-height:48px;padding:.8rem 1.6rem;font-weight:500;font-size:var(--step-0);
+  letter-spacing:0;cursor:pointer;border:1px solid transparent;
+  border-radius:980px;                    /* a pill, not a slab */
+  transition:background-color .28s var(--ease-out),color .28s var(--ease-out),
+             border-color .28s var(--ease-out),transform .18s var(--ease-out),
+             opacity .28s var(--ease-out)}
+@media (min-width:640px){ .btn{min-height:52px;padding:.85rem 1.9rem} }
+.btn:active{transform:scale(.97)}
 .btn-dawn{background:var(--color-dawn);color:#061A18}
-.btn-dawn:hover{background:#E8C25A}
-.btn-quiet{background:transparent;color:var(--color-cloud);border-color:rgba(163,183,175,.45)}
-.btn-quiet:hover{border-color:var(--color-dawn);color:var(--color-dawn)}
+.btn-dawn:hover{background:#fff}
+.btn-quiet{background:rgba(243,245,242,.1);color:var(--color-cloud);
+  border-color:rgba(243,245,242,.22);backdrop-filter:blur(8px)}
+.btn-quiet:hover{background:rgba(243,245,242,.18);border-color:rgba(243,245,242,.4)}
+.on-light .btn-quiet{background:rgba(8,25,26,.06);color:var(--color-ink);
+  border-color:rgba(8,25,26,.16)}
+.on-light .btn-quiet:hover{background:rgba(8,25,26,.1)}
 .btn-ink{background:var(--color-ink);color:var(--color-cloud)}
-.btn-ink:hover{background:var(--color-frond)}
+.btn-ink:hover{background:var(--color-dawn-deep)}
 .btn[disabled]{opacity:.45;cursor:not-allowed;transform:none}
 
 /* WhatsApp. The glyph carries the recognition, so the button itself stays in
@@ -554,24 +626,112 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
 }
 .brand:hover .brand-name{color:var(--color-dawn)}
 
-/* ── Nav ──────────────────────────────────────────────────────────────── */
-#nav{transition:background-color .45s var(--ease-out),
-                border-color .45s var(--ease-out), color .45s var(--ease-out)}
-/* The bar stays dark over every section, light ones included. It used to
-   invert to cloud over the pale sections, which meant the mark had to
-   invert with it — and a gold logo on white is a different logo. Holding
-   one dark bar also gives the pale half of the page an edge to sit under,
-   which it was missing. is-light now only deepens the glass a little, so
-   the bar reads as solid rather than smoky against white. */
-#nav.is-stuck{background:rgba(6,26,24,.86);backdrop-filter:blur(16px) saturate(1.25);
-  border-bottom-color:rgba(223,180,65,.22)}
-#nav.is-light.is-stuck{background:rgba(3,16,15,.93);
-  border-bottom-color:rgba(223,180,65,.3)}
-.nav-link{position:relative;padding:.35rem 0}
+/* ── Nav ──────────────────────────────────────────────────────────────────
+   One bar, present from the first pixel and the same on every ground. The
+   translucency is what makes it feel attached to the page rather than
+   floating over it; the hairline underneath is what stops it dissolving
+   into a dark section.                                                    */
+#nav{background:rgba(6,26,24,.72);backdrop-filter:blur(20px) saturate(1.4);
+  -webkit-backdrop-filter:blur(20px) saturate(1.4);
+  border-bottom:1px solid rgba(243,245,242,.1);
+  transition:background-color .4s var(--ease-out),border-color .4s var(--ease-out)}
+#nav.is-stuck{background:rgba(4,20,18,.86);border-bottom-color:rgba(243,245,242,.14)}
+/* is-light no longer inverts the bar. A white bar would need a white mark,
+   and a mark that changes colour halfway down a page is two marks. */
+#nav.is-light.is-stuck{background:rgba(3,16,15,.9)}
+
+.nav-bar{display:flex;align-items:center;gap:.75rem;width:100%;max-width:1600px;
+  margin-inline:auto;padding:.6rem clamp(1rem,4vw,3rem);min-height:56px}
+@media (min-width:1024px){ .nav-bar{padding-block:.7rem;min-height:64px;gap:1.5rem} }
+
+.nav-links{display:none;margin-left:auto;align-items:center;gap:2rem;
+  font-size:.88rem;font-weight:400;letter-spacing:.01em}
+.nav-cta{display:none;min-height:40px!important;padding:.5rem 1.2rem!important;
+  font-size:.85rem!important}
+@media (min-width:1024px){ .nav-links{display:flex} .nav-cta{display:inline-flex} }
+
+.nav-link{position:relative;padding:.35rem 0;color:var(--color-cloud);opacity:.82;
+  transition:opacity .25s var(--ease-out)}
+.nav-link:hover{opacity:1}
 .nav-link::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:100%;
   background:currentColor;transform:scaleX(0);transform-origin:right;
   transition:transform .4s var(--ease-out)}
 .nav-link:hover::after,.nav-link:focus-visible::after{transform:scaleX(1);transform-origin:left}
+
+/* ── The menu button and its sheet ────────────────────────────────────────
+   Two bars that become an x. The rule is drawn with ::before/::after on
+   each <i> so the cross is geometrically centred at every size.          */
+.nav-toggle{margin-left:auto;display:grid;place-items:center;width:44px;height:44px;
+  background:transparent;border:0;color:inherit;cursor:pointer}
+@media (min-width:1024px){ .nav-toggle{display:none} }
+.nav-burger{position:relative;display:block;width:19px;height:12px}
+.nav-burger i{position:absolute;left:0;width:100%;height:1.5px;border-radius:2px;
+  background:currentColor;transition:transform .38s var(--ease-out),opacity .2s linear}
+.nav-burger i:first-child{top:0}
+.nav-burger i:last-child{bottom:0}
+[aria-expanded="true"] .nav-burger i:first-child{transform:translateY(5.25px) rotate(45deg)}
+[aria-expanded="true"] .nav-burger i:last-child{transform:translateY(-5.25px) rotate(-45deg)}
+
+.nav-sheet{position:fixed;left:0;right:0;top:0;padding-top:calc(56px + 1.5rem);
+  height:100dvh;overflow-y:auto;overscroll-behavior:contain;
+  background:#04120E;
+  z-index:-1;
+  display:flex;flex-direction:column;justify-content:space-between;gap:2rem;
+  padding-inline:clamp(1.25rem,5vw,2.5rem);padding-bottom:2rem;
+  opacity:0;transition:opacity .32s var(--ease-out)}
+.nav-sheet[hidden]{display:none}
+.nav-sheet.is-open{opacity:1}
+.nav-sheet-links{display:flex;flex-direction:column;gap:.1rem;margin:0;padding:0;list-style:none}
+.nav-sheet-links a{display:block;padding:.7rem 0;font-family:var(--font-display);
+  font-size:clamp(1.6rem,7vw,2.4rem);font-weight:400;line-height:1.15;
+  color:var(--color-cloud);text-decoration:none;
+  opacity:0;transform:translateY(12px);
+  transition:opacity .5s var(--ease-out),transform .5s var(--ease-out),color .2s}
+.nav-sheet.is-open .nav-sheet-links a{opacity:1;transform:none}
+/* Each line arrives a beat after the one above it — the difference between
+   a menu appearing and a menu being opened. */
+.nav-sheet-links li:nth-child(1) a{transition-delay:.04s}
+.nav-sheet-links li:nth-child(2) a{transition-delay:.08s}
+.nav-sheet-links li:nth-child(3) a{transition-delay:.12s}
+.nav-sheet-links li:nth-child(4) a{transition-delay:.16s}
+.nav-sheet-links li:nth-child(5) a{transition-delay:.2s}
+.nav-sheet-links li:nth-child(6) a{transition-delay:.24s}
+.nav-sheet-links li:nth-child(7) a{transition-delay:.28s}
+.nav-sheet-links li:nth-child(8) a{transition-delay:.32s}
+.nav-sheet-links a:hover{color:var(--color-mint)}
+.nav-sheet-foot{display:flex;flex-direction:column;gap:1rem;
+  padding-top:1.5rem;border-top:1px solid rgba(243,245,242,.12)}
+.nav-sheet-call{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;
+  min-height:48px;color:var(--color-haze);text-decoration:none;font-size:.95rem}
+.nav-sheet-call svg{width:18px;height:18px}
+@media (prefers-reduced-motion:reduce){
+  .nav-sheet,.nav-sheet-links a{transition:none;opacity:1;transform:none}
+}
+
+/* ── The dock ─────────────────────────────────────────────────────────────
+   A phone cannot hold the call to action in the bar without crowding out
+   the brand, and a page that sells by private viewing should never be more
+   than a thumb away from asking for one. It hides while the menu or a
+   modal is open, and above 1024px it does not exist. */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:45;display:flex;align-items:center;
+  gap:.6rem;padding:.7rem clamp(1rem,4vw,1.5rem);
+  padding-bottom:calc(.7rem + env(safe-area-inset-bottom));
+  background:rgba(4,20,18,.82);backdrop-filter:blur(20px) saturate(1.4);
+  -webkit-backdrop-filter:blur(20px) saturate(1.4);
+  border-top:1px solid rgba(243,245,242,.1);
+  transform:translateY(120%);transition:transform .45s var(--ease-out)}
+.dock.is-up{transform:none}
+.dock.is-hidden{transform:translateY(120%)}
+.dock-cta{flex:1 1 auto;min-height:46px!important;font-size:.95rem!important}
+.dock-call{display:grid;place-items:center;flex:0 0 auto;width:46px;height:46px;
+  border-radius:980px;border:1px solid rgba(243,245,242,.22);color:var(--color-cloud);
+  background:rgba(243,245,242,.08)}
+.dock-call svg{width:19px;height:19px}
+@media (min-width:1024px){ .dock{display:none} }
+@media (prefers-reduced-motion:reduce){ .dock{transition:none} }
+/* The footer must be able to end. Without this the dock covers the last
+   line of the legal type on every phone. */
+@media (max-width:1023.98px){ #site-footer{padding-bottom:6rem} }
 
 /* ── Lightbox ─────────────────────────────────────────────────────────── */
 #lightbox[hidden]{display:none}
@@ -619,10 +779,10 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
 #cursor-ring > i{display:block;width:100%;height:100%;border-radius:50%;
   border:1px solid rgba(243,245,242,.55);will-change:transform;
   transition:border-color .32s var(--ease-out), background-color .32s var(--ease-out)}
-#cursor-ring.is-active > i{border-color:rgba(223,180,65,.9);background:rgba(223,180,65,.12)}
+#cursor-ring.is-active > i{border-color:rgba(243,245,242,.9);background:rgba(243,245,242,.14)}
 /* Over the site plan it tightens instead — a 64px ring over a 54px plot
    would cover the thing being pointed at. */
-#cursor-ring.is-precise > i{border-color:rgba(223,180,65,.95)}
+#cursor-ring.is-precise > i{border-color:rgba(111,203,176,.95)}
 
 /* ── Magnetic elements ───────────────────────────────────────────────── */
 [data-magnetic]{will-change:transform}
@@ -652,7 +812,7 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
    long, how far through you are is real information. */
 #scroll-progress{position:fixed;top:0;left:0;height:2px;width:100%;z-index:60;
   transform:scaleX(0);transform-origin:0 50%;
-  background:linear-gradient(to right,#7A5A12,#DFB441);will-change:transform}
+  background:linear-gradient(to right,#0E6E5A,#6FCBB0);will-change:transform}
 
 /* Lenis needs these to own the scroll; without them the wheel and the
    library fight each other. */
@@ -761,7 +921,7 @@ html.lenis,html.lenis body{height:auto}
 .chip-grid{display:grid;gap:.5rem;
   grid-template-columns:repeat(auto-fill,minmax(3.4rem,1fr))}
 
-.plot-chip{display:flex;flex-direction:column;align-items:center;
+.plot-chip{display:flex;flex-direction:column;align-items:center;border-radius:10px;
   justify-content:center;gap:.1rem;min-height:3.25rem;padding:.4rem .2rem;
   border:1px solid rgba(8,25,26,.16);background:#fff;cursor:pointer;
   font-family:var(--font-display);font-size:1.05rem;color:var(--color-ink);
@@ -771,7 +931,7 @@ html.lenis,html.lenis body{height:auto}
 .plot-chip[data-status="available"]{border-color:var(--color-frond);
   background:rgba(22,86,74,.07)}
 .plot-chip[data-status="held"]{border-color:var(--color-dawn-deep);
-  background:rgba(122,90,18,.07)}
+  background:rgba(11,59,51,.07)}
 .plot-chip[data-status="held"] small{color:var(--color-dawn-deep)}
 .plot-chip[data-status="sold"]{color:#93A79F;background:rgba(8,25,26,.03);
   border-style:dashed;cursor:default}
@@ -808,8 +968,16 @@ html.lenis,html.lenis body{height:auto}
    left, and a horizontal one so the card's own panel is not fighting the
    picture behind it. */
 .hero-scrim{position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(to top, rgba(3,16,15,.92) 0%, rgba(3,16,15,.45) 42%, rgba(3,16,15,.15) 70%, rgba(3,16,15,.5) 100%),
-             linear-gradient(to right, rgba(3,16,15,.75) 0%, rgba(3,16,15,.15) 45%, transparent 70%)}
+  background:linear-gradient(to top, rgba(3,16,15,.9) 0%, rgba(3,16,15,.42) 46%,
+             rgba(3,16,15,.05) 72%, rgba(3,16,15,.42) 100%)}
+/* The sideways wash exists to stop the enquiry card fighting the picture
+   behind it, and the card is only beside the copy from 1024px up. Below
+   that it was simply painting 75% black over the whole photograph, which
+   is why the hero read as a grey rectangle on a phone. */
+@media (min-width:1024px){
+  .hero-scrim{background:linear-gradient(to top, rgba(3,16,15,.92) 0%, rgba(3,16,15,.45) 42%, rgba(3,16,15,.15) 70%, rgba(3,16,15,.5) 100%),
+              linear-gradient(to right, rgba(3,16,15,.75) 0%, rgba(3,16,15,.15) 45%, transparent 70%)}
+}
 
 .hero-grid{position:relative;z-index:2;display:grid;align-items:end;gap:clamp(2rem,4vw,4rem);
   width:100%;max-width:1600px;margin-inline:auto;
@@ -819,14 +987,16 @@ html.lenis,html.lenis body{height:auto}
   .hero-grid{grid-template-columns:minmax(0,1.25fr) minmax(360px,.75fr)}
 }
 
-.hero-eyebrow,.eyebrow{color:var(--color-dawn);font-size:.8rem;font-weight:600;
-  text-transform:uppercase;letter-spacing:.1em;margin:0 0 1.25rem}
-.on-light .eyebrow{color:var(--color-dawn-deep)}
-/* Each chapter on a dark ground opens with the mark, small enough to read
-   as a mason's stamp rather than a sticker. It is the same <symbol> as the
-   nav and the footer, so there is one logo on this page, used three ways. */
-.eyebrow:has(.eyebrow-mark){display:flex;align-items:center;gap:.6rem}
-.eyebrow-mark{height:1.15rem;width:auto;flex:0 0 auto;fill:currentColor;opacity:.9}
+.hero-eyebrow,.eyebrow{color:var(--color-mint);font-size:.78rem;font-weight:500;
+  text-transform:uppercase;letter-spacing:.09em;margin:0 0 1rem}
+/* The hero eyebrow is one long line of place names. At 390px it wrapped
+   onto a second line with a single orphaned word, which reads as a mistake
+   rather than as a line break. */
+@media (max-width:479.98px){
+  .hero-eyebrow{font-size:.68rem;letter-spacing:.06em}
+}
+.on-light .eyebrow{color:var(--color-mint-deep)}
+@media (min-width:768px){ .hero-eyebrow,.eyebrow{margin-bottom:1.25rem} }
 
 #hero h1{font-size:var(--display);color:var(--color-cloud);max-width:15ch;margin:0}
 /* Two sentences, each on its own line. The second is set a step smaller so
@@ -853,7 +1023,8 @@ html.lenis,html.lenis body{height:auto}
   .hero-scrim{background:linear-gradient(to top,
     rgba(3,16,15,.94) 0%, rgba(3,16,15,.78) 45%, rgba(3,16,15,.62) 72%,
     rgba(3,16,15,.72) 100%)}
-  .hero-facts{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem 1.5rem}
+  .hero-facts{display:grid;grid-template-columns:1fr 1fr;gap:1.35rem 1.25rem;
+    margin-top:1.75rem;padding-top:1.25rem}
   .hero-facts dd{font-size:var(--step-1)}
   .hero-actions{gap:.75rem}
   .hero-actions .btn{flex:1 1 100%;justify-content:center;min-width:0;
@@ -871,6 +1042,13 @@ html.lenis,html.lenis body{height:auto}
 .hero-facts dd span{font-family:var(--font-sans);font-size:.42em;font-weight:500;
   color:var(--color-haze);margin-left:.35rem}
 .hero-actions{display:flex;flex-wrap:wrap;gap:1rem;margin-top:2.5rem}
+@media (max-width:767.98px){ .hero-actions{margin-top:1.75rem} }
+
+/* Below 1024px the enquiry card is not beside the copy — it is a fourth
+   screen of hero, arrived at after the headline, the paragraph, four
+   figures and two buttons. The dock, the menu and the enquiry section all
+   reach the same form, so on a phone the hero ends at the buttons. */
+@media (max-width:1023.98px){ .hero-card{display:none} }
 
 /* ── The enquiry card ──────────────────────────────────────────────────── */
 .hero-card{background:rgba(11,18,27,.72);backdrop-filter:blur(18px) saturate(1.2);
@@ -902,14 +1080,14 @@ html.lenis,html.lenis body{height:auto}
 
    Uppercase is set with text-transform, not typed: a screen reader spells
    typed capitals letter by letter. */
-.incl{display:inline-block;font-family:var(--font-sans);font-size:.62rem;
+.incl{display:inline-block;border-radius:980px;font-family:var(--font-sans);font-size:.62rem;
   font-weight:700;letter-spacing:.11em;text-transform:uppercase;
   padding:.2rem .5rem;border-radius:2px;white-space:nowrap;
-  color:var(--color-dawn);background:rgba(223,180,65,.16);
-  border:1px solid rgba(223,180,65,.45)}
+  color:var(--color-mint);background:rgba(111,203,176,.12);
+  border:1px solid rgba(111,203,176,.4)}
 /* On a light ground the gold has to go darker to stay legible. */
-.on-light .incl{color:var(--color-dawn-deep);background:rgba(122,90,18,.10);
-  border-color:rgba(122,90,18,.35)}
+.on-light .incl{color:var(--color-mint-deep);background:rgba(14,110,90,.09);
+  border-color:rgba(11,59,51,.35)}
 
 .price{display:inline-flex;flex-direction:column;align-items:flex-end;
   line-height:1.05}
@@ -930,8 +1108,8 @@ html.lenis,html.lenis body{height:auto}
 .level-plan i{flex:1 1 0;background:rgba(22,86,74,.13);
   border:1px solid rgba(22,86,74,.3)}
 .level-plan i:first-child{flex:1.9 1 0;background:rgba(22,86,74,.22)}
-.level-plan i:last-child{flex:.8 1 0;background:rgba(122,90,18,.13);
-  border-color:rgba(122,90,18,.35)}
+.level-plan i:last-child{flex:.8 1 0;background:rgba(11,59,51,.13);
+  border-color:rgba(11,59,51,.35)}
 .level-rooms{margin:0;font-size:.86rem;color:var(--color-mist);line-height:1.5}
 .levels-note{margin:1.1rem 0 0;padding-top:.9rem;
   border-top:1px solid rgba(8,25,26,.12);
@@ -1003,7 +1181,7 @@ html.lenis,html.lenis body{height:auto}
 .enquiry .form-summary h3{margin:0;font-size:.9rem;font-weight:600;color:#F0806A;font-family:var(--font-sans)}
 .enquiry .form-summary ul{margin:.5rem 0 0;padding-left:1.1rem;font-size:.86rem}
 .enquiry .form-summary a{color:inherit;text-decoration:underline;text-underline-offset:2px}
-.enquiry .form-done{border-left:2px solid var(--color-dawn);background:rgba(223,180,65,.12);padding:1.25rem}
+.enquiry .form-done{border-left:2px solid var(--color-mint);background:rgba(111,203,176,.1);padding:1.25rem}
 .enquiry .form-done h3{margin:0;font-family:var(--font-display);font-size:var(--step-1);color:var(--color-cloud)}
 .enquiry .form-done p{margin:.5rem 0 0;color:var(--color-haze);font-size:.9rem}
 /* Honeypot: out of sight, out of the accessibility tree, out of the tab order. */
@@ -1089,11 +1267,8 @@ html.lenis,html.lenis body{height:auto}
    The ghost is decoration and is hidden from the accessibility tree. */
 .foot-mark{display:block;width:auto;height:3.25rem;fill:currentColor;color:var(--color-dawn);
   margin:0 0 1.4rem}
-.foot-watermark{position:absolute;right:-3rem;bottom:-6rem;height:18rem;width:auto;
-  fill:currentColor;color:var(--color-cloud);opacity:.04;pointer-events:none;z-index:0}
 #site-footer{position:relative;overflow:clip}
 .foot-legal,.foot-inner{position:relative;z-index:1}
-@media (min-width:768px){ .foot-watermark{right:3.5rem;bottom:-7rem;height:26rem} }
 
 .foot-name{font-family:var(--font-display);font-size:1.5rem;font-weight:500;
   letter-spacing:.01em;color:var(--color-cloud);margin:0}
@@ -1101,7 +1276,7 @@ html.lenis,html.lenis body{height:auto}
 /* The one outward link in the footer: quiet enough not to compete with the
    enquiry form above it, but a target rather than a line of text. */
 .foot-site{display:inline-flex;align-items:center;gap:.5rem;margin-top:1.25rem;
-  padding:.6rem 1.1rem;font-size:.85rem;letter-spacing:.02em;
+  padding:.65rem 1.2rem;border-radius:980px;font-size:.85rem;letter-spacing:.02em;
   color:var(--color-cloud);text-decoration:none;
   border:1px solid rgba(163,183,175,.35);
   transition:border-color .3s var(--ease-out), color .3s var(--ease-out),
@@ -1113,8 +1288,12 @@ html.lenis,html.lenis body{height:auto}
 @media (prefers-reduced-motion:reduce){ .foot-site:hover svg{transform:none} }
 
 /* Telephone and email links are the ones a thumb goes for, and a 19px line
-   of text is under every touch-target guideline there is. */
-a[data-field]{display:inline-block;padding-block:.2rem}
+   of text is under every touch-target guideline there is.
+
+   :not([class]) matters: an attribute selector outranks a class, so this
+   rule was overriding the layout of every contact link that had one — the
+   menu's call row was laid out as a block and its icon and number stacked. */
+a[data-field]:not([class]){display:inline-block;padding-block:.2rem}
 
 .foot-nav{display:flex;flex-direction:column;gap:.65rem}
 .foot-nav a,.foot-contact a{color:var(--color-haze);text-decoration:none;
