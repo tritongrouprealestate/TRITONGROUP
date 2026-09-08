@@ -139,12 +139,14 @@ says so at the foot. If you want places positioned by true compass bearing I nee
 project's latitude and longitude, plus coordinates for each destination.
 
 Tap any place, on the dial or in the list, and a popup opens with its distance, drive
-time and positioning copy, plus a photo slot. No real photos are embedded: this portal
-is built to run with zero internet, and pulling live images from Google would break that
-guarantee every time someone opened it, so the popup ships with a placeholder icon
-instead. To add a real photo, drop a JPG at
-`Sales Kit/Hummingvalley/Location Advantage/photos/<place-slug>.jpg` — the slug the popup
-expects is shown inside it (for example `photos/nandi-hills-sunview-point.jpg`).
+time and positioning copy, plus a photo. No real photos are embedded: this portal is
+built to run with zero internet, and pulling live images from Google would break that
+guarantee every time someone opened it. Instead, all 30 places ship with the same
+generic "Placeholder Image" graphic at
+`Sales Kit/Hummingvalley/Location Advantage/photos/<place-slug>.jpg`, so the popup never
+shows a broken-icon state. To add a real photo, save it over that file, same name, same
+place — the slug is shown in the popup's hint text (for example
+`photos/nandi-hills-sunview-point.jpg`).
 
 Below the dial, an **Upcoming infrastructure & major employers** section lists nine
 region-wide developments researched for North Bangalore, each with a stated fact and its
@@ -190,20 +192,28 @@ To change a figure, edit the `VILLAS` object near the top of the `<script>` bloc
 there keyed by its plot number — the site plan picks it up automatically, no other change
 needed. The remaining 25 plots are drawn for layout context only and carry no unit data.
 
-**Photos, videos and floor plans use the same drop-in convention as the location map:**
-save a file at the exact path shown inside each empty slot and it appears next time the
-page opens, no rebuild needed.
+**Photos and floor plans already ship with a placeholder** — the same generic
+"Placeholder Image" graphic used on the location map, sized so it reads sensibly cropped
+into either the wide photo pane or the 4:3 floor-plan tiles. To swap in the real thing,
+save over the file, same name, same place, and it appears next time the page opens, no
+rebuild needed:
 
-| Add this file | Shows as |
+| Replace this file | Shows as |
 |---|---|
 | `Sales Kit/Hummingvalley/Master Plan/photos/villa-<N>-hero.jpg` | Latest villa photo |
-| `Sales Kit/Hummingvalley/Master Plan/videos/villa-<N>-walkthrough.mp4` | Walkthrough video |
 | `Sales Kit/Hummingvalley/Master Plan/floorplans/villa-<N>-ground-floor.jpg` | Ground Floor tile |
 | `Sales Kit/Hummingvalley/Master Plan/floorplans/villa-<N>-first-floor.jpg` | First Floor tile |
 | `Sales Kit/Hummingvalley/Master Plan/floorplans/villa-<N>-terrace.jpg` | Terrace tile |
 
 (`<N>` is `8`, `11`, `20`, `22` or `23`.) Any floor-plan tile can be clicked to zoom it
-full-screen once an image is in place — useful for reading a plan off a TV across a room.
+full-screen once a real image is in place — useful for reading a plan off a TV across a room.
+
+**The video tab has no placeholder file** — it still shows "Walkthrough video not added
+yet." A still image can be faked convincingly offline; a working placeholder *video* file
+cannot be, without either an internet fetch (which breaks the offline guarantee) or a
+video encoder this build environment doesn't have available. Save a real file at
+`Sales Kit/Hummingvalley/Master Plan/videos/villa-<N>-walkthrough.mp4` and it will start
+working immediately — nothing else to change.
 
 This page is **hand-authored HTML**, not generated from a `src/` build step — this
 project folder does not carry the `src/`/`tools/build.mjs` pipeline the rest of this
