@@ -53,7 +53,8 @@ Save files under exactly these names. Case does not matter; spelling does.
 | `Sales Kit/Hummingvalley/Brochure/` | `Presentation.pptx` |
 | `Sales Kit/Hummingvalley/Cost Sheet/` | `Villa 20.png`, `Villa 21.png` |
 | `Sales Kit/Hummingvalley/Master Plan/` | `Master Plan.png` |
-| `Sales Kit/Hummingvalley/Location Advantage/` | `Location Advantage.html` — **generated, do not replace** |
+| `Sales Kit/Hummingvalley/Location Advantage/` | `Location Advantage.html`, **generated, do not replace** |
+| `Sales Kit/Hummingvalley/EMI Calculator/` | `EMI Calculator.html`, **generated, do not replace** |
 | `Sales Kit/Hummingvalley/Video/` | `Walkthrough.mp4` |
 | `Sales Kit/Hummingvalley/Video/` | `AV Film.mp4` |
 
@@ -130,20 +131,53 @@ The project sits at the centre of a dial and every destination is plotted by its
 distance, with drive time and a line of positioning copy on tap. Filtering to one
 category fans those places around the whole dial so their names stay readable.
 
-Every distance and drive time comes from the project brochure — nothing is estimated.
-Placement is by category and distance, so it is a schematic rather than a survey map,
-and the page says so at the foot. If you want places positioned by true compass bearing
-I need the project's latitude and longitude, plus coordinates for each destination.
+Every distance and drive time comes from the project brochure, and every one of the
+30 entries has been cross-checked against it: nothing is estimated. Placement on the dial
+is by category and distance, so it is a schematic rather than a survey map, and the page
+says so at the foot. If you want places positioned by true compass bearing I need the
+project's latitude and longitude, plus coordinates for each destination.
+
+Tap any place, on the dial or in the list, and a popup opens with its distance, drive
+time and positioning copy, plus a photo slot. No real photos are embedded: this portal
+is built to run with zero internet, and pulling live images from Google would break that
+guarantee every time someone opened it, so the popup ships with a placeholder icon
+instead. To add a real photo, drop a JPG at
+`Sales Kit/Hummingvalley/Location Advantage/photos/<place-slug>.jpg` — the slug the popup
+expects is shown inside it (for example `photos/nandi-hills-sunview-point.jpg`).
+
+Below the dial, an **Upcoming infrastructure & major employers** section lists nine
+region-wide developments researched for North Bangalore, each with a stated fact and its
+source: the Bengaluru Airport City, Namma Metro Phase 2B, NH-44 widening, Foxconn's
+Devanahalli campus, SAP Labs, Carl Zeiss, and others. These have no verified distance
+from the project, so they sit in their own briefing list rather than on the dial itself.
 
 To add or edit a place, open `src/location-data.js` and rebuild. You need its real km
 and minutes; do not estimate them, because the sales team quotes these numbers. Twelve
-places on the brochure map carry no distance in its tables — Prestige Tech Cloud, KIADB
+places on the brochure map carry no distance in its tables (Prestige Tech Cloud, KIADB
 Aerospace SEZ, Taj, Signature Park, NAFL National Public School, Vidyashilp University,
-Stonehill International School and others — so they are not on the dial yet. Send the
-numbers and they go in.
+Stonehill International School and others), so they are not on the dial yet. Send the
+numbers and they go in. To add or edit an infrastructure entry, open the `INFRA_DATA`
+block at the bottom of the same file.
 
 The positioning copy under each place is a first draft written for HNI and investor
 audiences. Read it before the team uses it in front of clients.
+
+### The Hummingvalley EMI calculator
+
+`Hummingvalley → EMI Calculator` is a second interactive page: a home loan calculator
+for use on the spot during a sales conversation. Buyers move three sliders (loan amount,
+interest rate, tenure) and the monthly instalment, the principal/interest split and a
+year-by-year amortisation table update instantly, all figures in the Indian numbering
+system (lakhs and crores).
+
+It is a completely separate, self-contained file with no shared fonts or styling from
+the rest of the kit, deliberately: it was built to an exact specification for a standalone
+navy-and-emerald calculator, and keeping it independent means it can be dropped into any
+other project folder later without dragging the whole portal's styling along.
+
+To change the loan-amount range, default interest rate, or any other input limit, open
+`src/emi-calculator.html` and edit the `min`/`max`/`value` attributes on the three
+`<input type="range">` sliders near the top of the body, then rebuild.
 
 ### Typeface and colour
 

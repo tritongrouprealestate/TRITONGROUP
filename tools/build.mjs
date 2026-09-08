@@ -57,9 +57,18 @@ if (!map.includes(mapData)) throw new Error('bundling altered the location data'
 mkdirSync(dirname(join(ROOT, MAP_OUT)), { recursive: true });
 writeFileSync(join(ROOT, MAP_OUT), map, 'utf8');
 
+/* ---- the Hummingvalley EMI calculator: already fully self-contained,
+   no fonts/data to inline — copied through verbatim ---- */
+const CALC_OUT = 'Sales Kit/Hummingvalley/EMI Calculator/EMI Calculator.html';
+const calc = read('src/emi-calculator.html');
+mkdirSync(dirname(join(ROOT, CALC_OUT)), { recursive: true });
+writeFileSync(join(ROOT, CALC_OUT), calc, 'utf8');
+
 const kb = (statSync(join(ROOT, OUT)).size / 1024).toFixed(0);
 const mapKb = (statSync(join(ROOT, MAP_OUT)).size / 1024).toFixed(0);
+const calcKb = (statSync(join(ROOT, CALC_OUT)).size / 1024).toFixed(0);
 console.log(`\n  ✓ ${OUT}  (${kb} KB, self-contained)`);
-console.log(`  ✓ ${MAP_OUT}  (${mapKb} KB)\n`);
+console.log(`  ✓ ${MAP_OUT}  (${mapKb} KB)`);
+console.log(`  ✓ ${CALC_OUT}  (${calcKb} KB)\n`);
 console.log('  Ship this one file together with the "Sales Kit" folder.');
 console.log('  They must sit next to each other.\n');

@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Home Loan EMI Calculator, Triton Humming Valley</title>
+<style>
+:root{
+  --navy:#0F1B2D; --navy-2:#16263F; --navy-3:#1E3354;
+  --slate:#3D5372; --line:#E4E9F0; --line-dark:rgba(255,255,255,.12);
+  --ink:#101826; --ink-dim:#5B6B82; --ink-faint:#8593A8;
+  --paper:#FFFFFF; --bg:#F3F5F8;
+  --emerald:#0E9F6E; --emerald-dark:#087A55; --emerald-tint:#E7F8F1;
+  --amber:#C9822B; --amber-tint:#FCF1E3;
+  --radius:16px;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg);color:var(--ink);font-family:var(--sans);
+  font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{margin:0;font-family:var(--sans)}
+button{font:inherit;cursor:pointer}
+::selection{background:rgba(14,159,110,.22)}
+
+/* ---------- shell ---------- */
+.wrap{max-width:1180px;margin:0 auto;padding:clamp(18px,3vw,40px)}
+.top{display:flex;align-items:center;justify-content:space-between;gap:16px;
+  margin-bottom:clamp(20px,3vw,32px);flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-mark{width:38px;height:38px;border-radius:10px;flex:0 0 auto;
+  background:linear-gradient(150deg,var(--navy-3),var(--navy));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:15px}
+.brand-txt b{display:block;font-size:16px;font-weight:700;color:var(--navy);letter-spacing:-.01em}
+.brand-txt span{display:block;font-size:11px;color:var(--ink-faint);letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
+.h1{font-size:clamp(20px,2.6vw,28px);font-weight:700;color:var(--navy);letter-spacing:-.01em;margin:0}
+.sub{margin:6px 0 0;color:var(--ink-dim);font-size:13.5px}
+
+/* ---------- layout ---------- */
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(16px,2.4vw,28px)}
+@media (max-width:860px){ .grid{grid-template-columns:1fr} }
+
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
+  padding:clamp(20px,2.6vw,30px);box-shadow:0 1px 2px rgba(16,24,38,.04),0 10px 30px rgba(16,24,38,.05)}
+.card + .card{margin-top:16px}
+.card-title{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--slate);margin-bottom:18px}
+
+/* ---------- inputs ---------- */
+.field{margin-bottom:24px}
+.field:last-child{margin-bottom:0}
+.field-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:10px}
+.field-label{font-size:13.5px;font-weight:600;color:var(--navy)}
+.field-value{display:flex;align-items:baseline;gap:2px}
+.field-value input{
+  border:1.5px solid var(--line);border-radius:9px;background:var(--bg);
+  font:700 16px/1 var(--sans);color:var(--navy);text-align:right;
+  padding:8px 10px;width:150px;transition:border-color .2s,box-shadow .2s;
+}
+.field-value input:focus{outline:none;border-color:var(--emerald);box-shadow:0 0 0 3px rgba(14,159,110,.14)}
+.field-unit{font-size:12px;color:var(--ink-faint);font-weight:600;margin-left:6px;white-space:nowrap}
+
+input[type=range]{
+  -webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:99px;
+  background:linear-gradient(to right, var(--emerald) 0%, var(--emerald) var(--pct,50%), var(--line) var(--pct,50%), var(--line) 100%);
+  outline:none;cursor:pointer;margin:4px 0;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;
+  background:#fff;border:3px solid var(--emerald);box-shadow:0 2px 6px rgba(16,24,38,.25);
+  cursor:pointer;transition:transform .15s var(--ease);
+}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15)}
+input[type=range]::-webkit-slider-thumb:active{transform:scale(1.25)}
+input[type=range]::-moz-range-thumb{
+  width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--emerald);
+  box-shadow:0 2px 6px rgba(16,24,38,.25);cursor:pointer;
+}
+input[type=range]::-moz-range-track{height:6px;border-radius:99px;background:var(--line)}
+.range-scale{display:flex;justify-content:space-between;margin-top:7px;font-size:10.5px;color:var(--ink-faint)}
+
+/* ---------- results ---------- */
+.emi-hero{
+  background:linear-gradient(150deg,var(--navy) 0%,var(--navy-3) 100%);
+  border-radius:var(--radius);padding:clamp(22px,3vw,30px);color:#fff;
+  box-shadow:0 20px 50px rgba(15,27,45,.35);position:relative;overflow:hidden;
+}
+.emi-hero::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(140% 100% at 100% 0%, rgba(14,159,110,.22), transparent 60%);}
+.emi-label{position:relative;font-size:11.5px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:rgba(255,255,255,.66)}
+.emi-value{position:relative;display:flex;align-items:baseline;gap:8px;margin-top:8px;flex-wrap:wrap}
+.emi-value b{font-size:clamp(34px,5vw,46px);font-weight:800;letter-spacing:-.02em;line-height:1}
+.emi-value span{font-size:15px;color:rgba(255,255,255,.7);font-weight:500}
+.emi-note{position:relative;margin-top:10px;font-size:12.5px;color:rgba(255,255,255,.55)}
+
+.ring-row{display:flex;align-items:center;gap:24px;margin-top:20px;flex-wrap:wrap}
+.ring-wrap{position:relative;width:132px;height:132px;flex:0 0 auto}
+.ring-wrap svg{transform:rotate(-90deg)}
+.ring-center{position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center}
+.ring-center b{font-size:19px;font-weight:800;color:var(--navy);line-height:1}
+.ring-center span{font-size:9.5px;color:var(--ink-faint);letter-spacing:.06em;text-transform:uppercase;margin-top:3px}
+
+.legend{display:flex;flex-direction:column;gap:12px;flex:1;min-width:180px}
+.legend-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.legend-key{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--ink-dim);font-weight:600}
+.legend-dot{width:10px;height:10px;border-radius:3px;flex:0 0 auto}
+.legend-amt{font-size:14.5px;font-weight:700;color:var(--navy)}
+.legend-pct{font-size:11.5px;color:var(--ink-faint);margin-left:6px;font-weight:600}
+
+.breakdown{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.bd-cell{border-radius:12px;padding:16px 16px;border:1px solid var(--line)}
+.bd-cell.principal{background:var(--emerald-tint);border-color:rgba(14,159,110,.2)}
+.bd-cell.interest{background:var(--amber-tint);border-color:rgba(201,130,43,.22)}
+.bd-cell .lbl{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  display:flex;align-items:center;gap:7px}
+.bd-cell.principal .lbl{color:var(--emerald-dark)}
+.bd-cell.interest .lbl{color:var(--amber)}
+.bd-cell .amt{margin-top:8px;font-size:19px;font-weight:800;color:var(--navy)}
+
+.total-row{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  margin-top:14px;padding-top:14px;border-top:1px dashed var(--line)}
+.total-row .lbl{font-size:13px;font-weight:600;color:var(--ink-dim)}
+.total-row .amt{font-size:18px;font-weight:800;color:var(--navy)}
+
+/* ---------- amortization ---------- */
+.amort-toggle{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;
+  background:none;border:none;padding:0;color:var(--navy);
+}
+.amort-toggle .chev{transition:transform .3s var(--ease);color:var(--ink-faint)}
+.amort-toggle.open .chev{transform:rotate(180deg)}
+.amort-body{max-height:0;overflow:hidden;transition:max-height .4s var(--ease)}
+.amort-body.open{max-height:900px}
+.amort-scroll{max-height:340px;overflow-y:auto;margin-top:16px;border:1px solid var(--line);border-radius:12px}
+table.amort{width:100%;border-collapse:collapse;font-size:12.5px}
+table.amort thead th{
+  position:sticky;top:0;background:var(--bg);text-align:right;padding:10px 12px;
+  font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);
+  border-bottom:1px solid var(--line);
+}
+table.amort thead th:first-child,table.amort td:first-child{text-align:left}
+table.amort td{padding:9px 12px;text-align:right;border-bottom:1px solid var(--line);color:var(--ink)}
+table.amort tbody tr:last-child td{border-bottom:none}
+table.amort tbody tr:hover{background:var(--bg)}
+table.amort td.year{font-weight:700;color:var(--navy)}
+
+.foot-note{margin-top:18px;font-size:11.5px;color:var(--ink-faint);line-height:1.6}
+
+@media (max-width:480px){
+  .field-value input{width:118px;font-size:14px}
+  .ring-row{gap:16px}
+  .breakdown{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <div class="brand">
+      <div class="brand-mark">T</div>
+      <div class="brand-txt"><b>Triton Group</b><span>Humming Valley</span></div>
+    </div>
+  </div>
+
+  <h1 class="h1">Home Loan EMI Calculator</h1>
+  <p class="sub">Adjust the loan amount, interest rate and tenure to see the monthly instalment update instantly.</p>
+
+  <div class="grid" style="margin-top:22px">
+
+    <!-- LEFT: inputs -->
+    <div>
+      <div class="card">
+        <div class="card-title">Loan details</div>
+
+        <div class="field">
+          <div class="field-head">
+            <span class="field-label">Loan amount</span>
+            <span class="field-value"><input type="text" id="amountInput" inputmode="numeric"></span>
+          </div>
+          <input type="range" id="amountSlider" min="500000" max="50000000" step="50000" value="5000000">
+          <div class="range-scale"><span>₹5 L</span><span>₹5 Cr</span></div>
+        </div>
+
+        <div class="field">
+          <div class="field-head">
+            <span class="field-label">Interest rate</span>
+            <span class="field-value"><input type="text" id="rateInput" inputmode="decimal"><span class="field-unit">% p.a.</span></span>
+          </div>
+          <input type="range" id="rateSlider" min="5" max="15" step="0.05" value="8.75">
+          <div class="range-scale"><span>5%</span><span>15%</span></div>
+        </div>
+
+        <div class="field">
+          <div class="field-head">
+            <span class="field-label">Loan tenure</span>
+            <span class="field-value"><input type="text" id="tenureInput" inputmode="numeric"><span class="field-unit">years</span></span>
+          </div>
+          <input type="range" id="tenureSlider" min="1" max="30" step="1" value="20">
+          <div class="range-scale"><span>1 yr</span><span>30 yrs</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <button class="amort-toggle" id="amortToggle" aria-expanded="false">
+          <span class="card-title" style="margin-bottom:0">Yearly amortisation schedule</span>
+          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="m6 9 6 6 6-6"/>
+          </svg>
+        </button>
+        <div class="amort-body" id="amortBody">
+          <div class="amort-scroll">
+            <table class="amort">
+              <thead><tr><th>Year</th><th>Principal paid</th><th>Interest paid</th><th>Balance</th></tr></thead>
+              <tbody id="amortRows"></tbody>
+            </table>
+          </div>
+          <p class="foot-note">Figures are indicative, rounded to the nearest rupee, and assume no prepayment.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: results -->
+    <div>
+      <div class="emi-hero">
+        <div class="emi-label">Monthly EMI</div>
+        <div class="emi-value"><b id="emiOut">₹0</b><span>/ month</span></div>
+        <div class="emi-note" id="emiNote"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Payment breakdown</div>
+        <div class="ring-row">
+          <div class="ring-wrap">
+            <svg width="132" height="132" viewBox="0 0 132 132">
+              <circle cx="66" cy="66" r="54" fill="none" stroke="#EEF1F5" stroke-width="14"/>
+              <circle id="ringInterest" cx="66" cy="66" r="54" fill="none" stroke="#C9822B" stroke-width="14"
+                stroke-dasharray="339.29" stroke-dashoffset="339.29" stroke-linecap="round"/>
+              <circle id="ringPrincipal" cx="66" cy="66" r="54" fill="none" stroke="#0E9F6E" stroke-width="14"
+                stroke-dasharray="339.29" stroke-dashoffset="339.29" stroke-linecap="round"/>
+            </svg>
+            <div class="ring-center"><b id="ringPct">0%</b><span>Principal</span></div>
+          </div>
+          <div class="legend">
+            <div class="legend-row">
+              <span class="legend-key"><span class="legend-dot" style="background:#0E9F6E"></span>Principal</span>
+              <span><span class="legend-amt" id="legendPrincipal">₹0</span><span class="legend-pct" id="legendPrincipalPct"></span></span>
+            </div>
+            <div class="legend-row">
+              <span class="legend-key"><span class="legend-dot" style="background:#C9822B"></span>Total interest</span>
+              <span><span class="legend-amt" id="legendInterest">₹0</span><span class="legend-pct" id="legendInterestPct"></span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="breakdown">
+          <div class="bd-cell principal">
+            <div class="lbl">Principal amount</div>
+            <div class="amt" id="bdPrincipal">₹0</div>
+          </div>
+          <div class="bd-cell interest">
+            <div class="lbl">Total interest</div>
+            <div class="amt" id="bdInterest">₹0</div>
+          </div>
+        </div>
+
+        <div class="total-row">
+          <span class="lbl">Total amount payable</span>
+          <span class="amt" id="bdTotal">₹0</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="foot-note" style="margin-top:20px">
+    This calculator is for illustration only and does not constitute a loan offer. Actual EMI, eligibility and
+    interest rate depend on the lender's assessment. Triton Group is not a lender and does not process loans.
+  </p>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+var $ = function(id){ return document.getElementById(id); };
+
+var amountSlider = $('amountSlider'), rateSlider = $('rateSlider'), tenureSlider = $('tenureSlider');
+var amountInput = $('amountInput'), rateInput = $('rateInput'), tenureInput = $('tenureInput');
+
+function inr(n, decimals){
+  decimals = decimals || 0;
+  return '₹' + Number(n).toLocaleString('en-IN', { maximumFractionDigits: decimals, minimumFractionDigits: decimals });
+}
+function inrCompact(n){
+  n = Math.round(n);
+  if (n >= 10000000) return (n/10000000).toFixed(2).replace(/\\.00$/,'') + ' Cr';
+  if (n >= 100000) return (n/100000).toFixed(2).replace(/\\.00$/,'') + ' L';
+  return inr(n);
+}
+
+function setSliderPct(slider){
+  var pct = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+  slider.style.setProperty('--pct', pct + '%');
+}
+
+function calcEMI(P, annualRatePct, years){
+  var R = annualRatePct / 12 / 100;
+  var N = years * 12;
+  if (R === 0) return P / N;
+  var pow = Math.pow(1 + R, N);
+  return (P * R * pow) / (pow - 1);
+}
+
+var RING_C = 2 * Math.PI * 54; // 339.29
+
+function update(){
+  var P = Math.round(Number(amountSlider.value));
+  var rate = Number(rateSlider.value);
+  var years = Number(tenureSlider.value);
+  var months = years * 12;
+
+  var emi = calcEMI(P, rate, years);
+  var totalPayable = emi * months;
+  var totalInterest = totalPayable - P;
+
+  amountInput.value = P.toLocaleString('en-IN');
+  rateInput.value = rate.toFixed(2);
+  tenureInput.value = years;
+  setSliderPct(amountSlider); setSliderPct(rateSlider); setSliderPct(tenureSlider);
+
+  $('emiOut').textContent = inr(emi);
+  $('emiNote').textContent = 'For a loan of ' + inrCompact(P) + ' at ' + rate.toFixed(2) + '% p.a. over ' + years + ' year' + (years>1?'s':'');
+
+  $('bdPrincipal').textContent = inr(P);
+  $('bdInterest').textContent = inr(totalInterest);
+  $('bdTotal').textContent = inr(totalPayable);
+
+  var pPct = P / totalPayable * 100;
+  var iPct = 100 - pPct;
+  $('ringPct').textContent = pPct.toFixed(0) + '%';
+  $('legendPrincipal').textContent = inrCompact(P);
+  $('legendInterest').textContent = inrCompact(totalInterest);
+  $('legendPrincipalPct').textContent = pPct.toFixed(0) + '%';
+  $('legendInterestPct').textContent = iPct.toFixed(0) + '%';
+
+  var principalOffset = RING_C * (1 - pPct/100);
+  $('ringPrincipal').setAttribute('stroke-dasharray', RING_C);
+  $('ringPrincipal').setAttribute('stroke-dashoffset', principalOffset);
+  $('ringInterest').setAttribute('stroke-dasharray', RING_C);
+  $('ringInterest').setAttribute('stroke-dashoffset', 0);
+
+  buildAmortization(P, rate, years, emi);
+}
+
+function buildAmortization(P, annualRatePct, years, emi){
+  var R = annualRatePct / 12 / 100;
+  var balance = P;
+  var rows = '';
+  for (var y = 1; y <= years; y++){
+    var yearPrincipal = 0, yearInterest = 0;
+    for (var m = 0; m < 12 && balance > 0.01; m++){
+      var interestPortion = balance * R;
+      var principalPortion = emi - interestPortion;
+      if (principalPortion > balance) principalPortion = balance;
+      balance -= principalPortion;
+      yearPrincipal += principalPortion;
+      yearInterest += interestPortion;
+    }
+    rows += '<tr><td class="year">Year ' + y + '</td>' +
+      '<td>' + inr(yearPrincipal) + '</td>' +
+      '<td>' + inr(yearInterest) + '</td>' +
+      '<td>' + inr(Math.max(balance,0)) + '</td></tr>';
+    if (balance <= 0.01) break;
+  }
+  $('amortRows').innerHTML = rows;
+}
+
+function parseNum(str){
+  return Number(String(str).replace(/[^0-9.]/g, '')) || 0;
+}
+
+amountSlider.addEventListener('input', update);
+rateSlider.addEventListener('input', update);
+tenureSlider.addEventListener('input', update);
+
+amountInput.addEventListener('change', function(){
+  var v = Math.min(Math.max(parseNum(this.value), Number(amountSlider.min)), Number(amountSlider.max));
+  amountSlider.value = v; update();
+});
+rateInput.addEventListener('change', function(){
+  var v = Math.min(Math.max(parseNum(this.value), Number(rateSlider.min)), Number(rateSlider.max));
+  rateSlider.value = v; update();
+});
+tenureInput.addEventListener('change', function(){
+  var v = Math.min(Math.max(parseNum(this.value), Number(tenureSlider.min)), Number(tenureSlider.max));
+  tenureSlider.value = v; update();
+});
+
+var toggle = $('amortToggle'), body = $('amortBody');
+toggle.addEventListener('click', function(){
+  var open = body.classList.toggle('open');
+  toggle.classList.toggle('open', open);
+  toggle.setAttribute('aria-expanded', String(open));
+});
+
+update();
+})();
+</script>
+</body>
+</html>

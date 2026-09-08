@@ -318,7 +318,7 @@ function renderHome() {
         '<div>' +
           '<p class="sec-eyebrow">Sales Deck · Kit</p>' +
           '<h2 class="sec-title">Choose a <em>project</em></h2>' +
-          '<p class="sec-sub">Every brochure, cost sheet, availability chart and film — ' +
+          '<p class="sec-sub">Every brochure, cost sheet, availability chart and film, ' +
             'stored on this machine and ready to present without a connection.</p>' +
         '</div>' +
         '<span class="sec-count">' + visible().length + ' Projects</span>' +
@@ -654,7 +654,7 @@ var Library = (function () {
     toast('Library updated',
       lib.projects.filter(function (p) { return !p.hidden; }).length + ' projects · ' + after + ' files' +
       (delta > 0 ? ' · ' + delta + ' new' : delta < 0 ? ' · ' + (-delta) + ' removed' : '') +
-      '  —  reading from ' + lib.root + '/');
+      '  ·  reading from ' + lib.root + '/');
     route();
   }
 

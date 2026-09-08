@@ -29,7 +29,7 @@ window.PORTAL_DATA = {
       id: "sanvi",
       name: "Sanvi",
       location: "Sanvi Aero Gardens · Near Bengaluru Airport",
-      tagline: "1, 2 & 3 BHK luxury apartments. Full pitch kit — brochure, live pricing, availability and the project film.",
+      tagline: "1, 2 & 3 BHK luxury apartments. Full pitch kit: brochure, live pricing, availability and the project film.",
       tag: "Residential",
       cover: "Sales Kit/Sanvi/cover.jpg",
       accent: "linear-gradient(155deg,#6d8399,#3b4a5c 55%,#8a7a52)",
@@ -75,6 +75,8 @@ window.PORTAL_DATA = {
           { label: "Master Plan",         name: "Master Plan.png" } ] },
         { id: "location-advantage", name: "Location Advantage", files: [
           { label: "Location Advantage",  name: "Location Advantage.html" } ] },
+        { id: "emi-calculator", name: "EMI Calculator", files: [
+          { label: "Home Loan EMI Calculator", name: "EMI Calculator.html" } ] },
         { id: "video", name: "Video", files: [
           { label: "Project Walkthrough", name: "Walkthrough.mp4" },
           { label: "AV Film",             name: "AV Film.mp4" } ] }
