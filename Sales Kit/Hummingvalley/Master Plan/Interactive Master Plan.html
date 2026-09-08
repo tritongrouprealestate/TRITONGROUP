@@ -13,10 +13,11 @@
 </style>
 <style>
 :root{
-  --ink:#080C0B; --ink-2:#0E1614; --ink-3:#14201D; --ink-4:#1B2A26;
-  --line:rgba(255,255,255,.10); --line-2:rgba(255,255,255,.20);
-  --fg:#F3F7F5; --fg-dim:rgba(243,247,245,.70); --fg-faint:rgba(243,247,245,.52);
-  --teal:#4FB3A8; --gold:#E0C384;
+  --bg:#E8EDE9; --panel:#FFFFFF; --panel-2:#F2F5F2; --strip:#E3ECE6;
+  --line:rgba(20,30,24,.10); --line-2:rgba(20,30,24,.20);
+  --fg:#16211A; --fg-dim:rgba(22,33,26,.68); --fg-faint:rgba(22,33,26,.48);
+  --accent:#2F5D4C; --accent-soft:rgba(47,93,76,.13); --accent-2:#244A3C;
+  --club:#1F3D30;
   --sans:-apple-system,BlinkMacSystemFont,"SF Pro Display","Geist","Segoe UI",Helvetica,Arial,sans-serif;
   --display:"Fraunces","Georgia",serif;
   --ease:cubic-bezier(.22,1,.36,1);
@@ -24,37 +25,38 @@
 }
 *,*::before,*::after{box-sizing:border-box}
 html,body{height:100%}
-body{margin:0;background:var(--ink);color:var(--fg);font-family:var(--sans);
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);
   font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
-::selection{background:rgba(79,179,168,.28)}
+::selection{background:rgba(47,93,76,.22)}
 .page{min-height:100dvh;display:flex;flex-direction:column}
 
 /* ---------- header ---------- */
 .top{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;
   padding:22px clamp(16px,3vw,34px) 16px;border-bottom:1px solid var(--line);flex:0 0 auto}
 .eyebrow{display:inline-flex;align-items:center;gap:10px;margin:0 0 8px;
-  font:600 10px/1 var(--sans);letter-spacing:.38em;text-transform:uppercase;color:var(--teal)}
-.eyebrow::before{content:"";width:20px;height:2px;background:var(--teal)}
+  font:600 10px/1 var(--sans);letter-spacing:.38em;text-transform:uppercase;color:var(--accent)}
+.eyebrow::before{content:"";width:20px;height:2px;background:var(--accent)}
 .h1{margin:0;font-family:var(--display);font-weight:400;font-variation-settings:"opsz" 144;
-  font-size:clamp(26px,3.4vw,42px);line-height:1;letter-spacing:-.015em}
-.h1 span{color:var(--gold)}
+  font-size:clamp(26px,3.4vw,42px);line-height:1;letter-spacing:-.015em;color:var(--fg)}
+.h1 span{color:var(--accent)}
 .sub{margin:7px 0 0;font-size:13px;color:var(--fg-faint);max-width:56ch}
 .top-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 16px;border-radius:99px;
   font:600 11px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;
-  background:var(--ink-3);border:1px solid var(--line-2);color:var(--fg);
-  transition:background .25s var(--ease),transform .25s var(--spring),border-color .25s}
+  background:var(--panel);border:1px solid var(--line-2);color:var(--fg);
+  transition:background .25s var(--ease),transform .25s var(--spring),border-color .25s;
+  box-shadow:0 1px 2px rgba(20,30,24,.05)}
 .btn svg{width:14px;height:14px;flex:0 0 auto}
-.btn:hover{background:var(--ink-4);transform:translateY(-2px);border-color:rgba(79,179,168,.45)}
-.btn.primary{background:var(--teal);color:#04211d;border-color:var(--teal)}
-.btn.primary:hover{background:#5fc2b6}
+.btn:hover{background:var(--panel-2);transform:translateY(-2px);border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn.primary:hover{background:var(--accent-2)}
 
 /* ---------- indicative banner ---------- */
-.notice{margin:0;padding:10px clamp(16px,3vw,34px);background:rgba(224,195,132,.08);
+.notice{margin:0;padding:10px clamp(16px,3vw,34px);background:var(--panel-2);
   border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;
-  font:600 10.5px/1.5 var(--sans);color:var(--gold);letter-spacing:.02em;flex:0 0 auto}
-.notice svg{width:15px;height:15px;flex:0 0 auto}
+  font:600 10.5px/1.5 var(--sans);color:var(--fg-dim);letter-spacing:.01em;flex:0 0 auto}
+.notice svg{width:15px;height:15px;flex:0 0 auto;color:var(--accent)}
 .notice b{color:var(--fg)}
 
 /* ---------- legend ---------- */
@@ -63,62 +65,49 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .legend-item{display:flex;align-items:center;gap:9px;font:600 10.5px/1 var(--sans);
   letter-spacing:.05em;color:var(--fg-dim)}
 .legend-swatch{width:16px;height:16px;border-radius:5px;flex:0 0 auto}
-.legend-swatch.live{background:rgba(79,179,168,.22);border:1.5px solid var(--teal);
-  box-shadow:0 0 10px rgba(79,179,168,.5)}
-.legend-swatch.mute{background:var(--ink-3);border:1.5px solid var(--line-2)}
+.legend-swatch.live{background:var(--accent-soft);border:1.5px solid var(--accent)}
+.legend-swatch.mute{background:var(--panel-2);border:1.5px solid var(--line-2)}
 
 /* ---------- stage ---------- */
 .stage-wrap{position:relative;flex:1 1 auto;display:flex;min-height:min(78vh,780px)}
 .stage-scroll{flex:1;overflow:auto;display:flex;align-items:center;justify-content:center;
   padding:clamp(16px,3vw,40px)}
-.stage{position:relative;width:100%;max-width:1240px;aspect-ratio:1200/760;
-  background:radial-gradient(120% 100% at 18% 8%,var(--ink-3),var(--ink) 62%);
-  border-radius:22px;border:1px solid var(--line);overflow:hidden;
-  box-shadow:0 30px 90px rgba(0,0,0,.5)}
+.stage{position:relative;width:100%;max-width:1180px;aspect-ratio:1320/720;
+  border-radius:22px;overflow:hidden;box-shadow:0 20px 60px rgba(20,30,24,.10);
+  border:1px solid var(--line)}
 .stage svg{position:absolute;inset:0;width:100%;height:100%;display:block}
 
-.plot{cursor:default}
+.plot rect.base{transition:transform .3s var(--spring),filter .3s var(--ease)}
 .plot.live{cursor:pointer}
-.plot rect{transition:transform .3s var(--spring),filter .3s var(--ease)}
-.plot.live:hover rect,.plot.live:focus rect{transform-box:fill-box;transform-origin:center;
-  transform:scale(1.045)}
+.plot.live:hover rect.base,.plot.live:focus rect.base{transform-box:fill-box;transform-origin:center;
+  transform:scale(1.05)}
 .plot.live:focus{outline:none}
-.plot.live:focus rect{filter:drop-shadow(0 0 14px rgba(79,179,168,.7))}
-.plot-num{font:600 15px/1 var(--display);fill:var(--fg-faint);text-anchor:middle;
+.plot.live:focus rect.base{filter:drop-shadow(0 0 0 3px var(--accent-soft)) drop-shadow(0 4px 14px rgba(47,93,76,.35))}
+.plot-num{font:600 20px/1 var(--sans);fill:var(--fg-faint);text-anchor:middle;
   dominant-baseline:middle;pointer-events:none}
-.plot.live .plot-num{font-family:var(--display);font-weight:500;font-size:26px;fill:var(--fg)}
-.plot.live .plot-tag{font:700 9px/1 var(--sans);letter-spacing:.16em;fill:var(--gold);
-  text-anchor:middle;pointer-events:none}
-.plot-ring{fill:none;stroke:var(--teal);stroke-width:2;opacity:.55;
+.plot.live .plot-num{font-weight:700;font-size:26px;fill:var(--accent-2)}
+.plot-ring{fill:none;stroke:var(--accent);stroke-width:2;opacity:.6;
   transform-box:fill-box;transform-origin:center;
-  animation:ringPulse 2.6s var(--ease) infinite}
+  animation:ringPulse 2.8s var(--ease) infinite}
 .plot.live:nth-of-type(2) .plot-ring{animation-delay:.4s}
 .plot.live:nth-of-type(3) .plot-ring{animation-delay:.8s}
 .plot.live:nth-of-type(4) .plot-ring{animation-delay:1.2s}
+.plot.live:nth-of-type(5) .plot-ring{animation-delay:1.6s}
 @keyframes ringPulse{
-  0%{transform:scale(1);opacity:.6}
-  70%{transform:scale(1.18);opacity:0}
-  100%{transform:scale(1.18);opacity:0}
+  0%{transform:scale(1);opacity:.55}
+  70%{transform:scale(1.14);opacity:0}
+  100%{transform:scale(1.14);opacity:0}
 }
-.road{fill:none;stroke:var(--ink-4);stroke-width:34;stroke-linecap:round}
-.road-line{fill:none;stroke:rgba(224,195,132,.35);stroke-width:2;stroke-dasharray:10 12;
-  stroke-linecap:round}
-.blob{opacity:.35}
-.club rect,.gate rect{fill:var(--ink-3);stroke:var(--line-2)}
-.club text,.gate text{font:600 9px/1 var(--sans);letter-spacing:.14em;fill:var(--fg-faint);
-  text-anchor:middle}
-.compass{opacity:.6}
-.compass text{font:600 9px/1 var(--sans);letter-spacing:.1em;fill:var(--fg-faint);
-  text-anchor:middle}
-.scalebar text{font:600 8.5px/1 var(--sans);fill:var(--fg-faint)}
-.scalebar line{stroke:var(--fg-faint);stroke-width:1.4}
+.strip-label{font:600 10px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;
+  fill:var(--fg-faint)}
+.club-label{font-family:var(--display);font-weight:500;font-size:17px;fill:#fff}
+.club-sub{font:600 10px/1 var(--sans);letter-spacing:.06em;fill:rgba(255,255,255,.72)}
 
 .tip{position:absolute;pointer-events:none;z-index:5;padding:8px 12px;border-radius:10px;
-  background:var(--ink-4);border:1px solid var(--line-2);font:600 11px/1.3 var(--sans);
-  color:var(--fg);white-space:nowrap;opacity:0;transform:translate(-50%,-8px);
-  transition:opacity .18s var(--ease);box-shadow:0 12px 30px rgba(0,0,0,.4)}
+  background:var(--fg);border:1px solid rgba(0,0,0,.1);font:600 11px/1.3 var(--sans);
+  color:#fff;white-space:nowrap;opacity:0;transform:translate(-50%,-8px);
+  transition:opacity .18s var(--ease);box-shadow:0 12px 30px rgba(20,30,24,.25)}
 .tip.on{opacity:1}
-.tip b{color:var(--gold)}
 
 @media (max-width:760px){
   .stage-wrap{min-height:62vh}
@@ -126,57 +115,56 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 }
 
 /* ---------- modal ---------- */
-.modal-backdrop{position:fixed;inset:0;z-index:30;background:rgba(4,6,5,.68);
-  backdrop-filter:blur(20px) saturate(140%);-webkit-backdrop-filter:blur(20px) saturate(140%);
+.modal-backdrop{position:fixed;inset:0;z-index:30;background:rgba(20,30,24,.42);
+  backdrop-filter:blur(14px) saturate(120%);-webkit-backdrop-filter:blur(14px) saturate(120%);
   opacity:0;pointer-events:none;transition:opacity .35s var(--ease);
   display:flex;align-items:center;justify-content:center;padding:20px}
 .modal-backdrop.on{opacity:1;pointer-events:auto}
 .modal{width:min(760px,100%);max-height:min(880px,92vh);overflow-y:auto;
-  background:var(--ink-2);border:1px solid var(--line-2);border-radius:22px;
-  box-shadow:0 40px 130px rgba(0,0,0,.6);
+  background:var(--panel);border:1px solid var(--line);border-radius:22px;
+  box-shadow:0 40px 100px rgba(20,30,24,.28);
   transform:scale(.93) translateY(20px);opacity:0;
   transition:transform .45s var(--spring),opacity .3s var(--ease)}
 .modal-backdrop.on .modal{transform:scale(1) translateY(0);opacity:1}
 .modal-close{position:absolute;top:16px;right:16px;z-index:3;width:36px;height:36px;
-  border-radius:99px;background:rgba(8,12,11,.6);border:1px solid var(--line-2);
+  border-radius:99px;background:rgba(255,255,255,.85);border:1px solid var(--line-2);
   color:var(--fg);display:flex;align-items:center;justify-content:center;
   backdrop-filter:blur(6px);transition:background .2s,transform .2s var(--ease)}
-.modal-close:hover{background:rgba(8,12,11,.9);transform:scale(1.08) rotate(90deg)}
+.modal-close:hover{background:#fff;transform:scale(1.08) rotate(90deg)}
 
-.media{position:relative;height:min(46vh,340px);background:linear-gradient(150deg,var(--ink-4),var(--ink) 75%);
+.media{position:relative;height:min(42vh,300px);background:linear-gradient(150deg,var(--panel-2),var(--strip) 75%);
   overflow:hidden}
 .media-tabs{position:absolute;top:14px;left:14px;z-index:2;display:flex;gap:6px;
-  background:rgba(8,12,11,.55);border:1px solid var(--line-2);border-radius:99px;padding:4px;
+  background:rgba(255,255,255,.85);border:1px solid var(--line-2);border-radius:99px;padding:4px;
   backdrop-filter:blur(6px)}
 .media-tab{padding:7px 14px;border-radius:99px;font:700 9.5px/1 var(--sans);
   letter-spacing:.12em;text-transform:uppercase;color:var(--fg-faint);transition:.2s var(--ease)}
-.media-tab.on{background:var(--teal);color:#04211d}
+.media-tab.on{background:var(--accent);color:#fff}
 .media-pane{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .3s var(--ease)}
 .media-pane.on{opacity:1;pointer-events:auto}
 .media-pane img,.media-pane video{width:100%;height:100%;object-fit:cover;display:block}
 .ph-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
   flex-direction:column;gap:9px;color:var(--fg-faint);text-align:center;padding:0 20px}
-.ph-fallback svg{width:36px;height:36px;opacity:.5}
+.ph-fallback svg{width:36px;height:36px;opacity:.55}
 .ph-fallback span{font:600 10px/1.5 var(--sans);letter-spacing:.06em}
 .ph-fallback code{display:block;margin-top:2px;font:500 10px/1.4 monospace;color:var(--fg-faint);
-  opacity:.8}
+  opacity:.85}
 
 .mbody{padding:26px clamp(20px,3vw,32px) 30px}
-.mtype{display:inline-flex;align-items:center;gap:8px;margin-bottom:10px;
-  font:700 9.5px/1 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--teal)}
-.mbody h2{margin:0;font-family:var(--display);font-variation-settings:"opsz" 144;
+.mhead{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;
+  padding-top:14px;border-top:2px solid var(--fg)}
+.mhead h2{margin:8px 0 0;font-family:var(--display);font-variation-settings:"opsz" 144;
   font-weight:400;font-size:clamp(28px,3.2vw,38px);line-height:1.05;letter-spacing:-.012em}
-.mbody h2 span{color:var(--gold)}
+.badge-available{flex:0 0 auto;margin-top:10px;padding:6px 14px;border-radius:99px;
+  border:1.5px solid var(--accent);color:var(--accent-2);
+  font:700 10px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
 
-.specs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0 0}
-.spec{padding:14px 12px;border-radius:13px;background:var(--ink-3);border:1px solid var(--line)}
-.spec b{display:block;font-family:var(--display);font-variation-settings:"opsz" 144;
-  font-weight:400;font-size:19px;line-height:1.15;color:var(--fg)}
-.spec b.pending{font-family:var(--sans);font-size:12px;font-weight:700;color:var(--gold);
-  letter-spacing:.03em}
-.spec span{display:block;margin-top:7px;font:600 9px/1 var(--sans);letter-spacing:.16em;
-  text-transform:uppercase;color:var(--fg-faint)}
-@media (max-width:600px){.specs{grid-template-columns:repeat(2,1fr)}}
+.spectable{margin-top:16px;border-top:1px solid var(--line)}
+.specrow{display:flex;align-items:baseline;justify-content:space-between;gap:16px;
+  padding:13px 2px;border-bottom:1px solid var(--line)}
+.specrow .k{font-size:13px;color:var(--fg-dim)}
+.specrow .v{font-size:15px;color:var(--fg);font-weight:500;text-align:right}
+.specrow.price .v{font-family:var(--display);font-weight:500;font-size:19px;color:var(--accent-2)}
 
 .msection{margin-top:26px}
 .msection-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
@@ -184,26 +172,26 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .msection-head h3{margin:0;font:700 10.5px/1 var(--sans);letter-spacing:.2em;
   text-transform:uppercase;color:var(--fg-faint)}
 .cost-link{display:inline-flex;align-items:center;gap:6px;font:700 10px/1 var(--sans);
-  letter-spacing:.08em;text-transform:uppercase;color:var(--teal)}
+  letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
 .cost-link svg{width:12px;height:12px}
-.cost-link:hover{color:#7fcdc2}
+.cost-link:hover{color:var(--accent-2)}
 
 .floorplans{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 @media (max-width:600px){.floorplans{grid-template-columns:1fr}}
 .fp-tile{position:relative;aspect-ratio:4/3;border-radius:12px;overflow:hidden;
-  background:var(--ink-3);border:1px solid var(--line);cursor:pointer;
+  background:var(--panel-2);border:1px solid var(--line);cursor:pointer;
   transition:transform .25s var(--spring),border-color .25s}
-.fp-tile:hover{transform:translateY(-3px);border-color:rgba(79,179,168,.4)}
+.fp-tile:hover{transform:translateY(-3px);border-color:var(--accent)}
 .fp-tile img{width:100%;height:100%;object-fit:cover;display:block}
 .fp-tile .ph-fallback{padding:0 10px}
 .fp-tile .ph-fallback svg{width:24px;height:24px}
 .fp-tile .ph-fallback span{font-size:9px;letter-spacing:.04em}
 .fp-tile .ph-fallback code{font-size:8.5px}
 .fp-label{position:absolute;left:8px;bottom:8px;padding:4px 9px;border-radius:99px;
-  background:rgba(8,12,11,.68);backdrop-filter:blur(4px);
-  font:700 8.5px/1 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--fg)}
+  background:rgba(22,33,26,.72);backdrop-filter:blur(4px);
+  font:700 8.5px/1 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:#fff}
 .fp-zoom{position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:99px;
-  background:rgba(8,12,11,.68);display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;
   color:var(--fg);opacity:0;transition:opacity .2s var(--ease)}
 .fp-tile:hover .fp-zoom{opacity:1}
 .fp-zoom svg{width:12px;height:12px}
@@ -213,7 +201,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .mhint code{font:500 10px/1 monospace;color:var(--fg-dim)}
 
 /* ---------- lightbox ---------- */
-.lightbox{position:fixed;inset:0;z-index:40;background:rgba(2,3,3,.92);
+.lightbox{position:fixed;inset:0;z-index:40;background:rgba(10,14,11,.9);
   display:flex;align-items:center;justify-content:center;padding:30px;
   opacity:0;pointer-events:none;transition:opacity .3s var(--ease)}
 .lightbox.on{opacity:1;pointer-events:auto}
@@ -221,9 +209,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   transform:scale(.96);transition:transform .35s var(--spring)}
 .lightbox.on img{transform:scale(1)}
 .lightbox-close{position:absolute;top:22px;right:24px;width:40px;height:40px;border-radius:99px;
-  background:rgba(255,255,255,.08);border:1px solid var(--line-2);color:var(--fg);
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;
   display:flex;align-items:center;justify-content:center}
-.lightbox-close:hover{background:rgba(255,255,255,.16)}
+.lightbox-close:hover{background:rgba(255,255,255,.22)}
 
 /* ---------- footer ---------- */
 .foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
@@ -242,7 +230,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
     <div>
       <p class="eyebrow">Master Plan</p>
       <h1 class="h1">Triton <span>Humming Valley</span></h1>
-      <p class="sub">Tap a highlighted villa to view its floor plans, specifications and latest media. Best viewed full-screen on a presentation display.</p>
+      <p class="sub">Tap a highlighted villa to view its specification, floor plans and latest media. Best viewed full-screen on a presentation display.</p>
     </div>
     <div class="top-actions">
       <button class="btn" id="resetBtn" type="button">
@@ -258,18 +246,18 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
   <p class="notice">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>
-    <span><b>Indicative layout.</b> Plot positions are diagrammatic pending the final architectural site plan. Villa specifications below are placeholders &mdash; confirm every figure with the design team before a client presentation.</span>
+    <span><b>Villas 8, 11, 20, 22 and 23</b> show confirmed specifications. Every other plot is drawn for layout context only and carries no unit data. Photos, videos and floor-plan images are placeholders until real files are added &mdash; see the file paths inside each empty slot below.</span>
   </p>
 
   <nav class="legend" aria-hidden="true">
-    <span class="legend-item"><span class="legend-swatch live"></span>Available villa type &mdash; tap for details</span>
-    <span class="legend-item"><span class="legend-swatch mute"></span>Other residences &mdash; indicative only</span>
+    <span class="legend-item"><span class="legend-swatch live"></span>Available villa &mdash; tap for details</span>
+    <span class="legend-item"><span class="legend-swatch mute"></span>Other residences &mdash; context only</span>
   </nav>
 
   <div class="stage-wrap">
     <div class="stage-scroll">
       <div class="stage" id="stage">
-        <svg id="siteplan" viewBox="0 0 1200 760" role="img" aria-label="Interactive site plan of Triton Humming Valley"></svg>
+        <svg id="siteplan" viewBox="0 0 1320 720" role="img" aria-label="Interactive site plan of Triton Humming Valley"></svg>
         <div class="tip" id="tip" aria-hidden="true"></div>
       </div>
     </div>
@@ -277,7 +265,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
   <footer class="foot">
     <span>Triton Group &middot; Internal Sales Kit</span>
-    <span>Layout is indicative only, not to scale</span>
+    <span>Layout redrawn from reference plan &middot; not to scale</span>
   </footer>
 </div>
 
@@ -319,15 +307,15 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 /* ============================================================
    Triton Humming Valley — Interactive Master Plan
    ------------------------------------------------------------
-   Every villa "type" below is placeholder content (config, area,
-   price, floor-plan and media file paths). Fill in FILES.photos /
-   FILES.floorplans / FILES.videos in the Sales Kit next to this
-   page with real assets using the exact filenames referenced in
-   VILLA data, and replace the spec fields marked pending:true.
-   The site-plan geometry (PLOTS / roads / clusters) is diagrammatic
-   — once the real architectural master plan exists, replace the
-   drawing in siteplan() with the true layout and update each
-   villa's x/y/w/h to match its real plot.
+   Site-plan numbering (30 plots, serpentine) and the specification
+   for villas 8/11/20/22/23 in VILLAS below were transcribed from a
+   reference master-plan image and villa-detail cards supplied by
+   the sales team; treat them as confirmed. Photo, video and
+   floor-plan image paths are still placeholders — drop a file at
+   the exact path shown inside each empty slot (next to this page)
+   and it appears automatically next time the page opens.
+   The plan is diagrammatic: only the 5 highlighted plots carry
+   real data, everything else is drawn purely for layout context.
    ============================================================ */
 var $  = function (s, r) { return (r || document).querySelector(s); };
 var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
@@ -335,84 +323,55 @@ var esc = function (s) { return String(s).replace(/[&<>"']/g, function (c) {
   return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]; }); };
 var reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-var VILLAS = [
-  {
-    type: '08', x: 90,  y: 600, w: 150, h: 96,
-    config: 'TBD', plot: 'TBD', builtUp: 'TBD', price: 'On request',
-    pending: true,
-    costSheet: null,
-    photo: 'photos/type-08-hero.jpg',
-    video: 'videos/type-08-walkthrough.mp4',
-    floorplans: [
-      { label: 'Ground Floor', file: 'floorplans/type-08-ground-floor.jpg' },
-      { label: 'First Floor',  file: 'floorplans/type-08-first-floor.jpg' },
-      { label: 'Terrace',      file: 'floorplans/type-08-terrace.jpg' }
-    ]
-  },
-  {
-    type: '20', x: 260, y: 600, w: 150, h: 96,
-    config: 'TBD', plot: 'TBD', builtUp: 'TBD', price: 'On request',
-    pending: true,
-    costSheet: '../Cost Sheet/Villa 20.png',
-    photo: 'photos/type-20-hero.jpg',
-    video: 'videos/type-20-walkthrough.mp4',
-    floorplans: [
-      { label: 'Ground Floor', file: 'floorplans/type-20-ground-floor.jpg' },
-      { label: 'First Floor',  file: 'floorplans/type-20-first-floor.jpg' },
-      { label: 'Terrace',      file: 'floorplans/type-20-terrace.jpg' }
-    ]
-  },
-  {
-    type: '21', x: 800, y: 600, w: 150, h: 96,
-    config: 'TBD', plot: 'TBD', builtUp: 'TBD', price: 'On request',
-    pending: true,
-    costSheet: '../Cost Sheet/Villa 21.png',
-    photo: 'photos/type-21-hero.jpg',
-    video: 'videos/type-21-walkthrough.mp4',
-    floorplans: [
-      { label: 'Ground Floor', file: 'floorplans/type-21-ground-floor.jpg' },
-      { label: 'First Floor',  file: 'floorplans/type-21-first-floor.jpg' },
-      { label: 'Terrace',      file: 'floorplans/type-21-terrace.jpg' }
-    ]
-  },
-  {
-    type: '22', x: 968, y: 600, w: 150, h: 96,
-    config: 'TBD', plot: 'TBD', builtUp: 'TBD', price: 'On request',
-    pending: true,
-    costSheet: null,
-    photo: 'photos/type-22-hero.jpg',
-    video: 'videos/type-22-walkthrough.mp4',
-    floorplans: [
-      { label: 'Ground Floor', file: 'floorplans/type-22-ground-floor.jpg' },
-      { label: 'First Floor',  file: 'floorplans/type-22-first-floor.jpg' },
-      { label: 'Terrace',      file: 'floorplans/type-22-terrace.jpg' }
-    ]
-  }
-];
+var VILLAS = {
+  8:  { bhk: '3 BHK', builtUp: '2,660 sq ft', plot: null,          aspect: 'North row',                  price: '₹2.9 Cr', status: 'Available', costSheet: null },
+  11: { bhk: '5 BHK', builtUp: '4,448 sq ft', plot: '1,555 sq ft', aspect: 'Central row',                 price: '₹4.5 Cr', status: 'Available', costSheet: null },
+  20: { bhk: '4 BHK', builtUp: '3,724 sq ft', plot: '1,389 sq ft', aspect: 'Central row',                 price: '₹3.5 Cr', status: 'Available', costSheet: '../Cost Sheet/Villa 20.png' },
+  22: { bhk: '3 BHK', builtUp: '2,680 sq ft', plot: '1,080 sq ft', aspect: 'South row, clubhouse side',    price: '₹2.9 Cr', status: 'Available', costSheet: null },
+  23: { bhk: '3 BHK', builtUp: '2,680 sq ft', plot: '1,080 sq ft', aspect: 'South row, clubhouse side',    price: '₹2.9 Cr', status: 'Available', costSheet: null }
+};
 
-/* Diagrammatic filler plots — no unit data, purely to read as a
-   populated community layout around the four highlighted villas. */
-function fillerPlots() {
-  var out = [], w = 110, h = 78;
-  var colsLeft  = [90, 230, 370];
-  var colsRight = [700, 840, 980];
-  var rows = [250, 370, 490];
-  rows.forEach(function (y) {
-    colsLeft.concat(colsRight).forEach(function (x) {
-      out.push({ x: x, y: y, w: w, h: h });
-    });
-  });
-  return out;
+function assetPaths(num) {
+  return {
+    photo: 'photos/villa-' + num + '-hero.jpg',
+    video: 'videos/villa-' + num + '-walkthrough.mp4',
+    floorplans: [
+      { label: 'Ground Floor', file: 'floorplans/villa-' + num + '-ground-floor.jpg' },
+      { label: 'First Floor',  file: 'floorplans/villa-' + num + '-first-floor.jpg' },
+      { label: 'Terrace',      file: 'floorplans/villa-' + num + '-terrace.jpg' }
+    ]
+  };
 }
 
 /* ============================================================
-   SITE PLAN DRAWING
+   SITE PLAN GEOMETRY — 10 columns x 3 rows, serpentine numbering
+   (row 1: 10..1 left-to-right, row 2: 11..20, row 3: 30..21),
+   a landscaped-green column + clubhouse on the left, an approach
+   road strip on the right. Matches the reference layout supplied.
    ============================================================ */
+var GRID = {
+  colStart: 200, colW: 88, colGap: 12, cols: 10,
+  rowY: [70, 280, 490], rowH: 150,
+  stripX: 70, stripW: 110,
+  roadX: 1208, roadW: 40
+};
+function colX(i) { return GRID.colStart + i * (GRID.colW + GRID.colGap); }
+function rowNumber(row, i) {
+  if (row === 0) return 10 - i;
+  if (row === 1) return 11 + i;
+  return 30 - i;
+}
+
 var NS = 'http://www.w3.org/2000/svg';
 function el(tag, attrs) {
   var n = document.createElementNS(NS, tag);
   for (var k in attrs) n.setAttribute(k, attrs[k]);
   return n;
+}
+function vtext(x, y, str, cls) {
+  var t = el('text', { x: x, y: y, class: cls || '' });
+  t.textContent = str;
+  return t;
 }
 
 function siteplan() {
@@ -420,79 +379,107 @@ function siteplan() {
   svg.innerHTML = '';
 
   var defs = el('defs');
-  var grad = el('radialGradient', { id: 'blobA', cx: '50%', cy: '50%', r: '50%' });
-  grad.innerHTML = '<stop offset="0%" stop-color="#4FB3A8" stop-opacity=".35"/>' +
-                    '<stop offset="100%" stop-color="#4FB3A8" stop-opacity="0"/>';
-  defs.appendChild(grad);
+  var pattern = el('pattern', { id: 'dots', width: 22, height: 22, patternUnits: 'userSpaceOnUse' });
+  pattern.appendChild(el('circle', { cx: 2, cy: 2, r: 1.4, fill: 'rgba(20,30,24,.14)' }));
+  defs.appendChild(pattern);
   svg.appendChild(defs);
 
-  svg.appendChild(el('ellipse', { class: 'blob', cx: 210, cy: 130, rx: 260, ry: 150, fill: 'url(#blobA)' }));
-  svg.appendChild(el('ellipse', { class: 'blob', cx: 1010, cy: 680, rx: 260, ry: 160, fill: 'url(#blobA)' }));
+  svg.appendChild(el('rect', { x: 0, y: 0, width: 1320, height: 720, fill: 'url(#dots)' }));
+  svg.appendChild(el('rect', {
+    x: 30, y: 30, width: 1258, height: 650, rx: 16,
+    fill: 'var(--panel)', stroke: 'var(--line)'
+  }));
 
-  svg.appendChild(el('path', { class: 'road', d: 'M600 745 C 600 630, 500 590, 545 480 C 590 370, 690 330, 600 165' }));
-  svg.appendChild(el('path', { class: 'road-line', d: 'M600 745 C 600 630, 500 590, 545 480 C 590 370, 690 330, 600 165' }));
+  var gridBottom = GRID.rowY[2] + GRID.rowH;
+  var gridTop = GRID.rowY[0];
 
-  var gate = el('g', { class: 'gate' });
-  gate.appendChild(el('rect', { x: 560, y: 726, width: 80, height: 26, rx: 8, 'stroke-width': 1.2 }));
-  var gt = el('text', { x: 600, y: 743 }); gt.textContent = 'ENTRANCE'; gate.appendChild(gt);
-  svg.appendChild(gate);
+  /* landscaped green + clubhouse column */
+  svg.appendChild(el('rect', {
+    x: GRID.stripX, y: gridTop, width: GRID.stripW, height: GRID.rowY[1] - gridTop,
+    rx: 10, fill: 'var(--strip)', stroke: 'var(--line)'
+  }));
+  var stripLabel = el('text', {
+    class: 'strip-label',
+    x: GRID.stripX + GRID.stripW / 2, y: (gridTop + GRID.rowY[1]) / 2,
+    transform: 'rotate(-90 ' + (GRID.stripX + GRID.stripW / 2) + ' ' + (gridTop + GRID.rowY[1]) / 2 + ')',
+    'text-anchor': 'middle'
+  });
+  stripLabel.textContent = 'Landscaped Green';
+  svg.appendChild(stripLabel);
 
-  var club = el('g', { class: 'club' });
-  club.appendChild(el('rect', { x: 545, y: 128, width: 110, height: 40, rx: 10, 'stroke-width': 1.2 }));
-  var ct = el('text', { x: 600, y: 152 }); ct.textContent = 'CLUBHOUSE'; club.appendChild(ct);
-  svg.appendChild(club);
+  var clubY = GRID.rowY[2];
+  svg.appendChild(el('rect', {
+    x: GRID.stripX, y: clubY, width: GRID.stripW, height: gridBottom - clubY,
+    rx: 10, fill: 'var(--club)'
+  }));
+  svg.appendChild(vtext(GRID.stripX + GRID.stripW / 2, clubY + (gridBottom - clubY) / 2 - 6, 'Clubhouse', 'club-label'));
+  var clubSub = vtext(GRID.stripX + GRID.stripW / 2, clubY + (gridBottom - clubY) / 2 + 16, '6,900 sq ft', 'club-sub');
+  clubSub.setAttribute('text-anchor', 'middle');
+  svg.appendChild(clubSub);
+  $('#siteplan text.club-label').setAttribute('text-anchor', 'middle');
 
-  fillerPlots().forEach(function (p) {
-    var g = el('g', { class: 'plot' });
-    g.appendChild(el('rect', {
-      x: p.x, y: p.y, width: p.w, height: p.h, rx: 9,
-      fill: 'var(--ink-3)', stroke: 'var(--line-2)', 'stroke-width': 1.2
+  /* gap bands between rows */
+  [ [GRID.rowY[0] + GRID.rowH, GRID.rowY[1]], [GRID.rowY[1] + GRID.rowH, GRID.rowY[2]] ].forEach(function (band) {
+    svg.appendChild(el('rect', {
+      x: GRID.colStart, y: band[0], width: GRID.cols * (GRID.colW + GRID.colGap) - GRID.colGap,
+      height: band[1] - band[0], fill: 'var(--strip)', rx: 8
     }));
-    svg.appendChild(g);
   });
 
-  VILLAS.forEach(function (v, i) {
-    var g = el('g', { class: 'plot live', tabindex: '0', role: 'button',
-                       'aria-label': 'Villa Type ' + v.type + ', view details' });
-    var ring = el('rect', {
-      class: 'plot-ring', x: v.x, y: v.y, width: v.w, height: v.h, rx: 14
-    });
-    var rect = el('rect', {
-      x: v.x, y: v.y, width: v.w, height: v.h, rx: 14,
-      fill: 'rgba(79,179,168,.14)', stroke: 'var(--teal)', 'stroke-width': 2
-    });
-    var tag = el('text', { class: 'plot-tag', x: v.x + v.w / 2, y: v.y + v.h / 2 - 16 });
-    tag.textContent = 'VILLA TYPE';
-    var num = el('text', { class: 'plot-num', x: v.x + v.w / 2, y: v.y + v.h / 2 + 10 });
-    num.textContent = v.type;
-
-    g.appendChild(ring); g.appendChild(rect); g.appendChild(tag); g.appendChild(num);
-    g.addEventListener('click', function () { openModal(v); });
-    g.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(v); }
-    });
-    g.addEventListener('pointerenter', function (e) { showTip(v, g); });
-    g.addEventListener('pointermove',  function (e) { positionTip(e); });
-    g.addEventListener('pointerleave', function () { hideTip(); });
-    svg.appendChild(g);
+  /* approach road */
+  svg.appendChild(el('rect', {
+    x: GRID.roadX, y: gridTop, width: GRID.roadW, height: gridBottom - gridTop,
+    rx: 10, fill: 'var(--strip)', stroke: 'var(--line)'
+  }));
+  var roadLabel = el('text', {
+    class: 'strip-label',
+    x: GRID.roadX + GRID.roadW / 2, y: (gridTop + gridBottom) / 2,
+    transform: 'rotate(-90 ' + (GRID.roadX + GRID.roadW / 2) + ' ' + (gridTop + gridBottom) / 2 + ')',
+    'text-anchor': 'middle'
   });
+  roadLabel.textContent = 'Approach Road';
+  svg.appendChild(roadLabel);
 
-  var compass = el('g', { class: 'compass', transform: 'translate(1120,60)' });
-  compass.appendChild(el('path', { d: 'M0,-22 L7,10 L0,4 L-7,10 Z', fill: 'var(--fg-faint)' }));
-  var nt = el('text', { y: -28 }); nt.textContent = 'N'; compass.appendChild(nt);
-  svg.appendChild(compass);
+  /* plots */
+  for (var row = 0; row < 3; row++) {
+    for (var i = 0; i < GRID.cols; i++) {
+      var num = rowNumber(row, i);
+      var x = colX(i), y = GRID.rowY[row], w = GRID.colW, h = GRID.rowH;
+      var live = !!VILLAS[num];
+      var g = el('g', { class: 'plot' + (live ? ' live' : '') });
+      if (live) {
+        g.setAttribute('tabindex', '0');
+        g.setAttribute('role', 'button');
+        g.setAttribute('aria-label', 'Villa ' + num + ', view details');
+        g.appendChild(el('rect', { class: 'plot-ring', x: x, y: y, width: w, height: h, rx: 12 }));
+      }
+      g.appendChild(el('rect', {
+        class: 'base', x: x, y: y, width: w, height: h, rx: 12,
+        fill: live ? 'var(--accent-soft)' : 'var(--panel-2)',
+        stroke: live ? 'var(--accent)' : 'var(--line-2)',
+        'stroke-width': live ? 2 : 1.2
+      }));
+      g.appendChild(vtext(x + w / 2, y + h / 2 + 7, String(num), 'plot-num'));
+      svg.appendChild(g);
 
-  var scale = el('g', { class: 'scalebar', transform: 'translate(60,712)' });
-  scale.appendChild(el('line', { x1: 0, y1: 0, x2: 60, y2: 0 }));
-  scale.appendChild(el('line', { x1: 0, y1: -4, x2: 0, y2: 4 }));
-  scale.appendChild(el('line', { x1: 60, y1: -4, x2: 60, y2: 4 }));
-  var st = el('text', { x: 0, y: 16 }); st.textContent = 'SCALE INDICATIVE'; scale.appendChild(st);
-  svg.appendChild(scale);
+      if (live) {
+        (function (n, node) {
+          node.addEventListener('click', function () { openModal(n); });
+          node.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(n); }
+          });
+          node.addEventListener('pointerenter', function () { showTip(n); });
+          node.addEventListener('pointermove', function (e) { positionTip(e); });
+          node.addEventListener('pointerleave', function () { hideTip(); });
+        })(num, g);
+      }
+    }
+  }
 }
 
 /* ---------------- hover tooltip ---------------- */
 var tip = $('#tip');
-function showTip(v, g) { tip.innerHTML = 'Villa Type <b>' + esc(v.type) + '</b> &middot; tap for details'; tip.classList.add('on'); }
+function showTip(num) { tip.innerHTML = 'Villa <b>' + esc(num) + '</b> &middot; tap for details'; tip.classList.add('on'); }
 function hideTip() { tip.classList.remove('on'); }
 function positionTip(e) {
   var wrap = $('.stage').getBoundingClientRect();
@@ -504,7 +491,6 @@ function positionTip(e) {
    MODAL
    ============================================================ */
 var backdrop = $('#modalBackdrop');
-var current = null;
 
 function assetExists(src, cb) {
   var img = new Image();
@@ -513,19 +499,23 @@ function assetExists(src, cb) {
   img.src = src;
 }
 
-function openModal(v) {
-  current = v;
-  var specHtml = [
-    ['config', 'Configuration'], ['plot', 'Plot Size'],
-    ['builtUp', 'Built-up Area'], ['price', 'Price']
-  ].map(function (f) {
-    var val = v[f[0]];
-    var pendingCls = v.pending && val === 'TBD' ? ' pending' : '';
-    return '<div class="spec"><b class="' + (pendingCls ? 'pending' : '') + '">' + esc(val) + '</b>' +
-           '<span>' + f[1] + '</span></div>';
-  }).join('');
+function openModal(num) {
+  var v = VILLAS[num];
+  var paths = assetPaths(num);
 
-  var fpHtml = v.floorplans.map(function (fp, i) {
+  var rows = [
+    ['Villa type', v.bhk],
+    ['Built-up', v.builtUp],
+    v.plot ? ['Plot', v.plot] : null,
+    ['Aspect', v.aspect]
+  ].filter(Boolean);
+
+  var specHtml = rows.map(function (r) {
+    return '<div class="specrow"><span class="k">' + esc(r[0]) + '</span><span class="v">' + esc(r[1]) + '</span></div>';
+  }).join('') +
+    '<div class="specrow price"><span class="k">Price (all inclusive)</span><span class="v">' + esc(v.price) + '</span></div>';
+
+  var fpHtml = paths.floorplans.map(function (fp) {
     return '<div class="fp-tile" data-file="' + esc(fp.file) + '" data-label="' + esc(fp.label) + '">' +
       '<div class="ph-fallback"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">' +
       '<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg>' +
@@ -544,9 +534,9 @@ function openModal(v) {
   ) : '<span class="cost-link" style="color:var(--fg-faint);cursor:default">Cost sheet not added yet</span>';
 
   $('#mbody').innerHTML =
-    '<span class="mtype">Available Villa</span>' +
-    '<h2>Villa Type <span>' + esc(v.type) + '</span></h2>' +
-    '<div class="specs">' + specHtml + '</div>' +
+    '<div class="mhead"><h2>Villa ' + esc(num) + '</h2>' +
+      '<span class="badge-available">' + esc(v.status) + '</span></div>' +
+    '<div class="spectable">' + specHtml + '</div>' +
     '<div class="msection">' +
       '<div class="msection-head"><h3>Floor Plans</h3></div>' +
       '<div class="floorplans">' + fpHtml + '</div>' +
@@ -554,10 +544,9 @@ function openModal(v) {
     '<div class="msection">' +
       '<div class="msection-head"><h3>Cost Sheet</h3>' + costHtml + '</div>' +
     '</div>' +
-    '<p class="mhint">Specifications shown as <b style="color:var(--gold)">TBD</b> are placeholders &mdash; ' +
-    'update the <code>VILLAS</code> data at the top of this file with confirmed figures. Drop real photos, ' +
-    'a walkthrough video and floor-plan images at the file paths named above (next to this page) and they ' +
-    'will appear automatically the next time it opens.</p>';
+    '<p class="mhint">Drop a real photo, a walkthrough video and floor-plan images at the file paths named above ' +
+    '(next to this page, under <code>photos/</code>, <code>videos/</code> and <code>floorplans/</code>) and they will ' +
+    'appear automatically the next time it opens.</p>';
 
   $$('.fp-tile', $('#mbody')).forEach(function (tile) {
     var file = tile.dataset.file;
@@ -574,7 +563,7 @@ function openModal(v) {
     });
   });
 
-  setupMedia(v);
+  setupMedia(paths);
 
   backdrop.classList.add('on');
   backdrop.setAttribute('aria-hidden', 'false');
@@ -582,16 +571,16 @@ function openModal(v) {
   $('#modalClose').focus();
 }
 
-function setupMedia(v) {
+function setupMedia(paths) {
   var panePhoto = $('#panePhoto'), paneVideo = $('#paneVideo');
   panePhoto.querySelectorAll('img').forEach(function (n) { n.remove(); });
   paneVideo.querySelectorAll('video').forEach(function (n) { n.remove(); });
   panePhoto.querySelector('.ph-fallback').style.display = 'flex';
   paneVideo.querySelector('.ph-fallback').style.display = 'flex';
 
-  assetExists(v.photo, function (ok) {
+  assetExists(paths.photo, function (ok) {
     if (!ok) return;
-    var img = new Image(); img.src = v.photo; img.alt = 'Villa Type ' + v.type + ' — latest photo';
+    var img = new Image(); img.src = paths.photo; img.alt = 'Latest villa photo';
     panePhoto.querySelector('.ph-fallback').style.display = 'none';
     panePhoto.insertBefore(img, panePhoto.firstChild);
   });
@@ -603,7 +592,7 @@ function setupMedia(v) {
     paneVideo.insertBefore(video, paneVideo.firstChild);
   });
   video.addEventListener('error', function () { video.remove(); });
-  video.src = v.video;
+  video.src = paths.video;
 
   $$('.media-tab').forEach(function (t) { t.classList.toggle('on', t.dataset.pane === 'photo'); });
   panePhoto.classList.add('on'); paneVideo.classList.remove('on');

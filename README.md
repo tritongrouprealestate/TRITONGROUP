@@ -167,23 +167,28 @@ audiences. Read it before the team uses it in front of clients.
 
 `Hummingvalley → Master Plan → Interactive Master Plan` is a clickable site plan built
 for a sales conversation on a laptop or a big-screen TV, sitting alongside the static
-`Master Plan.png`. Four villa types are highlighted on the plan — **08, 20, 21 and 22** —
-and tapping one opens a popup with a photo/video tab, three floor-plan slots, a
-specification row and, where one exists, a link straight to that villa's cost sheet.
+`Master Plan.png`. The 30-plot layout (10 columns × 3 rows, numbered in the serpentine
+order 10→1, 11→20, 30→21, with the landscaped-green strip, clubhouse and approach road)
+and the five highlighted villas — **8, 11, 20, 22 and 23** — were redrawn from the
+reference master-plan image and villa-detail cards supplied by the sales team. Tapping
+a highlighted villa opens a popup with a photo/video tab, three floor-plan slots, a
+specification table and, where one exists, a link straight to that villa's cost sheet.
+There is deliberately no "Enquire" button — this kit has no backend to send an enquiry to.
 
-**The plot layout is diagrammatic, not the real site plan.** No architectural master
-plan file was supplied, so the villas are drawn as four highlighted plots near the
-entrance with plain, unlabelled plots filling out the rest of the community for scale.
-Once the real site plan exists, open the file and, near the top of the `<script>` block,
-edit each entry's `x`/`y`/`w`/`h` in the `VILLAS` array to match its true plot, and adjust
-or replace the `siteplan()` drawing (road, clubhouse, filler plots) to match the real
-layout.
+**The specification table is confirmed data, not a placeholder:**
 
-**Every specification is a placeholder.** Configuration, plot size, built-up area and
-price all show as **TBD** — the two existing cost sheets (Villa 20, Villa 21) are
-themselves stamped "Placeholder figures — not for client use," and no real numbers exist
-yet for types 08 or 22. Fill in the `config` / `plot` / `builtUp` / `price` fields on each
-entry in `VILLAS` with confirmed figures before a client sees this.
+| Villa | Type | Built-up | Plot | Aspect | Price |
+|---|---|---|---|---|---|
+| 8  | 3 BHK | 2,660 sq ft | *(not given)* | North row | ₹2.9 Cr |
+| 11 | 5 BHK | 4,448 sq ft | 1,555 sq ft | Central row | ₹4.5 Cr |
+| 20 | 4 BHK | 3,724 sq ft | 1,389 sq ft | Central row | ₹3.5 Cr |
+| 22 | 3 BHK | 2,680 sq ft | 1,080 sq ft | South row, clubhouse side | ₹2.9 Cr |
+| 23 | 3 BHK | 2,680 sq ft | 1,080 sq ft | South row, clubhouse side | ₹2.9 Cr |
+
+To change a figure, edit the `VILLAS` object near the top of the `<script>` block in
+`Interactive Master Plan.html`. To highlight a different or additional plot, add an entry
+there keyed by its plot number — the site plan picks it up automatically, no other change
+needed. The remaining 25 plots are drawn for layout context only and carry no unit data.
 
 **Photos, videos and floor plans use the same drop-in convention as the location map:**
 save a file at the exact path shown inside each empty slot and it appears next time the
@@ -191,13 +196,13 @@ page opens, no rebuild needed.
 
 | Add this file | Shows as |
 |---|---|
-| `Sales Kit/Hummingvalley/Master Plan/photos/type-<N>-hero.jpg` | Latest villa photo |
-| `Sales Kit/Hummingvalley/Master Plan/videos/type-<N>-walkthrough.mp4` | Walkthrough video |
-| `Sales Kit/Hummingvalley/Master Plan/floorplans/type-<N>-ground-floor.jpg` | Ground Floor tile |
-| `Sales Kit/Hummingvalley/Master Plan/floorplans/type-<N>-first-floor.jpg` | First Floor tile |
-| `Sales Kit/Hummingvalley/Master Plan/floorplans/type-<N>-terrace.jpg` | Terrace tile |
+| `Sales Kit/Hummingvalley/Master Plan/photos/villa-<N>-hero.jpg` | Latest villa photo |
+| `Sales Kit/Hummingvalley/Master Plan/videos/villa-<N>-walkthrough.mp4` | Walkthrough video |
+| `Sales Kit/Hummingvalley/Master Plan/floorplans/villa-<N>-ground-floor.jpg` | Ground Floor tile |
+| `Sales Kit/Hummingvalley/Master Plan/floorplans/villa-<N>-first-floor.jpg` | First Floor tile |
+| `Sales Kit/Hummingvalley/Master Plan/floorplans/villa-<N>-terrace.jpg` | Terrace tile |
 
-(`<N>` is `08`, `20`, `21` or `22`.) Any floor-plan tile can be clicked to zoom it
+(`<N>` is `8`, `11`, `20`, `22` or `23`.) Any floor-plan tile can be clicked to zoom it
 full-screen once an image is in place — useful for reading a plan off a TV across a room.
 
 This page is **hand-authored HTML**, not generated from a `src/` build step — this
