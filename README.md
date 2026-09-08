@@ -53,6 +53,7 @@ Save files under exactly these names. Case does not matter; spelling does.
 | `Sales Kit/Hummingvalley/Brochure/` | `Presentation.pptx` |
 | `Sales Kit/Hummingvalley/Cost Sheet/` | `Villa 20.png`, `Villa 21.png` |
 | `Sales Kit/Hummingvalley/Master Plan/` | `Master Plan.png` |
+| `Sales Kit/Hummingvalley/Master Plan/` | `Interactive Master Plan.html`, **hand-built, see below** |
 | `Sales Kit/Hummingvalley/Location Advantage/` | `Location Advantage.html`, **generated, do not replace** |
 | `Sales Kit/Hummingvalley/EMI Calculator/` | `EMI Calculator.html`, **generated, do not replace** |
 | `Sales Kit/Hummingvalley/Video/` | `Walkthrough.mp4` |
@@ -161,6 +162,48 @@ block at the bottom of the same file.
 
 The positioning copy under each place is a first draft written for HNI and investor
 audiences. Read it before the team uses it in front of clients.
+
+### The Hummingvalley interactive master plan
+
+`Hummingvalley → Master Plan → Interactive Master Plan` is a clickable site plan built
+for a sales conversation on a laptop or a big-screen TV, sitting alongside the static
+`Master Plan.png`. Four villa types are highlighted on the plan — **08, 20, 21 and 22** —
+and tapping one opens a popup with a photo/video tab, three floor-plan slots, a
+specification row and, where one exists, a link straight to that villa's cost sheet.
+
+**The plot layout is diagrammatic, not the real site plan.** No architectural master
+plan file was supplied, so the villas are drawn as four highlighted plots near the
+entrance with plain, unlabelled plots filling out the rest of the community for scale.
+Once the real site plan exists, open the file and, near the top of the `<script>` block,
+edit each entry's `x`/`y`/`w`/`h` in the `VILLAS` array to match its true plot, and adjust
+or replace the `siteplan()` drawing (road, clubhouse, filler plots) to match the real
+layout.
+
+**Every specification is a placeholder.** Configuration, plot size, built-up area and
+price all show as **TBD** — the two existing cost sheets (Villa 20, Villa 21) are
+themselves stamped "Placeholder figures — not for client use," and no real numbers exist
+yet for types 08 or 22. Fill in the `config` / `plot` / `builtUp` / `price` fields on each
+entry in `VILLAS` with confirmed figures before a client sees this.
+
+**Photos, videos and floor plans use the same drop-in convention as the location map:**
+save a file at the exact path shown inside each empty slot and it appears next time the
+page opens, no rebuild needed.
+
+| Add this file | Shows as |
+|---|---|
+| `Sales Kit/Hummingvalley/Master Plan/photos/type-<N>-hero.jpg` | Latest villa photo |
+| `Sales Kit/Hummingvalley/Master Plan/videos/type-<N>-walkthrough.mp4` | Walkthrough video |
+| `Sales Kit/Hummingvalley/Master Plan/floorplans/type-<N>-ground-floor.jpg` | Ground Floor tile |
+| `Sales Kit/Hummingvalley/Master Plan/floorplans/type-<N>-first-floor.jpg` | First Floor tile |
+| `Sales Kit/Hummingvalley/Master Plan/floorplans/type-<N>-terrace.jpg` | Terrace tile |
+
+(`<N>` is `08`, `20`, `21` or `22`.) Any floor-plan tile can be clicked to zoom it
+full-screen once an image is in place — useful for reading a plan off a TV across a room.
+
+This page is **hand-authored HTML**, not generated from a `src/` build step — this
+project folder does not carry the `src/`/`tools/build.mjs` pipeline the rest of this
+README describes, only the finished portal — so edit `Interactive Master Plan.html`
+directly and there is nothing to rebuild afterwards.
 
 ### The Hummingvalley EMI calculator
 
