@@ -1739,50 +1739,135 @@ if (!mount || typeof DATA === 'undefined' || !DATA.coverflow) return;
 const slides = DATA.coverflow, count = slides.length;
 if (!count) return;
 
-mount.innerHTML = `
-  <div class="interactive-selector" role="region" aria-label="${mount.dataset.label || 'Gallery'}">
-    <div class="selector-options">
+const ROTATE = 44, DEPTH = 0.6, FALLOFF = 0.56, FADE = 0.1, GAP = 0.05;
+
+mount.innerHTML = `<div class="cf" role="region" aria-label="${mount.dataset.label || 'Gallery'}">
+  <button type="button" class="cf-nav cf-prev" aria-label="Previous slide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+  <button type="button" class="cf-nav cf-next" aria-label="Next slide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+  <div class="cf-frame" tabindex="0">
+    <div class="cf-track" role="region">
       ${slides.map((s, i) => `
-        <button type="button" class="selector-option" data-index="${i}"
-                aria-label="${s.title || 'View ' + (i + 1)}: ${s.alt}">
-          <img class="option-image" alt="" data-src="${s.src}" draggable="false"
-               decoding="async" width="1000" height="750"
-               ${i > 2 ? 'loading="lazy"' : ''}>
-          <div class="option-overlay"></div>
-          <div class="option-info">
-            <div class="info-title">${s.title || 'View ' + (i + 1)}</div>
-            <div class="info-desc">${s.alt || ''}</div>
-          </div>
+        <button type="button" class="cf-card" data-index="${i}" aria-label="${s.title || 'View ' + (i + 1)}: ${s.alt}">
+          <img alt="${s.alt || ''}" data-src="${s.src}" draggable="false" decoding="async" width="1000" height="750" ${i > 2 ? 'loading="lazy"' : ''}>
         </button>`).join('')}
     </div>
-  </div>`;
+  </div>
+  <div class="cf-caption" role="status" aria-live="polite" aria-atomic="true"></div>
+  <div class="cf-dots" role="tablist" aria-label="Slides">
+    ${slides.map((s, i) => `<button type="button" class="cf-dot" data-index="${i}" ${i === 0 ? 'aria-current="true"' : ''}" aria-label="Go to slide ${i + 1}"></button>`).join('')}
+  </div>
+</div>`;
 
 const $ = (s, r = mount) => r.querySelector(s);
 const $$ = (s, r = mount) => Array.from(r.querySelectorAll(s));
-const options = $$('.selector-option');
-const images = $$('.option-image');
+const frame = $('.cf-frame');
+const track = $('.cf-track');
+const cards = $$('.cf-card');
+const dots = $$('.cf-dot');
+const caption = $('.cf-caption');
+const prev_btn = $('.cf-prev');
+const next_btn = $('.cf-next');
 
-let activeIndex = -1;
+let curr = 0, settle_req = null;
 
-const start = () => images.forEach(img => {
-  loadImage(img, img.dataset.src, ok => { if (!ok) img.remove(); });
+const ease = (x) => (1 - Math.cos(x * Math.PI)) / 2;
+
+const render = () => {
+  const card_width = cards[0]?.offsetWidth || 220;
+  for (let i = 0; i < count; i++) {
+    const rel = (i - curr + count) % count;
+    const offset = rel > count / 2 ? rel - count : rel;
+    const angle = offset * (Math.PI / ROTATE);
+    const scale = 1 - Math.abs(offset) * (1 - DEPTH);
+    const z = Math.sin(Math.abs(angle)) * FALLOFF;
+    const opacity = 1 - Math.abs(offset) * FADE;
+
+    cards[i].style.transform = `translateX(calc(-50% + ${offset * (card_width * (1 + GAP))}px)) translateZ(${z * 40}px) rotateY(${-angle * 180 / Math.PI}deg) scale(${scale})`;
+    cards[i].style.opacity = opacity;
+    cards[i].style.zIndex = Math.round(100 - Math.abs(offset) * 10);
+    cards[i].setAttribute('aria-current', String(offset === 0));
+  }
+  const idx = Math.round(curr) % count;
+  dots.forEach((d, i) => d.setAttribute('aria-current', String(i === idx)));
+  if (caption) caption.textContent = slides[idx].title || `View ${idx + 1}`;
+};
+
+let drag_start = null, drag_curr = null, drag_vel = 0;
+
+const on_pointer_down = (e) => {
+  if (settle_req) cancelAnimationFrame(settle_req);
+  drag_start = e.clientX || (e.touches?.[0]?.clientX);
+  drag_curr = drag_start;
+};
+
+const on_pointer_move = (e) => {
+  if (drag_start == null) return;
+  const x = e.clientX || (e.touches?.[0]?.clientX);
+  drag_vel = (x - drag_curr) / 10;
+  drag_curr = x;
+  curr -= (x - drag_start) / 200;
+  render();
+};
+
+const on_pointer_up = () => {
+  if (drag_start == null) return;
+  drag_start = drag_curr = null;
+  const target = Math.round(curr + Math.sign(drag_vel) * 0.3);
+  settle_to(target);
+};
+
+const settle_to = (target) => {
+  if (settle_req) cancelAnimationFrame(settle_req);
+  const reduce = matchMedia('(prefers-reduced-motion)').matches;
+  const from = curr, t0 = Date.now();
+
+  const tick = () => {
+    if (reduce) { curr = target; render(); return; }
+    const t = (Date.now() - t0) / 300;
+    if (t >= 1) {
+      curr = target;
+      render();
+      select(((target % count) + count) % count);
+      return;
+    }
+    curr = from + (target - from) * ease(t);
+    render();
+    settle_req = requestAnimationFrame(tick);
+  };
+  tick();
+};
+
+const go_to = (i) => { settle_to(i); };
+
+cards.forEach((card, i) => {
+  card.addEventListener('click', () => go_to(i));
 });
-near(mount, start);
 
-function setActive(index) {
-  if (index === activeIndex) return;
-  activeIndex = index;
-  options.forEach((opt, i) => {
-    opt.classList.toggle('active', i === index);
-    opt.setAttribute('aria-current', String(i === index));
+dots.forEach((dot, i) => {
+  dot.addEventListener('click', () => go_to(i));
+});
+
+if (prev_btn) prev_btn.addEventListener('click', () => go_to(curr - 1));
+if (next_btn) next_btn.addEventListener('click', () => go_to(curr + 1));
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowLeft') go_to(curr - 1);
+  if (e.key === 'ArrowRight') go_to(curr + 1);
+});
+
+frame.addEventListener('pointerdown', on_pointer_down, { passive: true });
+frame.addEventListener('pointermove', on_pointer_move, { passive: true });
+frame.addEventListener('pointerup', on_pointer_up, { passive: true });
+frame.addEventListener('pointerleave', on_pointer_up, { passive: true });
+
+const start = () => {
+  $$('.cf-card img').forEach(img => {
+    loadImage(img, img.dataset.src, ok => { if (!ok) img.parentElement?.removeChild(img); });
   });
-}
+  render();
+};
 
-options.forEach((option, i) => {
-  option.addEventListener('click', () => setActive(i));
-});
-
-setActive(0);
+near(mount, start);
 select(0);
 })();
 
