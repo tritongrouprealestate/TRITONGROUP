@@ -276,16 +276,20 @@ Flats 130, 225 and 235 have no Availability row at all (already sold) and are gr
 and unselectable in the picker, exactly like the other two projects will be once their
 sold units are recorded the same way.
 
-**Hummingvalley's project entry is a starting template, not a finished price list.**
-Only Villa 21 is populated, transcribed from a single reference cost-sheet screenshot —
-there is no live Humming Valley workbook to draw the rest of the villa list from yet.
-Send the actual file (or a screenshot per villa, the way Sanvi's was built) and the rest
-can be added the same way. That one reference screenshot also had an internal
-inconsistency worth knowing about: its "On Completion of Plinth" row was charged at
-₹20,47,264 despite being labelled 5% (5% of that quote's ₹3,56,54,475 grand total is
-₹17,82,724 — matching every *other* 5% row on the same sheet). The calculator computes
-the percentage faithfully rather than reproducing that number, so it won't match the
-screenshot on that one line — everything else does, exactly.
+**Hummingvalley now lists its five confirmed-available villas** — 8, 11, 20, 22 and 23 —
+built from the same villa-detail reference cards used for the interactive master plan,
+so the two stay consistent. Villa 8's plot size wasn't given on its card and shows as
+**TBD** in both the unit picker and the Reference Sheet tab (below) until confirmed.
+A sixth villa, 21, appeared in one reference cost-sheet screenshot — its numbers (4
+BHK+HT, 3,474 sqft, ₹8,750/sqft) are what the project's rate, charges, GST rule and
+payment schedule below are built from, but villa 21 itself is not one of the five
+confirmed-available units, so it is not listed as a selectable unit. That same
+screenshot also had an internal inconsistency worth knowing about: its "On Completion
+of Plinth" row was charged at ₹20,47,264 despite being labelled 5% (5% of that quote's
+₹3,56,54,475 grand total is ₹17,82,724 — matching every *other* 5% row on the same
+sheet). The calculator computes the percentage faithfully rather than reproducing that
+number, so it won't match the screenshot on that one line — everything else does,
+exactly.
 
 **Two real differences between the two projects, by design, not a bug:** Sanvi charges
 GST on Base Price *and* Other Charges; Hummingvalley's reference sheet charges it on
@@ -308,6 +312,24 @@ mistake is visible immediately instead of surfacing in front of the customer.
 **Print / Save as PDF** hides the toolbar and turns every input into plain text, so the
 same page that the rep fills in live is what gets handed to (or e-mailed to) the
 customer, with no separate "quote template" to keep in sync.
+
+**The Reference Sheet tab** (next to Quote Builder, at the top of the page) is a
+read-only table of every unit in whichever project is currently selected — the same
+list the Unit Selection dropdown draws from, so the two can never drift apart. Sold
+units show a grey "Sold" pill instead of green "Available", matching the picker.
+When a project sets a `referenceSheetUrl`, an **"Open live Google Sheet"** button
+appears above the table, marked **needs internet** the same way the two YouTube film
+links are — this environment's network policy blocks `docs.google.com` outright, so
+this portal has no way to read or sync that sheet's contents itself; the button exists
+purely so a rep with a connection can jump straight to whichever spreadsheet the team
+actually keeps up to date. Hummingvalley's is already wired to
+`https://docs.google.com/spreadsheets/d/13T_4bnqwi3Ewt8GFwd1hpdLye9K_-oxrANtJ8sPgYRQ/edit`.
+There is no live sync in either direction: updating the Google Sheet does not change
+what this page shows, and editing a unit in this app does not write back to the sheet —
+whoever maintains the numbers needs to update `price-calculator-data.js` by hand to
+match, the same as every other manually-maintained file in this kit. To give a project
+this tab's live-sheet link, add a `referenceSheetUrl` string to its entry in
+`price-calculator-data.js`; leave it unset (as Sanvi's is) to hide the button.
 
 This page is **hand-authored HTML**, like the interactive master plan — not generated
 from a `src/` build step. Edit `Price Calculator.html` or `price-calculator-data.js`

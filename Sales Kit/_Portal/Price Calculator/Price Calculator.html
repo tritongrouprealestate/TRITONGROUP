@@ -141,6 +141,32 @@ table.sched input.pct-input{text-align:right}
   padding:16px clamp(18px,3vw,34px);background:var(--paper-2);
   font:600 10.5px/1.5 var(--sans);color:var(--fg-faint)}
 
+.tabbar{display:flex;gap:4px;padding:14px clamp(18px,3vw,34px) 0}
+.tab{padding:10px 16px;border-radius:9px 9px 0 0;font:700 11.5px/1 var(--sans);
+  letter-spacing:.04em;color:var(--fg-faint);border-bottom:2px solid transparent;
+  transition:.15s var(--ease)}
+.tab:hover{color:var(--fg)}
+.tab.on{color:var(--accent);border-bottom-color:var(--accent);background:var(--accent-soft)}
+#referenceView{padding-top:18px}
+.ref-head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  margin-bottom:12px}
+.ref-note{margin:0;font-size:11.5px;color:var(--fg-faint);max-width:60ch}
+.ref-live{margin-bottom:16px}
+.net-badge{margin-left:2px;padding:2px 7px;border-radius:99px;background:rgba(200,60,30,.12);
+  color:#b03a12;font:800 8.5px/1.6 var(--sans);letter-spacing:.06em;text-transform:uppercase}
+#refTable th{text-align:left;font:700 9.5px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;
+  color:var(--fg-faint);padding:0 10px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+#refTable td{padding:9px 10px;border-bottom:1px solid var(--line);font-size:13px;white-space:nowrap}
+#refTable tr.sold td{color:var(--fg-faint)}
+#refTable .status-pill{display:inline-block;padding:3px 9px;border-radius:99px;
+  font:700 9px/1.6 var(--sans);letter-spacing:.05em;text-transform:uppercase}
+#refTable .status-pill.available{background:rgba(30,140,90,.12);color:#1e7a4f}
+#refTable .status-pill.sold{background:rgba(120,120,120,.14);color:var(--fg-faint)}
+
+@media print{
+  .tabbar{display:none!important}
+}
+
 .gstbase{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px}
 .gstbase label{display:flex;align-items:center;gap:7px;font:600 11px/1 var(--sans);color:var(--fg-dim)}
 .gstbase input{width:15px;height:15px;accent-color:var(--accent)}
@@ -188,6 +214,30 @@ table.sched input.pct-input{text-align:right}
       </div>
     </div>
 
+    <div class="tabbar" id="tabbar">
+      <button class="tab on" id="tabQuote" type="button">Quote Builder</button>
+      <button class="tab" id="tabReference" type="button">Reference Sheet</button>
+    </div>
+
+    <div id="referenceView" class="section" hidden>
+      <div class="ref-head">
+        <p class="section-title" style="margin-bottom:2px">Unit Reference Sheet</p>
+        <p class="ref-note" id="refNote"></p>
+      </div>
+      <a class="btn ref-live" id="refLiveLink" href="#" target="_blank" rel="noopener" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14 21 3"/></svg>
+        Open live Google Sheet
+        <span class="net-badge">needs internet</span>
+      </a>
+      <div style="overflow-x:auto">
+        <table class="sched" id="refTable">
+          <thead><tr id="refTableHead"></tr></thead>
+          <tbody id="refTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="quoteView">
     <div class="section">
       <p class="section-title">Customer Details</p>
       <div class="grid">
@@ -268,6 +318,7 @@ table.sched input.pct-input{text-align:right}
     <div class="section">
       <p class="section-title">Notes</p>
       <ul class="notes" id="notesList"></ul>
+    </div>
     </div>
 
     <div class="foot">
@@ -392,6 +443,7 @@ function loadProject(p) {
   renderSchedule();
   applyUnit(null);
   recalc();
+  renderReferenceSheet(p);
 }
 
 function escHtml(s) {
@@ -449,7 +501,8 @@ function renderPlotField() {
     var f = document.createElement('div');
     f.className = 'f'; f.id = 'unitPlotField';
     f.innerHTML = '<label>' + escHtml(project.plotAreaLabel || 'Plot Area (sqft)') + '</label>' +
-      '<input id="unitPlot" type="number" value="' + (currentUnitPlot != null ? currentUnitPlot : '') + '">';
+      '<input id="unitPlot" type="number" placeholder="TBD — confirm with sales desk" value="' +
+      (currentUnitPlot != null ? currentUnitPlot : '') + '">';
     $('#unitFacing').closest('.f').insertAdjacentElement('afterend', f);
   }
 }
@@ -653,6 +706,61 @@ $('#resetBtn').addEventListener('click', function () {
     loadProject(project);
   }
 });
+
+/* ============================================================
+   REFERENCE SHEET
+   ------------------------------------------------------------
+   A read-only view of every unit in the current project's own
+   `units` array (the same data the Unit Selection dropdown uses),
+   plus a link out to project.referenceSheetUrl when one is set —
+   the live Google Sheet a team keeps current, opened in a new
+   tab since this portal has no way to fetch it while running
+   offline from file://.
+   ============================================================ */
+function renderReferenceSheet(p) {
+  var link = $('#refLiveLink');
+  if (p.referenceSheetUrl) {
+    link.href = p.referenceSheetUrl; link.hidden = false;
+  } else {
+    link.hidden = true;
+  }
+  $('#refNote').textContent = 'Read-only. To change a unit’s specs, edit ' +
+    (p.referenceSheetUrl ? 'the live sheet above, then ' : '') +
+    'price-calculator-data.js so every quote for this project starts from the same numbers.';
+
+  var cols = ['no', 'config', 'sba'];
+  var head = [p.unitLabel || 'Unit No', 'Configuration', p.areaLabel || 'Area (sqft)'];
+  if (p.hasPlotArea) { cols.push('plotArea'); head.push(p.plotAreaLabel || 'Plot Area (sqft)'); }
+  cols.push('facing'); head.push('Facing / Aspect');
+  cols.push('status'); head.push('Status');
+
+  $('#refTableHead').innerHTML = head.map(function (h) { return '<th>' + escHtml(h) + '</th>'; }).join('');
+
+  $('#refTableBody').innerHTML = (p.units || []).map(function (u) {
+    var sold = u.status === 'sold';
+    var cells = cols.map(function (c) {
+      if (c === 'status') {
+        return '<td><span class="status-pill ' + (sold ? 'sold' : 'available') + '">' +
+          (sold ? 'Sold' : 'Available') + '</span></td>';
+      }
+      var v = u[c];
+      if (v === null || v === undefined || v === '') v = '<span style="color:var(--fg-faint)">TBD</span>';
+      else v = escHtml(v);
+      return '<td>' + v + '</td>';
+    }).join('');
+    return '<tr' + (sold ? ' class="sold"' : '') + '>' + cells + '</tr>';
+  }).join('') || '<tr><td colspan="' + cols.length + '" style="color:var(--fg-faint)">No units listed for this project yet.</td></tr>';
+}
+
+function setTab(which) {
+  var onQuote = which === 'quote';
+  $('#tabQuote').classList.toggle('on', onQuote);
+  $('#tabReference').classList.toggle('on', !onQuote);
+  $('#quoteView').hidden = !onQuote;
+  $('#referenceView').hidden = onQuote;
+}
+$('#tabQuote').addEventListener('click', function () { setTab('quote'); });
+$('#tabReference').addEventListener('click', function () { setTab('reference'); });
 
 /* ---------------- boot ---------------- */
 if (DATA.length) {

@@ -157,13 +157,32 @@ window.PRICE_CALC_DATA = {
       hasPlotArea: true,
       plotAreaLabel: "Plot Area (sqft)",
 
-      /* TEMPLATE — only Villa 21 is populated, transcribed from a single
-         reference cost-sheet screenshot (not the live workbook). Add the
-         rest of the villa list here the same way Sanvi's was built, from
-         the actual Humming Valley price-list/availability file, before
-         this project is used with a customer. */
+      /* Live source of truth for this project's unit list — opened via the
+         Reference Sheet tab's "Open Live Sheet" link. This session's network
+         policy blocks docs.google.com outright, so nothing here was fetched
+         from it; whoever maintains the sheet should keep this array in sync
+         by hand until an online sync mechanism exists. */
+      referenceSheetUrl: "https://docs.google.com/spreadsheets/d/13T_4bnqwi3Ewt8GFwd1hpdLye9K_-oxrANtJ8sPgYRQ/edit?gid=0#gid=0",
+
+      /* Five villas confirmed available: 8, 11, 20, 22, 23. Facing is each
+         villa's "Aspect" wording from its reference card (e.g. "Central
+         row"), not a compass direction — Humming Valley's cards didn't give
+         one. Villa 8's plot size wasn't given on its card either (its
+         Plot field is TBD below). These "all-inclusive" headline prices
+         from the reference cards (₹2.9–4.5 Cr) are marketing figures, not
+         the same number this calculator computes bottom-up from rate +
+         charges + GST — expect the two not to match exactly, by design.
+         Villa 21 (4 BHK+HT, 3,474 sqft, rate ₹8,750/sqft) was the one
+         example used to work out the charges/GST/payment-schedule rules
+         below — it is not one of the five confirmed-available villas, so
+         it isn't listed as a unit, but its numbers already shaped the
+         pricing model every villa here uses. */
       units: [
-        { no: "21", floor: null, sba: 3474, plotArea: 1356, config: "4 BHK+HT", facing: "", status: "available" }
+        { no: "8",  floor: null, sba: 2660, plotArea: null, config: "3 BHK", facing: "North row", status: "available" },
+        { no: "11", floor: null, sba: 4448, plotArea: 1555, config: "5 BHK", facing: "Central row", status: "available" },
+        { no: "20", floor: null, sba: 3724, plotArea: 1389, config: "4 BHK", facing: "Central row", status: "available" },
+        { no: "22", floor: null, sba: 2680, plotArea: 1080, config: "3 BHK", facing: "South row, clubhouse side", status: "available" },
+        { no: "23", floor: null, sba: 2680, plotArea: 1080, config: "3 BHK", facing: "South row, clubhouse side", status: "available" }
       ],
 
       ratePerSqft: 8750,
