@@ -39,6 +39,7 @@ Save files under exactly these names. Case does not matter; spelling does.
 | `Sales Kit/Sanvi/Brochure/` | `Presentation.pptx` |
 | `Sales Kit/Sanvi/Cost Sheet/` | `Cost Sheet.png` |
 | `Sales Kit/Sanvi/Cost Sheet/` | `Price List.xlsx` |
+| `Sales Kit/_Portal/Price Calculator/` | `Price Calculator.html` — shared with Hummingvalley, see below |
 | `Sales Kit/Sanvi/Availability Sheet/` | `Availability.xlsx` |
 | `Sales Kit/Sanvi/Comparison Sheet/` | `Comparison.xlsx` |
 | `Sales Kit/Sanvi/Location Advantage/` | `Location Advantage.html` |
@@ -54,6 +55,7 @@ Save files under exactly these names. Case does not matter; spelling does.
 | `Sales Kit/Hummingvalley/Cost Sheet/` | `Villa 20.png`, `Villa 21.png` |
 | `Sales Kit/Hummingvalley/Master Plan/` | `Master Plan.png` |
 | `Sales Kit/Hummingvalley/Master Plan/` | `Interactive Master Plan.html`, **hand-built, see below** |
+| `Sales Kit/_Portal/Price Calculator/` | `Price Calculator.html` — shared with Sanvi, see below |
 | `Sales Kit/Hummingvalley/Location Advantage/` | `Location Advantage.html`, **generated, do not replace** |
 | `Sales Kit/Hummingvalley/EMI Calculator/` | `EMI Calculator.html`, **generated, do not replace** |
 | `Sales Kit/Hummingvalley/Video/` | `Walkthrough.mp4` |
@@ -236,6 +238,80 @@ other project folder later without dragging the whole portal's styling along.
 To change the loan-amount range, default interest rate, or any other input limit, open
 `src/emi-calculator.html` and edit the `min`/`max`/`value` attributes on the three
 `<input type="range">` sliders near the top of the body, then rebuild.
+
+### The Price Calculator
+
+Every project's "which unit, what price, what payment schedule" conversation with a
+customer used to happen in a separate Excel sheet per project. `Price Calculator` is
+one interactive page that replaces all of them — a project switcher at the top, then a
+live quote sheet below: pick a unit, everything auto-fills, every number is still
+editable, and it prints to a clean customer-ready page or PDF.
+
+It is **one shared tool, not one per project.** The file lives outside any single
+project's folder, at `Sales Kit/_Portal/Price Calculator/`, and both Sanvi and
+Hummingvalley link to that same file from their own Cost Sheet folder — that's why
+their `Price Calculator` entries in `src/data.js` carry an explicit `path:` instead of
+the usual bare `name:`. Opening it from Sanvi's folder lands on Sanvi already selected
+(via a `#sanvi` link), opening it from Hummingvalley's lands on Hummingvalley
+(`#hummingvalley`) — same file, correct starting point either way.
+
+**Everything about a project is data, not code.** `price-calculator-data.js`, next to
+the HTML file, holds one array of projects; the HTML file has no project-specific
+numbers in it anywhere. To add a third project, copy the shape of an existing entry in
+that file — its own unit list, its own charges, its own GST rule, its own payment
+milestones, its own logo and accent colour — and it appears in the project switcher
+immediately, no code change. The comment block at the top of that file documents every
+field the engine understands.
+
+**Sanvi's 44 units are the real building.** Its master list (`Sheet3` in the original
+workbook) and its Availability sheet disagreed on three flats' configuration —
+Flat 120 (Sheet3 said 3 BHK, Availability said 2 BHK, and at 1,090 sqft it doesn't
+match *any* named size on the official Price List either), Flat 320 (3 BHK vs 2 BHK —
+its 1,215 sqft matches the "2 BHK Delta" size exactly, so Availability is very likely
+right) and Flat 531 (1 BHK vs 2 BHK — its 1,075 sqft matches "2 BHK Gamma" exactly, same
+conclusion). Availability's value was used for all three since it's the sheet your team
+actually keeps current, but Flat 120 in particular is worth a manual check — it's
+editable in the app regardless, so a wrong label there costs nothing to fix on the spot.
+Flats 130, 225 and 235 have no Availability row at all (already sold) and are greyed out
+and unselectable in the picker, exactly like the other two projects will be once their
+sold units are recorded the same way.
+
+**Hummingvalley's project entry is a starting template, not a finished price list.**
+Only Villa 21 is populated, transcribed from a single reference cost-sheet screenshot —
+there is no live Humming Valley workbook to draw the rest of the villa list from yet.
+Send the actual file (or a screenshot per villa, the way Sanvi's was built) and the rest
+can be added the same way. That one reference screenshot also had an internal
+inconsistency worth knowing about: its "On Completion of Plinth" row was charged at
+₹20,47,264 despite being labelled 5% (5% of that quote's ₹3,56,54,475 grand total is
+₹17,82,724 — matching every *other* 5% row on the same sheet). The calculator computes
+the percentage faithfully rather than reproducing that number, so it won't match the
+screenshot on that one line — everything else does, exactly.
+
+**Two real differences between the two projects, by design, not a bug:** Sanvi charges
+GST on Base Price *and* Other Charges; Hummingvalley's reference sheet charges it on
+Base Price only. Sanvi's Preferential Location Charge is a footnote that was never
+actually billed (off by default, tick the box to apply its ₹100/sqft); Hummingvalley's
+reference sheet bills its ₹500/sqft PLC unconditionally (on by default). Both are
+per-project settings in the data file, not something the engine assumes.
+
+**Nothing is locked.** Every charge and every payment-schedule row can be renamed,
+re-priced, ticked off, deleted, or added to per quote — this was a deliberate ask, so
+the sales team isn't blocked waiting for a developer every time a deal needs a one-off
+line item. The only values the app won't let you type over directly are Base Price
+Total, Other Charges Total, GST Amount and Grand Total, since those are always the sum
+of the editable numbers around them — to land on a different final number, change
+Discount (always present, defaults to ₹0) or adjust the line item that should actually
+be different. The payment schedule shows a green check when its rows add up to Grand
+Total exactly, or an amber warning naming the gap if they don't, so a milestone
+mistake is visible immediately instead of surfacing in front of the customer.
+
+**Print / Save as PDF** hides the toolbar and turns every input into plain text, so the
+same page that the rep fills in live is what gets handed to (or e-mailed to) the
+customer, with no separate "quote template" to keep in sync.
+
+This page is **hand-authored HTML**, like the interactive master plan — not generated
+from a `src/` build step. Edit `Price Calculator.html` or `price-calculator-data.js`
+directly; there is nothing to rebuild afterwards.
 
 ### Typeface and colour
 
