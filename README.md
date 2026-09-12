@@ -220,12 +220,16 @@ rebuild needed:
 (`<N>` is `8`, `11`, `20`, `22` or `23`.) Any floor-plan tile can be clicked to zoom it
 full-screen once a real image is in place — useful for reading a plan off a TV across a room.
 
-**The video tab has no placeholder file** — it still shows "Walkthrough video not added
-yet." A still image can be faked convincingly offline; a working placeholder *video* file
-cannot be, without either an internet fetch (which breaks the offline guarantee) or a
-video encoder this build environment doesn't have available. Save a real file at
-`Sales Kit/Hummingvalley/Master Plan/videos/villa-<N>-walkthrough.mp4` and it will start
-working immediately — nothing else to change.
+**The video tab now has a real placeholder**, for all five villas, at
+`Sales Kit/Hummingvalley/Master Plan/videos/villa-<N>-walkthrough.mp4` — a branded
+"Video Not Added Yet" frame, not just an empty state. Worth knowing what it actually
+is: the environment that built this kit has no H.264 *encoder* (only a decoder), so
+these five files are VP8/WebM video saved with a `.mp4` extension. That sounds like it
+shouldn't work, but Chrome determines playability from a local file's actual container
+bytes, not its extension, as long as the page and the video share a `file://` origin —
+exactly this kit's setup — so it plays correctly with no special handling. Save a real
+file over any of these, same file name, and it replaces the placeholder with no other
+change needed; a normal H.264 `.mp4` export from any phone or editor works fine.
 
 This page is **hand-authored HTML**, not generated from a `src/` build step — this
 project folder does not carry the `src/`/`tools/build.mjs` pipeline the rest of this
