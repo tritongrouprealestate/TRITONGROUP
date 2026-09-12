@@ -484,8 +484,10 @@ function applyUnit(u) {
     $('#unitConfig').value = u.config || '';
     $('#unitSba').value = u.sba || 0;
     $('#unitFacing').value = u.facing || '';
+    $('#rate').value = u.rate != null ? u.rate : (p.ratePerSqft || 0);
   } else {
     $('#unitNo').value = ''; $('#unitConfig').value = ''; $('#unitSba').value = ''; $('#unitFacing').value = '';
+    $('#rate').value = p.ratePerSqft || 0;
   }
   currentUnitFloor = u ? u.floor : null;
   currentUnitPlot = u ? u.plotArea : null;

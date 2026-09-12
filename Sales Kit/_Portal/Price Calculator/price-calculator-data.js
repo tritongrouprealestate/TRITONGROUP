@@ -164,25 +164,28 @@ window.PRICE_CALC_DATA = {
          by hand until an online sync mechanism exists. */
       referenceSheetUrl: "https://docs.google.com/spreadsheets/d/13T_4bnqwi3Ewt8GFwd1hpdLye9K_-oxrANtJ8sPgYRQ/edit?gid=0#gid=0",
 
-      /* Five villas confirmed available: 8, 11, 20, 22, 23. Facing is each
-         villa's "Aspect" wording from its reference card (e.g. "Central
-         row"), not a compass direction — Humming Valley's cards didn't give
-         one. Villa 8's plot size wasn't given on its card either (its
-         Plot field is TBD below). These "all-inclusive" headline prices
-         from the reference cards (₹2.9–4.5 Cr) are marketing figures, not
-         the same number this calculator computes bottom-up from rate +
-         charges + GST — expect the two not to match exactly, by design.
-         Villa 21 (4 BHK+HT, 3,474 sqft, rate ₹8,750/sqft) was the one
+      /* Five villas confirmed available: 8, 11, 20, 22, 23 — every field
+         below is now transcribed straight from each villa's own cost
+         sheet (Sales Kit/Hummingvalley/Cost Sheet/), not the earlier
+         marketing cards, and was checked by re-deriving every line of
+         each sheet's Base Price / Other Charges / GST / Grand Total and
+         confirming it matches exactly. Two real corrections came out of
+         that: Villa 20 is actually 3,494 sqft SBU / 1,360 sqft plot (the
+         marketing card had said 3,724 / 1,389), and rate per sqft is NOT
+         uniform across the project — 11 & 20 are ₹8,750/sqft, 8/22/23 are
+         ₹9,000/sqft — hence the per-unit `rate` below, which the app now
+         auto-fills into the Basic Price per sqft field on selection
+         instead of always using the project-level ratePerSqft default.
+         Villa 21 (4 BHK+HT, 3,474 sqft, ₹8,750/sqft) was the original
          example used to work out the charges/GST/payment-schedule rules
-         below — it is not one of the five confirmed-available villas, so
-         it isn't listed as a unit, but its numbers already shaped the
-         pricing model every villa here uses. */
+         below — still not one of the five confirmed-available villas, so
+         it isn't listed as a unit. */
       units: [
-        { no: "8",  floor: null, sba: 2660, plotArea: null, config: "3 BHK", facing: "North row", status: "available" },
-        { no: "11", floor: null, sba: 4448, plotArea: 1555, config: "5 BHK", facing: "Central row", status: "available" },
-        { no: "20", floor: null, sba: 3724, plotArea: 1389, config: "4 BHK", facing: "Central row", status: "available" },
-        { no: "22", floor: null, sba: 2680, plotArea: 1080, config: "3 BHK", facing: "South row, clubhouse side", status: "available" },
-        { no: "23", floor: null, sba: 2680, plotArea: 1080, config: "3 BHK", facing: "South row, clubhouse side", status: "available" }
+        { no: "8",  floor: null, sba: 2660, plotArea: 1080, config: "3 BHK", facing: "East Facing", rate: 9000, status: "available" },
+        { no: "11", floor: null, sba: 4448, plotArea: 1555, config: "5 BHK", facing: "North Facing", rate: 8750, status: "available" },
+        { no: "20", floor: null, sba: 3494, plotArea: 1360, config: "4 BHK", facing: "North Facing", rate: 8750, status: "available" },
+        { no: "22", floor: null, sba: 2680, plotArea: 1080, config: "3 BHK", facing: "North Facing", rate: 9000, status: "available" },
+        { no: "23", floor: null, sba: 2680, plotArea: 1080, config: "3 BHK", facing: "North Facing", rate: 9000, status: "available" }
       ],
 
       ratePerSqft: 8750,
