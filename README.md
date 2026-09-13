@@ -30,13 +30,28 @@ portal remembers it from then on, including after restarting the laptop.
 
 Save files under exactly these names. Case does not matter; spelling does.
 
+**Photo and video slots don't care about the file extension.** Cost sheets, the
+master plan image, cover photos, floor plans and the walkthrough/AV films will all
+open whatever is actually sitting under that name — drop in a `.jpg` where a `.png`
+was named, or a `.mov` iPhone export where a `.mp4` was named, and it still shows up
+correctly with no edits here. Only the part before the last dot has to match (e.g.
+`Villa 8`), and only one file per slot — if two formats exist side by side, the one
+listed first in the table below wins.
+
+This does **not** extend to the Brochure, Price List, Availability and Comparison
+Sheet files. Those must stay PDF/Excel exactly as named — there is no way for a page
+running with no server to check whether a Word/Excel/PowerPoint file exists before
+someone clicks it, and Chrome itself can only preview a PDF inline; anything else
+just downloads. That's the same reason the Presentation Deck (`.pptx`) files were
+dropped from both projects' Brochure folders earlier — keep the high-quality PDF as
+the one file sales actually opens on-screen.
+
 ### Sanvi
 
 | Put the file here | Named |
 |---|---|
 | `Sales Kit/Sanvi/` | `cover.jpg` — the photo on the project card |
 | `Sales Kit/Sanvi/Brochure/` | `Brochure.pdf` |
-| `Sales Kit/Sanvi/Brochure/` | `Presentation.pptx` |
 | `Sales Kit/Sanvi/Cost Sheet/` | `Cost Sheet.png` |
 | `Sales Kit/Sanvi/Cost Sheet/` | `Price List.xlsx` |
 | `Sales Kit/_Portal/Price Calculator/` | `Price Calculator.html` — shared with Hummingvalley, see below |
@@ -51,8 +66,7 @@ Save files under exactly these names. Case does not matter; spelling does.
 |---|---|
 | `Sales Kit/Hummingvalley/` | `cover.jpg` |
 | `Sales Kit/Hummingvalley/Brochure/` | `Brochure.pdf` |
-| `Sales Kit/Hummingvalley/Brochure/` | `Presentation.pptx` |
-| `Sales Kit/Hummingvalley/Cost Sheet/` | `Villa 20.png`, `Villa 21.png` |
+| `Sales Kit/Hummingvalley/Cost Sheet/` | `Villa 8.png`, `Villa 11.png`, `Villa 20.png`, `Villa 22.png`, `Villa 23.png` |
 | `Sales Kit/Hummingvalley/Master Plan/` | `Master Plan.png` |
 | `Sales Kit/Hummingvalley/Master Plan/` | `Interactive Master Plan.html`, **hand-built, see below** |
 | `Sales Kit/_Portal/Price Calculator/` | `Price Calculator.html` — shared with Sanvi, see below |
@@ -220,16 +234,13 @@ rebuild needed:
 (`<N>` is `8`, `11`, `20`, `22` or `23`.) Any floor-plan tile can be clicked to zoom it
 full-screen once a real image is in place — useful for reading a plan off a TV across a room.
 
-**The video tab now has a real placeholder**, for all five villas, at
-`Sales Kit/Hummingvalley/Master Plan/videos/villa-<N>-walkthrough.mp4` — a branded
-"Video Not Added Yet" frame, not just an empty state. Worth knowing what it actually
-is: the environment that built this kit has no H.264 *encoder* (only a decoder), so
-these five files are VP8/WebM video saved with a `.mp4` extension. That sounds like it
-shouldn't work, but Chrome determines playability from a local file's actual container
-bytes, not its extension, as long as the page and the video share a `file://` origin —
-exactly this kit's setup — so it plays correctly with no special handling. Save a real
-file over any of these, same file name, and it replaces the placeholder with no other
-change needed; a normal H.264 `.mp4` export from any phone or editor works fine.
+**The video tab now carries the real walkthrough film for all five villas**, at
+`Sales Kit/Hummingvalley/Master Plan/videos/villa-<N>-walkthrough.mp4`. (It briefly shipped
+with a branded "Video Not Added Yet" placeholder in this same spot — a normal H.264 `.mp4`
+export from any phone or editor drops in and plays with no other change, since the
+extension on these files doesn't have to match the byte format; Chrome checks the file's
+actual content, not its name, as long as the page and the video share a `file://`
+origin — exactly this kit's setup.)
 
 This page is **hand-authored HTML**, not generated from a `src/` build step — this
 project folder does not carry the `src/`/`tools/build.mjs` pipeline the rest of this

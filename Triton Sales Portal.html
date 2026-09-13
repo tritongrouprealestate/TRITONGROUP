@@ -829,8 +829,11 @@ window.PORTAL_DATA = {
         { id: "brochure", name: "Brochure", files: [
           { label: "Brochure",            name: "Brochure.pdf" } ] },
         { id: "cost-sheet", name: "Cost Sheet", files: [
+          { label: "Villa 8",             name: "Villa 8.png" },
+          { label: "Villa 11",            name: "Villa 11.png" },
           { label: "Villa 20",            name: "Villa 20.png" },
-          { label: "Villa 21",            name: "Villa 21.png" },
+          { label: "Villa 22",            name: "Villa 22.png" },
+          { label: "Villa 23",            name: "Villa 23.png" },
           { label: "Price Calculator",    name: "Price Calculator.html",
             path: "Sales Kit/_Portal/Price Calculator/Price Calculator.html#hummingvalley" } ] },
         { id: "master-plan", name: "Master Plan", files: [
@@ -954,6 +957,29 @@ function kindOf(name) {
 }
 var KIND_LABEL = { pdf:'PDF', page:'Page', video:'Video', image:'Image', sheet:'Sheet', youtube:'YouTube',
                    doc:'Document', ppt:'Deck', file:'File' };
+
+/* Extension-agnostic photo/video slots: whoever manages the kit can drop a
+   replacement in any common format under the same base file name — no need
+   to match the extension named in the data above. The declared extension is
+   tried first, then every sibling in its family; the browser's own onerror
+   walks the list live (see the capturing "error"/media listeners below), and
+   whichever one actually loads becomes both the preview and the click-through
+   link. PDFs and Office files (brochure, price list, availability, comparison)
+   are not part of this — a local page has no way to check whether one exists
+   without a server, and Chrome can only preview a PDF inline anyway, so those
+   still need their exact declared file name. */
+var IMAGE_EXTS = ['jpg','jpeg','png','webp','gif','avif','bmp','svg'];
+var VIDEO_EXTS = ['mp4','mov','m4v','webm','ogv','avi','mkv'];
+function mediaCandidates(file) {
+  var path = file.path, dot = path.lastIndexOf('.');
+  if (dot < 0) return [path];
+  var base = path.slice(0, dot), ext = path.slice(dot + 1).toLowerCase();
+  var fam = IMAGE_EXTS.indexOf(ext) > -1 ? IMAGE_EXTS
+          : VIDEO_EXTS.indexOf(ext) > -1 ? VIDEO_EXTS : null;
+  if (!fam) return [path];
+  return [ext].concat(fam.filter(function (e) { return e !== ext; }))
+              .map(function (e) { return base + '.' + e; });
+}
 
 function fileCount(p) {
   return (p.folders || []).reduce(function (n, f) {
@@ -1129,13 +1155,16 @@ function preview(file, k) {
   if (file.youtube)
     return '<img class="shot" alt="" src="' + esc(uri(file.thumb || '')) + '" data-fb="' +
            'https://img.youtube.com/vi/' + esc(file.youtube) + '/hqdefault.jpg">';
+  var cand = mediaCandidates(file).map(uri);
+  var cascade = cand.length > 1
+    ? ' data-cascade=\'' + esc(JSON.stringify(cand.slice(1))) + '\'' : '';
   if (k === 'image')
     /* the sheet itself, anchored to its top edge so the heading that identifies
        it is always the part on show */
-    return '<img class="shot doc" alt="" loading="lazy" decoding="async" src="' +
-           esc(uri(file.path)) + '">';
-  return '<video class="shot" muted playsinline preload="metadata" tabindex="-1" src="' +
-         esc(uri(file.path)) + '#t=1"></video>';
+    return '<img class="shot doc" alt="" loading="lazy" decoding="async" data-mediaslot="1" src="' +
+           esc(cand[0]) + '"' + cascade + '>';
+  return '<video class="shot" muted playsinline preload="metadata" tabindex="-1" data-mediaslot="1" src="' +
+         esc(cand[0]) + '#t=1"' + cascade + '></video>';
 }
 
 /* An online film. A plain <a target="_blank"> so the click just opens YouTube —
@@ -1152,13 +1181,42 @@ function linkTile(l, i) {
          '</a>';
 }
 
-/* Two-stage image fallback. The error event does not bubble, so it is caught
-   on the way down instead. */
+/* Media fallback chain. Neither "error" nor "loadedmetadata"/"load" on an
+   <img>/<video> bubbles, so both are caught on the way down (capture) instead. */
 document.addEventListener('error', function (e) {
   var t = e.target;
-  if (!t || t.tagName !== 'IMG' || !t.classList.contains('shot')) return;
-  if (t.dataset.fb) { var u = t.dataset.fb; delete t.dataset.fb; t.src = u; }
-  else t.remove();
+  if (!t || !t.classList || !t.classList.contains('shot')) return;
+  if (t.tagName !== 'IMG' && t.tagName !== 'VIDEO') return;
+  if (t.dataset.cascade) {
+    var list; try { list = JSON.parse(t.dataset.cascade); } catch (err) { list = []; }
+    var next = list.shift();
+    if (next) {
+      t.dataset.cascade = JSON.stringify(list);
+      if (t.tagName === 'VIDEO') { t.src = next + '#t=1'; t.load(); }
+      else t.src = next;
+      return;
+    }
+    delete t.dataset.cascade;
+  }
+  if (t.dataset.fb) { var u = t.dataset.fb; delete t.dataset.fb; t.src = u; return; }
+  if (t.tagName === 'IMG') t.remove();
+}, true);
+
+/* Once the real file is found (first try or after cascading), point the tile's
+   own click-through link at that same, now-confirmed, extension. */
+function syncTileHref(el) {
+  var a = el.closest('a.tile');
+  if (!a) return;
+  var src = el.tagName === 'VIDEO' ? el.currentSrc : el.src;
+  if (src) a.href = src.replace(/#t=1$/, '');
+}
+document.addEventListener('load', function (e) {
+  if (e.target && e.target.tagName === 'IMG' && e.target.dataset.mediaslot)
+    syncTileHref(e.target);
+}, true);
+document.addEventListener('loadedmetadata', function (e) {
+  if (e.target && e.target.tagName === 'VIDEO' && e.target.dataset.mediaslot)
+    syncTileHref(e.target);
 }, true);
 
 function projectCard(p, i) {
@@ -1289,11 +1347,15 @@ function renderFolder(p, f) {
                    '<p class="tile-sub' + (file.missing || file.note ? ' warn' : '') + '">' +
                    esc(sub) + '</p></span>';
             var delay = ' style="transition-delay:' + (i * 45) + 'ms"';
+            /* For a media slot the link starts pointed at the same first guess as
+               the thumbnail, then gets corrected in place once the browser confirms
+               which extension actually loaded (see the capturing listeners above). */
+            var href = media ? mediaCandidates(file).map(uri)[0] : uri(file.path);
             /* One click, straight into a new tab. Nothing sits in between. */
             return file.missing
               ? '<div class="tile missing rv"' + delay + '>' + inner + '</div>'
               : '<a class="tile rv' + (media ? ' media' : '') + '"' + delay +
-                ' href="' + esc(uri(file.path)) + '" target="_blank" rel="noopener"' +
+                ' href="' + esc(href) + '" target="_blank" rel="noopener"' +
                 ' data-cursor="open">' + inner + '</a>';
           }).join('') + '</div>'
         : emptyState(
