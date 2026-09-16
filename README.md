@@ -270,8 +270,12 @@ with that exact villa preselected in the unit picker, same numbers as the popup 
 ready to walk a customer through the full quote instead of just the headline price. The
 link is `Price Calculator.html#hummingvalley/<N>`, a `/<N>` on top of the usual
 `#hummingvalley` project link; the calculator's own boot code reads that second part and
-selects the matching unit before the page ever paints. Both links share this same pattern,
-so a third one (an EMI calculator preset to a villa's price, say) would follow it too.
+selects the matching unit before the page ever paints.
+
+A third link, **EMI Calculator**, follows the same pattern: `EMI Calculator.html#<N>`
+opens Hummingvalley's home loan calculator with that villa preselected, its 80% loan
+amount already filled in. See "The Hummingvalley EMI calculator" below for how that
+80/20 split works.
 
 To change a figure, edit the `VILLAS` object near the top of the `<script>` block in
 `Interactive Master Plan.html`. To highlight a different or additional plot, add an entry
@@ -326,14 +330,29 @@ interest rate, tenure) and the monthly instalment, the principal/interest split 
 year-by-year amortisation table update instantly, all figures in the Indian numbering
 system (lakhs and crores).
 
-It is a completely separate, self-contained file with no shared fonts or styling from
-the rest of the kit, deliberately: it was built to an exact specification for a standalone
-navy-and-emerald calculator, and keeping it independent means it can be dropped into any
-other project folder later without dragging the whole portal's styling along.
+It is a self-contained file with its own fonts and styling, deliberately: it was built to
+an exact specification for a standalone navy-and-emerald calculator, and keeping its look
+independent means it can be dropped into any other project folder later without dragging
+the whole portal's styling along. Its one dependency is `price-calculator-data.js`
+(loaded from `Sales Kit/_Portal/Price Calculator/`), used only to read each villa's price;
+that's a data file, not a styling one, so it doesn't affect how the page looks.
+
+**A Villa dropdown at the top of Loan details** picks up Hummingvalley's confirmed units
+from that same data file. Selecting one fills in 80% of that villa's final price as the
+loan amount (the 20/80 booking-versus-loan split every Hummingvalley sale follows) and
+shows a note with the full breakdown. The loan amount stays editable afterward, so a rep
+can still explore a different loan size for the same villa without losing that context.
+Picking **Custom loan amount**, the first option, drops the villa context and leaves
+whatever amount is currently in the field for free editing, independent of any villa.
+A villa's price is computed the same way the Price Calculator computes its Grand Total
+(same charges, same GST rule, every charge at its default state), so the two numbers
+never drift apart. Every available villa's Master Plan popup links here too
+(`EMI Calculator.html#<villa number>`), landing with that exact villa preselected.
 
 To change the loan-amount range, default interest rate, or any other input limit, open
-`src/emi-calculator.html` and edit the `min`/`max`/`value` attributes on the three
-`<input type="range">` sliders near the top of the body, then rebuild.
+`Sales Kit/Hummingvalley/EMI Calculator/EMI Calculator.html` and edit the `min`/`max`/`value`
+attributes on the `<input type="range">` sliders near the top of the body. No rebuild step,
+same as every other file in this kit.
 
 ### The Price Calculator
 

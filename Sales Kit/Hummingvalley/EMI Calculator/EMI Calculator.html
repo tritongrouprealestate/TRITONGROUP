@@ -66,6 +66,13 @@ button{font:inherit;cursor:pointer}
 .field-value input:focus{outline:none;border-color:var(--emerald);box-shadow:0 0 0 3px rgba(14,159,110,.14)}
 .field-unit{font-size:12px;color:var(--ink-faint);font-weight:600;margin-left:6px;white-space:nowrap}
 
+.villa-select{width:100%;padding:10px 12px;border-radius:9px;border:1.5px solid var(--line);
+  background:var(--bg);color:var(--navy);font:700 14px/1 var(--sans);
+  transition:border-color .2s,box-shadow .2s}
+.villa-select:focus{outline:none;border-color:var(--emerald);box-shadow:0 0 0 3px rgba(14,159,110,.14)}
+.villa-note{margin:10px 0 0;padding:10px 12px;border-radius:9px;background:var(--emerald-tint);
+  border:1px solid rgba(14,159,110,.2);color:var(--emerald-dark);font-size:12px;line-height:1.6;font-weight:600}
+
 input[type=range]{
   -webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:99px;
   background:linear-gradient(to right, var(--emerald) 0%, var(--emerald) var(--pct,50%), var(--line) var(--pct,50%), var(--line) 100%);
@@ -187,6 +194,16 @@ table.amort td.year{font-weight:700;color:var(--navy)}
 
         <div class="field">
           <div class="field-head">
+            <span class="field-label">Villa</span>
+          </div>
+          <select id="villaSelect" class="villa-select">
+            <option value="">Custom loan amount</option>
+          </select>
+          <p class="villa-note" id="villaNote" hidden></p>
+        </div>
+
+        <div class="field">
+          <div class="field-head">
             <span class="field-label">Loan amount</span>
             <span class="field-value"><input type="text" id="amountInput" inputmode="numeric"></span>
           </div>
@@ -290,6 +307,7 @@ table.amort td.year{font-weight:700;color:var(--navy)}
   </p>
 </div>
 
+<script src="../../_Portal/Price Calculator/price-calculator-data.js"></script>
 <script>
 (function(){
 'use strict';
@@ -298,6 +316,7 @@ var $ = function(id){ return document.getElementById(id); };
 
 var amountSlider = $('amountSlider'), rateSlider = $('rateSlider'), tenureSlider = $('tenureSlider');
 var amountInput = $('amountInput'), rateInput = $('rateInput'), tenureInput = $('tenureInput');
+var villaSelect = $('villaSelect'), villaNote = $('villaNote');
 
 function inr(n, decimals){
   decimals = decimals || 0;
@@ -309,6 +328,66 @@ function inrCompact(n){
   if (n >= 100000) return (n/100000).toFixed(2).replace(/\\.00$/,'') + ' L';
   return inr(n);
 }
+
+/* ============================================================
+   VILLA PRICING
+   ------------------------------------------------------------
+   Reads the same price-calculator-data.js this kit's Price
+   Calculator uses, so a villa's "final price" here is always the
+   same number the Price Calculator shows for it, no separate
+   figure to keep in sync by hand. Recomputes the Grand Total with
+   every charge at its default state, since this calculator has no
+   per-charge toggles of its own; a villa with unusual overrides
+   should still be spot-checked against the Price Calculator.
+   ============================================================ */
+var HV = ((window.PRICE_CALC_DATA || {}).projects || [])
+  .filter(function (p) { return p.id === 'hummingvalley'; })[0] || null;
+
+function villaFinalPrice(u) {
+  var sba = u.sba || 0;
+  var rate = u.rate != null ? u.rate : ((HV && HV.ratePerSqft) || 0);
+  var base = rate * sba;
+  var otherTotal = ((HV && HV.charges) || []).reduce(function (a, c) {
+    if (c.enabledByDefault === false) return a;
+    if (c.type === 'fixed') return a + (c.default || 0);
+    if (c.type === 'perSqft') return a + (c.rate || 0) * sba;
+    return a; // perSqftByFloor: none of Hummingvalley's villas carry a floor
+  }, 0);
+  var gstBase = (HV && HV.gstBase) || [];
+  var gstBaseAmt = (gstBase.indexOf('basePrice') > -1 ? base : 0) +
+                   (gstBase.indexOf('otherCharges') > -1 ? otherTotal : 0);
+  var gstAmt = ((HV && HV.gstPercent) || 0) / 100 * gstBaseAmt;
+  return base + otherTotal + gstAmt;
+}
+
+function populateVillaSelect() {
+  var units = ((HV && HV.units) || []).filter(function (u) { return u.status !== 'sold'; });
+  units.forEach(function (u) {
+    var o = document.createElement('option');
+    o.value = u.no;
+    o.textContent = 'Villa ' + u.no + ' · ' + (u.config || '') + ' · ' + inrCompact(villaFinalPrice(u));
+    villaSelect.appendChild(o);
+  });
+}
+
+function applyVilla(villaNo) {
+  if (!villaNo) { villaNote.hidden = true; return; }
+  var u = ((HV && HV.units) || []).filter(function (x) { return String(x.no) === String(villaNo); })[0];
+  if (!u) { villaNote.hidden = true; return; }
+
+  var price = villaFinalPrice(u);
+  var booking = price * 0.2;
+  var loan = price * 0.8;
+
+  amountSlider.value = Math.min(Math.max(Math.round(loan), Number(amountSlider.min)), Number(amountSlider.max));
+  update();
+
+  villaNote.hidden = false;
+  villaNote.textContent = 'Villa ' + u.no + '’s final price is ' + inrCompact(price) +
+    '. 20% booking is ' + inrCompact(booking) + ', and the 80% loan amount below is ' + inrCompact(loan) + '.';
+}
+
+villaSelect.addEventListener('change', function () { applyVilla(villaSelect.value); });
 
 function setSliderPct(slider){
   var pct = (slider.value - slider.min) / (slider.max - slider.min) * 100;
@@ -415,7 +494,17 @@ toggle.addEventListener('click', function(){
   toggle.setAttribute('aria-expanded', String(open));
 });
 
-update();
+/* #<villaNo>, e.g. "#23" from a villa's own Master Plan popup, preselects
+   that villa here the same way it already lands on that villa's quote in
+   the Price Calculator. */
+populateVillaSelect();
+var wantedVilla = location.hash.replace('#', '');
+if (wantedVilla && villaSelect.querySelector('option[value="' + wantedVilla + '"]')) {
+  villaSelect.value = wantedVilla;
+  applyVilla(wantedVilla);
+} else {
+  update();
+}
 })();
 </script>
 </body>
