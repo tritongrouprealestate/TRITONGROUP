@@ -70,7 +70,6 @@ body{
   font-feature-settings:"ss01","cv01";
   -webkit-font-smoothing:antialiased;overflow-x:hidden;
 }
-body.is-locked{overflow:hidden;height:100dvh}
 img,video{display:block;max-width:100%}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 kbd{
@@ -169,71 +168,46 @@ body.cur-hot .cursor{opacity:0}
 .tb-btn:hover kbd{color:rgba(255,255,255,.8);border-color:rgba(255,255,255,.34);background:rgba(255,255,255,.14)}
 
 /* ============================================================
-   HERO — scroll expand
+   HERO
    ============================================================ */
-.hero{position:relative;height:100dvh;width:100%;overflow:hidden;isolation:isolate;background:var(--paper)}
-.hero-bg{position:absolute;inset:0;z-index:0;will-change:opacity,transform}
-.hero-bg-fallback{
-  position:absolute;inset:0;
+.hero{position:relative;overflow:hidden;isolation:isolate;
+  padding:clamp(96px,17vh,176px) 20px clamp(64px,10vh,120px);
+  display:flex;flex-direction:column;align-items:center;text-align:center;
   background:
     radial-gradient(80% 60% at 20% 15%,rgba(198,160,82,.20),transparent 60%),
     radial-gradient(70% 70% at 82% 78%,rgba(27,122,115,.30),transparent 62%),
     linear-gradient(160deg,#0C1A17,#0A0E0D 48%,#08100E);
 }
-.hero-bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
-.hero-bg-scrim{position:absolute;inset:0;background:rgba(0,0,0,.28)}
-.hero-stage{position:relative;z-index:2;height:100dvh;display:grid;place-items:center}
-
-.hero-box{
-  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-  max-width:95vw;max-height:86vh;border-radius:20px;
-  box-shadow:0 40px 120px rgba(0,0,0,.34),0 0 0 1px rgba(0,0,0,.05);
-  z-index:1;
-}
-.hero-media{position:relative;width:100%;height:100%;border-radius:18px;overflow:hidden}
-.hero-media-fallback{
-  position:absolute;inset:0;z-index:0;
-  background:linear-gradient(140deg,#12302A,#0A0E0D 60%,#241D08);
-}
-.hero-media video{position:absolute;inset:0;z-index:1;width:100%;height:100%;object-fit:cover}
-.hero-media-scrim{position:absolute;inset:0;z-index:2;background:#000;opacity:.5;
-  transition:opacity .2s linear}
-.hero-meta{
-  position:absolute;left:0;right:0;top:calc(100% + 18px);
-  display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;
-}
-.hero-date{margin:0;font:500 11px/1 var(--sans);letter-spacing:.42em;text-transform:uppercase;
-  color:var(--gold-2);will-change:transform}
-.hero-cue{margin:0;font:500 11px/1 var(--sans);letter-spacing:.28em;text-transform:uppercase;
-  color:rgba(255,255,255,.72);display:flex;flex-direction:column;align-items:center;gap:10px;
-  will-change:transform}
-.cue-line{display:block;width:1px;height:34px;
-  background:linear-gradient(180deg,var(--gold-2),transparent);
-  animation:cueDrop 1.9s var(--ease-in-out) infinite}
-@keyframes cueDrop{0%{transform:scaleY(0);transform-origin:top}
-  45%{transform:scaleY(1);transform-origin:top}
-  55%{transform:scaleY(1);transform-origin:bottom}
-  100%{transform:scaleY(0);transform-origin:bottom}}
-
-.hero-title{
-  position:relative;z-index:3;margin:0;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:clamp(2px,1vh,10px);
-  mix-blend-mode:difference;pointer-events:none;text-align:center;width:100%;
-}
-.hw{
-  font-family:var(--display);font-weight:400;
+.hero-tag{margin:0 0 22px;padding:8px 20px;border-radius:99px;
+  border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  font:500 11px/1 var(--sans);letter-spacing:.32em;text-transform:uppercase;
+  color:var(--gold-2)}
+.hero-title{margin:0;max-width:19ch;font-family:var(--display);font-weight:400;
   font-variation-settings:"opsz" 144,"SOFT" 0,"WONK" 1;
-  font-size:clamp(46px,9.8vw,140px);line-height:.9;letter-spacing:-.015em;
-  color:#e8efec;will-change:transform;display:block;
-}
-.hw-b{letter-spacing:.01em}
+  font-size:clamp(32px,6vw,72px);line-height:1.06;letter-spacing:-.01em;color:#e8efec}
+.hero-desc{margin:22px 0 0;max-width:52ch;font:400 15px/1.7 var(--sans);
+  color:rgba(232,239,236,.68)}
+.hero-cta{margin-top:32px;display:inline-flex;align-items:center;gap:10px;
+  padding:14px 30px;border-radius:99px;background:var(--gold-2);color:#231a06;
+  font:600 12.5px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;
+  transition:transform .35s var(--ease),background .35s var(--ease)}
+.hero-cta:hover{transform:translateY(-3px);background:#eddba0}
 
-.hero-progress{position:absolute;left:0;right:0;bottom:0;height:2px;z-index:4;
-  background:rgba(0,0,0,.06)}
-.hero-progress span{display:block;height:100%;width:0;
-  background:linear-gradient(90deg,var(--teal-700),var(--gold))}
-.hero.done .hero-progress{opacity:0;transition:opacity .6s}
-.hero.done .hero-meta{opacity:0;transition:opacity .5s}
+.hero-marquee{position:relative;z-index:1;margin-top:clamp(44px,8vh,80px);
+  width:calc(100% + 40px);
+  mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.hero-marquee-track{display:flex;gap:16px;width:max-content;
+  animation:heroMarquee 36s linear infinite}
+.hero-marquee-track:hover{animation-play-state:paused}
+@keyframes heroMarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.hero-marquee-img{flex:0 0 auto;width:clamp(110px,13vw,180px);aspect-ratio:3/4;
+  border-radius:16px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.hero-marquee-img:nth-child(odd){transform:rotate(-3deg)}
+.hero-marquee-img:nth-child(even){transform:rotate(3deg) translateY(10px)}
+.hero-marquee-img img{width:100%;height:100%;object-fit:cover;display:block}
+@media (prefers-reduced-motion:reduce){.hero-marquee-track{animation:none}}
 
 /* ============================================================
    STAGE / routed views
@@ -664,7 +638,7 @@ div.tile.missing{cursor:default}
 
 </style>
 </head>
-<body class="is-locked">
+<body>
 
 <!-- ============ cursor ============ -->
 <div class="cursor" id="cursorDot" aria-hidden="true"></div>
@@ -702,35 +676,16 @@ div.tile.missing{cursor:default}
   </div>
 </header>
 
-<!-- ============ HERO (scroll-expand) ============ -->
+<!-- ============ HERO ============ -->
 <section class="hero" id="hero">
-  <div class="hero-bg" id="heroBg">
-    <div class="hero-bg-fallback"></div>
-    <img id="heroBgImg" src="" alt="" onerror="this.remove()">
-    <div class="hero-bg-scrim"></div>
+  <p class="hero-tag" id="heroTag">Sales Deck · Kit</p>
+  <h1 class="hero-title" id="heroTitle"></h1>
+  <p class="hero-desc" id="heroDesc"></p>
+  <a class="hero-cta" id="heroCta" href="#stage" data-cursor="open"></a>
+
+  <div class="hero-marquee" aria-hidden="true">
+    <div class="hero-marquee-track" id="heroMarquee"></div>
   </div>
-
-  <div class="hero-stage">
-    <div class="hero-box" id="heroBox">
-      <div class="hero-media">
-        <video id="heroVideo"
-               autoplay muted loop playsinline preload="auto" disablepictureinpicture></video>
-        <div class="hero-media-fallback"></div>
-        <div class="hero-media-scrim" id="heroMediaScrim"></div>
-      </div>
-      <div class="hero-meta">
-        <p class="hero-date" id="heroDate">Sales Deck · Kit</p>
-        <p class="hero-cue" id="heroCue">Scroll to expand<span class="cue-line"></span></p>
-      </div>
-    </div>
-
-    <h1 class="hero-title" id="heroTitle">
-      <span class="hw hw-a" id="heroWordA">TRITON</span>
-      <span class="hw hw-b" id="heroWordB">GROUP</span>
-    </h1>
-  </div>
-
-  <div class="hero-progress" id="heroProgress"><span></span></div>
 </section>
 
 <!-- ============ ROUTED CONTENT ============ -->
@@ -778,13 +733,21 @@ window.PORTAL_DATA = {
     root: "Sales Kit",
     logo: "Sales Kit/_Portal/logo.png",
     hero: {
-      wordA: "TRITON",
-      wordB: "GROUP",
-      date:  "Sales Deck · Kit",
-      cue:   "Scroll to expand",
-      video:  "Sales Kit/_Portal/hero.mp4",
-      poster: "Sales Kit/_Portal/hero-poster.jpg",
-      bg:     "Sales Kit/_Portal/hero-bg.jpg"
+      tagline: "Sales Deck · Kit",
+      titleLines: ["Every Project", "Presented with Confidence"],
+      description: "Brochures, cost sheets, master plans and films for Sanvi and Hummingvalley. Opens on any laptop or TV with zero internet connection.",
+      ctaText: "Explore Projects",
+      ctaHref: "#stage",
+      images: [
+        "Sales Kit/_Portal/hero/villa-exterior.jpg",
+        "Sales Kit/_Portal/hero/interior.jpg",
+        "Sales Kit/_Portal/hero/amenity.jpg",
+        "Sales Kit/_Portal/hero/master-plan.jpg",
+        "Sales Kit/_Portal/hero/floor-plan.jpg",
+        "Sales Kit/_Portal/hero/cost-sheet.jpg",
+        "Sales Kit/_Portal/hero/location.jpg",
+        "Sales Kit/_Portal/hero/walkthrough.jpg"
+      ]
     }
   },
 
@@ -1028,94 +991,13 @@ function fileCount(p) {
 })();
 
 /* ============================================================
-   HERO — scroll-expand (ported from ScrollExpandMedia)
+   HERO — a static section now (no scroll-expand interaction);
+   just needs to get out of the way on project/folder pages.
    ============================================================ */
 var Hero = (function () {
-  var hero  = $('#hero'), box = $('#heroBox'), scrim = $('#heroMediaScrim'),
-      bg    = $('#heroBg'), title = $('#heroTitle'),
-      wA    = $('#heroWordA'), wB = $('#heroWordB'),
-      date  = $('#heroDate'), cue = $('#heroCue'),
-      bar   = $('#heroProgress').firstElementChild;
-
-  var progress = 0, expanded = false, touchY = 0, done = false;
-
-  function paint() {
-    var m = isMobile();
-    var w = 300 + progress * (m ? 650 : 1250);
-    var h = 400 + progress * (m ? 200 : 400);
-    var tx = progress * (m ? 180 : 150);
-
-    box.style.width  = w + 'px';
-    box.style.height = h + 'px';
-    bg.style.opacity = 1 - progress;
-    scrim.style.opacity = 0.5 - progress * 0.3;
-
-    wA.style.transform   = 'translateX(-' + tx + 'vw)';
-    wB.style.transform   = 'translateX(' + tx + 'vw)';
-    date.style.transform = 'translateX(-' + tx + 'vw)';
-    cue.style.transform  = 'translateX(' + tx + 'vw)';
-
-    bar.style.width = (progress * 100) + '%';
-  }
-
-  function setProgress(p) {
-    progress = clamp(p, 0, 1);
-    paint();
-    if (progress >= 1 && !expanded) open();
-    else if (progress < 1 && expanded) close();
-  }
-
-  function open() {
-    expanded = true; done = true;
-    hero.classList.add('done');
-    document.body.classList.remove('is-locked');
-    $('#topbar').classList.add('show');
-    $('#stage').classList.add('show');
-    reveal();
-  }
-  function close() {
-    expanded = false;
-    hero.classList.remove('done');
-    document.body.classList.add('is-locked');
-    $('#stage').classList.remove('show');
-  }
-
-  function onWheel(e) {
-    if (Route.away) return;                       // not on the home route
-    if (expanded && e.deltaY < 0 && scrollY <= 5) { setProgress(0.999); e.preventDefault(); return; }
-    if (expanded) return;
-    e.preventDefault();
-    setProgress(progress + e.deltaY * 0.0009);
-  }
-  function onTouchStart(e) { touchY = e.touches[0].clientY; }
-  function onTouchMove(e) {
-    if (Route.away || !touchY) return;
-    var d = touchY - e.touches[0].clientY;
-    if (expanded && d < -20 && scrollY <= 5) { setProgress(0.999); e.preventDefault(); return; }
-    if (expanded) return;
-    e.preventDefault();
-    setProgress(progress + d * (d < 0 ? 0.008 : 0.005));
-    touchY = e.touches[0].clientY;
-  }
-  function onScroll() { if (!expanded && !Route.away) scrollTo(0, 0); }
-
-  addEventListener('wheel', onWheel, { passive: false });
-  addEventListener('touchstart', onTouchStart, { passive: false });
-  addEventListener('touchmove', onTouchMove, { passive: false });
-  addEventListener('touchend', function () { touchY = 0; });
-  addEventListener('scroll', onScroll);
-  addEventListener('resize', paint);
-
+  var hero = $('#hero');
   return {
-    paint: paint,
-    skip: function () { setProgress(1); },
-    reset: function () { if (!done) setProgress(0); },
-    get expanded() { return expanded; },
-    hide: function (on) {
-      hero.style.display = on ? 'none' : '';
-      if (on) { document.body.classList.remove('is-locked');
-                $('#topbar').classList.add('show'); $('#stage').classList.add('show'); }
-    }
+    hide: function (on) { hero.style.display = on ? 'none' : ''; }
   };
 })();
 
@@ -1442,8 +1324,6 @@ function route() {
   }
   Route.away = false;
   renderHome();
-  Hero.paint();
-  if (Hero.expanded) { $('#topbar').classList.add('show'); $('#stage').classList.add('show'); }
 }
 
 addEventListener('hashchange', route);
@@ -1777,34 +1657,30 @@ addEventListener('keydown', function (e) {
    ============================================================ */
 (function boot() {
   var b = (D.brand && D.brand.hero) || {};
-  if (b.wordA) $('#heroWordA').textContent = b.wordA;
-  if (b.wordB) $('#heroWordB').textContent = b.wordB;
-  if (b.date)  $('#heroDate').textContent  = b.date;
-  if (b.cue)   $('#heroCue').firstChild.nodeValue = b.cue;
+  if (b.tagline)     $('#heroTag').textContent = b.tagline;
+  if (b.titleLines)  $('#heroTitle').innerHTML = b.titleLines.map(esc).join('<br>');
+  if (b.description) $('#heroDesc').textContent = b.description;
+  if (b.ctaText)     $('#heroCta').textContent = b.ctaText;
+  $('#heroCta').setAttribute('href', b.ctaHref || '#stage');
+
+  var images = b.images || [];
+  if (images.length) {
+    $('#heroMarquee').innerHTML = images.concat(images).map(function (src) {
+      return '<div class="hero-marquee-img"><img src="' + esc(uri(src)) + '" alt="" loading="lazy"></div>';
+    }).join('');
+  } else {
+    $('.hero-marquee').style.display = 'none';
+  }
 
   var lg = (D.brand && D.brand.logo) || '';
   if (lg) { var bl = $('#brandLogo'), fl = $('#footLogo');
             if (bl) bl.src = uri(lg);
             if (fl) fl.src = uri(lg); }
 
-  var hm = b || {};
-  if (hm.video)  $('#heroVideo').src = hm.video;
-  if (hm.poster) $('#heroVideo').poster = hm.poster;
-  if (hm.bg)     { var bgi = $('#heroBgImg'); if (bgi) bgi.src = hm.bg; }
-
-  // hero video may not exist offline yet — drop it so the gradient shows
-  var v = $('#heroVideo');
-  v.addEventListener('error', function () { v.remove(); }, true);
-  if (v.querySelector) setTimeout(function () {
-    if (v.readyState === 0 && v.networkState === 3) v.remove();
-  }, 1200);
+  $('#topbar').classList.add('show');
+  $('#stage').classList.add('show');
 
   Library.init();
-  Hero.paint();
-
-  // deep link straight to a project? skip the hero entirely
-  if ((location.hash || '').length > 2) { Hero.skip(); }
-
   route();
 })();
 

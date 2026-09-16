@@ -134,9 +134,7 @@ you — this build machine has no access to YouTube.
 | Put the file here | Named |
 |---|---|
 | `Sales Kit/_Portal/` | `logo.png` — the Triton logo, for the header and footer |
-| `Sales Kit/_Portal/` | `hero.mp4` — background film, muted loop, under ~20 MB |
-| `Sales Kit/_Portal/` | `hero-poster.jpg` — its first frame |
-| `Sales Kit/_Portal/` | `hero-bg.jpg` — the still behind the film |
+| `Sales Kit/_Portal/hero/` | 8 images for the scrolling strip at the bottom of the hero; see "The hero section" below |
 | `Sales Kit/_Portal/thumbs/` | `<youtube-id>.jpg` — saved video thumbnails |
 
 `_Portal` starts with an underscore, so the portal treats it as its own and never
@@ -157,6 +155,37 @@ Until the file is there, the portal falls back to setting "Triton" and the tagli
 display typeface. That fallback is presentable — it is not a broken state — but the real
 logo is better.
 
+### The hero section
+
+The first screen is a tagline, a title, a description, a button, and a strip of images
+that scrolls sideways underneath, on a permanent dark background rather than the earlier
+version's own scroll-to-expand video (that interaction has been retired). It's a normal
+part of the page now, not a locked-in first screen: scroll past it, or press the button,
+to reach the project grid below.
+
+All of its text lives in `brand.hero` inside `PORTAL_DATA`, near the top of
+`Triton Sales Portal.html`:
+
+```js
+hero: {
+  tagline: "Sales Deck · Kit",
+  titleLines: ["Every Project", "Presented with Confidence"],
+  description: "...",
+  ctaText: "Explore Projects",
+  ctaHref: "#stage",
+  images: [ "Sales Kit/_Portal/hero/villa-exterior.jpg", ... ]
+}
+```
+
+Edit any of those fields directly; `titleLines` is an array so the title can wrap onto
+more than one line on purpose, not just where the browser happens to break it.
+
+The 8 images in `images` ship as generic placeholders (a labelled icon on a plain color,
+same idea as the placeholders elsewhere in this kit). Replace them, same file names, same
+folder, and the real photos take over; add or remove entries in the array to change how
+many images scroll by. The strip pauses on hover so someone can actually look at a photo
+that catches their eye, and it respects a system-level "reduce motion" setting by not
+animating at all.
 ### The Hummingvalley location map
 
 This page now runs on the same light, white-background palette as the rest of the kit
@@ -432,7 +461,7 @@ The real collateral is roughly **730 MB** — Sanvi's brochure alone is 144 MB. 
 
 | Key | Does |
 |-----|------|
-| scroll | expands the hero film, then enters the portal |
+| scroll | past the hero, into the project grid |
 | `/` or `Ctrl-K` | search every project, folder and file |
 | `P` | presentation mode — hides all chrome |
 | `U` | update library |
@@ -483,6 +512,6 @@ src/data.js       projects, folders, file names and wording
 src/app.js        router, hero, folder scanner, search
 ```
 
-The hero's scroll-expand effect and the project cards were written in plain JS and CSS
-rather than React, because the portal has to run from a double-clicked file with no
-server behind it.
+The hero's image marquee and the project cards were written in plain JS and CSS rather
+than React, because the portal has to run from a double-clicked file with no server
+behind it.
