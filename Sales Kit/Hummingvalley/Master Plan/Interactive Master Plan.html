@@ -52,13 +52,6 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
 .btn.primary:hover{background:var(--accent-2)}
 
-/* ---------- indicative banner ---------- */
-.notice{margin:0;padding:10px clamp(16px,3vw,34px);background:var(--panel-2);
-  border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;
-  font:600 10.5px/1.5 var(--sans);color:var(--fg-dim);letter-spacing:.01em;flex:0 0 auto}
-.notice svg{width:15px;height:15px;flex:0 0 auto;color:var(--accent)}
-.notice b{color:var(--fg)}
-
 /* ---------- legend ---------- */
 .legend{display:flex;gap:22px;flex-wrap:wrap;padding:14px clamp(16px,3vw,34px);
   border-bottom:1px solid var(--line);flex:0 0 auto}
@@ -176,29 +169,22 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .cost-link svg{width:12px;height:12px}
 .cost-link:hover{color:var(--accent-2)}
 
-.floorplans{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-@media (max-width:600px){.floorplans{grid-template-columns:1fr}}
+.floorplans{display:flex;flex-direction:column;gap:18px}
+.fp-group-title{margin:0 0 9px;font:700 10.5px/1 var(--sans);letter-spacing:.1em;
+  text-transform:uppercase;color:var(--fg-dim)}
+.fp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+@media (max-width:640px){.fp-grid{grid-template-columns:repeat(2,1fr)}}
 .fp-tile{position:relative;aspect-ratio:4/3;border-radius:12px;overflow:hidden;
   background:var(--panel-2);border:1px solid var(--line);cursor:pointer;
   transition:transform .25s var(--spring),border-color .25s}
 .fp-tile:hover{transform:translateY(-3px);border-color:var(--accent)}
 .fp-tile img{width:100%;height:100%;object-fit:cover;display:block}
-.fp-tile .ph-fallback{padding:0 10px}
-.fp-tile .ph-fallback svg{width:24px;height:24px}
-.fp-tile .ph-fallback span{font-size:9px;letter-spacing:.04em}
-.fp-tile .ph-fallback code{font-size:8.5px}
-.fp-label{position:absolute;left:8px;bottom:8px;padding:4px 9px;border-radius:99px;
-  background:rgba(22,33,26,.72);backdrop-filter:blur(4px);
-  font:700 8.5px/1 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:#fff}
+.fp-tile .ph-fallback svg{width:22px;height:22px}
 .fp-zoom{position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:99px;
   background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;
   color:var(--fg);opacity:0;transition:opacity .2s var(--ease)}
 .fp-tile:hover .fp-zoom{opacity:1}
 .fp-zoom svg{width:12px;height:12px}
-
-.mhint{margin-top:22px;padding-top:16px;border-top:1px solid var(--line);
-  font:500 10.5px/1.6 var(--sans);color:var(--fg-faint)}
-.mhint code{font:500 10px/1 monospace;color:var(--fg-dim)}
 
 /* ---------- lightbox ---------- */
 .lightbox{position:fixed;inset:0;z-index:40;background:rgba(10,14,11,.9);
@@ -243,11 +229,6 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
       </button>
     </div>
   </header>
-
-  <p class="notice">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>
-    <span><b>Villas 8, 11, 20, 22 and 23</b> show confirmed specifications. Every other plot is drawn for layout context only and carries no unit data. Photos, videos and floor-plan images are placeholders until real files are added. See the file paths inside each empty slot below.</span>
-  </p>
 
   <nav class="legend" aria-hidden="true">
     <span class="legend-item"><span class="legend-swatch live"></span>Available villa (tap for details)</span>
@@ -345,14 +326,19 @@ var VILLAS = {
   23: { bhk: '3 BHK', builtUp: '2,680 sq ft', plot: '1,080 sq ft', aspect: 'North Facing', price: '₹2.85 Cr', status: 'Available', costSheet: '../Cost Sheet/Villa 23.png' }
 };
 
+function floorPhotos(num, slug) {
+  var out = [];
+  for (var i = 1; i <= 4; i++) out.push('floorplans/villa-' + num + '-' + slug + '-' + i + '.jpg');
+  return out;
+}
 function assetPaths(num) {
   return {
     photo: 'photos/villa-' + num + '-hero.jpg',
     video: 'videos/villa-' + num + '-walkthrough.mp4',
     floorplans: [
-      { label: 'Ground Floor', file: 'floorplans/villa-' + num + '-ground-floor.jpg' },
-      { label: 'First Floor',  file: 'floorplans/villa-' + num + '-first-floor.jpg' },
-      { label: 'Terrace',      file: 'floorplans/villa-' + num + '-terrace.jpg' }
+      { label: 'Ground Floor', files: floorPhotos(num, 'ground-floor') },
+      { label: 'First Floor',  files: floorPhotos(num, 'first-floor') },
+      { label: 'Second Floor', files: floorPhotos(num, 'second-floor') }
     ]
   };
 }
@@ -529,15 +515,18 @@ function openModal(num) {
   }).join('') +
     '<div class="specrow price"><span class="k">Price (all inclusive)</span><span class="v">' + esc(v.price) + '</span></div>';
 
-  var fpHtml = paths.floorplans.map(function (fp) {
-    return '<div class="fp-tile" data-file="' + esc(fp.file) + '" data-label="' + esc(fp.label) + '">' +
-      '<div class="ph-fallback"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">' +
-      '<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg>' +
-      '<span>' + esc(fp.label) + '</span><code>' + esc(fp.file) + '</code></div>' +
-      '<span class="fp-label">' + esc(fp.label) + '</span>' +
-      '<button class="fp-zoom" aria-label="Zoom ' + esc(fp.label) + '" type="button">' +
-      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
-      '<path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></button></div>';
+  var fpHtml = paths.floorplans.map(function (grp) {
+    var tiles = grp.files.map(function (file, i) {
+      var label = grp.label + ' Photo ' + (i + 1);
+      return '<div class="fp-tile" data-file="' + esc(file) + '" data-label="' + esc(label) + '">' +
+        '<div class="ph-fallback"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">' +
+        '<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg></div>' +
+        '<button class="fp-zoom" aria-label="Zoom ' + esc(label) + '" type="button">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+        '<path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></button></div>';
+    }).join('');
+    return '<div class="fp-group"><p class="fp-group-title">' + esc(grp.label) + '</p>' +
+      '<div class="fp-grid">' + tiles + '</div></div>';
   }).join('');
 
   var costHtml = v.costSheet ? (
@@ -557,10 +546,7 @@ function openModal(num) {
     '</div>' +
     '<div class="msection">' +
       '<div class="msection-head"><h3>Cost Sheet</h3>' + costHtml + '</div>' +
-    '</div>' +
-    '<p class="mhint">Drop a real photo, a walkthrough video and floor-plan images at the file paths named above ' +
-    '(next to this page, under <code>photos/</code>, <code>videos/</code> and <code>floorplans/</code>) and they will ' +
-    'appear automatically the next time it opens.</p>';
+    '</div>';
 
   $$('.fp-tile', $('#mbody')).forEach(function (tile) {
     var file = tile.dataset.file;

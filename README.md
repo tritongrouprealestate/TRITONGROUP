@@ -270,21 +270,32 @@ To change a figure, edit the `VILLAS` object near the top of the `<script>` bloc
 there keyed by its plot number — the site plan picks it up automatically, no other change
 needed. The remaining 25 plots are drawn for layout context only and carry no unit data.
 
-**Photos and floor plans already ship with a placeholder** — the same generic
-"Placeholder Image" graphic used on the location map, sized so it reads sensibly cropped
-into either the wide photo pane or the 4:3 floor-plan tiles. To swap in the real thing,
-save over the file, same name, same place, and it appears next time the page opens, no
-rebuild needed:
+The page used to carry two pieces of text aimed at whoever was building the kit, not the
+customer in front of it: a banner across the top naming which villas were confirmed and
+warning that photos were placeholders, and a line inside every villa's popup spelling out
+the exact file paths to drop real photos into. Both are gone now that the portal is
+client-facing; the placeholder graphics still say "placeholder" on the image itself,
+which is enough for whoever is filling this kit in, without saying so out loud in front
+of a customer.
+
+**Photos and floor plans already ship with a placeholder**, sized so it reads sensibly
+cropped into either the wide photo pane or the 4:3 floor gallery tiles. Each one is its
+own file, individually labelled by villa, floor and photo number, so no two slots show
+the exact same graphic. To swap in the real thing, save over the file, same name, same
+place, and it appears next time the page opens, no rebuild needed:
 
 | Replace this file | Shows as |
 |---|---|
 | `Sales Kit/Hummingvalley/Master Plan/photos/villa-<N>-hero.jpg` | Latest villa photo |
-| `Sales Kit/Hummingvalley/Master Plan/floorplans/villa-<N>-ground-floor.jpg` | Ground Floor tile |
-| `Sales Kit/Hummingvalley/Master Plan/floorplans/villa-<N>-first-floor.jpg` | First Floor tile |
-| `Sales Kit/Hummingvalley/Master Plan/floorplans/villa-<N>-terrace.jpg` | Terrace tile |
+| `Sales Kit/Hummingvalley/Master Plan/floorplans/villa-<N>-ground-floor-<1 to 4>.jpg` | Ground Floor, 4 photos |
+| `Sales Kit/Hummingvalley/Master Plan/floorplans/villa-<N>-first-floor-<1 to 4>.jpg` | First Floor, 4 photos |
+| `Sales Kit/Hummingvalley/Master Plan/floorplans/villa-<N>-second-floor-<1 to 4>.jpg` | Second Floor, 4 photos |
 
-(`<N>` is `8`, `11`, `20`, `22` or `23`.) Any floor-plan tile can be clicked to zoom it
-full-screen once a real image is in place — useful for reading a plan off a TV across a room.
+(`<N>` is `8`, `11`, `20`, `22` or `23`.) Each villa has 12 floor photos in total, 4 per
+floor. Any tile can be clicked to zoom it full-screen once a real image is in place,
+useful for reading a plan off a TV across a room. To change how many photos a floor
+holds, edit the loop count inside `floorPhotos()` near the top of the `<script>` block;
+the gallery grid and the file-existence check both follow that count automatically.
 
 **The video tab now carries the real walkthrough film for all five villas**, at
 `Sales Kit/Hummingvalley/Master Plan/videos/villa-<N>-walkthrough.mp4`. (It briefly shipped
