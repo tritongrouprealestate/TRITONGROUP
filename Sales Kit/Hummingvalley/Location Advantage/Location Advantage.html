@@ -268,7 +268,7 @@ svg.dial-svg{width:100%;height:100%;display:block;touch-action:manipulation}
   <header class="top">
     <div>
       <p class="eyebrow" id="eyebrow">Location Advantage</p>
-      <h1 class="h1" id="title"><img class="h1-logo" alt="" src="../logo.png" onerror="this.remove()">Triton <span>Humming Valley</span></h1>
+      <h1 class="h1" id="title">Triton <span>Humming Valley</span></h1>
       <p class="sub" id="sub"></p>
     </div>
     <div class="stats" id="stats"></div>
@@ -765,7 +765,7 @@ $('#list').addEventListener('click', function (e) {
 
 /* ---------------- header ---------------- */
 function header() {
-  $('#title').innerHTML = 'Triton <span>Humming Valley</span>';
+  $('#title').innerHTML = '<img class="h1-logo" alt="" src="../logo.png" onerror="this.remove()">Triton <span>Humming Valley</span>';
   $('#sub').textContent = D.project.sub;
   var within15 = D.places.filter(function (p) { return p.km <= 15; }).length;
   var air = D.places.filter(function (p) { return /airport/i.test(p.n); })[0];
