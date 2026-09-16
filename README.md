@@ -265,6 +265,14 @@ not a rounded marketing figure. Every villa's popup links to **View Cost Sheet**
 pointing at `Villa <N>.png` next to this page — save each villa's cost sheet under that
 exact name (matching Villa 20's existing file) for the link to resolve.
 
+Beside it, **Price Calculator** opens the shared calculator already on Hummingvalley,
+with that exact villa preselected in the unit picker, same numbers as the popup itself,
+ready to walk a customer through the full quote instead of just the headline price. The
+link is `Price Calculator.html#hummingvalley/<N>`, a `/<N>` on top of the usual
+`#hummingvalley` project link; the calculator's own boot code reads that second part and
+selects the matching unit before the page ever paints. Both links share this same pattern,
+so a third one (an EMI calculator preset to a villa's price, say) would follow it too.
+
 To change a figure, edit the `VILLAS` object near the top of the `<script>` block in
 `Interactive Master Plan.html`. To highlight a different or additional plot, add an entry
 there keyed by its plot number — the site plan picks it up automatically, no other change

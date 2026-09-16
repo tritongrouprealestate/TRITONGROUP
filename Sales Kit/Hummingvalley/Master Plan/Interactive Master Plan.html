@@ -164,6 +164,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   margin-bottom:12px}
 .msection-head h3{margin:0;font:700 10.5px/1 var(--sans);letter-spacing:.2em;
   text-transform:uppercase;color:var(--fg-faint)}
+.msection-links{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
 .cost-link{display:inline-flex;align-items:center;gap:6px;font:700 10px/1 var(--sans);
   letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
 .cost-link svg{width:12px;height:12px}
@@ -536,6 +537,12 @@ function openModal(num) {
     'View Cost Sheet</a>'
   ) : '<span class="cost-link" style="color:var(--fg-faint);cursor:default">Cost sheet not added yet</span>';
 
+  var priceCalcHtml =
+    '<a class="cost-link" href="../../_Portal/Price Calculator/Price Calculator.html#hummingvalley/' + esc(num) + '" target="_blank" rel="noopener">' +
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+    '<rect x="5" y="2" width="14" height="20" rx="2"/><path d="M8 6h8M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>' +
+    'Price Calculator</a>';
+
   $('#mbody').innerHTML =
     '<div class="mhead"><h2>Villa ' + esc(num) + '</h2>' +
       '<span class="badge-available">' + esc(v.status) + '</span></div>' +
@@ -545,7 +552,9 @@ function openModal(num) {
       '<div class="floorplans">' + fpHtml + '</div>' +
     '</div>' +
     '<div class="msection">' +
-      '<div class="msection-head"><h3>Cost Sheet</h3>' + costHtml + '</div>' +
+      '<div class="msection-head"><h3>Cost Sheet</h3>' +
+        '<div class="msection-links">' + costHtml + priceCalcHtml + '</div>' +
+      '</div>' +
     '</div>';
 
   $$('.fp-tile', $('#mbody')).forEach(function (tile) {

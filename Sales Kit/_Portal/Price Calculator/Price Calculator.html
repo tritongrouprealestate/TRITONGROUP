@@ -810,10 +810,24 @@ $('#tabReference').addEventListener('click', function () { setTab('reference'); 
 
 /* ---------------- boot ---------------- */
 if (DATA.length) {
-  var wanted = location.hash.replace('#', '');
+  /* #<projectId> selects the project; #<projectId>/<unitNo> also preselects
+     that unit in the picker, same as picking it by hand, so a link from a
+     specific villa's popup can land straight on that villa's own quote. */
+  var hashParts = location.hash.replace('#', '').split('/');
+  var wanted = hashParts[0], wantedUnit = hashParts[1] || '';
   var startIdx = Math.max(0, DATA.findIndex(function (p) { return p.id === wanted; }));
   projectSelect.value = startIdx;
   loadProject(DATA[startIdx]);
+
+  if (wantedUnit) {
+    var units = DATA[startIdx].units || [];
+    var unitIdx = units.findIndex(function (u) { return String(u.no) === wantedUnit; });
+    if (unitIdx > -1) {
+      $('#unitSelect').value = unitIdx;
+      applyUnit(units[unitIdx]);
+      recalc();
+    }
+  }
 } else {
   $('.wrap').innerHTML = '<p style="padding:40px;text-align:center;color:var(--fg-faint)">' +
     'No project data found. Check that price-calculator-data.js is next to this page and loaded before it.</p>';
