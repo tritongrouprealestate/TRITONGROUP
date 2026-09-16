@@ -340,6 +340,18 @@ milestones, its own logo and accent colour — and it appears in the project swi
 immediately, no code change. The comment block at the top of that file documents every
 field the engine understands.
 
+**Printing fits one A4 page**, even in the worst case (every optional charge ticked
+on, a full payment schedule, every note showing). Verified by actually generating the
+PDF for both projects with everything switched on, not just eyeballing the screen
+layout. The print stylesheet only tightens spacing and type size; it never removes a
+field or a note, so nothing is missing from what a customer sees, it is just set at a
+size that belongs on paper instead of a laptop screen. The screen version is untouched.
+
+**Bank details print highlighted**, in a bordered, tinted box in the project's own
+accent colour, in the footer next to the contact number. Comes from the same
+`payee` / `bankAccount` fields already in `price-calculator-data.js`; nothing new to
+fill in.
+
 **Sanvi's 44 units are the real building.** Its master list (`Sheet3` in the original
 workbook) and its Availability sheet disagreed on three flats' configuration —
 Flat 120 (Sheet3 said 3 BHK, Availability said 2 BHK, and at 1,090 sqft it doesn't

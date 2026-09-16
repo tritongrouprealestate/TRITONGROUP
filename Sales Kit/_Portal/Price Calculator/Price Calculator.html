@@ -137,9 +137,12 @@ table.sched input.pct-input{text-align:right}
 .notes li::before{content:"";position:absolute;left:0;top:7px;width:5px;height:5px;border-radius:99px;
   background:var(--accent)}
 
-.foot{display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between;
+.foot{display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between;align-items:center;
   padding:16px clamp(18px,3vw,34px);background:var(--paper-2);
   font:600 10.5px/1.5 var(--sans);color:var(--fg-faint)}
+#footBank:not(:empty){display:inline-flex;align-items:center;font:800 11px/1.4 var(--sans);
+  color:var(--accent-dark);background:var(--accent-soft);
+  padding:6px 12px;border-radius:8px;border:1px solid var(--accent)}
 
 .tabbar{display:flex;gap:4px;padding:14px clamp(18px,3vw,34px) 0}
 .tab{padding:10px 16px;border-radius:9px 9px 0 0;font:700 11.5px/1 var(--sans);
@@ -163,24 +166,65 @@ table.sched input.pct-input{text-align:right}
 #refTable .status-pill.available{background:rgba(30,140,90,.12);color:#1e7a4f}
 #refTable .status-pill.sold{background:rgba(120,120,120,.14);color:var(--fg-faint)}
 
-@media print{
-  .tabbar{display:none!important}
-}
-
 .gstbase{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px}
 .gstbase label{display:flex;align-items:center;gap:7px;font:600 11px/1 var(--sans);color:var(--fg-dim)}
 .gstbase input{width:15px;height:15px;accent-color:var(--accent)}
 
+/* Print: one A4 page, so the whole quote is legible at a glance and
+   nothing gets cut off mid-section on a second sheet. Every rule below
+   only tightens spacing and type size, never removes information. */
 @media print{
+  @page{size:A4;margin:9mm}
   *{transition:none!important}
-  .toolbar,.addrow,.row .rm,table.sched td.rm{display:none!important}
-  body{background:#fff}
+  .tabbar,.toolbar,.addrow,.row .rm,table.sched td.rm{display:none!important}
+  body{background:#fff;font-size:10px}
   .wrap{padding:0;max-width:none}
   .sheet{box-shadow:none;border:none;border-radius:0}
   .f input,.f select,table.sched input{border-color:transparent!important;background:transparent!important;
     padding-left:0}
   .row.disabled{display:none}
   select{-webkit-appearance:none;appearance:none}
+
+  .sheet-head{padding:0 0 4px;gap:10px}
+  .sheet-head img{height:30px}
+  .sheet-head .logotext{font-size:16px}
+  .sheet-head .divider{height:22px}
+  .sheet-head h1{font-size:14px}
+  .sheet-head p{font-size:8px}
+
+  .section{padding:4px 0!important}
+  .section-title{margin-bottom:3px!important;font-size:7.5px!important}
+  .grid{gap:2px 10px!important}
+  .f{gap:0!important}
+  .f label{font-size:6.5px!important}
+  .f input,.f select{font-size:9.5px!important;padding:0!important;line-height:1.3!important}
+  .f small{display:block;font-size:6.8px!important;line-height:1.25!important;margin-top:0!important}
+
+  .row{margin-bottom:0!important;gap:6px!important}
+  .row .toggle{height:auto!important;padding-top:0!important}
+  .gstbase{margin-top:3px!important;gap:12px!important}
+  .gstbase label{font-size:8.5px!important}
+
+  .totalline{padding:2px 0!important;margin-top:3px!important;font-size:9.5px!important}
+  .totalline .v{font-size:11px!important}
+
+  .grand{padding:4px 0!important}
+  .grand .label{font-size:8px!important}
+  .grand .amount{font-size:18px!important}
+
+  table.sched th{padding:0 6px 1px!important;font-size:6.5px!important}
+  table.sched td{padding:0.5px 6px!important;font-size:9px!important}
+  table.sched input{padding:0 4px!important;font-size:9px!important;line-height:1.3!important}
+  .sched-check{padding:2px 8px!important;margin-top:2px!important;font-size:7.5px!important}
+
+  .notes{columns:2;column-gap:22px}
+  .notes li{font-size:6.8px!important;line-height:1.3!important;padding-left:8px!important;
+    break-inside:avoid}
+  .notes li::before{width:3px!important;height:3px!important;top:4px!important}
+
+  .foot{padding:4px 0 0!important;margin-top:1px!important;font-size:7px!important;
+    background:none!important;border-top:1px solid var(--line)}
+  #footBank:not(:empty){padding:2px 8px!important;font-size:8px!important}
 }
 </style>
 </head>

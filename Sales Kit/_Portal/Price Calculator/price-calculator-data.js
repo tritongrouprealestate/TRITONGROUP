@@ -150,7 +150,7 @@ window.PRICE_CALC_DATA = {
       theme: { primary: "#8A6D1E", primaryDark: "#6B5417", ink: "#0E1512" },
       contact: "",
       payee: "TRITON HOMES LLP",
-      bankAccount: "Account No - 10209499009 - IFSC CODE : IDFB0080179 IDFC First Bank",
+      bankAccount: "Account No - 10209499009, IFSC CODE - IDFB0080179, IDFC First Bank",
       unitLabel: "Villa No",
       blockLabel: "",
       areaLabel: "SBU (Super Built-up Area, sqft)",
