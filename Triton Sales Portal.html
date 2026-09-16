@@ -254,6 +254,8 @@ body.cur-hot .cursor{opacity:0}
 .sec-eyebrow{margin:0 0 14px;display:inline-flex;align-items:center;gap:10px;
   font:600 10.5px/1 var(--sans);letter-spacing:.38em;text-transform:uppercase;color:var(--teal)}
 .sec-eyebrow::before{content:"";width:22px;height:2px;background:var(--teal);flex:0 0 auto}
+.eyebrow-logo{height:16px;width:auto;flex:0 0 auto;display:block}
+.sec-title-logo{height:.75em;width:auto;vertical-align:-.1em;margin-right:.28em;display:inline-block}
 .sec-title{margin:0;font-family:var(--display);font-weight:400;
   font-variation-settings:"opsz" 144,"SOFT" 0,"WONK" 0;
   font-size:clamp(36px,5.8vw,78px);line-height:.98;letter-spacing:-.018em}
@@ -304,12 +306,15 @@ body.cur-hot .cursor{opacity:0}
 /* top: logo chip */
 .pcard-top{display:flex;align-items:flex-start;height:clamp(96px,15vh,160px)}
 .pcard-logo{display:grid;place-items:center;width:48px;height:48px;border-radius:999px;
-  border:2px solid rgba(255,255,255,.5);background:rgba(0,0,0,.2);
+  border:2px solid rgba(255,255,255,.5);background:rgba(0,0,0,.2);overflow:hidden;
   backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
   color:rgba(255,255,255,.85);
   transition:border-color .45s,background .45s,transform .55s var(--ease)}
 .pcard:hover .pcard-logo{border-color:var(--gold-2);color:var(--gold-2);transform:scale(1.06)}
 .pcard-logo svg{width:24px;height:24px}
+.pcard-logo.has-img{background:#fff;border-color:rgba(255,255,255,.9)}
+.pcard-logo.has-img svg{display:none}
+.pcard-logo-img{width:32px;height:32px;object-fit:contain}
 
 /* middle: details, slide up on hover */
 .pcard-body{transition:transform .5s var(--ease-in-out)}
@@ -792,6 +797,7 @@ window.PORTAL_DATA = {
       tagline: "1, 2 & 3 BHK luxury apartments. Full pitch kit: brochure, live pricing, availability and the project film.",
       tag: "Residential",
       cover: "Sales Kit/Sanvi/cover.jpg",
+      logo: "Sales Kit/Sanvi/logo.png",
       accent: "linear-gradient(155deg,#6d8399,#3b4a5c 55%,#8a7a52)",
       folders: [
         { id: "brochure", name: "Brochure", files: [
@@ -818,6 +824,7 @@ window.PORTAL_DATA = {
       tagline: "Villa inventory near Nandi Hills. Brochure, deck, master plan and two walkthrough films.",
       tag: "Villas",
       cover: "Sales Kit/Hummingvalley/cover.jpg",
+      logo: "Sales Kit/Hummingvalley/logo.png",
       accent: "linear-gradient(155deg,#6f8a72,#3a4a3c 55%,#7d8552)",
       /* Shown on the project page under the folders. These open on YouTube in a
          new tab — the one thing in the kit that needs an internet connection. */
@@ -936,6 +943,12 @@ var I = {
 var svg = function (k, cls) {
   return '<svg class="' + (cls || '') + '" viewBox="0 0 24 24">' + (I[k] || I.file) + '</svg>';
 };
+
+/* A project's own logo, wherever its name appears in the portal chrome.
+   Silently absent (no broken image, no layout shift) until the file exists. */
+function projectLogo(p, cls) {
+  return p.logo ? '<img class="' + cls + '" alt="" src="' + esc(uri(p.logo)) + '" onerror="this.remove()">' : '';
+}
 
 var LOGO = { residential: 'bld', corporate: 'bld', archive: 'arch' };
 function projectIcon(p) {
@@ -1237,7 +1250,12 @@ function projectCard(p, i) {
     '<div class="pcard-sheen"></div>' +
     (p.tag ? '<span class="pcard-flag">' + esc(p.tag) + '</span>' : '') +
     '<div class="pcard-inner">' +
-      '<div class="pcard-top"><span class="pcard-logo">' + svg(projectIcon(p)) + '</span></div>' +
+      '<div class="pcard-top"><span class="pcard-logo">' +
+        (p.logo ? '<img class="pcard-logo-img" alt="" src="' + esc(uri(p.logo)) + '"' +
+          ' onload="this.closest(\'.pcard-logo\').classList.add(\'has-img\')"' +
+          ' onerror="this.remove()">' : '') +
+        svg(projectIcon(p)) +
+      '</span></div>' +
       '<div class="pcard-body">' +
         '<div>' +
           '<h3 class="pcard-name">' + esc(p.name) + '</h3>' +
@@ -1286,7 +1304,7 @@ function renderProject(p) {
       '<div class="sec-head rv">' +
         '<div>' +
           '<p class="sec-eyebrow">' + esc(p.tag || 'Project') + '</p>' +
-          '<h2 class="sec-title">' + esc(p.name) + '</h2>' +
+          '<h2 class="sec-title">' + projectLogo(p, 'sec-title-logo') + esc(p.name) + '</h2>' +
           '<p class="sec-sub">' + esc(p.tagline || '') + '</p>' +
         '</div>' +
         '<span class="sec-count">' + folders.length + ' Folders · ' + fileCount(p) + ' Files' +
@@ -1321,7 +1339,7 @@ function renderFolder(p, f) {
       '<a class="back" href="#/p/' + esc(p.id) + '" data-cursor="back">' + svg('back') + ' ' + esc(p.name) + '</a>' +
       '<div class="sec-head rv">' +
         '<div>' +
-          '<p class="sec-eyebrow">' + esc(p.name) + '</p>' +
+          '<p class="sec-eyebrow">' + projectLogo(p, 'eyebrow-logo') + esc(p.name) + '</p>' +
           '<h2 class="sec-title">' + esc(f.name) + '</h2>' +
         '</div>' +
         '<span class="sec-count">' + files.length + (files.length === 1 ? ' File' : ' Files') + '</span>' +

@@ -33,14 +33,14 @@ window.PRICE_CALC_DATA = {
       name: "Sanvi Aero Gardens",
       developer: "Sanvi Group",
       tagline: "Evolving Lifestyles",
-      logo: "sanvi-logo.png",
+      logo: "../../Sanvi/logo.png",
       theme: { primary: "#7A1B35", primaryDark: "#5C1427", ink: "#1B1B1D" },
       contact: "+91 90366 82626",
       payee: "SANVI CONSTRUCTIONS IMPACT SANVI AERO GARDENS MAS COLL ACCOUNT",
       bankAccount: "Account No - 57500001873732, IFSC CODE - HDFC0001078",
       unitLabel: "Flat No",
       blockLabel: "Block B",
-      areaLabel: "SBA — Super Built-up Area (sqft)",
+      areaLabel: "SBA (Super Built-up Area, sqft)",
       hasPlotArea: false,
 
   units: [
@@ -109,7 +109,7 @@ window.PRICE_CALC_DATA = {
         { id: "legal", label: "Legal Charges", type: "fixed", default: 25000 },
         { id: "plc", label: "Preferential Location Charge (PLC)", type: "perSqft", rate: 100,
           enabledByDefault: false,
-          note: "₹100/sqft for North, East & Corner-facing units — printed as a footnote on the original sheet but never actually charged; off by default here, tick to apply it" }
+          note: "₹100/sqft for North, East & Corner-facing units. Printed as a footnote on the original sheet but never actually charged; off by default here, tick to apply it" }
       ],
 
       gstPercent: 5,
@@ -146,14 +146,14 @@ window.PRICE_CALC_DATA = {
       name: "Triton Humming Valley",
       developer: "Triton Group",
       tagline: "",
-      logo: null,
+      logo: "../../Hummingvalley/logo.png",
       theme: { primary: "#8A6D1E", primaryDark: "#6B5417", ink: "#0E1512" },
       contact: "",
       payee: "TRITON HOMES LLP",
       bankAccount: "Account No - 10209499009 - IFSC CODE : IDFB0080179 IDFC First Bank",
       unitLabel: "Villa No",
       blockLabel: "",
-      areaLabel: "SBU — Super Built-up Area (sqft)",
+      areaLabel: "SBU (Super Built-up Area, sqft)",
       hasPlotArea: true,
       plotAreaLabel: "Plot Area (sqft)",
 
@@ -195,7 +195,7 @@ window.PRICE_CALC_DATA = {
         { id: "keb", label: "KEB (Electricity)", type: "perSqft", rate: 150, note: "₹150/- per sqft" },
         { id: "legal", label: "Legal Charges", type: "fixed", default: 25000 },
         { id: "plc", label: "PLC Charges", type: "perSqft", rate: 500, enabledByDefault: true,
-          note: "₹500/sqft — unlike Sanvi, Humming Valley's reference sheet applies this by default" },
+          note: "₹500/sqft. Unlike Sanvi, Humming Valley's reference sheet applies this by default" },
         { id: "jacuzzi", label: "Jacuzzi", type: "fixed", default: 800000 },
         { id: "dgBackup", label: "DG Backup / Generator Charges", type: "fixed", default: 154000 }
       ],
@@ -221,7 +221,7 @@ window.PRICE_CALC_DATA = {
         "All payments (DD/Cheque/Online transfer) should be in favour of “TRITON HOMES LLP”, Account No - 10209499009, IFSC CODE - IDFB0080179, IDFC First Bank.",
         "Registration charges and stamp duty are payable on actuals as per the guidance value or agreement value, whichever is higher.",
         "Triton Homes reserves the right to withdraw the offer without prior notice. Prices are subject to change.",
-        "Cancellation policy: the following amount shall be forfeited in case of cancellation due to any reason other than legal title of the property — before signing of agreement: ₹50,000/-; after signing of agreement: 10% of the sale consideration. No interest shall be payable by Triton on the amount received."
+        "Cancellation policy: the following amount shall be forfeited in case of cancellation due to any reason other than legal title of the property. Before signing of agreement: ₹50,000/-; after signing of agreement: 10% of the sale consideration. No interest shall be payable by Triton on the amount received."
       ]
     }
   ]

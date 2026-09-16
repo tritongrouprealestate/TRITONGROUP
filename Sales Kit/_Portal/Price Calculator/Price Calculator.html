@@ -387,10 +387,10 @@ function hexToSoft(hex) {
 function loadProject(p) {
   project = p;
   applyTheme(p.theme);
-  document.title = 'Price Calculator — ' + p.name;
+  document.title = p.name + ' Price Calculator';
   $('#toolbarBrand').textContent = p.developer ? p.developer + ' · Price Calculator' : 'Price Calculator';
   $('#sheetTitle').textContent = p.name;
-  $('#sheetSub').textContent = [p.developer, p.tagline].filter(Boolean).join(' — ');
+  $('#sheetSub').textContent = [p.developer, p.tagline].filter(Boolean).join(' · ');
 
   if (p.logo) {
     $('#sheetLogo').src = p.logo; $('#sheetLogo').hidden = false; $('#sheetLogoText').hidden = true;
@@ -401,7 +401,7 @@ function loadProject(p) {
     $('#sheetLogo').hidden = true; $('#sheetLogoText').hidden = false; $('#sheetLogoText').textContent = p.developer || p.name;
   }
 
-  $('#unitSectionTitle').textContent = (p.blockLabel ? p.blockLabel + ' — ' : '') + 'Unit Details';
+  $('#unitSectionTitle').textContent = (p.blockLabel ? p.blockLabel + ' · ' : '') + 'Unit Details';
   $('#unitSelectLabel').textContent = p.unitLabel || 'Unit No';
   $('#unitSbaLabel').textContent = p.areaLabel || 'Area (sqft)';
 
@@ -459,7 +459,7 @@ function populateUnitSelect(p) {
   var sel = $('#unitSelect');
   sel.innerHTML = '';
   var blank = document.createElement('option');
-  blank.value = ''; blank.textContent = '— Custom / not listed —';
+  blank.value = ''; blank.textContent = 'Custom / not listed';
   sel.appendChild(blank);
   (p.units || []).forEach(function (u, i) {
     var o = document.createElement('option');
@@ -503,7 +503,7 @@ function renderPlotField() {
     var f = document.createElement('div');
     f.className = 'f'; f.id = 'unitPlotField';
     f.innerHTML = '<label>' + escHtml(project.plotAreaLabel || 'Plot Area (sqft)') + '</label>' +
-      '<input id="unitPlot" type="number" placeholder="TBD — confirm with sales desk" value="' +
+      '<input id="unitPlot" type="number" placeholder="TBD (confirm with sales desk)" value="' +
       (currentUnitPlot != null ? currentUnitPlot : '') + '">';
     $('#unitFacing').closest('.f').insertAdjacentElement('afterend', f);
   }
@@ -651,7 +651,7 @@ function refreshScheduleComputed() {
     check.innerHTML = okIcon() + 'Schedule total ' + inr(total) + ' matches Grand Total.';
   } else {
     check.className = 'sched-check warn';
-    check.innerHTML = warnIcon() + 'Schedule total ' + inr(total) + ' is ' + inr(Math.abs(diff)) + (diff > 0 ? ' more than' : ' less than') + ' Grand Total — adjust a milestone if this quote should reconcile exactly.';
+    check.innerHTML = warnIcon() + 'Schedule total ' + inr(total) + ' is ' + inr(Math.abs(diff)) + (diff > 0 ? ' more than' : ' less than') + ' Grand Total. Adjust a milestone if this quote should reconcile exactly.';
   }
 }
 function okIcon() { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>'; }
@@ -772,7 +772,7 @@ if (DATA.length) {
   loadProject(DATA[startIdx]);
 } else {
   $('.wrap').innerHTML = '<p style="padding:40px;text-align:center;color:var(--fg-faint)">' +
-    'No project data found — check that price-calculator-data.js is next to this page and loaded before it.</p>';
+    'No project data found. Check that price-calculator-data.js is next to this page and loaded before it.</p>';
 }
 </script>
 </body>

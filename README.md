@@ -51,6 +51,7 @@ the one file sales actually opens on-screen.
 | Put the file here | Named |
 |---|---|
 | `Sales Kit/Sanvi/` | `cover.jpg` — the photo on the project card |
+| `Sales Kit/Sanvi/` | `logo.png` — Sanvi's own logo; see "Project logos" below |
 | `Sales Kit/Sanvi/Brochure/` | `Brochure.pdf` |
 | `Sales Kit/Sanvi/Cost Sheet/` | `Cost Sheet.png` |
 | `Sales Kit/Sanvi/Cost Sheet/` | `Price List.xlsx` |
@@ -65,6 +66,7 @@ the one file sales actually opens on-screen.
 | Put the file here | Named |
 |---|---|
 | `Sales Kit/Hummingvalley/` | `cover.jpg` |
+| `Sales Kit/Hummingvalley/` | `logo.png` — Hummingvalley's own logo; see "Project logos" below |
 | `Sales Kit/Hummingvalley/Brochure/` | `Brochure.pdf` |
 | `Sales Kit/Hummingvalley/Cost Sheet/` | `Villa 8.png`, `Villa 11.png`, `Villa 20.png`, `Villa 22.png`, `Villa 23.png` |
 | `Sales Kit/Hummingvalley/Master Plan/` | `Master Plan.png` |
@@ -75,9 +77,23 @@ the one file sales actually opens on-screen.
 | `Sales Kit/Hummingvalley/Video/` | `Walkthrough.mp4` |
 | `Sales Kit/Hummingvalley/Video/` | `AV Film.mp4` |
 
+### Project logos
+
+Each project can carry its own logo, separate from the Triton logo in the header/footer.
+Save it once, at the project's own root:
+
+| Put the file here | Shows up in |
+|---|---|
+| `Sales Kit/Sanvi/logo.png` | Sanvi's project card, project page, every folder page (Cost Sheet, Brochure, etc.), and the Price Calculator when Sanvi is selected |
+| `Sales Kit/Hummingvalley/logo.png` | Hummingvalley's project card, project page, every folder page, the Price Calculator, the EMI Calculator header, and the Location Advantage page |
+
+One file each, referenced everywhere it belongs, so there is nothing to keep in sync.
+Until it exists, every one of those spots falls back to what it already showed (a generic
+folder icon, the "T" monogram, or plain text) with no broken image and no layout shift.
+
 ### Online films
 
-The Hummingvalley page carries two **YouTube links** — Old Film and New Film —
+The Hummingvalley page carries two **YouTube links**, Old Film and New Film,
 shown under the folders in their own *Online Films* row. Clicking one opens YouTube
 in a new browser tab.
 
@@ -142,6 +158,13 @@ display typeface. That fallback is presentable — it is not a broken state — 
 logo is better.
 
 ### The Hummingvalley location map
+
+This page now runs on the same light, white-background palette as the rest of the kit
+(previously it was near-black). Every color on it comes from a small set of CSS variables
+at the top of the file, so a further palette change only means editing those, not hunting
+through the page. Two things stayed intentionally dark regardless of theme: the popup's
+close button and hover tooltip, since both sit on top of a photo and need to stay legible
+no matter how bright that photo is.
 
 `Hummingvalley → Location Advantage` is an interactive page, not a file to swap out.
 The project sits at the centre of a dial and every destination is plotted by its real
