@@ -129,6 +129,40 @@ you — this build machine has no access to YouTube.
 | `Sales Kit/Triton Branded/General/` | `Main Brochure.pdf` |
 | `Sales Kit/Triton Branded/General/` | `Feedback Form.pdf` |
 
+### Pre-launch projects (Codename Up in the Clouds, Codename Eloria)
+
+Two upcoming villa projects sit on the home page as real cards with no real
+collateral behind them yet. Every file in their folders is deliberately marked
+missing in `PORTAL_DATA`, so each one shows an honest **"Not added yet"** tile
+instead of a fabricated brochure or cost sheet.
+
+| Put the file here | Named |
+|---|---|
+| `Sales Kit/Up in the Clouds/Brochure/` | `Brochure.pdf` |
+| `Sales Kit/Up in the Clouds/Cost Sheet/` | `Cost Sheet.png` |
+| `Sales Kit/Up in the Clouds/Location Advantage/` | `Location Advantage.html` |
+| `Sales Kit/Up in the Clouds/Video/` | `Walkthrough.mp4` |
+| `Sales Kit/Eloria/Brochure/` | `Brochure.pdf` |
+| `Sales Kit/Eloria/Cost Sheet/` | `Cost Sheet.png` |
+| `Sales Kit/Eloria/Location Advantage/` | `Location Advantage.html` |
+| `Sales Kit/Eloria/Video/` | `Walkthrough.mp4` |
+
+Dropping a real file in does not turn the tile live by itself — the matching entry
+in that project's `folders` array in `PORTAL_DATA` still carries `missing: true`.
+Delete that flag (or the whole `missing:` line) once the file is actually in place.
+Add a `cover.jpg` and `logo.png` at the project's own root the same way Sanvi and
+Hummingvalley have theirs, and the card and folder pages pick them up automatically.
+
+### Card heading vs. folder name
+
+A project's `name` in `PORTAL_DATA` is also its folder name on disk — renaming one
+without the other breaks every file link under it. Where the two need to differ (the
+homepage should read "Sanvi Aero Gardens" while the folder on disk stays the short
+`Sales Kit/Sanvi/`), add a `displayName` alongside `name`: `displayName` is what
+the portal shows everywhere a project's name appears — the card, the project page,
+breadcrumbs — while `name` keeps doing its quiet job of pointing at the right folder.
+Leave `displayName` out and the portal just shows `name` in both roles, as before.
+
 ### Front screen
 
 | Put the file here | Named |

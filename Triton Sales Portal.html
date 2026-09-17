@@ -756,8 +756,9 @@ window.PORTAL_DATA = {
     {
       id: "sanvi",
       name: "Sanvi",
-      location: "Sanvi Aero Gardens · Near Bengaluru Airport",
-      tagline: "1, 2 & 3 BHK luxury apartments. Full pitch kit: brochure, live pricing, availability and the project film.",
+      displayName: "Sanvi Aero Gardens",
+      location: "Live Above the Ordinary",
+      tagline: "Airport side residences with rooftop living.",
       tag: "Residential",
       cover: "Sales Kit/Sanvi/cover.jpg",
       logo: "Sales Kit/Sanvi/logo.png",
@@ -783,8 +784,9 @@ window.PORTAL_DATA = {
     {
       id: "hummingvalley",
       name: "Hummingvalley",
-      location: "Triton Humming Valley · Luxury Villas Near Nandi Hills",
-      tagline: "Villa inventory near Nandi Hills. Brochure, deck, master plan and two walkthrough films.",
+      displayName: "Triton Humming Valley",
+      location: "Your Private Escape",
+      tagline: "Luxury villas between the hills.",
       tag: "Villas",
       cover: "Sales Kit/Hummingvalley/cover.jpg",
       logo: "Sales Kit/Hummingvalley/logo.png",
@@ -821,8 +823,9 @@ window.PORTAL_DATA = {
     {
       id: "triton-branded",
       name: "Triton Branded",
-      location: "Corporate · Brand-level collateral",
-      tagline: "Company-level material that is not tied to a single project. Main brochure and sales forms.",
+      displayName: "Triton Group",
+      location: "Beyond the Address",
+      tagline: "Explore our story, projects and vision.",
       tag: "Corporate",
       cover: "Sales Kit/Triton Branded/cover.jpg",
       accent: "linear-gradient(155deg,#9a8358,#4d4331 55%,#5c5a63)",
@@ -830,6 +833,49 @@ window.PORTAL_DATA = {
         { id: "general", name: "General", files: [
           { label: "Main Brochure",       name: "Main Brochure.pdf" },
           { label: "Sales Feedback Form", name: "Feedback Form.pdf" } ] }
+      ]
+    },
+    {
+      /* Pre-launch project: no real collateral yet, so every file below is
+         flagged missing on purpose — it renders as an honest "Not added yet"
+         tile instead of a fabricated brochure or cost sheet. Swap missing:true
+         off (and drop the real file into the matching Sales Kit folder) as
+         each piece of collateral is actually ready. */
+      id: "up-in-the-clouds",
+      name: "Up in the Clouds",
+      displayName: "Codename Up in the Clouds",
+      location: "A Higher Way to Live",
+      tagline: "4 & 5 BHK luxury villas at Nandi Hills.",
+      tag: "Villas",
+      accent: "linear-gradient(155deg,#7fa0b8,#2f3d4a 55%,#a9b7c2)",
+      folders: [
+        { id: "brochure", name: "Brochure", files: [
+          { label: "Brochure",            name: "Brochure.pdf", missing: true } ] },
+        { id: "cost-sheet", name: "Cost Sheet", files: [
+          { label: "Cost Sheet",          name: "Cost Sheet.png", missing: true } ] },
+        { id: "location-advantage", name: "Location Advantage", files: [
+          { label: "Location Advantage",  name: "Location Advantage.html", missing: true } ] },
+        { id: "video", name: "Video", files: [
+          { label: "Project Walkthrough", name: "Walkthrough.mp4", missing: true } ] }
+      ]
+    },
+    {
+      id: "eloria",
+      name: "Eloria",
+      displayName: "Codename Eloria",
+      location: "Designed to Outlive Trends",
+      tagline: "4 & 5 BHK Neo Classical villas in Rajanukunte.",
+      tag: "Villas",
+      accent: "linear-gradient(155deg,#a89073,#3f362a 55%,#c9b48f)",
+      folders: [
+        { id: "brochure", name: "Brochure", files: [
+          { label: "Brochure",            name: "Brochure.pdf", missing: true } ] },
+        { id: "cost-sheet", name: "Cost Sheet", files: [
+          { label: "Cost Sheet",          name: "Cost Sheet.png", missing: true } ] },
+        { id: "location-advantage", name: "Location Advantage", files: [
+          { label: "Location Advantage",  name: "Location Advantage.html", missing: true } ] },
+        { id: "video", name: "Video", files: [
+          { label: "Project Walkthrough", name: "Walkthrough.mp4", missing: true } ] }
       ]
     }
   ]
@@ -1140,7 +1186,7 @@ function projectCard(p, i) {
       '</span></div>' +
       '<div class="pcard-body">' +
         '<div>' +
-          '<h3 class="pcard-name">' + esc(p.name) + '</h3>' +
+          '<h3 class="pcard-name">' + esc(p.displayName || p.name) + '</h3>' +
           '<p class="pcard-loc">' + esc(p.location || (folders + ' folders · Triton Group Sales Kit')) + '</p>' +
         '</div>' +
         '<div class="pcard-ov">' +
@@ -1177,7 +1223,7 @@ function renderHome() {
 
 function renderProject(p) {
   Hero.hide(true);
-  crumbs([{ t: p.name }]);
+  crumbs([{ t: p.displayName || p.name }]);
   var folders = p.folders || [];
   var links   = p.links   || [];
   var body =
@@ -1186,7 +1232,7 @@ function renderProject(p) {
       '<div class="sec-head rv">' +
         '<div>' +
           '<p class="sec-eyebrow">' + esc(p.tag || 'Project') + '</p>' +
-          '<h2 class="sec-title">' + projectLogo(p, 'sec-title-logo') + esc(p.name) + '</h2>' +
+          '<h2 class="sec-title">' + projectLogo(p, 'sec-title-logo') + esc(p.displayName || p.name) + '</h2>' +
           '<p class="sec-sub">' + esc(p.tagline || '') + '</p>' +
         '</div>' +
         '<span class="sec-count">' + folders.length + ' Folders · ' + fileCount(p) + ' Files' +
@@ -1202,7 +1248,7 @@ function renderProject(p) {
                    '<p class="tile-sub">' + (n ? n + (n === 1 ? ' item' : ' items') : 'Empty') + '</p></span>' +
                    '</a>';
           }).join('') + '</div>'
-        : emptyState('No folders defined for ' + esc(p.name) + ' yet.')) +
+        : emptyState('No folders defined for ' + esc(p.displayName || p.name) + ' yet.')) +
       (links.length
         ? '<div class="sec-split rv"><span>Online Films</span>' +
             '<em>Open on YouTube · these need an internet connection</em></div>' +
@@ -1214,14 +1260,14 @@ function renderProject(p) {
 
 function renderFolder(p, f) {
   Hero.hide(true);
-  crumbs([{ t: p.name, h: '#/p/' + p.id }, { t: f.name }]);
+  crumbs([{ t: p.displayName || p.name, h: '#/p/' + p.id }, { t: f.name }]);
   var files = f.files || [];
   var body =
     '<div class="view">' +
-      '<a class="back" href="#/p/' + esc(p.id) + '" data-cursor="back">' + svg('back') + ' ' + esc(p.name) + '</a>' +
+      '<a class="back" href="#/p/' + esc(p.id) + '" data-cursor="back">' + svg('back') + ' ' + esc(p.displayName || p.name) + '</a>' +
       '<div class="sec-head rv">' +
         '<div>' +
-          '<p class="sec-eyebrow">' + projectLogo(p, 'eyebrow-logo') + esc(p.name) + '</p>' +
+          '<p class="sec-eyebrow">' + projectLogo(p, 'eyebrow-logo') + esc(p.displayName || p.name) + '</p>' +
           '<h2 class="sec-title">' + esc(f.name) + '</h2>' +
         '</div>' +
         '<span class="sec-count">' + files.length + (files.length === 1 ? ' File' : ' Files') + '</span>' +
@@ -1443,11 +1489,13 @@ var Library = (function () {
       var archived = old.archive !== undefined ? old.archive : /^(old|archive|backup)$/i.test(pname);
       return {
         id: id, name: old.name || pname,
+        displayName: old.displayName || '',
         location: old.location || '',
         tagline:  old.tagline  || (folders.length + ' folders of sales collateral.'),
         tag:      old.tag      || (archived ? 'Archive' : 'Project'),
         links:    old.links || [],
         cover:    covers[pname] || old.cover || '',
+        logo:     old.logo || '',
         accent:   old.accent   || 'linear-gradient(155deg,#6d8399,#3b4a5c 55%,#8a7a52)',
         archive:  archived || undefined,
         hidden:   old.hidden !== undefined ? old.hidden : archived,
@@ -1539,14 +1587,15 @@ var Search = (function () {
   function build() {
     index = [];
     visible().forEach(function (p) {
-      index.push({ t: 'project', name: p.name, path: 'Projects', href: '#/p/' + p.id, icon: 'folder' });
+      var pname = p.displayName || p.name;
+      index.push({ t: 'project', name: pname, path: 'Projects', href: '#/p/' + p.id, icon: 'folder' });
       (p.folders || []).forEach(function (f) {
-        index.push({ t: 'folder', name: f.name, path: p.name,
+        index.push({ t: 'folder', name: f.name, path: pname,
                      href: '#/p/' + p.id + '/' + f.id, icon: 'folder' });
         (f.files || []).forEach(function (file) {
           if (file.missing) return;
           index.push({ t: 'file', name: file.label, alt: file.name,
-                       path: p.name + ' · ' + f.name +
+                       path: pname + ' · ' + f.name +
                              (file.youtube ? ' · YouTube' : ''),
                        file: file.youtube ? file.url : file.path,
                        icon: file.youtube ? 'youtube' : kindOf(file.name) });
