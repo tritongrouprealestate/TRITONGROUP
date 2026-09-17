@@ -68,7 +68,7 @@ the one file sales actually opens on-screen.
 | `Sales Kit/Hummingvalley/` | `cover.jpg` |
 | `Sales Kit/Hummingvalley/` | `logo.png` — Hummingvalley's own logo; see "Project logos" below |
 | `Sales Kit/Hummingvalley/Brochure/` | `Brochure.pdf` |
-| `Sales Kit/Hummingvalley/Cost Sheet/` | `Villa 8.png`, `Villa 11.png`, `Villa 20.png`, `Villa 22.png`, `Villa 23.png` |
+| `Sales Kit/Hummingvalley/Cost Sheet/` | `Villa 8.png`, `Villa 10.png`, `Villa 11.png`, `Villa 20.png`, `Villa 22.png`, `Villa 23.png`, `Villa 30.png` |
 | `Sales Kit/Hummingvalley/Master Plan/` | `Master Plan.png` |
 | `Sales Kit/Hummingvalley/Master Plan/` | `Interactive Master Plan.html`, **hand-built, see below** |
 | `Sales Kit/_Portal/Price Calculator/` | `Price Calculator.html` — shared with Sanvi, see below |
@@ -76,6 +76,13 @@ the one file sales actually opens on-screen.
 | `Sales Kit/Hummingvalley/EMI Calculator/` | `EMI Calculator.html`, **generated, do not replace** |
 | `Sales Kit/Hummingvalley/Video/` | `Walkthrough.mp4` |
 | `Sales Kit/Hummingvalley/Video/` | `AV Film.mp4` |
+
+Villas 10 and 30 are confirmed and already priced everywhere in the portal — the
+Price Calculator, the EMI Calculator and the Interactive Master Plan all work for
+them today. Only their scanned cost sheet images aren't in yet: `Villa 10.png` and
+`Villa 30.png` show as "Not added yet" in the Cost Sheet folder and inside the
+Master Plan popup until those two files are saved in place, same names, same
+folder, as the other five villas.
 
 ### Project logos
 

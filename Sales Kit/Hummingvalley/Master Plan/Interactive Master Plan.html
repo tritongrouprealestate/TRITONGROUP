@@ -312,19 +312,26 @@ var reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
    out of that versus the previous marketing-card numbers: Villa 20 is
    actually 3,494 sq ft built-up / 1,360 sq ft plot (not 3,724 / 1,389),
    and "Aspect" is now each villa's real compass facing from its sheet
-   (Villas 11/20/22/23 are North Facing, Villa 8 is East Facing) rather
-   than the marketing wording ("Central row", "South row, clubhouse
+   (Villas 11/20/22/23/30 are North Facing, Villas 8/10 are East Facing)
+   rather than the marketing wording ("Central row", "South row, clubhouse
    side"). Price is each sheet's exact Grand Total, not a rounded
    marketing figure. costSheet paths assume each villa's sheet is saved
    as "Villa <N>.png" next to this page, matching Villa 20's existing
-   file — save the other four screenshots under those exact names if
-   they aren't already there. */
+   file. Villas 10 and 30 were added once their own cost sheets came in,
+   but "Villa 10.png" / "Villa 30.png" aren't saved in that folder yet —
+   costSheet is left out for both so the modal shows its own built-in
+   "Cost sheet not added yet" instead of a link to a file that 404s. Add
+   costSheet: '../Cost Sheet/Villa 10.png' (or 30) once that image exists.
+   The dynamic Price Calculator and EMI Calculator already work for both
+   villas from price-calculator-data.js regardless. */
 var VILLAS = {
   8:  { bhk: '3 BHK', builtUp: '2,660 sq ft', plot: '1,080 sq ft', aspect: 'East Facing',  price: '₹2.83 Cr', status: 'Available', costSheet: '../Cost Sheet/Villa 8.png' },
+  10: { bhk: '4 BHK', builtUp: '3,724 sq ft', plot: '1,389 sq ft', aspect: 'East Facing',  price: '₹3.81 Cr', status: 'Available' },
   11: { bhk: '5 BHK', builtUp: '4,448 sq ft', plot: '1,555 sq ft', aspect: 'North Facing', price: '₹4.52 Cr', status: 'Available', costSheet: '../Cost Sheet/Villa 11.png' },
   20: { bhk: '4 BHK', builtUp: '3,494 sq ft', plot: '1,360 sq ft', aspect: 'North Facing', price: '₹3.59 Cr', status: 'Available', costSheet: '../Cost Sheet/Villa 20.png' },
   22: { bhk: '3 BHK', builtUp: '2,680 sq ft', plot: '1,080 sq ft', aspect: 'North Facing', price: '₹2.85 Cr', status: 'Available', costSheet: '../Cost Sheet/Villa 22.png' },
-  23: { bhk: '3 BHK', builtUp: '2,680 sq ft', plot: '1,080 sq ft', aspect: 'North Facing', price: '₹2.85 Cr', status: 'Available', costSheet: '../Cost Sheet/Villa 23.png' }
+  23: { bhk: '3 BHK', builtUp: '2,680 sq ft', plot: '1,080 sq ft', aspect: 'North Facing', price: '₹2.85 Cr', status: 'Available', costSheet: '../Cost Sheet/Villa 23.png' },
+  30: { bhk: '3 BHK', builtUp: '2,680 sq ft', plot: '1,080 sq ft', aspect: 'North Facing', price: '₹2.78 Cr', status: 'Available' }
 };
 
 function floorPhotos(num, slug) {
