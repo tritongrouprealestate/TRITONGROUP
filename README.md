@@ -390,6 +390,16 @@ accent colour, in the footer next to the contact number. Comes from the same
 `payee` / `bankAccount` fields already in `price-calculator-data.js`; nothing new to
 fill in.
 
+**On-screen reminder about the browser's own print header/footer.** Chrome (and
+most browsers) can stamp a page title and the local file path onto every printed or
+saved-as-PDF page — that stamp comes from the browser's print dialog, under
+Options → "Headers and footers," not from this page. No CSS or JavaScript on a
+webpage can turn that setting off; it is a browser-level checkbox only. The page now
+shows a small tip above the quote sheet telling whoever is printing to switch that
+checkbox off first, so the sheet handed to a customer never carries a
+"Triton Humming Valley Price Calculator" title line or a `file:///...` path in the
+margins. The tip itself is hidden in the actual print output.
+
 **Sanvi's 44 units are the real building.** Its master list (`Sheet3` in the original
 workbook) and its Availability sheet disagreed on three flats' configuration —
 Flat 120 (Sheet3 said 3 BHK, Availability said 2 BHK, and at 1,090 sqft it doesn't

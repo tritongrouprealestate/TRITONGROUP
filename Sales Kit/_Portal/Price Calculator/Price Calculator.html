@@ -55,6 +55,11 @@ input[type=number]{-moz-appearance:textfield}
 .btn.primary:hover{background:var(--accent-dark)}
 
 .wrap{max-width:900px;margin:0 auto;padding:clamp(16px,3vw,34px) clamp(14px,3vw,30px) 80px}
+.print-tip{display:flex;align-items:flex-start;gap:9px;margin:0 0 14px;padding:11px 14px;
+  border-radius:10px;background:var(--paper-2);border:1px solid var(--line-2);
+  color:var(--fg-dim);font-size:12px;line-height:1.55}
+.print-tip svg{width:15px;height:15px;flex:0 0 auto;margin-top:2px;color:var(--accent)}
+.print-tip b{color:var(--fg)}
 .sheet{background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow:hidden;
   box-shadow:0 20px 60px rgba(20,20,22,.06)}
 
@@ -176,7 +181,7 @@ table.sched input.pct-input{text-align:right}
 @media print{
   @page{size:A4;margin:9mm}
   *{transition:none!important}
-  .tabbar,.toolbar,.addrow,.row .rm,table.sched td.rm{display:none!important}
+  .tabbar,.toolbar,.print-tip,.addrow,.row .rm,table.sched td.rm{display:none!important}
   body{background:#fff;font-size:10px}
   .wrap{padding:0;max-width:none}
   .sheet{box-shadow:none;border:none;border-radius:0}
@@ -247,6 +252,10 @@ table.sched input.pct-input{text-align:right}
 </div>
 
 <div class="wrap">
+  <p class="print-tip">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>
+    <span>Before saving, open the print dialog's <b>Options</b> and turn off <b>Headers and footers</b>. Without that, the PDF gets a browser-added title line and file path stamped on it that isn't part of this document.</span>
+  </p>
   <div class="sheet" id="sheet">
     <div class="sheet-head">
       <img id="sheetLogo" alt="" hidden>
