@@ -41,9 +41,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 /* ---------- header ---------- */
 .top{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;
   padding:22px clamp(16px,3vw,34px) 16px;border-bottom:1px solid var(--line);flex:0 0 auto}
-.eyebrow{display:inline-flex;align-items:center;gap:10px;margin:0 0 8px;
+.eyebrow{display:inline-flex;align-items:center;margin:0 0 8px;
   font:600 10px/1 var(--sans);letter-spacing:.38em;text-transform:uppercase;color:var(--teal)}
-.eyebrow::before{content:"";width:20px;height:2px;background:var(--teal)}
 .h1{margin:0;font-family:var(--display);font-weight:400;font-variation-settings:"opsz" 144;
   font-size:clamp(26px,3.4vw,42px);line-height:1;letter-spacing:-.015em}
 .h1-logo{height:.72em;width:auto;vertical-align:-.06em;margin-right:.22em;display:inline-block}
@@ -801,7 +800,7 @@ function header() {
   $('#stats').innerHTML = [
     [D.places.length, 'Destinations mapped'],
     [within15, 'Within 15 km'],
-    [air ? air.min + ' min' : '—', 'To the airport'],
+    [air ? air.min + ' min' : 'N/A', 'To the airport'],
     [near.min + ' min', 'Nearest neighbour']
   ].map(function (s) {
     return '<div class="stat"><b>' + s[0] + '</b><span>' + s[1] + '</span></div>';

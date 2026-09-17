@@ -638,7 +638,7 @@ function refreshChargeComputedFields() {
     var computedRate = row.querySelector('.chg-computed-rate');
     if (computedRate) {
       var r = (c.rates && currentUnitFloor != null) ? (c.rates[String(currentUnitFloor)] || 0) : 0;
-      computedRate.value = currentUnitFloor == null ? '—' : ('₹' + r + '/sqft (floor ' + currentUnitFloor + ')');
+      computedRate.value = currentUnitFloor == null ? 'N/A' : ('₹' + r + '/sqft (floor ' + currentUnitFloor + ')');
     }
   });
 }
