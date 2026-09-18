@@ -188,11 +188,6 @@ body.cur-hot .cursor{opacity:0}
   font-size:clamp(32px,6vw,72px);line-height:1.06;letter-spacing:-.01em;color:#e8efec}
 .hero-desc{margin:22px 0 0;max-width:52ch;font:400 15px/1.7 var(--sans);
   color:rgba(232,239,236,.68)}
-.hero-cta{margin-top:32px;display:inline-flex;align-items:center;gap:10px;
-  padding:14px 30px;border-radius:99px;background:var(--gold-2);color:#231a06;
-  font:600 12.5px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;
-  transition:transform .35s var(--ease),background .35s var(--ease)}
-.hero-cta:hover{transform:translateY(-3px);background:#eddba0}
 
 .hero-marquee{position:relative;z-index:1;margin-top:clamp(44px,8vh,80px);
   width:calc(100% + 40px);
@@ -680,7 +675,6 @@ div.tile.missing{cursor:default}
   <p class="hero-tag" id="heroTag">Sales Deck · Kit</p>
   <h1 class="hero-title" id="heroTitle"></h1>
   <p class="hero-desc" id="heroDesc"></p>
-  <a class="hero-cta" id="heroCta" href="#stage" data-cursor="open"></a>
 
   <div class="hero-marquee" aria-hidden="true">
     <div class="hero-marquee-track" id="heroMarquee"></div>
@@ -733,10 +727,8 @@ window.PORTAL_DATA = {
     logo: "Sales Kit/_Portal/logo.png",
     hero: {
       tagline: "Sales Deck · Kit",
-      titleLines: ["Every Project", "Presented with Confidence"],
-      description: "Brochures, cost sheets, master plans and films for Sanvi and Hummingvalley. Opens on any laptop or TV with zero internet connection.",
-      ctaText: "Explore Projects",
-      ctaHref: "#stage",
+      titleLines: ["Explore Triton.", "Find Your Next Address."],
+      description: "Discover our projects through brochures, floor plans, master plans, pricing and films, all in one place.",
       images: [
         "Sales Kit/_Portal/hero/villa-exterior.jpg",
         "Sales Kit/_Portal/hero/interior.jpg",
@@ -1710,8 +1702,6 @@ addEventListener('keydown', function (e) {
   if (b.tagline)     $('#heroTag').textContent = b.tagline;
   if (b.titleLines)  $('#heroTitle').innerHTML = b.titleLines.map(esc).join('<br>');
   if (b.description) $('#heroDesc').textContent = b.description;
-  if (b.ctaText)     $('#heroCta').textContent = b.ctaText;
-  $('#heroCta').setAttribute('href', b.ctaHref || '#stage');
 
   var images = b.images || [];
   if (images.length) {
