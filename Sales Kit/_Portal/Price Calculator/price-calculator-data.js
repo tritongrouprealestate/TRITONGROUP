@@ -169,26 +169,33 @@ window.PRICE_CALC_DATA = {
          sheet (Sales Kit/Hummingvalley/Cost Sheet/), not the earlier
          marketing cards, and was checked by re-deriving every line of
          each sheet's Base Price / Other Charges / GST / Grand Total and
-         confirming it matches exactly. Two real corrections came out of
-         that: Villa 20 is actually 3,494 sqft SBU / 1,360 sqft plot (the
-         marketing card had said 3,724 / 1,389), and rate per sqft is NOT
-         uniform across the project — 10/11/20 are ₹8,750/sqft, 8/22/23/30
-         are ₹9,000/sqft for 8/22/23 and ₹8,750/sqft for 30 — hence the
-         per-unit `rate` below, which the app now auto-fills into the Basic
-         Price per sqft field on selection instead of always using the
-         project-level ratePerSqft default. Villa 10's own cost sheet
-         (3,724 sqft SBU / 1,389 sqft plot, ₹8,750/sqft) confirmed exactly
-         against its Grand Total of ₹3,81,13,850. Villa 21 (4 BHK+HT, 3,474
-         sqft, ₹8,750/sqft) was the original example used to work out the
-         charges/GST/payment-schedule rules below — still not one of the
-         confirmed-available villas, so it isn't listed as a unit. */
+         confirming it matches exactly. Rate per sqft is NOT uniform across
+         the project — 10/11/20/30 are ₹8,750/sqft, 22 is ₹9,000/sqft.
+         Villa 10's own cost sheet (3,724 sqft SBU / 1,389 sqft plot,
+         ₹8,750/sqft) confirmed exactly against its Grand Total of
+         ₹3,81,13,850. Villa 21 (4 BHK+HT, 3,474 sqft, ₹8,750/sqft) was the
+         original example used to work out the charges/GST/payment-schedule
+         rules below — still not one of the confirmed-available villas, so
+         it isn't listed as a unit.
+
+         Updated cost sheets for 8, 20, 23 and 30 arrived together and were
+         re-derived the same way: Villa 8 is now 2,680 sqft SBU at
+         ₹8,750/sqft (was 2,660 sqft at ₹9,000/sqft — Grand Total moved from
+         ₹2,83,45,000 to ₹2,78,43,500), Villa 20's plot area corrected from
+         1,360 to 1,356 sqft (its SBU, rate and Grand Total are unchanged),
+         and Villa 23 is now ₹8,750/sqft (was ₹9,000/sqft — Grand Total
+         moved from ₹2,85,47,000 to ₹2,78,43,500). Villa 30's new sheet
+         matches what was already here exactly, so nothing changed for it.
+         Villa 22 was not part of this update and still stands at
+         ₹9,000/sqft — worth confirming with the sales desk whether that's
+         intentional, since 22 and 23 were originally identical siblings. */
       units: [
-        { no: "8",  floor: null, sba: 2660, plotArea: 1080, config: "3 BHK", facing: "East Facing", rate: 9000, status: "available" },
+        { no: "8",  floor: null, sba: 2680, plotArea: 1080, config: "3 BHK", facing: "East Facing", rate: 8750, status: "available" },
         { no: "10", floor: null, sba: 3724, plotArea: 1389, config: "4 BHK", facing: "East Facing", rate: 8750, status: "available" },
         { no: "11", floor: null, sba: 4448, plotArea: 1555, config: "5 BHK", facing: "North Facing", rate: 8750, status: "available" },
-        { no: "20", floor: null, sba: 3494, plotArea: 1360, config: "4 BHK", facing: "North Facing", rate: 8750, status: "available" },
+        { no: "20", floor: null, sba: 3494, plotArea: 1356, config: "4 BHK", facing: "North Facing", rate: 8750, status: "available" },
         { no: "22", floor: null, sba: 2680, plotArea: 1080, config: "3 BHK", facing: "North Facing", rate: 9000, status: "available" },
-        { no: "23", floor: null, sba: 2680, plotArea: 1080, config: "3 BHK", facing: "North Facing", rate: 9000, status: "available" },
+        { no: "23", floor: null, sba: 2680, plotArea: 1080, config: "3 BHK", facing: "North Facing", rate: 8750, status: "available" },
         { no: "30", floor: null, sba: 2680, plotArea: 1080, config: "3 BHK", facing: "North Facing", rate: 8750, status: "available" }
       ],
 

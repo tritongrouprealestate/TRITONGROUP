@@ -304,22 +304,30 @@ There is deliberately no "Enquire" button — this kit has no backend to send an
 **The specification table is confirmed data, transcribed from each villa's own cost
 sheet** (`Sales Kit/Hummingvalley/Cost Sheet/Villa <N>.png`), not the earlier marketing
 cards — checked by re-deriving each sheet's full charges/GST/Grand Total math and
-confirming it matches exactly. This corrected two things from the first pass: Villa 20
-is really 3,494 sq ft built-up on a 1,360 sq ft plot (not 3,724 / 1,389), and "Aspect"
-is now each villa's real compass facing from its sheet, not the marketing wording:
+confirming it matches exactly. "Aspect" is each villa's real compass facing from its
+sheet, not the marketing wording:
 
 | Villa | Type | Built-up | Plot | Aspect | Price (Grand Total) |
 |---|---|---|---|---|---|
-| 8  | 3 BHK | 2,660 sq ft | 1,080 sq ft | East Facing | ₹2.83 Cr |
+| 8  | 3 BHK | 2,680 sq ft | 1,080 sq ft | East Facing | ₹2.78 Cr |
+| 10 | 4 BHK | 3,724 sq ft | 1,389 sq ft | East Facing | ₹3.81 Cr |
 | 11 | 5 BHK | 4,448 sq ft | 1,555 sq ft | North Facing | ₹4.52 Cr |
-| 20 | 4 BHK | 3,494 sq ft | 1,360 sq ft | North Facing | ₹3.59 Cr |
+| 20 | 4 BHK | 3,494 sq ft | 1,356 sq ft | North Facing | ₹3.59 Cr |
 | 22 | 3 BHK | 2,680 sq ft | 1,080 sq ft | North Facing | ₹2.85 Cr |
-| 23 | 3 BHK | 2,680 sq ft | 1,080 sq ft | North Facing | ₹2.85 Cr |
+| 23 | 3 BHK | 2,680 sq ft | 1,080 sq ft | North Facing | ₹2.78 Cr |
+| 30 | 3 BHK | 2,680 sq ft | 1,080 sq ft | North Facing | ₹2.78 Cr |
 
 Price here is each sheet's exact Grand Total (rounded to the nearest lakh for display),
 not a rounded marketing figure. Every villa's popup links to **View Cost Sheet**,
 pointing at `Villa <N>.png` next to this page — save each villa's cost sheet under that
-exact name (matching Villa 20's existing file) for the link to resolve.
+exact name for the link to resolve. Updated cost sheets for 8, 20, 23 and 30 arrived
+together (Villa 8's built-up area and rate changed, Villa 20's plot area was corrected,
+Villa 23's rate changed, Villa 30 was unchanged) — the numbers above and everywhere else
+in the portal reflect them, but the `Villa 8.png` / `Villa 23.png` files already in the
+Cost Sheet folder are the old scans until replaced with the updated ones. Villa 22 was
+not part of this update and is still priced at the old rate per sqft — worth confirming
+with the sales desk whether that's intentional, since 22 and 23 were originally
+identical siblings.
 
 Beside it, **Price Calculator** opens the shared calculator already on Hummingvalley,
 with that exact villa preselected in the unit picker, same numbers as the popup itself,
@@ -512,25 +520,27 @@ Flats 130, 225 and 235 have no Availability row at all (already sold) and are gr
 and unselectable in the picker, exactly like the other two projects will be once their
 sold units are recorded the same way.
 
-**Hummingvalley's five confirmed-available villas — 8, 11, 20, 22 and 23 — now come
-straight from each villa's own cost sheet** (`Sales Kit/Hummingvalley/Cost Sheet/Villa
-<N>.png`), not the earlier marketing cards. Every sheet was checked by re-deriving its
-full Base Price → Other Charges → GST → Grand Total and confirming an exact match
-before trusting its numbers. Two real corrections came out of that:
+**Hummingvalley's seven confirmed-available villas — 8, 10, 11, 20, 22, 23 and 30 —
+now come straight from each villa's own cost sheet** (`Sales Kit/Hummingvalley/Cost
+Sheet/Villa <N>.png`), not the earlier marketing cards. Every sheet was checked by
+re-deriving its full Base Price → Other Charges → GST → Grand Total and confirming an
+exact match before trusting its numbers.
 
-- **Villa 20 is actually 3,494 sqft built-up on a 1,360 sqft plot**, not 3,724 / 1,389
-  as the earlier marketing card had it.
-- **Rate per sqft is not uniform across the project.** Villas 11 and 20 are
-  ₹8,750/sqft; villas 8, 22 and 23 are ₹9,000/sqft. Each unit in `price-calculator-data.js`
+- **Rate per sqft is not uniform across the project.** Villas 10, 11, 20 and 30 are
+  ₹8,750/sqft; villa 22 is ₹9,000/sqft. Each unit in `price-calculator-data.js`
   now carries its own `rate`, which the app auto-fills into Basic Price per sqft on
   selection — a project's `ratePerSqft` is only the fallback for a unit that doesn't
   specify one (or the "— Custom / not listed —" option).
+- **Villa 8 and Villa 23 moved to ₹8,750/sqft** when their updated cost sheets arrived
+  (Villa 8's built-up area also corrected to 2,680 sqft). Villa 20's plot area was
+  corrected to 1,356 sqft in that same update; its built-up area and rate were already
+  right. Villa 22 was not part of that update and is still ₹9,000/sqft.
 
-"Facing" for all five is now each villa's real compass facing from its own cost sheet
-(North Facing for 11/20/22/23, East Facing for 8) rather than the marketing wording
-("Central row", "South row, clubhouse side") — this shows in the unit picker dropdown,
-the Reference Sheet tab, and the interactive master plan's villa popups alike, since
-all three read from the same corrected data. A sixth villa, 21 (4 BHK+HT, 3,474 sqft,
+"Facing" is each villa's real compass facing from its own cost sheet
+(North Facing for 11/20/22/23/30, East Facing for 8/10) rather than the marketing
+wording ("Central row", "South row, clubhouse side") — this shows in the unit picker
+dropdown, the Reference Sheet tab, and the interactive master plan's villa popups
+alike, since all three read from the same corrected data. Another villa, 21 (4 BHK+HT, 3,474 sqft,
 ₹8,750/sqft), was the original example used to work out the charges/GST/payment-schedule
 rules every villa here uses — it is still not one of the five confirmed-available units,
 so it isn't listed as a selectable unit. That same villa-21 reference had an internal
