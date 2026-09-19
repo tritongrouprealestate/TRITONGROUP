@@ -234,7 +234,10 @@ body.cur-hot .cursor{opacity:0}
 
 /* ---------- project cards (TravelCard format) ---------- */
 .projects{display:grid;gap:clamp(18px,2.2vw,30px);
-  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));align-items:start}
+  grid-template-columns:repeat(2,1fr);align-items:start}
+@media (max-width:680px){
+  .projects{grid-template-columns:1fr}
+}
 
 .pcard{
   position:relative;display:block;overflow:hidden;
@@ -814,21 +817,6 @@ window.PORTAL_DATA = {
       ]
     },
     {
-      id: "triton-branded",
-      name: "Triton Branded",
-      displayName: "Triton Group",
-      location: "Beyond the Address",
-      tagline: "Explore our story, projects and vision.",
-      tag: "Corporate",
-      cover: "Sales Kit/Triton Branded/cover.jpg",
-      accent: "linear-gradient(155deg,#9a8358,#4d4331 55%,#5c5a63)",
-      folders: [
-        { id: "general", name: "General", files: [
-          { label: "Main Brochure",       name: "Main Brochure.pdf" },
-          { label: "Sales Feedback Form", name: "Feedback Form.pdf" } ] }
-      ]
-    },
-    {
       /* Pre-launch project: no real collateral yet, so every file below is
          flagged missing on purpose — it renders as an honest "Not added yet"
          tile instead of a fabricated brochure or cost sheet. Swap missing:true
@@ -869,6 +857,21 @@ window.PORTAL_DATA = {
           { label: "Location Advantage",  name: "Location Advantage.html", missing: true } ] },
         { id: "video", name: "Video", files: [
           { label: "Project Walkthrough", name: "Walkthrough.mp4", missing: true } ] }
+      ]
+    },
+    {
+      id: "triton-branded",
+      name: "Triton Branded",
+      displayName: "Triton Group",
+      location: "Beyond the Address",
+      tagline: "Explore our story, projects and vision.",
+      tag: "Corporate",
+      cover: "Sales Kit/Triton Branded/cover.jpg",
+      accent: "linear-gradient(155deg,#9a8358,#4d4331 55%,#5c5a63)",
+      folders: [
+        { id: "general", name: "General", files: [
+          { label: "Main Brochure",       name: "Main Brochure.pdf" },
+          { label: "Sales Feedback Form", name: "Feedback Form.pdf" } ] }
       ]
     }
   ]

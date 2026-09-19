@@ -1,0 +1,9 @@
+PLACEHOLDER — no real file here yet.
+
+Save the real file in this folder as exactly:
+  Walkthrough.mp4
+
+Then open "Triton Sales Portal.html", find the "eloria" project's
+"video" folder entry, and remove `missing: true` from that file so
+the portal shows it instead of "Not added yet". Delete this
+placeholder once the real file is in place.

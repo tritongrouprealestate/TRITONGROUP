@@ -154,6 +154,11 @@ instead of a fabricated brochure or cost sheet.
 | `Sales Kit/Eloria/Location Advantage/` | `Location Advantage.html` |
 | `Sales Kit/Eloria/Video/` | `Walkthrough.mp4` |
 
+All eight folders above already exist in `Sales Kit/`, each holding a
+`PLACEHOLDER.txt` that names the exact file it's waiting on — that's what makes
+them show up to upload into on GitHub. Delete a `PLACEHOLDER.txt` once its real
+file has replaced it.
+
 Dropping a real file in does not turn the tile live by itself — the matching entry
 in that project's `folders` array in `PORTAL_DATA` still carries `missing: true`.
 Delete that flag (or the whole `missing:` line) once the file is actually in place.
@@ -169,6 +174,15 @@ homepage should read "Sanvi Aero Gardens" while the folder on disk stays the sho
 the portal shows everywhere a project's name appears — the card, the project page,
 breadcrumbs — while `name` keeps doing its quiet job of pointing at the right folder.
 Leave `displayName` out and the portal just shows `name` in both roles, as before.
+
+### Homepage card order
+
+The project grid is a fixed 2-column layout (1 column on phones), and it fills
+left-to-right, top-to-bottom in the exact order projects appear in the `projects`
+array — there's no separate "row" setting. That's currently Sanvi and
+Hummingvalley (row 1), the two Codename projects (row 2), then Triton Group alone
+in row 3. To change which projects sit together, reorder the array; pairs will
+follow automatically.
 
 ### Front screen
 
