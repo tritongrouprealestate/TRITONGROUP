@@ -3645,7 +3645,7 @@ function buildExcelProjection(data){
   head.innerHTML=`
     <div class="excel-model-title">Revenue and Yield • ${p.label}</div>
     <div class="excel-head-grid">
-      <div><span>Available configuration</span><b>${p.label} • ${fmtNum(p.sbu)} SBU</b></div>
+      <div><span>Available configuration</span><b>${p.label}</b></div>
       <div><span>Revenue rooms</span><b>${s.keys}</b></div>
       <div><span>Rack rate / room</span><b>₹${fmtNum(s.rackRate)}</b></div>
       <div><span>Starting realised ARR</span><b>₹${fmtNum(s.rackRate*s.realisation/100)}</b></div>
@@ -3687,13 +3687,13 @@ function buildExcelProjection(data){
       ${row("Realised ARR / Room","realisedARR",data.map(d=>"₹"+fmtNum(d.realised)))}
       ${row("Gross Room Revenue","grossRevenue",data.map(d=>fmtINR(d.gross)))}
       ${row("Owner Revenue Share %","revenueShare",data.map(()=>fmtPct(s.share)),"excel-emphasis")}
-      ${row("Owner Revenue Share","ownerShare",data.map(d=>fmtINR(d.cash)),"excel-emphasis")}
+      ${row("Owner Revenue Share","ownerShare",data.map(d=>fmtINR(d.cash)),"excel-highlight")}
       ${row("Owner Stay Nights","ownerStayNights",data.map(()=>fmtNum(s.stayNights)))}
       ${row("Value in Room Nights","ownerStayValue",data.map(d=>fmtINR(d.stay)))}
-      ${row("Total Economic Benefit","economicBenefit",data.map(d=>fmtINR(d.economic)),"excel-total")}
+      ${row("Total Economic Benefit","economicBenefit",data.map(d=>fmtINR(d.economic)),"excel-highlight")}
       ${row("ROI on Yield + Nights","economicYield",data.map(d=>fmtPct(d.economicYield)),"excel-highlight")}
       ${row("Property Appreciation CAGR","propertyAppreciation",data.map(()=>fmtPct(s.appreciationRate)))}
-      ${row("Projected Asset Value","projectedAssetValue",assetValues.map(v=>fmtINR(v)))}
+      ${row("Projected Asset Value","projectedAssetValue",assetValues.map(v=>fmtINR(v)),"excel-highlight")}
       ${row("Cumulative Economic Benefit","cumulativeOwnerShare",cumulativeEconomicArr.map(v=>fmtINR(v)))}
       ${row("Total Villa Position","yearlyTotalPosition",totalPositions.map(v=>fmtINR(v)),"excel-highlight")}
     </tbody>`;
@@ -4764,14 +4764,14 @@ function prepareA4PrintSheet(){
   const avgEco10=data.slice(0,10).reduce((a,b)=>a+b.economicYield,0)/10;
 
   document.getElementById("printMeta").innerHTML=
-    `${p.label} • ${fmtNum(p.sbu)} SBU<br>`+
+    `${p.label}<br>`+
     `BSP ${fmtINR(s.bsp)} • All-inclusive ${fmtINR(s.investment)}<br>`+
     `Property appreciation ${fmtPct(s.appreciationRate)} • Revenue share ${fmtPct(s.share)}`;
 
   const strip=document.getElementById("printVillaStrip");
   strip.innerHTML=`<div class="print-villa">
     <div class="pv-head"><div class="pv-name">${p.label}</div><div class="pv-price">${fmtINR(s.investment)} all-inclusive</div></div>
-    <div class="pv-inventory">${fmtNum(p.sbu)} SBU • BSP ${fmtINR(s.bsp)} • ${p.available.join(" • ")}</div>
+    <div class="pv-inventory">BSP ${fmtINR(s.bsp)} • ${p.available.join(" • ")}</div>
     <div class="pv-grid">
       <div class="pv-metric"><small>Y1 economic yield</small><b>${fmtPct(data[0].economicYield)}</b></div>
       <div class="pv-metric"><small>10Y avg economic yield</small><b>${fmtPct(avgEco10)}</b></div>
