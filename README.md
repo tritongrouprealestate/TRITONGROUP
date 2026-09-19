@@ -74,6 +74,7 @@ the one file sales actually opens on-screen.
 | `Sales Kit/_Portal/Price Calculator/` | `Price Calculator.html` — shared with Sanvi, see below |
 | `Sales Kit/Hummingvalley/Location Advantage/` | `Location Advantage.html`, **generated, do not replace** |
 | `Sales Kit/Hummingvalley/EMI Calculator/` | `EMI Calculator.html`, **generated, do not replace** |
+| `Sales Kit/Hummingvalley/ROI Calculator/` | `ROI Calculator.html`, **hand-built, see below** |
 | `Sales Kit/Hummingvalley/Video/` | `Walkthrough.mp4` |
 | `Sales Kit/Hummingvalley/Video/` | `AV Film.mp4` |
 
@@ -332,6 +333,10 @@ opens Hummingvalley's home loan calculator with that villa preselected, its 80% 
 amount already filled in. See "The Hummingvalley EMI calculator" below for how that
 80/20 split works.
 
+A fourth link, **ROI Calculator**, opens the 15-year hospitality-revenue and
+appreciation model on that villa's own BHK configuration (`ROI Calculator.html#3`,
+`#4` or `#5`) — see "The Hummingvalley ROI calculator" below.
+
 To change a figure, edit the `VILLAS` object near the top of the `<script>` block in
 `Interactive Master Plan.html`. To highlight a different or additional plot, add an entry
 there keyed by its plot number — the site plan picks it up automatically, no other change
@@ -408,6 +413,45 @@ To change the loan-amount range, default interest rate, or any other input limit
 `Sales Kit/Hummingvalley/EMI Calculator/EMI Calculator.html` and edit the `min`/`max`/`value`
 attributes on the `<input type="range">` sliders near the top of the body. No rebuild step,
 same as every other file in this kit.
+
+### The Hummingvalley ROI calculator
+
+`Hummingvalley → ROI Calculator` is a third interactive page, separate from the Price
+and EMI calculators: a 15-year hospitality-revenue and appreciation model for walking a
+customer through *why* a villa is worth what it's worth, year by year, instead of just
+quoting a return percentage. A rep picks 3 BHK, 4 BHK or 5 BHK at the top — only one
+configuration's numbers show at a time — and every important figure on the page (rack
+rate, occupancy, owner revenue share, owner-stay value, appreciation, cash recovery
+year, the gold/mutual-fund/fixed-deposit comparison) is clickable, opening a plain-English
+explanation of exactly where that number comes from and how it was calculated.
+
+It is a single self-contained file, same architecture as the EMI calculator: its own
+fonts and styling, no dependency on the rest of the portal. Every villa's Master Plan
+popup links here too, mapped to that villa's own BHK type (`ROI Calculator.html#3`, `#4`
+or `#5`) so a rep opens it already on the right configuration for the villa they're
+standing in front of.
+
+**Two kinds of numbers, kept strictly separate.** *Owner Revenue Share* is projected
+cash — the owner's cut of hospitality revenue. *Owner-Stay Lifestyle Value* is not
+cash — it's what the owner's own free nights would have cost to book. Adding the two
+together gives *Total Economic Benefit*, and its running total across years is
+*Cumulative Economic Benefit* — deliberately not called "Cumulative Owner Share",
+since that name would imply it's all cash when part of it isn't. Separately,
+*Projected Cash Recovery* tracks cumulative **cash only** (owner-stay value and
+appreciation excluded) against the all-inclusive investment, to answer "when would
+the cash alone have covered what I paid in." *Projected Asset Value* compounds the
+**all-inclusive investment**, not the BSP — the BSP stays visible in Model Inputs
+purely as a pricing reference. The page runs its own runtime checks on load (open the
+browser console) confirming every one of these stays wired to the right base figure;
+if a future edit ever breaks that wiring, the console reports exactly which one.
+
+Every assumption — rack rate, realisation %, revenue share, escalation, owner-stay
+nights, occupancy for each of the 15 years, appreciation CAGR, and the three
+comparison-asset CAGRs — lives in a collapsed **Model Inputs** panel, editable without
+touching the file. To change a villa's own investment amount, BSP, room count or SBU
+instead, edit the `PRODUCTS` object near the top of the `<script>` block in
+`Sales Kit/Hummingvalley/ROI Calculator/ROI Calculator.html`. **Print / Save** produces
+a one-page A4 landscape summary of whichever configuration is currently selected.
 
 ### The Price Calculator
 

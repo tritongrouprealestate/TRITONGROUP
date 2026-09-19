@@ -555,6 +555,13 @@ function openModal(num) {
     '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 7h6M8 12h1M8 16h1M12 12h1M12 16h1M16 12h1M16 16h1"/></svg>' +
     'EMI Calculator</a>';
 
+  var bhkDigit = (v.bhk || '').match(/\d/);
+  var roiCalcHtml =
+    '<a class="cost-link" href="../ROI Calculator/ROI Calculator.html#' + esc(bhkDigit ? bhkDigit[0] : '') + '" target="_blank" rel="noopener">' +
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+    '<path d="M3 3v18h18"/><path d="m7 14 4-5 3 3 5-7"/></svg>' +
+    'ROI Calculator</a>';
+
   $('#mbody').innerHTML =
     '<div class="mhead"><h2>Villa ' + esc(num) + '</h2>' +
       '<span class="badge-available">' + esc(v.status) + '</span></div>' +
@@ -565,7 +572,7 @@ function openModal(num) {
     '</div>' +
     '<div class="msection">' +
       '<div class="msection-head"><h3>Cost Sheet</h3>' +
-        '<div class="msection-links">' + costHtml + priceCalcHtml + emiCalcHtml + '</div>' +
+        '<div class="msection-links">' + costHtml + priceCalcHtml + emiCalcHtml + roiCalcHtml + '</div>' +
       '</div>' +
     '</div>';
 
