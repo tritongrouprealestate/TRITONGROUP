@@ -125,7 +125,7 @@ YouTube refuses to embed into a page opened from a local file and returns *Error
 153*. Opening a tab is the only reliable route from an offline HTML file.
 
 To point them at different videos, edit the two `youtube:` IDs under `links:` in
-`src/data.js` and rebuild.
+`PORTAL_DATA`, inside `Triton Sales Portal.html`. No rebuild — save and reopen.
 
 **Thumbnails (optional, needs wifi once).** A film tile shows a picture if one is
 saved here; otherwise it pulls YouTube's own thumbnail when online, and falls back
@@ -213,8 +213,9 @@ Save the Triton logo as `Sales Kit/_Portal/logo.png` and it appears in both the 
 and the footer. Two things matter:
 
 - **A transparent background.** Both bands are near-black, so a logo saved on a white
-  rectangle will show that rectangle. Export a PNG with transparency, or an SVG saved
-  as `logo.png`'s neighbour and renamed in `src/data.js`.
+  rectangle will show that rectangle. Export a PNG with transparency, or save an SVG
+  next to it and point `brand.logo` at it instead, in `PORTAL_DATA` inside
+  `Triton Sales Portal.html`.
 - **The gold artwork, not a dark version.** The bands were made dark specifically so the
   gold reads well against them.
 
@@ -289,13 +290,15 @@ source: the Bengaluru Airport City, Namma Metro Phase 2B, NH-44 widening, Foxcon
 Devanahalli campus, SAP Labs, Carl Zeiss, and others. These have no verified distance
 from the project, so they sit in their own briefing list rather than on the dial itself.
 
-To add or edit a place, open `src/location-data.js` and rebuild. You need its real km
-and minutes; do not estimate them, because the sales team quotes these numbers. Twelve
-places on the brochure map carry no distance in its tables (Prestige Tech Cloud, KIADB
-Aerospace SEZ, Taj, Signature Park, NAFL National Public School, Vidyashilp University,
-Stonehill International School and others), so they are not on the dial yet. Send the
-numbers and they go in. To add or edit an infrastructure entry, open the `INFRA_DATA`
-block at the bottom of the same file.
+To add or edit a place, open `Location Advantage.html` itself and find the
+`window.LOCATION_DATA` object near the top of its `<script>` block — no rebuild, no
+separate source file. You need its real km and minutes; do not estimate them, because
+the sales team quotes these numbers. Twelve places on the brochure map carry no
+distance in its tables (Prestige Tech Cloud, KIADB Aerospace SEZ, Taj, Signature Park,
+NAFL National Public School, Vidyashilp University, Stonehill International School and
+others), so they are not on the dial yet. Send the numbers and they go in. To add or
+edit an infrastructure entry, open the `window.INFRA_DATA` block further down the same
+file.
 
 The positioning copy under each place is a first draft written for HNI and investor
 audiences. Read it before the team uses it in front of clients.
@@ -512,10 +515,11 @@ editable, and it prints to a clean customer-ready page or PDF.
 It is **one shared tool, not one per project.** The file lives outside any single
 project's folder, at `Sales Kit/_Portal/Price Calculator/`, and both Sanvi and
 Hummingvalley link to that same file from their own Cost Sheet folder — that's why
-their `Price Calculator` entries in `src/data.js` carry an explicit `path:` instead of
-the usual bare `name:`. Opening it from Sanvi's folder lands on Sanvi already selected
-(via a `#sanvi` link), opening it from Hummingvalley's lands on Hummingvalley
-(`#hummingvalley`) — same file, correct starting point either way.
+their `Price Calculator` entries in `PORTAL_DATA` (inside `Triton Sales Portal.html`)
+carry an explicit `path:` instead of the usual bare `name:`. Opening it from Sanvi's
+folder lands on Sanvi already selected (via a `#sanvi` link), opening it from
+Hummingvalley's lands on Hummingvalley (`#hummingvalley`) — same file, correct
+starting point either way.
 
 **Everything about a project is data, not code.** `price-calculator-data.js`, next to
 the HTML file, holds one array of projects; the HTML file has no project-specific
@@ -638,9 +642,11 @@ directly; there is nothing to rebuild afterwards.
 Headings are set in **Fraunces**, the working text in **Geist**. Both are embedded in the
 HTML file itself, so they render identically on every machine with no connection and
 nothing to install. The palette is near-black greens, deep teal for anything interactive,
-and the logo's gold kept for brand moments only. To change any of it, edit the token block
-at the top of `src/styles.css` and rebuild — every colour in the portal resolves from
-there. To change the fonts, edit `tools/embed-fonts.mjs` and run it.
+and the logo's gold kept for brand moments only. To change any of it, edit the `:root{}`
+token block near the top of `Triton Sales Portal.html`'s `<style>` — every colour in the
+portal resolves from there, no rebuild needed. The fonts are base64-embedded further down
+that same `<style>` block; replacing a typeface means re-encoding the new font file to
+base64 and swapping it in there directly.
 
 If a file is missing, its tile still appears, greyed, reading **"Not added yet"** with
 the name it is waiting for. Nothing breaks.
@@ -740,13 +746,10 @@ No rebuild, no separate source folder — this file is the whole thing.
 Everything — structure, CSS, and the router/search/screensaver JavaScript — lives in
 the one file, `Triton Sales Portal.html`. There's no `src/` folder or build step in
 this copy of the kit: whatever you (or Claude) change directly in that file is what
-ships, the moment you save it and reopen the page.
-
-(Older parts of this README below mention a `src/` folder and a `node tools/build.mjs`
-rebuild step for a few specific pieces — the location map's distance data, the Price
-Calculator, the colour palette. That pipeline isn't present in this copy either; treat
-those as pointing at the same file, `Triton Sales Portal.html` or the relevant tool's
-own `.html`/`.js` file, edited directly.)
+ships, the moment you save it and reopen the page. The same is true of every other
+`.html` tool in this kit (Price Calculator, Interactive Master Plan, ROI Calculator,
+Location Advantage) — each is hand-authored, self-contained, and edited directly, with
+its own data living inline near the top of its own `<script>` block.
 
 The hero's image marquee and the project cards were written in plain JS and CSS rather
 than React, because the portal has to run from a double-clicked file with no server
