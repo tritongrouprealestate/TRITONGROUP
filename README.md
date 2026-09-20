@@ -706,11 +706,14 @@ closes it immediately and resets the 2-minute clock. It only arms while you're i
 project (any of its pages) — the homepage project grid never triggers it, since there's
 no single project's photos to show there.
 
-**Turning it off**: each project page has a **Screensaver** toggle next to the folder
-count (top-right, under the project title). It's on by default; flip it off and that
-project won't auto-play anymore. The setting is remembered per project in the browser's
-local storage on that machine — it doesn't travel with the file if you copy the kit
-elsewhere, and clearing browser data resets every project back to on.
+**Turning it on or off**: each project page has a **Screensaver** toggle next to the
+folder count (top-right, under the project title). It's on by default; flip it off and
+that project won't auto-play anymore. Flipping it back **on** plays the slideshow
+immediately, as confirmation — no need to wait out the idle timer to see it worked;
+moving the mouse closes it just like any other time, and the normal 2-minute idle cycle
+takes back over from there. The on/off setting is remembered per project in the
+browser's local storage on that machine — it doesn't travel with the file if you copy
+the kit elsewhere, and clearing browser data resets every project back to on.
 
 **Adding real photos**: each project has its own `Screensaver/` folder —
 

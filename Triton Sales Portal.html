@@ -1132,7 +1132,13 @@ var Screensaver = (function () {
   return {
     setProject: function (p) { project = p || null; stop(); arm(); },
     isOff: isOff,
-    setOff: function (p, off) { setOff(p, off); if (p === project) arm(); }
+    setOff: function (p, off) { setOff(p, off); if (p === project) arm(); },
+    /* Flipping a project's toggle to on plays it immediately, as
+       confirmation, rather than making someone wait out the idle timer
+       to see it worked. Moving the mouse afterwards closes it exactly
+       like any other activity, and the normal 2-minute idle cycle
+       (arm(), just called by setOff above) takes back over from there. */
+    preview: function (p) { if (p === project) start(); }
   };
 })();
 
@@ -1186,7 +1192,9 @@ function bindInteractive(root) {
   if (ssToggle) {
     ssToggle.addEventListener('change', function () {
       var proj = findProject(ssToggle.dataset.projectId);
-      if (proj) Screensaver.setOff(proj, !ssToggle.checked);
+      if (!proj) return;
+      Screensaver.setOff(proj, !ssToggle.checked);
+      if (ssToggle.checked) Screensaver.preview(proj);
     });
   }
 }
