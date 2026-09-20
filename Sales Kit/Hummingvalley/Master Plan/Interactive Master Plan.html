@@ -186,6 +186,20 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .fp-tile:hover .fp-zoom{opacity:1}
 .fp-zoom svg{width:12px;height:12px}
 
+/* ---------- floor plans (one overview per floor, not the room-photo gallery) ---------- */
+.floorplan-layouts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media (max-width:640px){.floorplan-layouts{grid-template-columns:1fr}}
+.fpl-tile{position:relative;aspect-ratio:4/3;border-radius:12px;overflow:hidden;
+  background:var(--panel-2);border:1px solid var(--line);cursor:pointer;
+  transition:transform .25s var(--spring),border-color .25s}
+.fpl-tile:hover{transform:translateY(-3px);border-color:var(--accent)}
+.fpl-tile img{width:100%;height:100%;object-fit:contain;display:block;background:var(--panel-2)}
+.fpl-tile .ph-fallback svg{width:22px;height:22px}
+.fpl-label{position:absolute;left:0;right:0;bottom:0;padding:7px 10px;
+  font:700 10px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:#fff;
+  background:linear-gradient(0deg,rgba(0,0,0,.55),transparent)}
+.fpl-tile:hover .fp-zoom{opacity:1}
+
 /* ---------- lightbox ---------- */
 .lightbox{position:fixed;inset:0;z-index:40;background:rgba(10,14,11,.9);
   display:flex;align-items:center;justify-content:center;padding:30px;
@@ -369,6 +383,11 @@ function assetPaths(num) {
       { label: 'Ground Floor', files: floorPhotos(num, 'ground-floor') },
       { label: 'First Floor',  files: floorPhotos(num, 'first-floor') },
       { label: 'Second Floor', files: floorPhotos(num, 'second-floor') }
+    ],
+    floorLayouts: [
+      { label: 'Ground Floor', file: 'floorplan-layouts/villa-' + num + '-ground-floor.png' },
+      { label: 'First Floor',  file: 'floorplan-layouts/villa-' + num + '-first-floor.png' },
+      { label: 'Second Floor', file: 'floorplan-layouts/villa-' + num + '-second-floor.png' }
     ]
   };
 }
@@ -529,6 +548,32 @@ function assetExists(src, cb) {
   img.src = src;
 }
 
+/* Loads each tile's image if it exists, and wires clicks so the lightbox
+   navigates only within this tile group (e.g. the 3 floor plan layouts,
+   separately from the 15 floor plan gallery photos). */
+function wireImageTiles(selector) {
+  $$(selector, $('#mbody')).forEach(function (tile) {
+    var file = tile.dataset.file;
+    assetExists(file, function (ok) {
+      if (!ok) return;
+      var img = new Image();
+      img.src = file; img.alt = tile.dataset.label;
+      tile.querySelector('.ph-fallback').style.display = 'none';
+      tile.insertBefore(img, tile.firstChild);
+    });
+    tile.addEventListener('click', function () {
+      var loadedTiles = $$(selector, $('#mbody')).filter(function (t) { return t.querySelector('img'); });
+      var idx = loadedTiles.indexOf(tile);
+      if (idx === -1) return;
+      var items = loadedTiles.map(function (t) {
+        var im = t.querySelector('img');
+        return { src: im.src, label: t.dataset.label };
+      });
+      openLightbox(items, idx);
+    });
+  });
+}
+
 function openModal(num) {
   var v = VILLAS[num];
   var paths = assetPaths(num);
@@ -544,6 +589,17 @@ function openModal(num) {
     return '<div class="specrow"><span class="k">' + esc(r[0]) + '</span><span class="v">' + esc(r[1]) + '</span></div>';
   }).join('') +
     '<div class="specrow price"><span class="k">Base Price</span><span class="v">' + esc(v.price) + '</span></div>';
+
+  var flHtml = paths.floorLayouts.map(function (item) {
+    var label = item.label + ' Plan';
+    return '<div class="fpl-tile" data-file="' + esc(item.file) + '" data-label="' + esc(label) + '">' +
+      '<div class="ph-fallback"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">' +
+      '<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg></div>' +
+      '<span class="fpl-label">' + esc(item.label) + '</span>' +
+      '<button class="fp-zoom" aria-label="Zoom ' + esc(label) + '" type="button">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+      '<path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></button></div>';
+  }).join('');
 
   var fpHtml = paths.floorplans.map(function (grp) {
     var tiles = grp.files.map(function (file, i) {
@@ -590,6 +646,10 @@ function openModal(num) {
       '<span class="badge-available">' + esc(v.status) + '</span></div>' +
     '<div class="spectable">' + specHtml + '</div>' +
     '<div class="msection">' +
+      '<div class="msection-head"><h3>Floor Plans</h3></div>' +
+      '<div class="floorplan-layouts">' + flHtml + '</div>' +
+    '</div>' +
+    '<div class="msection">' +
       '<div class="msection-head"><h3>Floor Plan Gallery</h3></div>' +
       '<div class="floorplans">' + fpHtml + '</div>' +
     '</div>' +
@@ -599,26 +659,8 @@ function openModal(num) {
       '</div>' +
     '</div>';
 
-  $$('.fp-tile', $('#mbody')).forEach(function (tile) {
-    var file = tile.dataset.file;
-    assetExists(file, function (ok) {
-      if (!ok) return;
-      var img = new Image();
-      img.src = file; img.alt = tile.dataset.label;
-      tile.querySelector('.ph-fallback').style.display = 'none';
-      tile.insertBefore(img, tile.firstChild);
-    });
-    tile.addEventListener('click', function () {
-      var loadedTiles = $$('.fp-tile', $('#mbody')).filter(function (t) { return t.querySelector('img'); });
-      var idx = loadedTiles.indexOf(tile);
-      if (idx === -1) return;
-      var items = loadedTiles.map(function (t) {
-        var im = t.querySelector('img');
-        return { src: im.src, label: t.dataset.label };
-      });
-      openLightbox(items, idx);
-    });
-  });
+  wireImageTiles('.fp-tile');
+  wireImageTiles('.fpl-tile');
 
   setupMedia(paths);
 

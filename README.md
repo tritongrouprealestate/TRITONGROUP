@@ -296,8 +296,9 @@ for a sales conversation on a laptop or a big-screen TV, sitting alongside the s
 order 10→1, 11→20, 30→21, with the landscaped-green strip, clubhouse and approach road)
 and the seven highlighted villas — **8, 10, 11, 20, 22, 23 and 30** — were redrawn from
 the reference master-plan image and villa-detail cards supplied by the sales team. Tapping
-a highlighted villa opens a popup with a photo/video tab, three floor-plan slots, a
-specification table and, where one exists, a link straight to that villa's cost sheet.
+a highlighted villa opens a popup with a photo/video tab, a specification table, a
+3-image floor plan overview (one per floor), a 15-photo floor plan gallery (5 per
+floor) and, where one exists, a link straight to that villa's cost sheet.
 There is deliberately no "Enquire" button — this kit has no backend to send an enquiry to.
 
 **The specification table is confirmed data, transcribed from each villa's own cost
@@ -358,6 +359,14 @@ client-facing; the placeholder graphics still say "placeholder" on the image its
 which is enough for whoever is filling this kit in, without saying so out loud in front
 of a customer.
 
+**The popup has two different floor-plan sections — don't confuse them.**
+**Floor Plans** (new) is one 2D/3D overview render per floor — the whole layout in a
+single image, the kind a customer reads to understand the villa's flow. **Floor Plan
+Gallery** (below it) is the room-by-room photo set — 5 close-up shots per floor. Both
+currently show the same 3 placeholder renders (Ground/First/Second Floor) copied across
+all 7 villas, since real per-villa layout renders haven't come in yet — swap each
+villa's 3 files for its own real layout render whenever they're ready.
+
 **Photos and floor plans already ship with a placeholder**, sized so it reads sensibly
 cropped into either the wide photo pane or the 4:3 floor gallery tiles. Each one is its
 own file, individually labelled by villa, floor and photo number, so no two slots show
@@ -367,9 +376,16 @@ place, and it appears next time the page opens, no rebuild needed:
 | Replace this file | Shows as |
 |---|---|
 | `Sales Kit/Hummingvalley/Master Plan/photos/villa-<N>-hero.jpg` | Latest villa photo |
+| `Sales Kit/Hummingvalley/Master Plan/floorplan-layouts/villa-<N>-ground-floor.png` | Ground Floor, in **Floor Plans** |
+| `Sales Kit/Hummingvalley/Master Plan/floorplan-layouts/villa-<N>-first-floor.png` | First Floor, in **Floor Plans** |
+| `Sales Kit/Hummingvalley/Master Plan/floorplan-layouts/villa-<N>-second-floor.png` | Second Floor, in **Floor Plans** |
 | `Sales Kit/Hummingvalley/Master Plan/floorplans/villa-<N>-ground-floor-<1 to 5>.jpg` | Ground Floor, in the **Floor Plan Gallery** |
 | `Sales Kit/Hummingvalley/Master Plan/floorplans/villa-<N>-first-floor-<1 to 5>.jpg` | First Floor, in the **Floor Plan Gallery** |
 | `Sales Kit/Hummingvalley/Master Plan/floorplans/villa-<N>-second-floor-<1 to 5>.jpg` | Second Floor, in the **Floor Plan Gallery** |
+
+The 3 **Floor Plans** tiles have their own lightbox and their own left/right navigation,
+separate from the 15-photo **Floor Plan Gallery** below — clicking into one never mixes
+its images with the other's.
 
 (`<N>` is `8`, `10`, `11`, `20`, `22`, `23` or `30`.) Each villa has 15 floor photos in
 total, 5 per floor (the section was renamed **Floor Plan Gallery** and bumped from 4 to
