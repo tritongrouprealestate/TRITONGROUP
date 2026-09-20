@@ -78,12 +78,11 @@ the one file sales actually opens on-screen.
 | `Sales Kit/Hummingvalley/Video/` | `Walkthrough.mp4` |
 | `Sales Kit/Hummingvalley/Video/` | `AV Film.mp4` |
 
-Villas 10 and 30 are confirmed and already priced everywhere in the portal — the
-Price Calculator, the EMI Calculator and the Interactive Master Plan all work for
-them today. Only their scanned cost sheet images aren't in yet: `Villa 10.png` and
-`Villa 30.png` show as "Not added yet" in the Cost Sheet folder and inside the
-Master Plan popup until those two files are saved in place, same names, same
-folder, as the other five villas.
+Villas 10 and 30 are confirmed and priced everywhere in the portal — the Price
+Calculator, the EMI Calculator and the Interactive Master Plan all work for
+them, and their scanned cost sheets (`Villa 10.png`, `Villa 30.png`) are now in
+the Cost Sheet folder too, so both the folder listing and the Master Plan
+popup's "View Cost Sheet" link work like the other five villas.
 
 ### Project logos
 
@@ -295,8 +294,8 @@ audiences. Read it before the team uses it in front of clients.
 for a sales conversation on a laptop or a big-screen TV, sitting alongside the static
 `Master Plan.png`. The 30-plot layout (10 columns × 3 rows, numbered in the serpentine
 order 10→1, 11→20, 30→21, with the landscaped-green strip, clubhouse and approach road)
-and the five highlighted villas — **8, 11, 20, 22 and 23** — were redrawn from the
-reference master-plan image and villa-detail cards supplied by the sales team. Tapping
+and the seven highlighted villas — **8, 10, 11, 20, 22, 23 and 30** — were redrawn from
+the reference master-plan image and villa-detail cards supplied by the sales team. Tapping
 a highlighted villa opens a popup with a photo/video tab, three floor-plan slots, a
 specification table and, where one exists, a link straight to that villa's cost sheet.
 There is deliberately no "Enquire" button — this kit has no backend to send an enquiry to.
@@ -307,27 +306,28 @@ cards — checked by re-deriving each sheet's full charges/GST/Grand Total math 
 confirming it matches exactly. "Aspect" is each villa's real compass facing from its
 sheet, not the marketing wording:
 
-| Villa | Type | Built-up | Plot | Aspect | Price (Grand Total) |
-|---|---|---|---|---|---|
-| 8  | 3 BHK | 2,680 sq ft | 1,080 sq ft | East Facing | ₹2.78 Cr |
-| 10 | 4 BHK | 3,724 sq ft | 1,389 sq ft | East Facing | ₹3.81 Cr |
-| 11 | 5 BHK | 4,448 sq ft | 1,555 sq ft | North Facing | ₹4.52 Cr |
-| 20 | 4 BHK | 3,494 sq ft | 1,356 sq ft | North Facing | ₹3.59 Cr |
-| 22 | 3 BHK | 2,680 sq ft | 1,080 sq ft | North Facing | ₹2.85 Cr |
-| 23 | 3 BHK | 2,680 sq ft | 1,080 sq ft | North Facing | ₹2.78 Cr |
-| 30 | 3 BHK | 2,680 sq ft | 1,080 sq ft | North Facing | ₹2.78 Cr |
+| Villa | Type | Built-up | Plot | Aspect | Base Price | Grand Total (all-inclusive) |
+|---|---|---|---|---|---|---|
+| 8  | 3 BHK | 2,680 sq ft | 1,080 sq ft | East Facing | ₹2.35 Cr | ₹2.78 Cr |
+| 10 | 4 BHK | 3,724 sq ft | 1,389 sq ft | East Facing | ₹3.26 Cr | ₹3.81 Cr |
+| 11 | 5 BHK | 4,448 sq ft | 1,555 sq ft | North Facing | ₹3.89 Cr | ₹4.52 Cr |
+| 20 | 4 BHK | 3,494 sq ft | 1,356 sq ft | North Facing | ₹3.06 Cr | ₹3.59 Cr |
+| 22 | 3 BHK | 2,680 sq ft | 1,080 sq ft | North Facing | ₹2.41 Cr | ₹2.85 Cr |
+| 23 | 3 BHK | 2,680 sq ft | 1,080 sq ft | North Facing | ₹2.35 Cr | ₹2.78 Cr |
+| 30 | 3 BHK | 2,680 sq ft | 1,080 sq ft | North Facing | ₹2.35 Cr | ₹2.78 Cr |
 
-Price here is each sheet's exact Grand Total (rounded to the nearest lakh for display),
-not a rounded marketing figure. Every villa's popup links to **View Cost Sheet**,
-pointing at `Villa <N>.png` next to this page — save each villa's cost sheet under that
-exact name for the link to resolve. Updated cost sheets for 8, 20, 23 and 30 arrived
-together (Villa 8's built-up area and rate changed, Villa 20's plot area was corrected,
-Villa 23's rate changed, Villa 30 was unchanged) — the numbers above and everywhere else
-in the portal reflect them, but the `Villa 8.png` / `Villa 23.png` files already in the
-Cost Sheet folder are the old scans until replaced with the updated ones. Villa 22 was
-not part of this update and is still priced at the old rate per sqft — worth confirming
-with the sales desk whether that's intentional, since 22 and 23 were originally
-identical siblings.
+**The popup's own "Base Price" row shows each sheet's Basic Price Total** (SBU ×
+rate per sqft), before Recreation/KEB/Legal/PLC/Jacuzzi/DG Backup charges and 5% GST
+— it used to show the all-inclusive Grand Total, but the sales team asked for the base
+figure to lead instead. The Grand Total is still one click away via **View Cost Sheet**
+or the **Price Calculator** link right below it, so nothing is hidden. Every villa's
+popup links to **View Cost Sheet**, pointing at `Villa <N>.png` next to this page — save
+each villa's cost sheet under that exact name for the link to resolve; all seven are in
+place now. All seven cost sheets were re-verified against the actual scans in the Cost
+Sheet folder (re-deriving each sheet's Base Price → Other Charges → GST → Grand Total
+math) and match exactly. Villa 22 is priced at ₹9,000/sqft while Villa 23 — its
+originally-identical sibling — is at ₹8,750/sqft; worth confirming with the sales desk
+whether that's intentional.
 
 Beside it, **Price Calculator** opens the shared calculator already on Hummingvalley,
 with that exact villa preselected in the unit picker, same numbers as the popup itself,
@@ -367,17 +367,23 @@ place, and it appears next time the page opens, no rebuild needed:
 | Replace this file | Shows as |
 |---|---|
 | `Sales Kit/Hummingvalley/Master Plan/photos/villa-<N>-hero.jpg` | Latest villa photo |
-| `Sales Kit/Hummingvalley/Master Plan/floorplans/villa-<N>-ground-floor-<1 to 4>.jpg` | Ground Floor, 4 photos |
-| `Sales Kit/Hummingvalley/Master Plan/floorplans/villa-<N>-first-floor-<1 to 4>.jpg` | First Floor, 4 photos |
-| `Sales Kit/Hummingvalley/Master Plan/floorplans/villa-<N>-second-floor-<1 to 4>.jpg` | Second Floor, 4 photos |
+| `Sales Kit/Hummingvalley/Master Plan/floorplans/villa-<N>-ground-floor-<1 to 5>.jpg` | Ground Floor, in the **Floor Plan Gallery** |
+| `Sales Kit/Hummingvalley/Master Plan/floorplans/villa-<N>-first-floor-<1 to 5>.jpg` | First Floor, in the **Floor Plan Gallery** |
+| `Sales Kit/Hummingvalley/Master Plan/floorplans/villa-<N>-second-floor-<1 to 5>.jpg` | Second Floor, in the **Floor Plan Gallery** |
 
-(`<N>` is `8`, `11`, `20`, `22` or `23`.) Each villa has 12 floor photos in total, 4 per
-floor. Any tile can be clicked to zoom it full-screen once a real image is in place,
-useful for reading a plan off a TV across a room. To change how many photos a floor
-holds, edit the loop count inside `floorPhotos()` near the top of the `<script>` block;
-the gallery grid and the file-existence check both follow that count automatically.
+(`<N>` is `8`, `10`, `11`, `20`, `22`, `23` or `30`.) Each villa has 15 floor photos in
+total, 5 per floor (the section was renamed **Floor Plan Gallery** and bumped from 4 to
+5 photos per floor once the sales team supplied the fifth). Clicking any tile opens it
+in a full-screen lightbox with left/right arrow navigation and a "3 / 15" counter, so
+someone can flip through every floor plan photo for that villa without closing and
+reopening one at a time — arrow keys work too. To change how many photos a floor holds,
+edit the loop count inside `floorPhotos()` near the top of the `<script>` block; the
+gallery grid and the file-existence check both follow that count automatically. (Villa
+20's Ground Floor is currently missing its 5th photo — the tile falls back to a
+placeholder icon rather than breaking, but it's worth uploading that file to match the
+other floors.)
 
-**The video tab now carries the real walkthrough film for all five villas**, at
+**The video tab now carries the real walkthrough film for all seven villas**, at
 `Sales Kit/Hummingvalley/Master Plan/videos/villa-<N>-walkthrough.mp4`. (It briefly shipped
 with a branded "Video Not Added Yet" placeholder in this same spot — a normal H.264 `.mp4`
 export from any phone or editor drops in and plays with no other change, since the
