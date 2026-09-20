@@ -387,6 +387,12 @@ The 3 **Floor Plans** tiles have their own lightbox and their own left/right nav
 separate from the 15-photo **Floor Plan Gallery** below — clicking into one never mixes
 its images with the other's.
 
+Every tile in both sections also carries a small **download icon** (top-left on hover,
+next to the zoom icon on the opposite corner) — a direct download of that one image,
+named "Villa `<N>` Ground Floor Plan.png" or "Villa `<N>` Ground Floor Photo 1.jpg" and
+so on, so a salesperson can save a specific plan or photo to send someone without
+digging through the file browser.
+
 (`<N>` is `8`, `10`, `11`, `20`, `22`, `23` or `30`.) Each villa has 15 floor photos in
 total, 5 per floor (the section was renamed **Floor Plan Gallery** and bumped from 4 to
 5 photos per floor once the sales team supplied the fifth). Clicking any tile opens it
