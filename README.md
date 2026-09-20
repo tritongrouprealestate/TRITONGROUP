@@ -699,10 +699,10 @@ them to Downloads and they open from there in their own app.
 ### The screensaver
 
 Built for a TV left running between customers. Browse into any project and stop
-touching the mouse/keyboard for **3 minutes**, and a full-screen slideshow of that
+touching the mouse/keyboard for **2 minutes**, and a full-screen slideshow of that
 project's own photos takes over — slow Ken Burns zoom, crossfade between images, the
 project's name in the corner. Moving the mouse, pressing a key, scrolling or tapping
-closes it immediately and resets the 3-minute clock. It only arms while you're inside a
+closes it immediately and resets the 2-minute clock. It only arms while you're inside a
 project (any of its pages) — the homepage project grid never triggers it, since there's
 no single project's photos to show there.
 

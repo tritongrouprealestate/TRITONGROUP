@@ -1069,7 +1069,7 @@ function fileCount(p) {
 })();
 
 /* ============================================================
-   SCREENSAVER — auto-plays the current project's photos after 3
+   SCREENSAVER — auto-plays the current project's photos after 2
    minutes of inactivity, meant for a TV left idle between customers.
    Any input (mouse, keyboard, touch, scroll) closes it immediately.
    Off switch is per project, remembered in localStorage on this
@@ -1077,7 +1077,7 @@ function fileCount(p) {
    single project's photos to show — disarms the timer entirely.
    ============================================================ */
 var Screensaver = (function () {
-  var IDLE_MS = 3 * 60 * 1000;
+  var IDLE_MS = 2 * 60 * 1000;
   var SLIDE_MS = 7000;
   var el = $('#screensaver'), slidesEl = $('#ssSlides'),
       eyebrowEl = $('#ssEyebrow'), titleEl = $('#ssTitle');

@@ -555,12 +555,25 @@ function assetExists(src, cb) {
 }
 
 /* A small download icon overlaid on a tile. Its own click is stopped from
-   bubbling (wired below in wireImageTiles) so it downloads the file
-   instead of opening the lightbox underneath it. */
+   bubbling (wired below in wireImageTiles) so it doesn't also open the
+   lightbox underneath it.
+
+   The `download` attribute here is decorative, not functional: Chrome
+   treats every file:// URL as its own unique origin, so it silently
+   ignores `download` on a file:// link and just navigates to the file
+   instead — which, without target="_blank", replaced this whole popup
+   with the raw image. Same-origin fetch/XHR and canvas export are
+   blocked the same way ("tainted canvas"), so there's no script-only
+   way to force an actual Save-As from a file:// page in Chrome. Opening
+   in a new tab is the closest real fix: the popup stays open, and the
+   image is one right-click ("Save image as…") away from the Downloads
+   folder — still faster than digging through the file browser for it. */
 function downloadBtn(file, downloadName) {
   var ext = file.split('.').pop();
   return '<a class="fp-download" href="' + esc(file) + '" download="' + esc(downloadName) + '.' + esc(ext) + '"' +
-    ' aria-label="Download ' + esc(downloadName) + '">' +
+    ' target="_blank" rel="noopener"' +
+    ' aria-label="Open ' + esc(downloadName) + ' in a new tab to save it"' +
+    ' title="Opens in a new tab — right-click the image there and choose Save image as…">' +
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
     '<path d="M12 3v12m0 0-4-4m4 4 4-4M4 21h16"/></svg></a>';
 }
