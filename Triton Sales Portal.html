@@ -128,6 +128,48 @@ body.cur-hot .cursor-label{opacity:1}
 body.cur-hot .cursor{opacity:0}
 @media (hover:none),(pointer:coarse){.cursor,.cursor-ring{display:none}}
 
+/* ============ screensaver ============ */
+/* Auto-plays a project's photos after 3 minutes of inactivity while
+   browsing that project (see the Screensaver module further down the
+   page's script). z-index sits above everything, including the wipe transition and
+   search overlay, since it's meant to fully take the screen on a TV
+   left idle between customers. */
+.screensaver{position:fixed;inset:0;z-index:9800;background:#0a0e0b;
+  opacity:0;pointer-events:none;transition:opacity 1s var(--ease)}
+.screensaver.on{opacity:1}
+.ss-slides{position:absolute;inset:0;overflow:hidden}
+.ss-slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;transition:opacity 1.6s ease;
+  animation:ss-kenburns 16s ease-in-out infinite alternate}
+.ss-slide.active{opacity:1;z-index:1}
+@keyframes ss-kenburns{from{transform:scale(1)}to{transform:scale(1.09)}}
+.screensaver::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(0deg,rgba(0,0,0,.6),transparent 42%,transparent 72%,rgba(0,0,0,.3))}
+.ss-info{position:absolute;left:clamp(20px,4vw,56px);bottom:clamp(24px,5vh,64px);
+  z-index:2;color:#fff}
+.ss-eyebrow{margin:0 0 8px;font:700 11px/1 var(--sans);letter-spacing:.28em;
+  text-transform:uppercase;color:rgba(255,255,255,.7)}
+.ss-title{margin:0;font-family:var(--display);font-weight:400;
+  font-size:clamp(30px,4.4vw,58px);line-height:1;letter-spacing:-.01em}
+.ss-hint{position:absolute;right:clamp(20px,4vw,56px);bottom:clamp(24px,5vh,64px);
+  z-index:2;margin:0;font:600 10px/1 var(--sans);letter-spacing:.18em;
+  text-transform:uppercase;color:rgba(255,255,255,.55)}
+@media (max-width:640px){.ss-hint{display:none}}
+@media (prefers-reduced-motion:reduce){.ss-slide{animation:none}}
+
+/* ---------- project-page screensaver toggle ---------- */
+.sec-head-right{display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+.ss-toggle{display:inline-flex;align-items:center;gap:9px;cursor:pointer;user-select:none}
+.ss-toggle input{position:absolute;opacity:0;width:1px;height:1px}
+.ss-toggle-track{position:relative;width:34px;height:19px;border-radius:99px;
+  background:var(--line-2);transition:background .25s}
+.ss-toggle-thumb{position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:99px;
+  background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .25s var(--ease)}
+.ss-toggle input:checked + .ss-toggle-track{background:var(--teal)}
+.ss-toggle input:checked + .ss-toggle-track .ss-toggle-thumb{transform:translateX(15px)}
+.ss-toggle-label{font:600 10px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;
+  color:var(--fg-faint)}
+
 /* ============ transition wipe ============ */
 .wipe{position:fixed;inset:0;z-index:9200;pointer-events:none;display:flex}
 .wipe span{flex:1;background:var(--paper);transform:scaleY(0);transform-origin:bottom;
@@ -707,6 +749,16 @@ div.tile.missing{cursor:default}
 
 <div class="toast" id="toast" aria-live="polite"></div>
 
+<!-- ============ SCREENSAVER ============ -->
+<div class="screensaver" id="screensaver" aria-hidden="true">
+  <div class="ss-slides" id="ssSlides"></div>
+  <div class="ss-info">
+    <p class="ss-eyebrow" id="ssEyebrow"></p>
+    <h2 class="ss-title" id="ssTitle"></h2>
+  </div>
+  <p class="ss-hint">Move to continue</p>
+</div>
+
 <!-- ============ SEARCH OVERLAY ============ -->
 <div class="search" id="search" hidden>
   <div class="search-panel">
@@ -763,6 +815,7 @@ window.PORTAL_DATA = {
       cover: "Sales Kit/Sanvi/cover.jpg",
       logo: "Sales Kit/Sanvi/logo.png",
       accent: "linear-gradient(155deg,#6d8399,#3b4a5c 55%,#8a7a52)",
+      screensaver: ["Screensaver/1.jpg", "Screensaver/2.jpg", "Screensaver/3.jpg"],
       folders: [
         { id: "brochure", name: "Brochure", files: [
           { label: "Brochure",            name: "Brochure.pdf" } ] },
@@ -791,6 +844,7 @@ window.PORTAL_DATA = {
       cover: "Sales Kit/Hummingvalley/cover.jpg",
       logo: "Sales Kit/Hummingvalley/logo.png",
       accent: "linear-gradient(155deg,#6f8a72,#3a4a3c 55%,#7d8552)",
+      screensaver: ["Screensaver/1.jpg", "Screensaver/2.jpg", "Screensaver/3.jpg"],
       /* Shown on the project page under the folders. These open on YouTube in a
          new tab — the one thing in the kit that needs an internet connection. */
       links: [
@@ -839,6 +893,7 @@ window.PORTAL_DATA = {
       cover: "Sales Kit/Up in the Clouds/cover.jpg",
       logo: "Sales Kit/Up in the Clouds/logo.png",
       accent: "linear-gradient(155deg,#7fa0b8,#2f3d4a 55%,#a9b7c2)",
+      screensaver: ["Screensaver/1.jpg", "Screensaver/2.jpg", "Screensaver/3.jpg"],
       folders: [
         { id: "brochure", name: "Brochure", files: [
           { label: "Brochure",            name: "Brochure.pdf", missing: true } ] },
@@ -860,6 +915,7 @@ window.PORTAL_DATA = {
       cover: "Sales Kit/Eloria/cover.jpg",
       logo: "Sales Kit/Eloria/logo.png",
       accent: "linear-gradient(155deg,#a89073,#3f362a 55%,#c9b48f)",
+      screensaver: ["Screensaver/1.jpg", "Screensaver/2.jpg", "Screensaver/3.jpg"],
       folders: [
         { id: "brochure", name: "Brochure", files: [
           { label: "Brochure",            name: "Brochure.pdf", missing: true } ] },
@@ -880,6 +936,7 @@ window.PORTAL_DATA = {
       tag: "Corporate",
       cover: "Sales Kit/Triton Branded/cover.jpg",
       accent: "linear-gradient(155deg,#9a8358,#4d4331 55%,#5c5a63)",
+      screensaver: ["Screensaver/1.jpg", "Screensaver/2.jpg", "Screensaver/3.jpg"],
       folders: [
         { id: "general", name: "General", files: [
           { label: "Main Brochure",       name: "Main Brochure.pdf" },
@@ -906,6 +963,9 @@ window.PORTAL_DATA = {
         file.path = file.path || [root, p.name, f.name, file.name].join('/');
         file.label = file.label || file.name;
       });
+    });
+    p.screensaver = (p.screensaver || []).map(function (name) {
+      return [root, p.name, name].join('/');
     });
   });
 })(window.PORTAL_DATA);
@@ -1045,6 +1105,74 @@ function fileCount(p) {
 })();
 
 /* ============================================================
+   SCREENSAVER — auto-plays the current project's photos after 3
+   minutes of inactivity, meant for a TV left idle between customers.
+   Any input (mouse, keyboard, touch, scroll) closes it immediately.
+   Off switch is per project, remembered in localStorage on this
+   machine. setProject(null) — used on the homepage, where there's no
+   single project's photos to show — disarms the timer entirely.
+   ============================================================ */
+var Screensaver = (function () {
+  var IDLE_MS = 3 * 60 * 1000;
+  var SLIDE_MS = 7000;
+  var el = $('#screensaver'), slidesEl = $('#ssSlides'),
+      eyebrowEl = $('#ssEyebrow'), titleEl = $('#ssTitle');
+  var idleTimer = null, slideTimer = null, active = false, project = null;
+
+  function storeKey(p) { return 'ss-off:' + p.id; }
+  function isOff(p) { try { return localStorage.getItem(storeKey(p)) === '1'; } catch (e) { return false; } }
+  function setOff(p, off) { try { localStorage.setItem(storeKey(p), off ? '1' : '0'); } catch (e) {} }
+
+  function canPlay(p) { return p && !isOff(p) && (p.screensaver || []).length > 0; }
+
+  function arm() {
+    clearTimeout(idleTimer);
+    if (active || !canPlay(project)) return;
+    idleTimer = setTimeout(start, IDLE_MS);
+  }
+
+  function start() {
+    if (!canPlay(project)) return;
+    active = true;
+    eyebrowEl.textContent = project.tag || 'Triton Group';
+    titleEl.textContent = project.displayName || project.name;
+    slidesEl.innerHTML = project.screensaver.map(function (src, i) {
+      return '<img class="ss-slide' + (i === 0 ? ' active' : '') + '" src="' + src + '" alt="" loading="eager">';
+    }).join('');
+    el.classList.add('on');
+    el.setAttribute('aria-hidden', 'false');
+    var slides = $$('.ss-slide', slidesEl), idx = 0;
+    clearInterval(slideTimer);
+    if (slides.length > 1) {
+      slideTimer = setInterval(function () {
+        slides[idx].classList.remove('active');
+        idx = (idx + 1) % slides.length;
+        slides[idx].classList.add('active');
+      }, SLIDE_MS);
+    }
+  }
+
+  function stop() {
+    if (!active) return;
+    active = false;
+    el.classList.remove('on');
+    el.setAttribute('aria-hidden', 'true');
+    clearInterval(slideTimer);
+    setTimeout(function () { if (!active) slidesEl.innerHTML = ''; }, 1100);
+  }
+
+  ['mousemove', 'mousedown', 'keydown', 'touchstart', 'wheel'].forEach(function (evt) {
+    addEventListener(evt, function () { stop(); arm(); }, { passive: true });
+  });
+
+  return {
+    setProject: function (p) { project = p || null; stop(); arm(); },
+    isOff: isOff,
+    setOff: function (p, off) { setOff(p, off); if (p === project) arm(); }
+  };
+})();
+
+/* ============================================================
    HERO — a static section now (no scroll-expand interaction);
    just needs to get out of the way on project/folder pages.
    ============================================================ */
@@ -1090,6 +1218,13 @@ function bindInteractive(root) {
     });
     el.addEventListener('pointerleave', function () { el.style.transform = ''; });
   });
+  var ssToggle = $('#ssToggle', root);
+  if (ssToggle) {
+    ssToggle.addEventListener('change', function () {
+      var proj = findProject(ssToggle.dataset.projectId);
+      if (proj) Screensaver.setOff(proj, !ssToggle.checked);
+    });
+  }
 }
 
 /* ============================================================
@@ -1243,8 +1378,18 @@ function renderProject(p) {
           '<h2 class="sec-title">' + projectLogo(p, 'sec-title-logo') + esc(p.displayName || p.name) + '</h2>' +
           '<p class="sec-sub">' + esc(p.tagline || '') + '</p>' +
         '</div>' +
-        '<span class="sec-count">' + folders.length + ' Folders · ' + fileCount(p) + ' Files' +
-          (links.length ? ' · ' + links.length + ' Online' : '') + '</span>' +
+        '<div class="sec-head-right">' +
+          '<span class="sec-count">' + folders.length + ' Folders · ' + fileCount(p) + ' Files' +
+            (links.length ? ' · ' + links.length + ' Online' : '') + '</span>' +
+          ((p.screensaver || []).length
+            ? '<label class="ss-toggle" title="Auto-play this project\'s photos on screen after 3 minutes of inactivity">' +
+                '<input type="checkbox" id="ssToggle" data-project-id="' + esc(p.id) + '"' +
+                  (Screensaver.isOff(p) ? '' : ' checked') + '>' +
+                '<span class="ss-toggle-track"><span class="ss-toggle-thumb"></span></span>' +
+                '<span class="ss-toggle-label">Screensaver</span>' +
+              '</label>'
+            : '') +
+        '</div>' +
       '</div>' +
       (folders.length || links.length
         ? '<div class="tiles">' + folders.map(function (f, i) {
@@ -1369,6 +1514,7 @@ function route() {
   if (parts[0] === 'p' && parts[1]) {
     var p = findProject(parts[1]);
     if (!p) { location.hash = '#/'; return; }
+    Screensaver.setProject(p);
     if (parts[2]) {
       var f = findFolder(p, parts[2]);
       if (!f) { location.hash = '#/p/' + p.id; return; }
@@ -1377,6 +1523,7 @@ function route() {
     Route.away = true; renderProject(p); return;
   }
   Route.away = false;
+  Screensaver.setProject(null);
   renderHome();
 }
 

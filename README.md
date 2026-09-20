@@ -680,6 +680,40 @@ opening either. PDFs, images, videos and HTML pages display
 in the tab. Word, Excel and PowerPoint cannot be shown by a browser, so Chrome saves
 them to Downloads and they open from there in their own app.
 
+### The screensaver
+
+Built for a TV left running between customers. Browse into any project and stop
+touching the mouse/keyboard for **3 minutes**, and a full-screen slideshow of that
+project's own photos takes over — slow Ken Burns zoom, crossfade between images, the
+project's name in the corner. Moving the mouse, pressing a key, scrolling or tapping
+closes it immediately and resets the 3-minute clock. It only arms while you're inside a
+project (any of its pages) — the homepage project grid never triggers it, since there's
+no single project's photos to show there.
+
+**Turning it off**: each project page has a **Screensaver** toggle next to the folder
+count (top-right, under the project title). It's on by default; flip it off and that
+project won't auto-play anymore. The setting is remembered per project in the browser's
+local storage on that machine — it doesn't travel with the file if you copy the kit
+elsewhere, and clearing browser data resets every project back to on.
+
+**Adding real photos**: each project has its own `Screensaver/` folder —
+
+| Project | Folder |
+|---|---|
+| Sanvi | `Sales Kit/Sanvi/Screensaver/` |
+| Hummingvalley | `Sales Kit/Hummingvalley/Screensaver/` |
+| Up in the Clouds | `Sales Kit/Up in the Clouds/Screensaver/` |
+| Eloria | `Sales Kit/Eloria/Screensaver/` |
+| Triton Branded | `Sales Kit/Triton Branded/Screensaver/` |
+
+Right now each one holds the same 3 placeholder photos you supplied, listed in
+`Triton Sales Portal.html`'s `screensaver: [...]` array on that project's entry (search
+for `screensaver:`). To swap in a project's real photos: drop as many `.jpg`/`.png`
+files as you want into its folder (10-15 works well for a slow-rotating loop), then
+list their file names in that project's `screensaver` array in the same order you want
+them to play. The slideshow works with however many images are listed — there's no
+fixed count to hit.
+
 ---
 
 ## Changing the wording
