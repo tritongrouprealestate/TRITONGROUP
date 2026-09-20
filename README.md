@@ -18,11 +18,23 @@ stick. No internet, no server, nothing to install. It opens in Chrome or Edge.
 
 Every file has a fixed name. The portal is wired to those names, so a new brochure
 saved as `Brochure.pdf` simply becomes the brochure. Nothing to re-run, nothing to
-re-link. Close and reopen the portal to see it.
+re-link, no button to press. Close and reopen the portal to see it.
 
-If you **add** a file that isn't in the standard list, or add a whole new project
-folder, press **Update** in the top right and pick the `Sales Kit` folder once. The
-portal remembers it from then on, including after restarting the laptop.
+**Adding something genuinely new** — a file that isn't already one of the named slots
+above, a new villa, a new folder, a whole new project — needs one line added to
+`Triton Sales Portal.html`'s `PORTAL_DATA` (near the top of the file) so the portal
+knows the new name and where it lives. That's a text edit, not something to click a
+button for; ask whoever set this kit up (or Claude, if this is a Claude Code session)
+to add it, the same way every villa, calculator and project in here so far was added.
+
+There used to be an **Update** button that tried to do this automatically by
+re-scanning a folder you picked. It's gone now — it would silently overwrite this
+hand-curated list with whatever it found on disk, including files that were never
+meant to be customer-facing (like a villa's raw floor plan renders or the
+screensaver's own photos), and there was no obvious way back. If your portal ever
+looks unrecognizable after someone clicked something in the top right, that button is
+almost certainly why; the fix shipped in this version, and it self-corrects the moment
+you open the updated `Triton Sales Portal.html` — nothing to press.
 
 ---
 
@@ -661,10 +673,8 @@ The real collateral is roughly **730 MB** — Sanvi's brochure alone is 144 MB. 
 | scroll | past the hero, into the project grid |
 | `/` or `Ctrl-K` | search every project, folder and file |
 | `P` | presentation mode — hides all chrome |
-| `U` | update library |
 | `Esc` | close search, or go back |
 | `H` | jump home |
-| `Shift-R` | reset to the built-in list |
 
 **On a phone or tablet** the layout adapts: the project cards lay themselves out with
 the file count and button already visible instead of revealing them on hover, which does
@@ -719,29 +729,24 @@ fixed count to hit.
 ## Changing the wording
 
 Project taglines, location lines and the tags (RESIDENTIAL / VILLAS / CORPORATE) live
-in `src/data.js`. Edit it in any text editor, then rebuild (below). Pressing Update in
-the portal never overwrites this wording.
+in `PORTAL_DATA` near the top of `Triton Sales Portal.html` itself. Open it in any text
+editor, find the project you want (search for its `displayName`), edit the text, save.
+No rebuild, no separate source folder — this file is the whole thing.
 
 ---
 
-## Rebuilding the HTML file
+## Editing the portal itself (layout, styling, features)
 
-Only needed if you change the portal itself. Requires Node.
+Everything — structure, CSS, and the router/search/screensaver JavaScript — lives in
+the one file, `Triton Sales Portal.html`. There's no `src/` folder or build step in
+this copy of the kit: whatever you (or Claude) change directly in that file is what
+ships, the moment you save it and reopen the page.
 
-```bash
-node tools/build.mjs             # src/ -> "Triton Sales Portal.html"
-node tools/make-placeholders.mjs # regenerate all placeholder content
-```
-
-`Triton Sales Portal.html` is generated — edit `src/`, never the built file.
-
-```
-src/index.html    page structure
-src/styles.css    all styling; the palette is one token block at the top
-src/fonts.css     the two typefaces, base64-embedded (generated)
-src/data.js       projects, folders, file names and wording
-src/app.js        router, hero, folder scanner, search
-```
+(Older parts of this README below mention a `src/` folder and a `node tools/build.mjs`
+rebuild step for a few specific pieces — the location map's distance data, the Price
+Calculator, the colour palette. That pipeline isn't present in this copy either; treat
+those as pointing at the same file, `Triton Sales Portal.html` or the relevant tool's
+own `.html`/`.js` file, edited directly.)
 
 The hero's image marquee and the project cards were written in plain JS and CSS rather
 than React, because the portal has to run from a double-clicked file with no server

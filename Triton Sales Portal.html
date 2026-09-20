@@ -525,7 +525,7 @@ body.present .stage{padding-top:clamp(40px,7vh,80px)}
   .foot-hint{display:none}
 }
 @media (hover:none){
-  .tile,.pcard,.tb-btn,.back,.empty-cta,.brand{min-height:44px}  /* 44px touch minimum */
+  .tile,.pcard,.tb-btn,.back,.brand{min-height:44px}  /* 44px touch minimum */
   .tile-zoom{display:none}   /* the whole tile is the tap target — the chip adds nothing */
   .tile-play{width:40px;height:40px;margin:-20px 0 0 -20px}
   .tile-play svg{width:17px;height:17px}
@@ -544,36 +544,6 @@ body.present .stage{padding-top:clamp(40px,7vh,80px)}
 /* a class-level `display` beats the UA [hidden] rule — restore it, otherwise the
    overlay sits invisibly over the page and swallows clicks */
 .search[hidden]{display:none!important}
-
-/* ============ update button + toast ============ */
-.tb-update{padding:0 14px 0 12px;gap:9px}
-.tb-update span{font:600 11.5px/1 var(--sans);letter-spacing:.04em}
-.tb-update em{font:500 10px/1 var(--sans);font-style:normal;color:var(--d-fg-faint);
-  padding-left:9px;border-left:1px solid var(--d-line);white-space:nowrap}
-.tb-update:hover em{color:rgba(255,255,255,.7);border-left-color:rgba(255,255,255,.25)}
-@media (max-width:1080px){.tb-update span,.tb-update em{display:none}.tb-update{padding:0 12px}}
-
-.toast{
-  position:fixed;left:50%;bottom:34px;z-index:9400;
-  transform:translate(-50%,26px);opacity:0;pointer-events:none;
-  display:flex;flex-direction:column;gap:3px;
-  min-width:300px;max-width:min(560px,92vw);padding:15px 20px;
-  border-radius:13px;border:1px solid var(--line);background:var(--paper);
-  box-shadow:0 18px 50px rgba(0,0,0,.18),0 0 0 1px rgba(0,0,0,.03);
-  transition:transform .5s var(--ease),opacity .5s var(--ease);
-}
-.toast.show{transform:translate(-50%,0);opacity:1}
-.toast b{font:600 14px/1.3 var(--sans)}
-.toast span{font-size:12.5px;color:var(--fg-dim)}
-.toast.warn{border-color:rgba(190,60,40,.4)}
-.toast.warn b{color:#b0392a}
-
-/* prompt shown when a folder has no files yet */
-.empty-cta{display:inline-flex;align-items:center;gap:9px;margin-top:20px;height:42px;
-  padding:0 20px;border-radius:9px;background:var(--fg);color:#fff;
-  font:600 12.5px/1 var(--sans);transition:transform .35s var(--ease),opacity .3s}
-.empty-cta:hover{transform:translateY(-2px);opacity:.9}
-.empty-cta svg{width:16px;height:16px;stroke-width:2}
 
 /* ============ YouTube links (the only things here that need internet) ============ */
 .tile.online .tile-ico{color:#c4302b}
@@ -712,12 +682,6 @@ div.tile.missing{cursor:default}
     <button class="tb-btn" id="presentBtn" data-cursor="present" title="Presentation mode  ( P )">
       <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>
     </button>
-    <button class="tb-btn tb-update" id="updateBtn" data-cursor="update"
-            title="Re-read the collaterals folder from disk">
-      <svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
-      <span>Update</span><em id="libStamp"></em>
-    </button>
-    <input type="file" id="dirInput" webkitdirectory directory multiple hidden>
   </div>
 </header>
 
@@ -746,8 +710,6 @@ div.tile.missing{cursor:default}
     <span class="foot-hint"><kbd>/</kbd> search · <kbd>P</kbd> present · <kbd>Esc</kbd> back</span>
   </div>
 </footer>
-
-<div class="toast" id="toast" aria-live="polite"></div>
 
 <!-- ============ SCREENSAVER ============ -->
 <div class="screensaver" id="screensaver" aria-hidden="true">
@@ -844,7 +806,8 @@ window.PORTAL_DATA = {
       cover: "Sales Kit/Hummingvalley/cover.jpg",
       logo: "Sales Kit/Hummingvalley/logo.png",
       accent: "linear-gradient(155deg,#6f8a72,#3a4a3c 55%,#7d8552)",
-      screensaver: ["Screensaver/1.jpg", "Screensaver/2.jpg", "Screensaver/3.jpg"],
+      screensaver: ["Screensaver/1.jpg", "Screensaver/2.jpg", "Screensaver/3.jpg",
+                    "Screensaver/4.png", "Screensaver/5.png"],
       /* Shown on the project page under the folders. These open on YouTube in a
          new tab — the one thing in the kit that needs an internet connection. */
       links: [
@@ -1458,10 +1421,8 @@ function renderFolder(p, f) {
                 ' data-cursor="open">' + inner + '</a>';
           }).join('') + '</div>'
         : emptyState(
-            'Put the files for <b>' + esc(p.name) + ' → ' + esc(f.name) + '</b> into<br>' +
-            '<code>collaterals/' + esc(p.name) + '/' + esc(f.name) + '/</code><br>' +
-            'then press Update and pick the <code>collaterals</code> folder.' +
-            '<br><button class="empty-cta" data-update>' + svg('sync') + ' Update library</button>')) +
+            'No files listed for <b>' + esc(p.name) + ' &rarr; ' + esc(f.name) + '</b> yet. Add them to<br>' +
+            '<code>Sales Kit/' + esc(p.name) + '/' + esc(f.name) + '/</code>')) +
     '</div>';
   paint(body);
 }
@@ -1534,203 +1495,18 @@ addEventListener('scroll', function () {
   $('#topbar').classList.toggle('solid', scrollY > 30);
 }, { passive: true });
 
-
-/* ============================================================
-   LIBRARY — scan the collaterals folder, no server, no commands
-   ------------------------------------------------------------
-   A <input webkitdirectory> hands us the whole recursive tree with
-   relative paths. We only use it to LEARN filenames; files are then
-   opened by relative path (not blob URLs), so videos stay seekable
-   and nothing expires. The result is kept in localStorage, which
-   survives a browser restart on file://, so the pick is a one-off.
-   ============================================================ */
-var Library = (function () {
-  var KEY = 'triton.library.v1';
-
-  var SKIP = /^(\.|~\$|desktop\.ini$|thumbs\.db$|\.ds_store$)/i;
-  var COVER = /^cover\.(jpe?g|png|webp)$/i;
-
-  function slug(s) {
-    return String(s).toLowerCase().trim()
-      .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'item';
-  }
-  function human(b) {
-    return b < 1024 ? b + ' B'
-         : b < 1048576 ? Math.round(b / 1024) + ' KB'
-         : b < 1073741824 ? (b / 1048576).toFixed(1) + ' MB'
-         : (b / 1073741824).toFixed(2) + ' GB';
-  }
-
-  /* ---- turn a flat FileList into the project/folder/file tree ---- */
-  function build(files) {
-    var root = '', tree = {}, covers = {};
-
-    for (var i = 0; i < files.length; i++) {
-      var f = files[i];
-      var parts = (f.webkitRelativePath || f.name).split('/');
-      if (!root) root = parts[0];
-
-      var project = parts[1];
-      if (!project || SKIP.test(project) || parts.length < 3) continue;   // stray file at the top
-      if (project.charAt(0) === '_') continue;      // _Portal etc — not a project
-
-      /* register the project/folder from the path even when the file itself is
-         skipped, so empty folders still appear and show what is missing */
-      tree[project] = tree[project] || {};
-
-      if (parts.length === 3 && COVER.test(parts[2])) { covers[project] = parts.join('/'); continue; }
-
-      var folder = parts.length >= 4 ? parts[2] : 'General';
-      if (SKIP.test(folder)) continue;
-      tree[project][folder] = tree[project][folder] || [];
-
-      var name = parts[parts.length - 1];
-      if (SKIP.test(name)) continue;
-      /* files nested deeper than one level are flattened into their top folder
-         rather than dropped, so nothing on disk goes missing */
-
-      tree[project][folder].push({ name: name, path: parts.join('/'), size: human(f.size) });
-    }
-
-    /* keep the copy someone wrote by hand in data.js */
-    var prev = {};
-    BASELINE.forEach(function (p) { prev[p.id] = p; });
-
-    var projects = Object.keys(tree).map(function (pname) {
-      var id  = slug(pname);
-      var old = prev[id] || {};
-      var oldF = {};
-      (old.folders || []).forEach(function (f) { oldF[f.id] = f; });
-
-      var folders = Object.keys(tree[pname]).map(function (fname) {
-        var fid = slug(fname);
-        /* the slots this folder is meant to hold, in their authored order */
-        var slots = ((oldF[fid] || {}).files || []);
-        var onDisk = {};
-        tree[pname][fname].forEach(function (x) { onDisk[x.name] = x; });
-
-        var files = slots.map(function (slot) {
-          var hit = onDisk[slot.name];
-          delete onDisk[slot.name];
-          return hit
-            ? { label: slot.label || slot.name, name: slot.name, path: hit.path,
-                size: hit.size, note: slot.note }
-            : { label: slot.label || slot.name, name: slot.name, path: slot.path,
-                missing: true };
-        });
-        /* anything extra that was dropped in beyond the standard slots */
-        Object.keys(onDisk).sort(function (a, b) {
-          return a.localeCompare(b, undefined, { numeric: true }); })
-          .forEach(function (n) {
-            files.push({ label: onDisk[n].name, name: onDisk[n].name,
-                         path: onDisk[n].path, size: onDisk[n].size });
-          });
-        return { id: fid, name: fname, files: files };
-      });
-      /* keep folders that the manifest knows about but that are absent from disk,
-         so a deleted folder shows as empty rather than silently disappearing */
-      (old.folders || []).forEach(function (of) {
-        if (folders.some(function (f) { return f.id === of.id; })) return;
-        folders.push({ id: of.id, name: of.name, files: (of.files || []).map(function (x) {
-          return { label: x.label || x.name, name: x.name, path: x.path, missing: true }; }) });
-      });
-      folders.sort(function (a, b) {
-        var oa = (old.folders || []).findIndex(function (f) { return f.id === a.id; });
-        var ob = (old.folders || []).findIndex(function (f) { return f.id === b.id; });
-        if (oa < 0) oa = 999; if (ob < 0) ob = 999;
-        return oa !== ob ? oa - ob : a.name.localeCompare(b.name);
-      });
-
-      var archived = old.archive !== undefined ? old.archive : /^(old|archive|backup)$/i.test(pname);
-      return {
-        id: id, name: old.name || pname,
-        displayName: old.displayName || '',
-        location: old.location || '',
-        tagline:  old.tagline  || (folders.length + ' folders of sales collateral.'),
-        tag:      old.tag      || (archived ? 'Archive' : 'Project'),
-        links:    old.links || [],
-        cover:    covers[pname] || old.cover || '',
-        logo:     old.logo || '',
-        accent:   old.accent   || 'linear-gradient(155deg,#6d8399,#3b4a5c 55%,#8a7a52)',
-        archive:  archived || undefined,
-        hidden:   old.hidden !== undefined ? old.hidden : archived,
-        folders:  folders
-      };
-    }).sort(function (a, b) {
-      var oa = BASELINE.findIndex(function (p) { return p.id === a.id; });
-      var ob = BASELINE.findIndex(function (p) { return p.id === b.id; });
-      if (oa < 0) oa = 999; if (ob < 0) ob = 999;
-      if (!!a.hidden !== !!b.hidden) return a.hidden ? 1 : -1;
-      return oa !== ob ? oa - ob : a.name.localeCompare(b.name);
-    });
-
-    return { root: root, at: Date.now(), projects: projects };
-  }
-
-  /* ---- persistence ---- */
-  function save(lib) { try { localStorage.setItem(KEY, JSON.stringify(lib)); } catch (e) {} }
-  function load() {
-    try { var v = JSON.parse(localStorage.getItem(KEY)); return v && v.projects && v.projects.length ? v : null; }
-    catch (e) { return null; }
-  }
-  function clear() { try { localStorage.removeItem(KEY); } catch (e) {} }
-
-  function countFiles(ps) {
-    return ps.reduce(function (n, p) {
-      return n + (p.folders || []).reduce(function (m, f) { return m + f.files.filter(function (x) { return !x.missing; }).length; }, 0); }, 0);
-  }
-
-  function apply(lib) {
-    D.projects = lib.projects;
-    stamp(lib);
-  }
-
-  function stamp(lib) {
-    var el = $('#libStamp');
-    if (!el) return;
-    if (!lib) { el.textContent = 'Built-in list'; return; }
-    var d = new Date(lib.at);
-    el.textContent = 'Updated ' + d.toLocaleDateString(undefined,
-      { day: 'numeric', month: 'short' }) + ' · ' + countFiles(lib.projects) + ' files';
-  }
-
-  /* ---- the one interaction: pick the folder ---- */
-  function scan(files) {
-    if (!files || !files.length) return;
-    var before = countFiles(D.projects || []);
-    var lib = build(files);
-    if (!lib.projects.length) { toast('Nothing found in that folder', 'That folder has no project sub-folders inside it.', true); return; }
-    save(lib); apply(lib);
-    var after = countFiles(lib.projects);
-    var delta = after - before;
-    toast('Library updated',
-      lib.projects.filter(function (p) { return !p.hidden; }).length + ' projects · ' + after + ' files' +
-      (delta > 0 ? ' · ' + delta + ' new' : delta < 0 ? ' · ' + (-delta) + ' removed' : '') +
-      '  ·  reading from ' + lib.root + '/');
-    route();
-  }
-
-  function toast(title, body, warn) {
-    var t = $('#toast');
-    t.className = 'toast show' + (warn ? ' warn' : '');
-    t.innerHTML = '<b>' + esc(title) + '</b><span>' + esc(body) + '</span>';
-    clearTimeout(toast._t);
-    toast._t = setTimeout(function () { t.className = 'toast'; }, 6000);
-  }
-
-  function init() {
-    var input = $('#dirInput');
-    $('#updateBtn').onclick = function () { input.value = ''; input.click(); };
-    input.addEventListener('change', function () { scan(this.files); });
-
-    var saved = load();
-    if (saved) apply(saved); else stamp(null);
-  }
-
-  return { init: init, clear: clear, toast: toast, stamp: stamp,
-           reset: function () { clear(); D.projects = BASELINE.slice(); stamp(null);
-                                toast('Reset', 'Back to the list that shipped with the portal.'); route(); } };
-})();
+/* This portal used to offer an "Update" button that re-scanned a folder
+   you picked and saved the result over the hand-curated project list
+   in localStorage, permanently, on that machine, even after restarting -
+   any file it couldn't match to a known slot (raw villa photos, the
+   floor plan renders, the screensaver's own images) got dumped in as
+   its own loose tile instead of staying invisible plumbing. One
+   accidental click and the whole portal would look "jumbled up," and
+   there was no obvious way back short of finding this key in the
+   browser console. That feature is gone now; this line quietly clears
+   the old key so a machine that got hit by it self-heals the moment it
+   opens this file, without anyone needing to know it happened. */
+try { localStorage.removeItem('triton.library.v1'); } catch (e) {}
 
 /* ============================================================
    SEARCH
@@ -1815,6 +1591,11 @@ var Search = (function () {
   }
   function close() {
     el.classList.remove('show'); document.body.style.overflow = '';
+    /* Without this, focus stays on the (now hidden) search input, and the
+       "typing" guard on every other keyboard shortcut (P, H, /) mistakes
+       that for someone still typing, silently swallowing them until the
+       person clicks elsewhere on the page. */
+    input.blur();
     setTimeout(function () { el.hidden = true; }, 300);
   }
 
@@ -1852,8 +1633,6 @@ addEventListener('keydown', function (e) {
   else if (e.key === 'k' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); Search.open(); }
   else if (e.key.toLowerCase() === 'p') document.body.classList.toggle('present');
   else if (e.key.toLowerCase() === 'h') location.hash = '#/';
-  else if (e.key.toLowerCase() === 'u') $('#updateBtn').click();
-  else if (e.key.toLowerCase() === 'r' && e.shiftKey) Library.reset();
 });
 
 /* ============================================================
@@ -1882,7 +1661,6 @@ addEventListener('keydown', function (e) {
   $('#topbar').classList.add('show');
   $('#stage').classList.add('show');
 
-  Library.init();
   route();
 })();
 
