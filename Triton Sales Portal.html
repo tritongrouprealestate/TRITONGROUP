@@ -103,7 +103,13 @@ svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;
 }
 
 /* ============ cursor ============ */
-.cursor,.cursor-ring{position:fixed;top:0;left:0;z-index:9500;pointer-events:none;
+/* z-index sits below the fixed topbar (8000) on purpose: the real OS
+   pointer is never hidden (no cursor:none anywhere), so this ring is
+   purely decorative, and letting it render above the topbar caused it to
+   straddle the dark header / light content boundary, its mix-blend-mode
+   splitting into an ugly two-tone circle right at that seam. Sitting
+   behind the topbar means it's cleanly occluded there instead. */
+.cursor,.cursor-ring{position:fixed;top:0;left:0;z-index:7000;pointer-events:none;
   border-radius:999px;will-change:transform}
 .cursor{width:6px;height:6px;background:#fff;mix-blend-mode:difference;margin:-3px 0 0 -3px;
   transition:opacity .3s,transform .18s var(--ease)}
