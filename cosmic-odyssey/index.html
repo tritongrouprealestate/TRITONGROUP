@@ -1,0 +1,290 @@
+<title>Cosmic Odyssey</title>
+<meta name="description" content="An interactive journey through the Big Bang, the lives of stars, black holes, constellations and Newton's laws.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="style.css">
+
+<canvas id="sky-bg" aria-hidden="true"></canvas>
+<div class="nebula-wash" aria-hidden="true"></div>
+
+<header class="bar">
+  <button class="brand" id="brand" type="button" aria-label="Back to mission control">
+    <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="4.5" fill="#ffd27a"/><ellipse cx="13" cy="13" rx="11.5" ry="4.2" fill="none" stroke="#86a8ff" stroke-width="1.3" transform="rotate(-24 13 13)"/></svg>
+    <span>Cosmic Odyssey</span>
+    <span class="back" id="back-label" hidden>← missions</span>
+  </button>
+  <div class="bar-stats">
+    <span class="rank-name" id="rank-name">Stargazer</span>
+    <div class="xp-track" aria-hidden="true"><div class="xp-fill" id="xp-fill"></div></div>
+    <span class="xp-num" id="xp-num">0 XP</span>
+  </div>
+</header>
+
+<main id="app">
+
+  <!-- ============ HOME ============ -->
+  <section class="view" id="v-home" data-view="home">
+    <div class="hero">
+      <span class="eyebrow">A field guide to the universe · 9 missions · 18 badges</span>
+      <h1>Cosmic <span class="i">Odyssey</span></h1>
+      <p class="lede">Watch the universe be born, steer a star to its death, bend spacetime around a black hole and fire Newton's cannon into orbit. <b>Every fact here is real physics.</b></p>
+      <div id="commander-box"></div>
+    </div>
+
+    <div class="section-label"><h2>Missions</h2><span class="eyebrow" id="mission-progress"></span></div>
+    <div class="missions" id="missions"></div>
+
+    <div class="section-label"><h2>Badges</h2><span class="eyebrow" id="badge-count"></span></div>
+    <div class="badges" id="badges"></div>
+
+    <p class="foot">Facts checked against NASA, ESA, ISRO, the IAU and published research. Where scientists still disagree or do not know yet, the game says so, because that is where the next discoveries will come from. Your progress is saved in this browser only.</p>
+    <p class="foot"><button class="chip" id="reset-btn" type="button">Reset progress</button> <span id="reset-confirm" hidden><button class="chip" id="reset-yes" type="button">Yes, erase everything</button> <button class="chip" id="reset-no" type="button">Keep it</button></span></p>
+  </section>
+
+  <!-- ============ ORIGIN ============ -->
+  <section class="view" id="v-origin" data-view="origin" hidden>
+    <div class="view-head">
+      <span class="eyebrow">Mission 1 · Cosmology</span>
+      <h2>From the first second to you</h2>
+      <p>Drag the cosmic clock from the Big Bang to today. Watch the universe cool, glow and build its first stars.</p>
+    </div>
+    <div class="timeline-stage">
+      <canvas class="stage" id="origin-canvas" height="300" aria-label="Visual of the universe at the selected moment"></canvas>
+      <div class="field">
+        <label for="origin-slider">Cosmic clock</label>
+        <input type="range" id="origin-slider" min="0" max="10" step="1" value="0">
+        <div class="epoch-ticks" id="epoch-ticks"></div>
+      </div>
+      <div class="panel epoch-card" id="epoch-card" aria-live="polite"></div>
+    </div>
+
+    <div class="section-label"><h2>The Cosmic Calendar</h2><span class="eyebrow">Idea by Carl Sagan</span></div>
+    <div class="split">
+      <div class="panel stack">
+        <p class="muted">Squeeze all 13.8 billion years into one calendar year. The Big Bang is midnight on 1 January. Right now is the last tick before midnight on 31 December.</p>
+        <div class="cal-list" id="cal-list"></div>
+      </div>
+      <div class="panel stack">
+        <h3>Where does your life fit?</h3>
+        <div class="field">
+          <label for="age-input">Your age in years</label>
+          <input class="text-input mono" id="age-input" type="number" min="1" max="120" value="17">
+        </div>
+        <button class="btn primary" id="age-btn" type="button">Place me on the calendar</button>
+        <p id="age-out" class="muted" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STARS ============ -->
+  <section class="view" id="v-stars" data-view="stars" hidden>
+    <div class="view-head">
+      <span class="eyebrow">Mission 2 · Stellar evolution</span>
+      <h2>Life and death of a star</h2>
+      <p>A star's mass decides everything: its colour, how long it lives and how it dies. Choose a mass, then play its life.</p>
+    </div>
+    <div class="split">
+      <div class="stack">
+        <canvas class="stage" id="star-canvas" height="420" aria-label="Animated star"></canvas>
+        <div class="path" id="star-path"></div>
+      </div>
+      <div class="stack">
+        <div class="panel stack">
+          <div class="field">
+            <label for="mass-slider">Starting mass: <b id="mass-val" class="mono">1.0</b> × our Sun</label>
+            <input type="range" id="mass-slider" min="0" max="1000" value="333">
+            <div class="mass-labels"><span>0.1</span><span>1</span><span>8</span><span>25</span><span>40</span></div>
+          </div>
+          <div class="row">
+            <button class="chip" data-mass="0.3" type="button">Red dwarf</button>
+            <button class="chip" data-mass="1" type="button">Our Sun</button>
+            <button class="chip" data-mass="12" type="button">Betelgeuse-like</button>
+            <button class="chip" data-mass="35" type="button">Monster</button>
+          </div>
+          <div class="readout" id="star-readout" style="grid-template-columns:repeat(2,minmax(0,1fr))"></div>
+          <button class="btn primary" id="play-life" type="button">▶ Play its life</button>
+        </div>
+        <div class="panel stage-text stack" id="stage-text" aria-live="polite"></div>
+      </div>
+    </div>
+    <p class="note" style="margin-top:18px"><b>Keep in mind:</b> the mass boundaries (about 8 and 25 Suns) are approximate. A star's spin, its chemical make-up and whether it has a partner star can change its fate. Some very heavy stars may even collapse into black holes without a bright explosion.</p>
+  </section>
+
+  <!-- ============ SKY ============ -->
+  <section class="view" id="v-sky" data-view="sky" hidden>
+    <div class="view-head">
+      <span class="eyebrow">Mission 3 · Sky atlas</span>
+      <h2>Read the night sky</h2>
+      <p>Ten star patterns you can find from India, with their Indian names, myths and the real science inside them. Then draw them from memory.</p>
+    </div>
+    <div class="row" style="margin-bottom:14px" role="tablist" aria-label="Mode">
+      <button class="chip" data-skymode="explore" aria-pressed="true" type="button">Explore</button>
+      <button class="chip" data-skymode="build" aria-pressed="false" type="button">Draw it</button>
+      <button class="chip" data-skymode="name" aria-pressed="false" type="button">Name it</button>
+    </div>
+    <div class="split">
+      <div class="stack">
+        <canvas class="stage" id="sky-canvas" height="440" aria-label="Constellation map"></canvas>
+        <div class="const-list" id="const-list"></div>
+      </div>
+      <div class="panel stack" id="sky-side" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- ============ SPACETIME ============ -->
+  <section class="view" id="v-spacetime" data-view="spacetime" hidden>
+    <div class="view-head">
+      <span class="eyebrow">Mission 4 · General relativity</span>
+      <h2>Bend spacetime</h2>
+      <p>Einstein said mass curves spacetime and objects follow the curves. Pile on mass and see what happens when the curve becomes a bottomless well.</p>
+    </div>
+    <div class="split">
+      <canvas class="stage" id="warp-canvas" height="400" aria-label="Curved spacetime sheet"></canvas>
+      <div class="panel stack">
+        <div class="field">
+          <label for="warp-slider">Squeeze the same mass smaller</label>
+          <input type="range" id="warp-slider" min="0" max="100" value="20">
+        </div>
+        <div class="row">
+          <button class="chip" data-warp="0" type="button">Empty space</button>
+          <button class="chip" data-warp="20" type="button">Sun</button>
+          <button class="chip" data-warp="70" type="button">Neutron star</button>
+          <button class="chip" data-warp="100" type="button">Black hole</button>
+        </div>
+        <p id="warp-text" class="muted" aria-live="polite"></p>
+        <p class="note"><b>Two sides of this picture.</b> The rubber sheet is a great first image, but it cheats: it uses Earth's gravity pulling the sheet down to explain gravity. Real curvature is four-dimensional and includes time, which is actually what makes apples fall.</p>
+      </div>
+    </div>
+
+    <div class="section-label"><h2>Shrink anything into a black hole</h2></div>
+    <div class="split">
+      <div class="panel stack">
+        <p class="muted">Every mass has a Schwarzschild radius, r = 2GM/c². Squeeze it smaller than that and it becomes a black hole.</p>
+        <div class="row" id="bh-objects"></div>
+        <div class="readout" id="bh-out"></div>
+      </div>
+      <div class="panel stack">
+        <h3>Time near the edge</h3>
+        <p class="muted small">Hover near a black hole while your friend waits far away. How much time passes for them while one hour passes for you?</p>
+        <div class="field">
+          <label for="td-slider">Your distance: <b class="mono" id="td-r">3.00</b> × the event horizon radius</label>
+          <input type="range" id="td-slider" min="0" max="1000" value="600">
+        </div>
+        <div class="readout" id="td-out"></div>
+        <p class="note small">Simple non-spinning black hole. Near a small black hole, tides would stretch you like spaghetti first. Near a supermassive one like Sagittarius A*, you could cross the horizon without feeling it.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ NEWTON ============ -->
+  <section class="view" id="v-newton" data-view="newton" hidden>
+    <div class="view-head">
+      <span class="eyebrow">Mission 5 · Classical mechanics</span>
+      <h2>Newton's lab</h2>
+      <p>In 1687 Newton imagined a cannon on a very tall mountain. Fire it fast enough and the ball falls around Earth forever. Try it with real numbers.</p>
+    </div>
+    <div class="split">
+      <canvas class="stage" id="cannon-canvas" height="440" aria-label="Newton's cannon simulation"></canvas>
+      <div class="panel stack">
+        <div class="field">
+          <label for="v-slider">Launch speed: <b class="mono" id="v-val">6.0</b> km/s</label>
+          <input type="range" id="v-slider" min="10" max="130" value="60">
+        </div>
+        <div class="row">
+          <button class="chip" data-v="4" type="button">4 km/s</button>
+          <button class="chip" data-v="7.8" type="button">7.8 km/s</button>
+          <button class="chip" data-v="9.5" type="button">9.5 km/s</button>
+          <button class="chip" data-v="11.2" type="button">11.2 km/s</button>
+        </div>
+        <button class="btn primary" id="fire-btn" type="button">Fire the cannon</button>
+        <div class="readout" id="cannon-out"></div>
+        <p id="cannon-verdict" class="muted" aria-live="polite"></p>
+        <p class="note small">The cannon sits 200 km up, above almost all the air, so we ignore drag. At this height a circular orbit needs about 7.8 km/s and escape needs about 11.0 km/s.</p>
+      </div>
+    </div>
+
+    <div class="section-label"><h2>Your weight across the Solar System</h2></div>
+    <div class="split">
+      <div class="panel stack">
+        <div class="field">
+          <label for="mass-input">Your mass in kg</label>
+          <input class="text-input mono" id="mass-input" type="number" min="1" max="300" value="50">
+        </div>
+        <div class="weights" id="weights"></div>
+      </div>
+      <div class="panel stack">
+        <h3>Mass or weight?</h3>
+        <p class="muted">Your mass (kg) is how much stuff you are made of. It never changes. Your weight is the force of gravity on you, W = mg, measured in newtons. A bathroom scale secretly measures force and divides by Earth's g.</p>
+        <div class="readout" id="jump-out"></div>
+      </div>
+    </div>
+
+    <div class="section-label"><h2>Think like Newton</h2><span class="eyebrow" id="puzzle-count"></span></div>
+    <div class="puzzles" id="puzzles"></div>
+  </section>
+
+  <!-- ============ MYTHS ============ -->
+  <section class="view" id="v-myths" data-view="myths" hidden>
+    <div class="view-head">
+      <span class="eyebrow">Mission 6 · Critical thinking</span>
+      <h2>Myth or fact?</h2>
+      <p>Some of these are repeated by teachers, films and even textbooks. Trust the evidence, not the crowd.</p>
+    </div>
+    <div class="deck" id="deck"></div>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="view" id="v-quiz" data-view="quiz" hidden>
+    <div class="view-head">
+      <span class="eyebrow">Mission 7 · Test yourself</span>
+      <h2>Quiz arena</h2>
+      <p>Three levels, ten questions each. Every answer comes with the reason, so even wrong answers teach you something.</p>
+    </div>
+    <div id="quiz-root"></div>
+  </section>
+
+  <!-- ============ HEROES ============ -->
+  <section class="view" id="v-heroes" data-view="heroes" hidden>
+    <div class="view-head">
+      <span class="eyebrow">Mission 8 · People</span>
+      <h2>Giants of the cosmos</h2>
+      <p>Every fact in this game was discovered by a real person. Several were young women who were told they were wrong, and weren't. Tap a card to read their story.</p>
+    </div>
+    <div class="heroes" id="heroes"></div>
+
+    <div class="section-label"><h2>Your path to the stars</h2><span class="eyebrow">From India, after Class 12</span></div>
+    <div class="panel stack">
+      <div class="career">
+        <div class="step"><span class="eyebrow">Now</span><b>Physics + Maths in Class 12</b><p>Enjoy the ideas, not just the marks. Gravitation, optics and modern physics lead straight here.</p></div>
+        <div class="step"><span class="eyebrow">Undergraduate</span><b>BS-MS or BSc in physics</b><p>IISERs (IISER Aptitude Test), NISER (NEST), IISc's BS programme, or IIST for space science and ISRO careers.</p></div>
+        <div class="step"><span class="eyebrow">Research</span><b>PhD in astrophysics</b><p>Institutes like IUCAA, RRI, IIA, TIFR, PRL and ARIES take PhD students, many through the JEST exam.</p></div>
+        <div class="step"><span class="eyebrow">Career</span><b>Scientist, engineer, communicator</b><p>ISRO missions, observatories, data science, teaching, or telling the public why the universe matters.</p></div>
+      </div>
+      <p class="note small">Admission rules change every year. Always check each institute's official website.</p>
+    </div>
+  </section>
+
+  <!-- ============ SCALE ============ -->
+  <section class="view" id="v-scale" data-view="scale" hidden>
+    <div class="view-head">
+      <span class="eyebrow">Mission 9 · Distance</span>
+      <h2>How far is far?</h2>
+      <p>Choose how you travel. The bars use a logarithmic scale, where each step is ten times farther than the last, because nothing else could fit the universe on one screen.</p>
+    </div>
+    <div class="row" id="speed-chips" style="margin-bottom:16px"></div>
+    <div class="panel"><div class="scale-list" id="scale-list"></div></div>
+  </section>
+</main>
+
+<div id="toasts" aria-live="polite"></div>
+
+<script src="js/data.js"></script>
+<script src="js/core.js"></script>
+<script src="js/origin.js"></script>
+<script src="js/stars.js"></script>
+<script src="js/sky.js"></script>
+<script src="js/spacetime.js"></script>
+<script src="js/newton.js"></script>
+<script src="js/play.js"></script>
+<script src="js/boot.js"></script>
