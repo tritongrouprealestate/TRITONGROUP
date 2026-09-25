@@ -10,7 +10,7 @@
     if (mi >= deck.length) {
       box.innerHTML = `<div class="myth-card"><span class="eyebrow">Deck complete</span>
         <p class="s">You sorted ${sessionRight} of ${deck.length} correctly.</p>
-        <p class="muted">${sessionRight >= 13 ? "A true sceptic. Scientists would be proud." : "Some of these fool adults and even teachers. Try the deck again and see what stuck."}</p>
+        <p class="muted">${sessionRight >= Math.round(deck.length * 0.8) ? "A true sceptic. Scientists would be proud." : "Some of these fool adults and even teachers. Try the deck again and see what stuck."}</p>
         <div class="row"><button class="btn primary" type="button" id="m-again">Shuffle and play again</button></div></div>`;
       box.querySelector("#m-again").onclick = () => { deck = G.shuffle(deck); mi = 0; sessionRight = 0; renderMyth(); };
       if (G.state.mythsSeen >= DATA.myths.length) G.award("myths-done", 30, "Mission complete");
@@ -54,21 +54,37 @@
   function picker() {
     run = null;
     const root = document.getElementById("quiz-root");
-    root.innerHTML = `<div class="missions">${levels.map(l => {
+    const topicBest = id => G.state.flags["tbest-" + id];
+    root.innerHTML = `<div class="section-label" style="margin-top:0"><h2>By level</h2><span class="eyebrow">10 questions each</span></div>
+      <div class="missions" id="lvl-grid">${levels.map(l => {
       const best = G.state.flags["best" + l.id];
       return `<button class="mission" type="button" data-l="${l.id}" style="--c:${["", "var(--b)", "var(--g)", "var(--rose)"][l.id]}; grid-template-columns:1fr">
         <div><span class="eyebrow">Level ${l.id}</span><h3 style="font-family:var(--display);font-weight:400;font-size:2rem;margin-top:4px">${l.name}</h3><p>${l.sub}</p>
         <div class="meta"><span>${best != null ? `Best score ${best} / 10` : "Not attempted"}</span>${G.state.badges[l.badge] ? "<span style='color:var(--g)'>Certified</span>" : ""}</div></div></button>`;
-    }).join("")}</div>`;
-    root.querySelector(".missions").onclick = e => { const b = e.target.closest("[data-l]"); if (b) start(+b.dataset.l); };
+    }).join("")}</div>
+      <div class="section-label"><h2>By topic</h2><span class="eyebrow">${DATA.topics.reduce((s, t) => s + t.qs.length, 0)} questions in 13 topics</span></div>
+      <div class="topic-grid" id="topic-grid">${DATA.topics.map(t => `<button class="topic" type="button" data-t="${t.id}" style="--c:${t.c}">
+        <b>${t.name}</b><span>${t.qs.length} questions · ${topicBest(t.id) != null ? "best " + topicBest(t.id) + "/10" : "not tried"}</span></button>`).join("")}
+        <button class="topic mega" type="button" data-t="mega" style="--c:var(--g)"><b>Mega mix</b><span>20 random questions from everything</span></button></div>`;
+    root.querySelector("#lvl-grid").onclick = e => { const b = e.target.closest("[data-l]"); if (b) start(+b.dataset.l); };
+    root.querySelector("#topic-grid").onclick = e => { const b = e.target.closest("[data-t]"); if (b) startTopic(b.dataset.t); };
   }
 
+  function shuffleOpts(q) {
+    const order = G.shuffle(q.o.map((_, i) => i));
+    return { q: q.q, o: order.map(i => q.o[i]), a: order.indexOf(q.a), e: q.e };
+  }
   function start(l) {
-    const qs = G.shuffle(DATA.quiz[l]).slice(0, 10).map(q => {
-      const order = G.shuffle(q.o.map((_, i) => i));
-      return { q: q.q, o: order.map(i => q.o[i]), a: order.indexOf(q.a), e: q.e };
-    });
-    run = { l, qs, i: 0, score: 0 };
+    const qs = G.shuffle(DATA.quiz[l]).slice(0, 10).map(shuffleOpts);
+    run = { l, qs, i: 0, score: 0, label: levels[l - 1].name };
+    ask();
+  }
+  function startTopic(id) {
+    const toQ = x => ({ q: x[0], o: x[1], a: x[2], e: x[3] });
+    let pool, label, n = 10;
+    if (id === "mega") { pool = DATA.topics.flatMap(t => t.qs.map(toQ)).concat(Object.values(DATA.quiz).flat()); label = "Mega mix"; n = 20; }
+    else { const t = DATA.topics.find(x => x.id === id); pool = t.qs.map(toQ); label = t.name; }
+    run = { topic: id, qs: G.shuffle(pool).slice(0, n).map(shuffleOpts), i: 0, score: 0, label };
     ask();
   }
 
@@ -76,7 +92,7 @@
     const root = document.getElementById("quiz-root");
     const q = run.qs[run.i];
     root.innerHTML = `<div class="panel stack" style="max-width:760px">
-      <div class="row" style="justify-content:space-between"><span class="eyebrow">${levels[run.l - 1].name} · question ${run.i + 1} of ${run.qs.length}</span><span class="xp-num">${run.score} correct</span></div>
+      <div class="row" style="justify-content:space-between"><span class="eyebrow">${run.label} · question ${run.i + 1} of ${run.qs.length}</span><span class="xp-num">${run.score} correct</span></div>
       <div class="xp-track" style="width:100%"><div class="xp-fill" style="width:${run.i / run.qs.length * 100}%"></div></div>
       <h3 style="font-family:var(--display);font-weight:400;font-size:clamp(1.6rem,4vw,2.2rem);line-height:1.15">${q.q}</h3>
       <div class="options" id="q-opts">${q.o.map((o, i) => `<button class="opt" type="button" data-i="${i}">${o}</button>`).join("")}</div>
@@ -97,18 +113,31 @@
   }
 
   function finish() {
-    const l = levels[run.l - 1], s = run.score;
-    const prev = G.state.flags["best" + l.id];
-    G.state.flags["best" + l.id] = Math.max(prev || 0, s); G.save();
-    if (s >= 8) G.badge(l.badge);
-    if (["quiz-cadet", "quiz-explorer", "quiz-astro"].every(b => G.state.badges[b])) G.award("quiz-done", 30, "Mission complete");
-    const msg = s === 10 ? "Perfect score. Flawless." : s >= 8 ? "Certified! You clearly know your stuff." : s >= 5 ? "Solid. Read the explanations and you will be certified next time." : "Every astronomer started here. Try again, the questions shuffle.";
+    const s = run.score, n = run.qs.length;
+    let again;
+    if (run.topic) {
+      const key = "tbest-" + run.topic;
+      if (run.topic !== "mega") { G.state.flags[key] = Math.max(G.state.flags[key] || 0, s); }
+      G.save();
+      const mastered = DATA.topics.filter(t => (G.state.flags["tbest-" + t.id] || 0) >= 8).length;
+      if (mastered >= 5) G.badge("topic-master");
+      if (run.topic === "mega" && s >= 16) G.badge("mega");
+      const id = run.topic; again = () => startTopic(id);
+    } else {
+      const l = levels[run.l - 1];
+      G.state.flags["best" + l.id] = Math.max(G.state.flags["best" + l.id] || 0, s); G.save();
+      if (s >= 8) G.badge(l.badge);
+      if (["quiz-cadet", "quiz-explorer", "quiz-astro"].every(b => G.state.badges[b])) G.award("quiz-done", 30, "Mission complete");
+      const id = l.id; again = () => start(id);
+    }
+    const pct = s / n;
+    const msg = pct === 1 ? "Perfect score, Kutush. Flawless." : pct >= 0.8 ? "Brilliant! You clearly know your stuff." : pct >= 0.5 ? "Solid. Read the explanations and you will ace it next time." : "Every astronomer started here. Try again, the questions shuffle.";
     document.getElementById("quiz-root").innerHTML = `<div class="panel stack" style="max-width:640px">
-      <span class="eyebrow">${l.name} complete</span>
-      <p style="font-family:var(--display);font-size:clamp(3rem,10vw,5rem);line-height:1">${s} <span class="muted" style="font-size:.5em">/ 10</span></p>
+      <span class="eyebrow">${run.label} complete</span>
+      <p style="font-family:var(--display);font-size:clamp(3rem,10vw,5rem);line-height:1">${s} <span class="muted" style="font-size:.5em">/ ${n}</span></p>
       <p class="muted">${msg}</p>
-      <div class="row"><button class="btn primary" type="button" id="q-again">Play ${l.name} again</button><button class="btn" type="button" id="q-levels">Choose a level</button></div></div>`;
-    document.getElementById("q-again").onclick = () => start(l.id);
+      <div class="row"><button class="btn primary" type="button" id="q-again">Play again</button><button class="btn" type="button" id="q-levels">Choose another quiz</button></div></div>`;
+    document.getElementById("q-again").onclick = again;
     document.getElementById("q-levels").onclick = picker;
   }
 

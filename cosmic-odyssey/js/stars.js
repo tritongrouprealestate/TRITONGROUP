@@ -83,7 +83,7 @@
     if (k === "rd") extra = " Far in the future it should heat up into a 'blue dwarf', then fade as a white dwarf.";
     if (k === "main" && mass > 0.9 && mass < 1.1) extra = " Our Sun is about halfway through this stage, around 4.6 billion years in.";
     document.getElementById("stage-text").innerHTML =
-      `<span class="eyebrow">Stage ${i + 1} of ${path.length}</span><h3>${s.name}</h3><p>${s.body}${extra}</p>`;
+      `<span class="eyebrow">Stage ${i + 1} of ${path.length}</span><h3>${s.name}</h3><p>${s.body}${extra}</p>${s.kid ? `<p class="kidline"><b>In simple words:</b> ${s.kid}</p>` : ""}`;
     if (i === path.length - 1) {
       const badge = { wd: "star-dwarf", ns: "star-neutron", bh: "star-bh" }[k];
       if (badge) G.badge(badge);

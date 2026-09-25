@@ -1,7 +1,7 @@
 /* Cosmic Odyssey: state, XP, badges, routing, shared helpers */
 (function () {
   const KEY = "cosmic-odyssey-v1";
-  const blank = () => ({ name: "", xp: 0, badges: {}, awarded: {}, flags: {}, built: {}, heroes: {}, puzzles: {}, speeds: {}, mythsRight: 0, mythsSeen: 0 });
+  const blank = () => ({ name: "Kutush", xp: 0, badges: {}, awarded: {}, flags: {}, built: {}, heroes: {}, puzzles: {}, speeds: {}, mythsRight: 0, mythsSeen: 0 });
 
   function load() {
     try {
@@ -157,6 +157,8 @@
     myths: '<svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="8" y="12" width="26" height="34" rx="4" opacity=".5" transform="rotate(-10 21 29)"/><rect x="22" y="10" width="26" height="34" rx="4"/><path d="M29 28 l4 4 l8 -9"/></svg>',
     quiz: '<svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="28" cy="28" r="20" opacity=".35"/><path d="M22 22 a6 6 0 1 1 8 5.6 c-1.6.7 -2 1.6 -2 3.4"/><circle cx="28" cy="37" r="1.6" fill="currentColor"/></svg>',
     heroes: '<svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="28" cy="20" r="7"/><path d="M14 46 c2-10 8-14 14-14 s12 4 14 14"/><circle cx="46" cy="10" r="1.8" fill="currentColor"/><circle cx="10" cy="16" r="1.3" fill="currentColor"/></svg>',
+    academy: '<svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 22 L28 12 L50 22 L28 32 Z"/><path d="M14 26 V38 C20 44 36 44 42 38 V26"/><path d="M50 22 V34"/><circle cx="50" cy="36" r="2" fill="currentColor"/></svg>',
+    isro: '<svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M28 6 C36 14 36 30 32 40 H24 C20 30 20 14 28 6 Z"/><circle cx="28" cy="20" r="3"/><path d="M24 34 L17 42 L23 41 M32 34 L39 42 L33 41"/><path d="M26 44 L28 51 L30 44" opacity=".7"/></svg>',
     scale: '<svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 40 H50"/><path d="M8 36 v8 M14 37 v6 M20 37 v6 M26 36 v8 M34 37 v6 M42 37 v6 M50 36 v8" opacity=".6"/><circle cx="10" cy="24" r="2" fill="currentColor"/><circle cx="26" cy="22" r="4" fill="currentColor" opacity=".7"/><circle cx="44" cy="20" r="7" fill="currentColor" opacity=".35"/></svg>'
   };
 
@@ -173,14 +175,18 @@
       p: () => (has("horizon") + (S().flags.warpBH ? 1 : 0) + (S().flags.bhCalc ? 1 : 0)) / 3 },
     { id: "newton", title: "Newton's lab", sub: "Fire Newton's cannon into orbit, weigh yourself on Jupiter and crack 12 physics puzzles.", c: "var(--good)",
       p: () => (has("orbit") + has("escape") + Math.min(1, Object.keys(S().puzzles).length / 12)) / 3 },
-    { id: "myths", title: "Myth or fact?", sub: "Sixteen popular beliefs about space. Which ones survive the evidence?", c: "var(--k)",
+    { id: "myths", title: "Myth or fact?", sub: "32 popular beliefs about space and physics. Which ones survive the evidence?", c: "var(--k)",
       p: () => Math.min(1, S().mythsSeen / DATA.myths.length) },
-    { id: "quiz", title: "Quiz arena", sub: "Cadet, Explorer and Astrophysicist levels. Every answer explained.", c: "var(--b)",
-      p: () => (has("quiz-cadet") + has("quiz-explorer") + has("quiz-astro")) / 3 },
-    { id: "heroes", title: "Giants of the cosmos", sub: "Chandrasekhar, Cecilia Payne, Kalpana Chawla and the people behind the facts.", c: "var(--m)",
+    { id: "quiz", title: "Quiz arena", sub: "3 levels, 13 topics and a mega mix. Over 300 questions, every answer explained.", c: "var(--b)",
+      p: () => (has("quiz-cadet") + has("quiz-explorer") + has("quiz-astro") + has("topic-master")) / 4 },
+    { id: "heroes", title: "Giants of the cosmos", sub: "Chandrasekhar, Kalpana Chawla, Cecilia Payne, Kalam and the people behind the facts.", c: "var(--m)",
       p: () => Math.min(1, Object.keys(S().heroes).length / DATA.heroes.length) },
     { id: "scale", title: "How far is far?", sub: "From the Moon to the edge of the observable universe, at the speed of a car or of light.", c: "var(--a)",
-      p: () => Math.min(1, Object.keys(S().speeds).length / DATA.speeds.length) }
+      p: () => Math.min(1, Object.keys(S().speeds).length / DATA.speeds.length) },
+    { id: "academy", title: "Physics Academy: Class 11 and 12", sub: "All 28 CBSE chapters explained simply, each with an experiment, formulas and board-style questions with solutions.", c: "var(--g)",
+      p: () => (has("class11") + has("class12") + has("board-ready")) / 3 },
+    { id: "isro", title: "India in space", sub: "From a bicycle-carried rocket in 1963 to the Moon's south pole and beyond.", c: "var(--k)",
+      p: () => Math.min(1, Object.keys(S().isro || {}).length / DATA.isro.length) }
   ];
 
   const badgeIcon = on => `<svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="15" fill="none" stroke="${on ? "#ffd27a" : "#6f789c"}" stroke-width="1.3" stroke-dasharray="${on ? "0" : "3 3"}"/><path d="M18 8 L20.6 15.4 L28 18 L20.6 20.6 L18 28 L15.4 20.6 L8 18 L15.4 15.4 Z" fill="${on ? "#ffd27a" : "#3a4264"}"/></svg>`;
@@ -190,8 +196,9 @@
     const box = document.getElementById("commander-box");
     if (st.name) {
       const { rank } = G.rankFor(st.xp);
-      box.innerHTML = `<p class="greeting">Welcome back, ${rank.name} <span class="i">${G.esc(st.name)}</span>.</p>
-        <div class="row"><button class="btn primary" type="button" data-go="${nextMission()}">Continue the odyssey</button><button class="chip" type="button" id="rename">Change name</button></div>`;
+      if (!st.badges["first-light"]) setTimeout(() => G.badge("first-light"), 600);
+      box.innerHTML = `<p class="greeting">Hello, ${rank.name} <span class="i">${G.esc(st.name)}</span>. The universe is waiting.</p>
+        <div class="row"><button class="btn primary" type="button" data-go="${nextMission()}">Continue the odyssey</button><button class="btn" type="button" data-go="academy">Class 11 and 12 physics</button><button class="chip" type="button" id="rename">Change name</button></div>`;
       box.querySelector("#rename").onclick = () => { st.name = ""; G.save(); G.renderHome(); };
     } else {
       box.innerHTML = `<form class="commander" id="name-form">
@@ -238,7 +245,9 @@
     if (G.current && G.views[G.current] && G.views[G.current].leave) G.views[G.current].leave();
     document.querySelectorAll(".view").forEach(v => { v.hidden = v.dataset.view !== name; });
     G.current = name;
+    document.body.dataset.view = name;
     document.getElementById("back-label").hidden = name === "home";
+    document.querySelectorAll("#v-" + name + " [data-sim]:not([data-mounted])").forEach(el => { el.dataset.mounted = "1"; G.mount(el, el.dataset.sim); });
     const mod = G.views[name];
     if (mod) {
       if (!mod._ready && mod.init) { mod.init(); mod._ready = true; }

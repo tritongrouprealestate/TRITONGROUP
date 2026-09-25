@@ -26,7 +26,7 @@
     const e = DATA.epochs[i];
     document.querySelectorAll("#epoch-ticks button").forEach((b, j) => b.setAttribute("aria-current", j === i));
     document.getElementById("epoch-card").innerHTML =
-      `<span class="t">${e.t}${e.temp ? ` · temperature ${e.temp}` : ""}</span><h3>${e.title}</h3><p>${e.body}</p>`;
+      `<span class="t">${e.t}${e.temp ? ` · temperature ${e.temp}` : ""}</span><h3>${e.title}</h3><p>${e.body}</p>${e.kid ? `<p class="kidline"><b>In simple words:</b> ${e.kid}</p>` : ""}`;
     G.award("epoch-" + i, 5, e.title);
     if (i === DATA.epochs.length - 1) G.badge("big-bang");
     checkDone();

@@ -11,7 +11,7 @@
 <header class="bar">
   <button class="brand" id="brand" type="button" aria-label="Back to mission control">
     <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="4.5" fill="#ffd27a"/><ellipse cx="13" cy="13" rx="11.5" ry="4.2" fill="none" stroke="#86a8ff" stroke-width="1.3" transform="rotate(-24 13 13)"/></svg>
-    <span>Cosmic Odyssey</span>
+    <span class="brand-name">Cosmic Odyssey</span>
     <span class="back" id="back-label" hidden>← missions</span>
   </button>
   <div class="bar-stats">
@@ -26,9 +26,9 @@
   <!-- ============ HOME ============ -->
   <section class="view" id="v-home" data-view="home">
     <div class="hero">
-      <span class="eyebrow">A field guide to the universe · 9 missions · 18 badges</span>
+      <span class="eyebrow">Made for Kutush · 11 missions · 570+ questions · 30+ experiments</span>
       <h1>Cosmic <span class="i">Odyssey</span></h1>
-      <p class="lede">Watch the universe be born, steer a star to its death, bend spacetime around a black hole and fire Newton's cannon into orbit. <b>Every fact here is real physics.</b></p>
+      <p class="lede">Watch the universe be born, steer a star to its death, bend spacetime around a black hole, fire Newton's cannon into orbit, and master every chapter of Class 11 and 12 physics along the way. <b>Every fact here is real physics.</b></p>
       <div id="commander-box"></div>
     </div>
 
@@ -58,6 +58,10 @@
       </div>
       <div class="panel epoch-card" id="epoch-card" aria-live="polite"></div>
     </div>
+
+    <div class="section-label"><h2>Is there a centre of the universe?</h2><span class="eyebrow">Experiment</span></div>
+    <div class="eli5"><span class="eyebrow">Kutush, imagine this</span><p>Draw dots on a balloon and blow it up. Every dot moves away from every other dot, and dots that are farther apart separate faster. No dot is the centre. That is exactly what galaxies do. Try switching your home galaxy below.</p></div>
+    <div data-sim="balloon"></div>
 
     <div class="section-label"><h2>The Cosmic Calendar</h2><span class="eyebrow">Idea by Carl Sagan</span></div>
     <div class="split">
@@ -108,6 +112,14 @@
         <div class="panel stage-text stack" id="stage-text" aria-live="polite"></div>
       </div>
     </div>
+    <div class="section-label"><h2>Star colour is a thermometer</h2><span class="eyebrow">Experiment</span></div>
+    <div class="eli5"><span class="eyebrow">Kutush, imagine this</span><p>Heat an iron rod in a flame. First it glows dull red, then orange, then yellow-white. Stars follow the same rule: the colour tells the temperature. Red stars are the "coolest" (still about 3,000 °C!) and blue stars are the hottest.</p></div>
+    <div data-sim="blackbody"></div>
+
+    <div class="section-label"><h2>The H-R diagram: a family photo of stars</h2><span class="eyebrow">Experiment</span></div>
+    <div class="eli5"><span class="eyebrow">Kutush, imagine this</span><p>Plot every star by how hot it is and how bright it is, and they don't scatter randomly. Most sit on a diagonal band (the main sequence), where they spend their adult lives. Swollen giants float above it, and tiny white dwarfs sink below. Pick a star to find it.</p></div>
+    <div data-sim="hr"></div>
+
     <p class="note" style="margin-top:18px"><b>Keep in mind:</b> the mass boundaries (about 8 and 25 Suns) are approximate. A star's spin, its chemical make-up and whether it has a partner star can change its fate. Some very heavy stars may even collapse into black holes without a bright explosion.</p>
   </section>
 
@@ -129,6 +141,17 @@
         <div class="const-list" id="const-list"></div>
       </div>
       <div class="panel stack" id="sky-side" aria-live="polite"></div>
+    </div>
+
+    <div class="section-label"><h2>Why the Moon has phases</h2><span class="eyebrow">Experiment</span></div>
+    <div data-sim="moon"></div>
+
+    <div class="section-label"><h2>Stargazing tonight: a starter kit</h2></div>
+    <div class="tips">
+      <div class="panel"><h3>Go dark</h3><p class="muted">Get away from street lights if you can, and switch off your phone screen. Your eyes need about 20 minutes to fully adapt to the dark.</p></div>
+      <div class="panel"><h3>Use red light</h3><p class="muted">Cover a torch with red cellophane. Red light does not ruin your night vision, which is why observatories use it.</p></div>
+      <div class="panel"><h3>Measure with your hand</h3><p class="muted">Held at arm's length, your little finger covers about 1°, your fist about 10°. The Big Dipper is about 25° long.</p></div>
+      <div class="panel"><h3>Planets don't twinkle</h3><p class="muted">A bright "star" shining steadily near the path of the Sun and Moon is probably a planet: Venus, Jupiter, Mars or Saturn.</p></div>
     </div>
   </section>
 
@@ -156,6 +179,10 @@
         <p class="note"><b>Two sides of this picture.</b> The rubber sheet is a great first image, but it cheats: it uses Earth's gravity pulling the sheet down to explain gravity. Real curvature is four-dimensional and includes time, which is actually what makes apples fall.</p>
       </div>
     </div>
+
+    <div class="section-label"><h2>Kutush's trip at nearly light speed</h2><span class="eyebrow">Special relativity</span></div>
+    <div class="eli5"><span class="eyebrow">Kutush, imagine this</span><p>You fly to a star and back at almost the speed of light. When you land, your classmates are much older than you. This is not science fiction: fast-moving clocks really tick slower. Choose a destination and a speed.</p></div>
+    <div data-sim="twin"></div>
 
     <div class="section-label"><h2>Shrink anything into a black hole</h2></div>
     <div class="split">
@@ -204,6 +231,10 @@
       </div>
     </div>
 
+    <div class="section-label"><h2>Kepler's secret: equal areas</h2><span class="eyebrow">Experiment</span></div>
+    <div class="eli5"><span class="eyebrow">Kutush, imagine this</span><p>A planet on a stretched orbit races when it is near the Sun and dawdles when it is far away, like a skater pulling in her arms. Kepler noticed that the line from the Sun to the planet sweeps out equal areas in equal times. Stretch the orbit and watch the coloured slices.</p></div>
+    <div data-sim="kepler"></div>
+
     <div class="section-label"><h2>Your weight across the Solar System</h2></div>
     <div class="split">
       <div class="panel stack">
@@ -239,7 +270,7 @@
     <div class="view-head">
       <span class="eyebrow">Mission 7 · Test yourself</span>
       <h2>Quiz arena</h2>
-      <p>Three levels, ten questions each. Every answer comes with the reason, so even wrong answers teach you something.</p>
+      <p>Three levels, 13 topics and a mega mix, over 300 questions. Every answer comes with the reason, so even wrong answers teach you something.</p>
     </div>
     <div id="quiz-root"></div>
   </section>
@@ -275,11 +306,59 @@
     <div class="row" id="speed-chips" style="margin-bottom:16px"></div>
     <div class="panel"><div class="scale-list" id="scale-list"></div></div>
   </section>
+  <!-- ============ ACADEMY ============ -->
+  <section class="view" id="v-academy" data-view="academy" hidden>
+    <div class="view-head">
+      <span class="eyebrow">Mission 10 · CBSE Physics (042), 2025-26 syllabus</span>
+      <h2>Physics Academy</h2>
+      <p>Every chapter of Class 11 and Class 12 physics, explained so simply that it clicks, then practised the way the board exam asks it. Each chapter has an experiment you can play with.</p>
+    </div>
+    <div class="panel stack exam-pattern">
+      <h3>How the Class 12 theory paper works (70 marks, 3 hours)</h3>
+      <div class="pattern">
+        <div><b class="mono">A</b><span>16 × 1 mark<br>MCQs, including 2 assertion-reason</span></div>
+        <div><b class="mono">B</b><span>5 × 2 marks<br>short answers</span></div>
+        <div><b class="mono">C</b><span>7 × 3 marks<br>numericals, derivations</span></div>
+        <div><b class="mono">D</b><span>2 × 4 marks<br>case studies</span></div>
+        <div><b class="mono">E</b><span>3 × 5 marks<br>long answers</span></div>
+      </div>
+      <p class="muted small">What recent papers focused on: in 2025 most questions came from electrostatics, EMI, ray and wave optics. In February 2026 the paper was called moderate and slightly lengthy, with more derivations than usual, a tricky optics case study and an easier semiconductor one. Unit weightage for Class 12: Electrostatics + Current 16, Magnetism + EMI/AC 17, EM Waves + Optics 18, Dual nature + Atoms + Nuclei 12, Semiconductors 7.</p>
+      <p class="note small">The practice questions here are written fresh in the board pattern, not copied from past papers. For real past papers and the official sample paper, use cbseacademic.nic.in.</p>
+    </div>
+    <div class="row" style="margin-block:22px 12px">
+      <button class="chip" type="button" data-cls="11" aria-pressed="false">Class 11</button>
+      <button class="chip" type="button" data-cls="12" aria-pressed="true">Class 12</button>
+      <span class="eyebrow" id="academy-stats" style="margin-left:auto"></span>
+    </div>
+    <div class="chapter-grid" id="chapter-grid"></div>
+    <div class="row" style="margin-top:14px"><button class="btn" type="button" id="drill-btn">Section A drill</button></div>
+    <div id="chapter-view" style="margin-top:26px;scroll-margin-top:70px"></div>
+  </section>
+
+  <!-- ============ ISRO ============ -->
+  <section class="view" id="v-isro" data-view="isro" hidden>
+    <div class="view-head">
+      <span class="eyebrow">Mission 11 · India in space</span>
+      <h2>From a bicycle to the Moon</h2>
+      <p>India's space story, one mission at a time. Tap a mission to fly a rocket to its destination.</p>
+    </div>
+    <div class="split">
+      <div class="stack">
+        <div id="isro-sim"></div>
+        <div class="panel stack" id="isro-detail" aria-live="polite"></div>
+      </div>
+      <div class="isro-list" id="isro-list"></div>
+    </div>
+  </section>
 </main>
 
 <div id="toasts" aria-live="polite"></div>
 
 <script src="js/data.js"></script>
+<script src="js/cbse12.js"></script>
+<script src="js/cbse11.js"></script>
+<script src="js/quizbank.js"></script>
+<script src="js/extra.js"></script>
 <script src="js/core.js"></script>
 <script src="js/origin.js"></script>
 <script src="js/stars.js"></script>
@@ -287,4 +366,7 @@
 <script src="js/spacetime.js"></script>
 <script src="js/newton.js"></script>
 <script src="js/play.js"></script>
+<script src="js/sims-a.js"></script>
+<script src="js/sims-b.js"></script>
+<script src="js/academy.js"></script>
 <script src="js/boot.js"></script>
