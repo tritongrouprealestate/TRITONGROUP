@@ -35,6 +35,7 @@
   /* generator: grid = array of value lists; fn receives one value from each */
   G.gen = function (id, lv, grid, fn, c) {
     const n = grid.reduce((p, g) => p * g.length, 1);
+    if (GENS[id]) console.warn("Duplicate generator id: " + id);
     GENS[id] = { id, lv, n, c, make(i) {
       const vals = []; let k = i;
       for (let g = grid.length - 1; g >= 0; g--) { vals.unshift(grid[g][k % grid[g].length]); k = Math.floor(k / grid[g].length); }
@@ -57,7 +58,7 @@
       (P.gens || []).forEach(g => { if (g.endsWith("*")) Object.keys(GENS).filter(k => k.startsWith(g.slice(0, -1))).forEach(k => ids.push(k)); else if (GENS[g]) ids.push(g); });
       (P.include || []).forEach(pid => { const r = resolve(pid); ids.push(...r.gens.map(g => g.id)); });
       P._gens = [...new Set(ids)].map(k => GENS[k]);
-      if (P.include) P._fixed = P._fixed.concat(...P.include.map(pid => resolve(pid).fixed));
+      if (P.include) { const seen = new Set(); P._fixed = P._fixed.concat(...P.include.map(pid => resolve(pid).fixed)).filter(q => { const k = q.q + "|" + (q.o || []).join("|"); if (seen.has(k)) return false; seen.add(k); return true; }); }
     }
     return { fixed: P._fixed, gens: P._gens, name: P.name };
   }
