@@ -115,3 +115,12 @@ DATA.badges.push(
   { id: "mega",         name: "Mega Mind",         desc: "Score 16+ out of 20 in the Mega mix" },
   { id: "isro",         name: "ISRO Explorer",     desc: "Explore 10 Indian space missions" }
 );
+
+DATA.badges.push(
+  { id: "word-nerd",    name: "Word Nerd",         desc: "Open 20 word explanations" },
+  { id: "century",      name: "Century",           desc: "Answer 100 practice questions correctly" },
+  { id: "super-hard",   name: "Super Solver",      desc: "Crack 10 super-hard questions" },
+  { id: "isro-ready",   name: "ISRO Ready",        desc: "30 correct in ISRO Ready practice" },
+  { id: "deep-diver",   name: "Deep Diver",        desc: "Complete 50 deep-dive lessons" },
+  { id: "quantum-mind", name: "Quantum Mind",      desc: "Complete 40 quantum lessons" }
+);

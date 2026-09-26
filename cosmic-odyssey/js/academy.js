@@ -58,6 +58,10 @@
       </div>
       <div class="section-label"><h2>Board practice</h2><span class="eyebrow" id="ch-count"></span></div>
       <div class="qlist" id="qlist"></div>
+      <div class="section-label"><h2>Deep-dive lessons</h2><span class="eyebrow">predict first, then learn</span></div>
+      <div id="ch-lessons"></div>
+      <div class="section-label"><h2>Unlimited practice</h2><span class="eyebrow">easy to super hard</span></div>
+      <div id="ch-practice"></div>
       <div class="row" style="margin-top:22px;justify-content:space-between">
         ${i > 0 ? `<button class="btn" type="button" data-nav="${list[i - 1].n}">← ${list[i - 1].title}</button>` : "<span></span>"}
         ${i < list.length - 1 ? `<button class="btn primary" type="button" data-nav="${list[i + 1].n}">${list[i + 1].title} →</button>` : ""}
@@ -65,6 +69,9 @@
     if (ch.sim) G.mount(document.getElementById("ch-sim"), ch.sim);
     box.querySelectorAll("[data-nav]").forEach(b => b.onclick = () => { openChapter(+b.dataset.nav); box.scrollIntoView({ behavior: G.reduced ? "auto" : "smooth" }); });
     renderQs(ch);
+    const ls = (DATA.lessons || []).filter(L => L.sec === `c${cls}-${n}`);
+    if (ls.length) G.lessonBrowser(document.getElementById("ch-lessons"), ls, { id: `c${cls}-${n}`, compact: true });
+    G.practice(document.getElementById("ch-practice"), `c${cls}-${n}`, { title: `Chapter ${n} practice` });
     if (!keepScroll) box.scrollIntoView({ behavior: G.reduced ? "auto" : "smooth" });
     G.award(`ch-${cls}-${n}`, 5, `Opened: ${ch.title}`);
   }

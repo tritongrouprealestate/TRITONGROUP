@@ -14,6 +14,13 @@
     <span class="brand-name">Cosmic Odyssey</span>
     <span class="back" id="back-label" hidden>← missions</span>
   </button>
+  <nav class="topnav" aria-label="Main">
+    <button type="button" data-go="academy">Academy</button>
+    <button type="button" data-go="ready">ISRO Ready</button>
+    <button type="button" data-go="quantum">Quantum</button>
+    <button type="button" data-go="quiz">Quiz</button>
+    <button type="button" data-words>Words</button>
+  </nav>
   <div class="bar-stats">
     <span class="rank-name" id="rank-name">Stargazer</span>
     <div class="xp-track" aria-hidden="true"><div class="xp-fill" id="xp-fill"></div></div>
@@ -26,7 +33,7 @@
   <!-- ============ HOME ============ -->
   <section class="view" id="v-home" data-view="home">
     <div class="hero">
-      <span class="eyebrow">Made for Kutush · 11 missions · 570+ questions · 30+ experiments</span>
+      <span class="eyebrow" id="home-eyebrow">Made for Kutush · 13 missions</span>
       <h1>Cosmic <span class="i">Odyssey</span></h1>
       <p class="lede">Watch the universe be born, steer a star to its death, bend spacetime around a black hole, fire Newton's cannon into orbit, and master every chapter of Class 11 and 12 physics along the way. <b>Every fact here is real physics.</b></p>
       <div id="commander-box"></div>
@@ -39,7 +46,7 @@
     <div class="badges" id="badges"></div>
 
     <p class="foot">Facts checked against NASA, ESA, ISRO, the IAU and published research. Where scientists still disagree or do not know yet, the game says so, because that is where the next discoveries will come from. Your progress is saved in this browser only.</p>
-    <p class="foot"><button class="chip" id="reset-btn" type="button">Reset progress</button> <span id="reset-confirm" hidden><button class="chip" id="reset-yes" type="button">Yes, erase everything</button> <button class="chip" id="reset-no" type="button">Keep it</button></span></p>
+    <p class="foot"><button class="chip" type="button" data-sources>Sources and research</button> <button class="chip" type="button" data-words>Word finder</button> <button class="chip" id="reset-btn" type="button">Reset progress</button> <span id="reset-confirm" hidden><button class="chip" id="reset-yes" type="button">Yes, erase everything</button> <button class="chip" id="reset-no" type="button">Keep it</button></span></p>
   </section>
 
   <!-- ============ ORIGIN ============ -->
@@ -58,6 +65,10 @@
       </div>
       <div class="panel epoch-card" id="epoch-card" aria-live="polite"></div>
     </div>
+
+    <div class="section-label"><h2>Watch the universe cool</h2><span class="eyebrow">Interactive graph</span></div>
+    <div class="eli5"><span class="eyebrow">Kutush, imagine this</span><p>A hot cup of chai cools as it sits. The universe did the same, but it cooled because space kept stretching. Tap or hover on the graph to read each moment.</p></div>
+    <div data-sim="cosmotemp"></div>
 
     <div class="section-label"><h2>Is there a centre of the universe?</h2><span class="eyebrow">Experiment</span></div>
     <div class="eli5"><span class="eyebrow">Kutush, imagine this</span><p>Draw dots on a balloon and blow it up. Every dot moves away from every other dot, and dots that are farther apart separate faster. No dot is the centre. That is exactly what galaxies do. Try switching your home galaxy below.</p></div>
@@ -79,6 +90,9 @@
         <p id="age-out" class="muted" aria-live="polite"></p>
       </div>
     </div>
+  
+    <div class="section-label"><h2>Practice</h2><span class="eyebrow">Easy to super hard · every answer explained</span></div>
+    <div data-practice="origin"></div>
   </section>
 
   <!-- ============ STARS ============ -->
@@ -120,7 +134,14 @@
     <div class="eli5"><span class="eyebrow">Kutush, imagine this</span><p>Plot every star by how hot it is and how bright it is, and they don't scatter randomly. Most sit on a diagonal band (the main sequence), where they spend their adult lives. Swollen giants float above it, and tiny white dwarfs sink below. Pick a star to find it.</p></div>
     <div data-sim="hr"></div>
 
+    <div class="section-label"><h2>Why heavy stars die young</h2><span class="eyebrow">Interactive graph</span></div>
+    <div class="eli5"><span class="eyebrow">Kutush, imagine this</span><p>A big truck has a bigger fuel tank than a scooter, but it guzzles fuel so fast that it runs dry first. Massive stars are the trucks of the universe.</p></div>
+    <div data-sim="lifetime"></div>
+
     <p class="note" style="margin-top:18px"><b>Keep in mind:</b> the mass boundaries (about 8 and 25 Suns) are approximate. A star's spin, its chemical make-up and whether it has a partner star can change its fate. Some very heavy stars may even collapse into black holes without a bright explosion.</p>
+  
+    <div class="section-label"><h2>Practice</h2><span class="eyebrow">Easy to super hard · every answer explained</span></div>
+    <div data-practice="stars"></div>
   </section>
 
   <!-- ============ SKY ============ -->
@@ -146,6 +167,9 @@
     <div class="section-label"><h2>Why the Moon has phases</h2><span class="eyebrow">Experiment</span></div>
     <div data-sim="moon"></div>
 
+    <div class="section-label"><h2>What's up tonight?</h2><span class="eyebrow">Interactive chart</span></div>
+    <div data-sim="skymonth"></div>
+
     <div class="section-label"><h2>Stargazing tonight: a starter kit</h2></div>
     <div class="tips">
       <div class="panel"><h3>Go dark</h3><p class="muted">Get away from street lights if you can, and switch off your phone screen. Your eyes need about 20 minutes to fully adapt to the dark.</p></div>
@@ -153,6 +177,9 @@
       <div class="panel"><h3>Measure with your hand</h3><p class="muted">Held at arm's length, your little finger covers about 1°, your fist about 10°. The Big Dipper is about 25° long.</p></div>
       <div class="panel"><h3>Planets don't twinkle</h3><p class="muted">A bright "star" shining steadily near the path of the Sun and Moon is probably a planet: Venus, Jupiter, Mars or Saturn.</p></div>
     </div>
+  
+    <div class="section-label"><h2>Practice</h2><span class="eyebrow">Easy to super hard · every answer explained</span></div>
+    <div data-practice="sky"></div>
   </section>
 
   <!-- ============ SPACETIME ============ -->
@@ -180,6 +207,9 @@
       </div>
     </div>
 
+    <div class="section-label"><h2>How time stretches with speed</h2><span class="eyebrow">Interactive graph</span></div>
+    <div data-sim="gamma"></div>
+
     <div class="section-label"><h2>Kutush's trip at nearly light speed</h2><span class="eyebrow">Special relativity</span></div>
     <div class="eli5"><span class="eyebrow">Kutush, imagine this</span><p>You fly to a star and back at almost the speed of light. When you land, your classmates are much older than you. This is not science fiction: fast-moving clocks really tick slower. Choose a destination and a speed.</p></div>
     <div data-sim="twin"></div>
@@ -202,6 +232,9 @@
         <p class="note small">Simple non-spinning black hole. Near a small black hole, tides would stretch you like spaghetti first. Near a supermassive one like Sagittarius A*, you could cross the horizon without feeling it.</p>
       </div>
     </div>
+  
+    <div class="section-label"><h2>Practice</h2><span class="eyebrow">Easy to super hard · every answer explained</span></div>
+    <div data-practice="spacetime"></div>
   </section>
 
   <!-- ============ NEWTON ============ -->
@@ -235,6 +268,10 @@
     <div class="eli5"><span class="eyebrow">Kutush, imagine this</span><p>A planet on a stretched orbit races when it is near the Sun and dawdles when it is far away, like a skater pulling in her arms. Kepler noticed that the line from the Sun to the planet sweeps out equal areas in equal times. Stretch the orbit and watch the coloured slices.</p></div>
     <div data-sim="kepler"></div>
 
+    <div class="section-label"><h2>Higher orbit, slower satellite</h2><span class="eyebrow">Interactive graph</span></div>
+    <div class="eli5"><span class="eyebrow">Kutush, imagine this</span><p>Near Earth gravity pulls hard, so a satellite must race around to keep missing the ground. Far away the pull is gentle, so it can stroll. Switch between speed and period, and hover to read values.</p></div>
+    <div data-sim="orbitchart"></div>
+
     <div class="section-label"><h2>Your weight across the Solar System</h2></div>
     <div class="split">
       <div class="panel stack">
@@ -253,6 +290,9 @@
 
     <div class="section-label"><h2>Think like Newton</h2><span class="eyebrow" id="puzzle-count"></span></div>
     <div class="puzzles" id="puzzles"></div>
+  
+    <div class="section-label"><h2>Practice</h2><span class="eyebrow">Easy to super hard · every answer explained</span></div>
+    <div data-practice="newton"></div>
   </section>
 
   <!-- ============ MYTHS ============ -->
@@ -260,9 +300,12 @@
     <div class="view-head">
       <span class="eyebrow">Mission 6 · Critical thinking</span>
       <h2>Myth or fact?</h2>
-      <p>Some of these are repeated by teachers, films and even textbooks. Trust the evidence, not the crowd.</p>
+      <p>132 claims across space, physics and quantum mechanics. Pick a short mission, make a prediction, then follow the evidence.</p>
     </div>
     <div class="deck" id="deck"></div>
+  
+    <div class="section-label"><h2>Fact or myth: hundreds more</h2><span class="eyebrow">Easy to super hard · every answer explained</span></div>
+    <div data-practice="myths"></div>
   </section>
 
   <!-- ============ QUIZ ============ -->
@@ -280,7 +323,7 @@
     <div class="view-head">
       <span class="eyebrow">Mission 8 · People</span>
       <h2>Giants of the cosmos</h2>
-      <p>Every fact in this game was discovered by a real person. Several were young women who were told they were wrong, and weren't. Tap a card to read their story.</p>
+      <p>Meet the people behind the physics. Open a profile for the story, the discovery, why it matters, a kid-friendly analogy, an experiment and a one-question challenge.</p>
     </div>
     <div class="heroes" id="heroes"></div>
 
@@ -294,6 +337,9 @@
       </div>
       <p class="note small">Admission rules change every year. Always check each institute's official website.</p>
     </div>
+  
+    <div class="section-label"><h2>History of science quiz</h2><span class="eyebrow">Easy to super hard · every answer explained</span></div>
+    <div data-practice="heroes"></div>
   </section>
 
   <!-- ============ SCALE ============ -->
@@ -305,6 +351,9 @@
     </div>
     <div class="row" id="speed-chips" style="margin-bottom:16px"></div>
     <div class="panel"><div class="scale-list" id="scale-list"></div></div>
+  
+    <div class="section-label"><h2>Practice</h2><span class="eyebrow">Easy to super hard · every answer explained</span></div>
+    <div data-practice="scale"></div>
   </section>
   <!-- ============ ACADEMY ============ -->
   <section class="view" id="v-academy" data-view="academy" hidden>
@@ -349,16 +398,93 @@
       </div>
       <div class="isro-list" id="isro-list"></div>
     </div>
+  
+    <div class="section-label"><h2>Practice</h2><span class="eyebrow">Easy to super hard · every answer explained</span></div>
+    <div data-practice="isro-hist"></div>
+  </section>
+  <!-- ============ ISRO READY ============ -->
+  <section class="view" id="v-ready" data-view="ready" hidden>
+    <div class="view-head">
+      <span class="eyebrow">Mission 12 · Your path to ISRO</span>
+      <h2>ISRO Ready</h2>
+      <p>How a Class 12 student really gets to work on rockets and satellites, the physics ISRO scientists use every day, and questions from easy to mission-control hard, each answered step by step.</p>
+    </div>
+
+    <div class="section-label" style="margin-top:0"><h2>The real road to ISRO</h2><span class="eyebrow">Checked September 2026</span></div>
+    <ol class="roadmap">
+      <li><span class="rm-when">Now, Class 11 and 12</span><b>Physics, Chemistry, Maths</b><p>For IIST you need at least 75% aggregate in PCM in Class 12 (65% for SC, ST and PwD candidates). Understand concepts, not just marks: IIST and ISRO both test real understanding.</p></li>
+      <li><span class="rm-when">After Class 12</span><b>JEE Main, then JEE Advanced</b><p>IIST (Indian Institute of Space Science and Technology, Thiruvananthapuram, run by the Department of Space) admits B.Tech students through JEE Advanced ranks, with its own registration.</p></li>
+      <li><span class="rm-when">4 years</span><b>B.Tech at IIST, or engineering anywhere</b><p>IIST offers Aerospace Engineering, Avionics and Engineering Physics. ISRO recruits IIST graduates on merit, subject to vacancies and grades. Any good engineering college is also a path.</p></li>
+      <li><span class="rm-when">After graduating</span><b>ISRO Scientist/Engineer 'SC'</b><p>Through ISRO's Centralised Recruitment Board (ICRB): a BE/B.Tech with at least 65% (CGPA 6.84/10), a written test, then an interview. Age limit 28 (relaxations for reserved categories).</p></li>
+      <li><span class="rm-when">Other doors</span><b>Science and research</b><p>A BSc/MSc in physics can lead to research at ISRO centres and Department of Space labs like PRL Ahmedabad. College students can apply for ISRO internships. YUVIKA is ISRO's programme for Class 9 students, so tell younger friends!</p></li>
+    </ol>
+    <p class="note small">Admission and recruitment rules change. Always confirm on iist.ac.in and isro.gov.in before applying.</p>
+
+    <div class="section-label"><h2>Get sharper every week</h2></div>
+    <div class="tips">
+      <div class="panel"><h3>NCERT first, then deeper</h3><p class="muted">Master every NCERT example and exercise. Then stretch with harder problem books your teacher trusts. ISRO's physics is Class 11 mechanics and Class 12 electromagnetism, used cleverly.</p></div>
+      <div class="panel"><h3>Derive, don't memorise</h3><p class="muted">Try to derive v = √(GM/r) or the rocket equation yourself. If you can rebuild a formula from an idea, you own it forever.</p></div>
+      <div class="panel"><h3>Estimate like an engineer</h3><p class="muted">Before calculating, guess the answer's size. Is it metres or kilometres? Seconds or days? Engineers catch mistakes this way.</p></div>
+      <div class="panel"><h3>Astronomy Olympiad</h3><p class="muted">Students up to Class 12 can take the National Standard Examination in Astronomy (NSEA), the first step towards the International Astronomy Olympiad team. Check the HBCSE website for dates.</p></div>
+      <div class="panel"><h3>Follow real missions</h3><p class="muted">Read ISRO's mission pages when something launches. Ask: which orbit, which rocket, why? Every launch is a free physics lesson.</p></div>
+      <div class="panel"><h3>Build and code</h3><p class="muted">Model a rocket's flight in a spreadsheet or Python, step by step. Simulations are how real mission teams think.</p></div>
+    </div>
+
+    <div class="section-label"><h2>The rocket equation</h2><span class="eyebrow">Interactive graph</span></div>
+    <div class="eli5"><span class="eyebrow">Kutush, imagine this</span><p>To go faster, a rocket must carry more fuel, but that fuel is heavy and must also be pushed. The graph shows why the speed gain keeps flattening, and why better engines (cryogenic) help so much.</p></div>
+    <div data-sim="rocketeq"></div>
+
+    <div class="section-label"><h2>Changing orbits: the Hohmann transfer</h2><span class="eyebrow">Animation</span></div>
+    <div data-sim="hohmann"></div>
+
+    <div class="section-label"><h2>Orbit speed and period</h2><span class="eyebrow">Interactive graph</span></div>
+    <div data-sim="orbitchart"></div>
+
+    <div class="section-label"><h2>Questions and answers</h2><span class="eyebrow">Tap a question to open its answer</span></div>
+    <div class="row" id="qa-tabs" role="group" aria-label="Level" style="margin-bottom:12px"></div>
+    <div class="qa-list" id="qa-list"></div>
+
+    <div class="section-label"><h2>Test yourself: ISRO-level practice</h2><span class="eyebrow">Easy to super hard · every answer explained</span></div>
+    <div data-practice="ready"></div>
+  </section>
+
+  <!-- ============ QUANTUM WORLD ============ -->
+  <section class="view" id="v-quantum" data-view="quantum" hidden>
+    <div class="view-head">
+      <span class="eyebrow">Mission 13 · Quantum physics</span>
+      <h2>Quantum World</h2>
+      <p>The strange rules of the very small: light that comes in packets, particles that act like waves, tunnelling, entanglement and qubits. 76 deep-dive lessons, from "what is quantum physics?" to Bell tests.</p>
+    </div>
+    <div class="eli5"><span class="eyebrow">Kutush, imagine this</span><p>Zoom in: you, a hair, a cell, a molecule, an atom, a nucleus. Somewhere along the way, everyday rules stop working. Things no longer have one exact position, energy comes in steps, and measuring something changes it. Quantum physics is the rulebook for that tiny world, and it runs your phone, lasers and the Sun.</p></div>
+    <div class="section-label"><h2>Quantum playground</h2><span class="eyebrow">Mini-labs</span></div>
+    <div class="row" id="qlab-tabs" role="group" aria-label="Choose a lab" style="margin-bottom:12px"></div>
+    <div id="qlab"></div>
+    <div class="section-label"><h2>76 deep-dive lessons</h2><span class="eyebrow">Predict, then learn</span></div>
+    <div id="quantum-lessons"></div>
+
+    <div class="section-label"><h2>Quantum practice</h2><span class="eyebrow">Easy to super hard · every answer explained</span></div>
+    <div data-practice="quantum"></div>
   </section>
 </main>
 
 <div id="toasts" aria-live="polite"></div>
+<nav class="bottomnav" aria-label="Main">
+  <button type="button" data-go="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 12 4l9 7v9h-6v-6H9v6H3z"/></svg><span>Home</span></button>
+  <button type="button" data-go="academy"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 3 9 3 12 0v-5"/></svg><span>Academy</span></button>
+  <button type="button" data-go="ready"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c4 4 4 11 2 15h-4c-2-4-2-11 2-15z"/><path d="M10 17l-3 4M14 17l3 4"/></svg><span>ISRO</span></button>
+  <button type="button" data-go="quiz"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .8-1 1.7"/><circle cx="12" cy="17" r=".6"/></svg><span>Quiz</span></button>
+  <button type="button" data-words><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h11a3 3 0 0 1 3 3v12H7a3 3 0 0 1-3-3z"/><path d="M8 9h6M8 13h4"/></svg><span>Words</span></button>
+</nav>
+<button class="help-fab" type="button" data-words aria-label="Stuck on a word? Open the word finder">?</button>
+
 
 <script src="js/data.js"></script>
 <script src="js/cbse12.js"></script>
 <script src="js/cbse11.js"></script>
 <script src="js/quizbank.js"></script>
 <script src="js/extra.js"></script>
+<script src="js/expansion-pack.js"></script>
+<script src="js/lessons.js"></script>
 <script src="js/core.js"></script>
 <script src="js/origin.js"></script>
 <script src="js/stars.js"></script>
@@ -369,4 +495,11 @@
 <script src="js/sims-a.js"></script>
 <script src="js/sims-b.js"></script>
 <script src="js/academy.js"></script>
+<script src="js/glossary.js"></script>
+<script src="js/gen.js"></script>
+<script src="js/gen-cbse.js"></script>
+<script src="js/ready.js"></script>
+<script src="js/gen-extra.js"></script>
+<script src="js/practice.js"></script>
+<script src="js/charts.js"></script>
 <script src="js/boot.js"></script>

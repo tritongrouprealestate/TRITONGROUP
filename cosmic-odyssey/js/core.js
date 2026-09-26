@@ -1,7 +1,7 @@
 /* Cosmic Odyssey: state, XP, badges, routing, shared helpers */
 (function () {
   const KEY = "cosmic-odyssey-v1";
-  const blank = () => ({ name: "Kutush", xp: 0, badges: {}, awarded: {}, flags: {}, built: {}, heroes: {}, puzzles: {}, speeds: {}, mythsRight: 0, mythsSeen: 0 });
+  const blank = () => ({ name: "Kutush", xp: 0, badges: {}, awarded: {}, flags: {}, built: {}, heroes: {}, puzzles: {}, speeds: {}, mythsRight: 0, mythsSeen: 0, mythMissed: {}, mythMastery: {}, heroQuiz: {} });
 
   function load() {
     try {
@@ -159,6 +159,8 @@
     heroes: '<svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="28" cy="20" r="7"/><path d="M14 46 c2-10 8-14 14-14 s12 4 14 14"/><circle cx="46" cy="10" r="1.8" fill="currentColor"/><circle cx="10" cy="16" r="1.3" fill="currentColor"/></svg>',
     academy: '<svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 22 L28 12 L50 22 L28 32 Z"/><path d="M14 26 V38 C20 44 36 44 42 38 V26"/><path d="M50 22 V34"/><circle cx="50" cy="36" r="2" fill="currentColor"/></svg>',
     isro: '<svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M28 6 C36 14 36 30 32 40 H24 C20 30 20 14 28 6 Z"/><circle cx="28" cy="20" r="3"/><path d="M24 34 L17 42 L23 41 M32 34 L39 42 L33 41"/><path d="M26 44 L28 51 L30 44" opacity=".7"/></svg>',
+    ready: '<svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.4"><ellipse cx="28" cy="30" rx="22" ry="9" transform="rotate(-20 28 30)" stroke-dasharray="3 4"/><circle cx="28" cy="30" r="6" fill="currentColor" opacity=".3"/><path d="M40 12 l6 -4 l-2 7 z" fill="currentColor"/><path d="M28 30 L42 14"/></svg>',
+    quantum: '<svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.3"><ellipse cx="28" cy="28" rx="22" ry="8"/><ellipse cx="28" cy="28" rx="22" ry="8" transform="rotate(60 28 28)"/><ellipse cx="28" cy="28" rx="22" ry="8" transform="rotate(120 28 28)"/><circle cx="28" cy="28" r="3.5" fill="currentColor"/></svg>',
     scale: '<svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 40 H50"/><path d="M8 36 v8 M14 37 v6 M20 37 v6 M26 36 v8 M34 37 v6 M42 37 v6 M50 36 v8" opacity=".6"/><circle cx="10" cy="24" r="2" fill="currentColor"/><circle cx="26" cy="22" r="4" fill="currentColor" opacity=".7"/><circle cx="44" cy="20" r="7" fill="currentColor" opacity=".35"/></svg>'
   };
 
@@ -175,18 +177,22 @@
       p: () => (has("horizon") + (S().flags.warpBH ? 1 : 0) + (S().flags.bhCalc ? 1 : 0)) / 3 },
     { id: "newton", title: "Newton's lab", sub: "Fire Newton's cannon into orbit, weigh yourself on Jupiter and crack 12 physics puzzles.", c: "var(--good)",
       p: () => (has("orbit") + has("escape") + Math.min(1, Object.keys(S().puzzles).length / 12)) / 3 },
-    { id: "myths", title: "Myth or fact?", sub: "32 popular beliefs about space and physics. Which ones survive the evidence?", c: "var(--k)",
+    { id: "myths", title: "Myth or fact?", sub: "132 claims in short themed rounds. Predict first, then ask why, try it and challenge the explanation.", c: "var(--k)",
       p: () => Math.min(1, S().mythsSeen / DATA.myths.length) },
-    { id: "quiz", title: "Quiz arena", sub: "3 levels, 13 topics and a mega mix. Over 300 questions, every answer explained.", c: "var(--b)",
+    { id: "quiz", title: "Quiz arena", sub: "Levels, 13 topics, Class 11 and 12, ISRO and a mega mix. Thousands of questions, every answer explained.", c: "var(--b)",
       p: () => (has("quiz-cadet") + has("quiz-explorer") + has("quiz-astro") + has("topic-master")) / 4 },
-    { id: "heroes", title: "Giants of the cosmos", sub: "Chandrasekhar, Kalpana Chawla, Cecilia Payne, Kalam and the people behind the facts.", c: "var(--m)",
+    { id: "heroes", title: "Giants of the cosmos", sub: "23 scientists with deeper stories, discoveries, kid analogies, mini challenges and quick quizzes.", c: "var(--m)",
       p: () => Math.min(1, Object.keys(S().heroes).length / DATA.heroes.length) },
     { id: "scale", title: "How far is far?", sub: "From the Moon to the edge of the observable universe, at the speed of a car or of light.", c: "var(--a)",
       p: () => Math.min(1, Object.keys(S().speeds).length / DATA.speeds.length) },
     { id: "academy", title: "Physics Academy: Class 11 and 12", sub: "All 28 CBSE chapters explained simply, each with an experiment, formulas and board-style questions with solutions.", c: "var(--g)",
       p: () => (has("class11") + has("class12") + has("board-ready")) / 3 },
     { id: "isro", title: "India in space", sub: "From a bicycle-carried rocket in 1963 to the Moon's south pole and beyond.", c: "var(--k)",
-      p: () => Math.min(1, Object.keys(S().isro || {}).length / DATA.isro.length) }
+      p: () => Math.min(1, Object.keys(S().isro || {}).length / DATA.isro.length) },
+    { id: "ready", title: "ISRO Ready", sub: "The real road from Class 12 to ISRO, rocket and orbit graphs, and Q&A from easy to mission-control hard.", c: "var(--o)",
+      p: () => Math.min(1, ((S().prac && S().prac.by && S().prac.by.ready || {}).r || 0) / 30) },
+    { id: "quantum", title: "Quantum World", sub: "76 deep-dive lessons, 10 quantum mini-labs: tunnelling, qubits, uncertainty and Bell tests.", c: "var(--b)",
+      p: () => Math.min(1, (DATA.lessons || []).filter(L => L.sec.startsWith("quantum") && (S().lessons || {})[L.n]).length / 76) }
   ];
 
   const badgeIcon = on => `<svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="15" fill="none" stroke="${on ? "#ffd27a" : "#6f789c"}" stroke-width="1.3" stroke-dasharray="${on ? "0" : "3 3"}"/><path d="M18 8 L20.6 15.4 L28 18 L20.6 20.6 L18 28 L15.4 20.6 L8 18 L15.4 15.4 Z" fill="${on ? "#ffd27a" : "#3a4264"}"/></svg>`;
@@ -226,6 +232,8 @@
       </button>`;
     }).join("");
 
+    const eb = document.getElementById("home-eyebrow");
+    if (eb && G.GENS) { const gsum = Object.values(G.GENS).reduce((a, g) => a + g.n, 0); const hand = DATA.topics.reduce((a, t) => a + t.qs.length, 0) + Object.values(DATA.quiz).flat().length + DATA.myths.length + (DATA.lessons || []).length + (DATA.ready || []).length + DATA.cbse11.concat(DATA.cbse12).reduce((a, c) => a + c.qs.length, 0) + DATA.puzzles.length + DATA.heroes.filter(h => h.expanded).length; eb.textContent = `Made for Kutush · ${G.missions.length} missions · ${(gsum + hand).toLocaleString("en-IN")} questions · 300 deep-dive lessons · 50+ experiments`; }
     const n = Object.keys(st.badges).length;
     document.getElementById("badge-count").textContent = `${n} of ${DATA.badges.length} earned`;
     document.getElementById("badges").innerHTML = DATA.badges.map(b => {
@@ -248,6 +256,8 @@
     document.body.dataset.view = name;
     document.getElementById("back-label").hidden = name === "home";
     document.querySelectorAll("#v-" + name + " [data-sim]:not([data-mounted])").forEach(el => { el.dataset.mounted = "1"; G.mount(el, el.dataset.sim); });
+    document.querySelectorAll("#v-" + name + " [data-practice]:not([data-mounted])").forEach(el => { el.dataset.mounted = "1"; G.practice(el, el.dataset.practice); });
+    document.querySelectorAll(".topnav [data-go], .bottomnav [data-go]").forEach(b => b.setAttribute("aria-current", b.dataset.go === name ? "page" : "false"));
     const mod = G.views[name];
     if (mod) {
       if (!mod._ready && mod.init) { mod.init(); mod._ready = true; }
@@ -258,6 +268,8 @@
   };
 
   document.addEventListener("click", e => {
+    if (e.target.closest("[data-words]")) { G.search(""); return; }
+    if (e.target.closest("[data-sources]")) { G.showSources(); return; }
     const t = e.target.closest("[data-go]");
     if (!t) return;
     const id = t.dataset.go;
@@ -319,5 +331,33 @@
       requestAnimationFrame(f);
     }
     if (!G.views[view]._loop) { G.views[view]._loop = true; last = performance.now(); requestAnimationFrame(f); }
+  };
+
+  /* ---------- Sources and research ---------- */
+  G.showSources = function () {
+    const ref = DATA.referenceSources || {};
+    const mine = [
+      ["CBSE Physics syllabus 2025-26 (official PDF)", "https://cbseacademic.nic.in/web_material/CurriculumMain26/SrSec/Physics_SrSec_2025-26.pdf"],
+      ["CBSE Physics syllabus 2026-27 (official PDF)", "https://cbseacademic.nic.in/web_material/CurriculumMain27/SecPart2/Physics_SecP2_2026-27.pdf"],
+      ["NCERT textbooks portal", "https://ncert.nic.in/textbook.php"],
+      ["Careers360: CBSE Class 12 Physics 2026 paper analysis", "https://news.careers360.com/cbse-class-12-physics-paper-analysis-well-balanced-moderate-difficulty-mcq-lengthy-calculation-board-exam-2026-students-reactions/amp"],
+      ["MTG: CBSE Class 12 Physics 2025 analysis", "https://blog.mtg.in/cbse-class-12-physics-exam-analysis/"],
+      ["IIST undergraduate admissions", "https://iist.ac.in/admission/undergraduate-admissions-overview"],
+      ["ISRO careers and ICRB recruitment", "https://www.isro.gov.in/Careers.html"],
+      ["ISRO YUVIKA (Young Scientist Programme)", "https://www.isro.gov.in/(Yuvika%20)%20-%20Online%20Registration.html"],
+      ["PIB: SpaDeX docking, January 2025", "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2093369"],
+      ["ISRO: GSLV-F16 / NISAR", "https://www.isro.gov.in/Mission_GSLVF16_NISAR.html"],
+      ["Britannica: Shubhanshu Shukla", "https://www.britannica.com/biography/Shubhanshu-Shukla"],
+      ["DD News: Gaganyaan progress 2026", "https://ddnews.gov.in/en/gaganyaan-mission-reaches-advanced-stage-as-isro-completes-key-systems-infrastructure/"],
+      ["PhET physics simulations (University of Colorado Boulder)", "https://phet.colorado.edu/en/simulations/browse?subjects=physics"],
+      ["Nobel Prize 2022: entanglement and Bell tests", "https://www.nobelprize.org/prizes/physics/2022/summary/"],
+      ["IBM Quantum Learning: limits of quantum information (no-cloning)", "https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information/quantum-circuits/limitations-on-quantum-information"],
+      ["Stanford Encyclopedia of Philosophy: decoherence", "https://plato.stanford.edu/entries/qm-decoherence/"]
+    ];
+    const link = (t, u) => `<a class="source-link" href="${G.esc(u)}" target="_blank" rel="noopener noreferrer">${G.esc(t)} ↗</a>`;
+    G.modal.open(`<h2 id="gm-title" class="gm-title">Sources and research</h2>
+      <p class="muted">Facts in this game were checked against these references. Science changes, so the newest official source always wins.</p>
+      <h3 class="src-h">Syllabus, exams, ISRO and quantum physics (${mine.length})</h3>${mine.map(m => link(m[0], m[1])).join("")}
+      <h3 class="src-h">Myth cards and scientist profiles (${Object.keys(ref).length})</h3>${Object.values(ref).map(r => link(r.title, r.url)).join("")}`, "Research");
   };
 })();

@@ -64,6 +64,9 @@
       if (spec.live && spec.info && t - lastInfo > 250) { lastInfo = t; read.innerHTML = spec.info(p, st); }
     }
     requestAnimationFrame(frame);
+    const pt = e => { const r = cv.getBoundingClientRect(); return [(e.clientX - r.left) * (W / r.width), (e.clientY - r.top) * (H / r.height)]; };
+    cv.addEventListener("pointermove", e => { if (spec.move) { const [x, y] = pt(e); spec.move(x, y, p, st); if (spec.info) read.innerHTML = spec.info(p, st); } });
+    cv.addEventListener("pointerleave", () => { if (spec.move) { st.hover = null; if (spec.info) read.innerHTML = spec.info(p, st); } });
     cv.addEventListener("click", e => {
       if (!spec.click) return;
       const r = cv.getBoundingClientRect();
