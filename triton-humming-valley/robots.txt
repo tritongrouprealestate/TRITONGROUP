@@ -1,0 +1,10 @@
+# Triton Humming Valley
+User-agent: *
+Allow: /
+
+# Nothing here is secret, but there is nothing in these for a search engine
+# either, and a 403 in a crawl log is noise.
+Disallow: /config.php
+Disallow: /submit.php
+
+Sitemap: https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/sitemap.xml

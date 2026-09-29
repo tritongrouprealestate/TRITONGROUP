@@ -1,0 +1,1317 @@
+/* ── Typefaces, served from this domain ───────────────────────────────────
+   Cormorant Garamond for everything that carries the brand, Jost for
+   everything that carries information. The pairing is deliberate: the logo
+   is an inscriptional Roman capital, and Cormorant is the only Garamond
+   revival whose capitals hold that same flared, high-contrast weight at
+   display size. Jost is a Futura, which is what the villas themselves are —
+   flat planes, right angles, no ornament.
+
+   Both are variable, so 300-600 arrives in one file per subset instead of
+   four. Only latin and latin-ext are shipped; the Cyrillic, Greek and
+   Vietnamese subsets Google serves are 60 KB nobody on this site will read.
+
+   Loaded from this server rather than Google's: a render-blocking
+   stylesheet on fonts.googleapis.com cost a DNS lookup, a TLS handshake and
+   most of a second of blank page on a slow Indian mobile connection. */
+@font-face{font-family:Cormorant;font-style:normal;font-weight:300 600;
+  font-display:swap;src:url(../fonts/cormorant-latin.woff2) format("woff2");
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:Cormorant;font-style:normal;font-weight:300 600;
+  font-display:swap;src:url(../fonts/cormorant-latin-ext.woff2) format("woff2");
+  unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:Cormorant;font-style:italic;font-weight:400;
+  font-display:swap;src:url(../fonts/cormorant-italic-latin.woff2) format("woff2");
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+/* One glyph was costing 33 KB. The rupee sign lives in Google's latin-ext
+   subset, so a page whose only non-latin character is ₹ still downloaded
+   the whole Central-European alphabet to draw it. This face carries ₹ and →
+   and nothing else, and is declared after latin-ext so it wins the overlap.
+   latin-ext stays defined for the day a name needs an accent — it simply
+   is not fetched any more. */
+@font-face{font-family:Cormorant;font-style:normal;font-weight:300 600;
+  font-display:swap;src:url(../fonts/cormorant-symbols.woff2) format("woff2");
+  unicode-range:U+2192,U+20B9}
+@font-face{font-family:Jost;font-style:normal;font-weight:200 600;
+  font-display:swap;src:url(../fonts/jost-latin.woff2) format("woff2");
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:Jost;font-style:normal;font-weight:200 600;
+  font-display:swap;src:url(../fonts/jost-latin-ext.woff2) format("woff2");
+  unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+
+@import "tailwindcss";
+
+@source "../index.html";
+@source "../js/site.js";
+
+  @theme {
+    /* The brand is three darks and a gold. Black-green for the deepest
+       ground, pine and teal for the surfaces that sit on it, and the gold
+       lifted straight out of the Triton mark so the page has one gold
+       rather than two. Everything else is white, or as close to it as a
+       green-cast neutral gets. */
+    --color-obsidian:   #03100F;   /* 17.7:1 under cloud — the deepest ground */
+    --color-night:      #061A18;   /* 16.4:1 under cloud                      */
+    --color-night-2:    #0B2A25;   /* pine: cards and panels on the dark      */
+    --color-teal:       #0C3330;   /* the one surface that reads teal         */
+    --color-haze:       #A3B7AF;   /* 8.4:1 on night — secondary text on dark */
+    --color-cloud:      #F3F5F2;   /* 16.4:1 on night                         */
+    --color-cloud-2:    #E4EAE4;
+    --color-ink:        #08191A;   /* 16.5:1 on cloud                         */
+    --color-mist:       #55676A;   /* 5.4:1  on cloud                         */
+    --color-frond:      #16564A;   /* 7.8:1  on cloud — jade, for light rules */
+    --color-frond-2:    #0F3F37;
+    /* There is no gold on this page any more. What the gold was doing —
+       marking the primary action and the one accent — is done by white on
+       the dark grounds and by ink on the light ones, which is how a page
+       gets emphasis without spending a colour on it. Mint is kept for the
+       one job that is information rather than decoration: telling you what
+       is still available. */
+    --color-dawn:       #F5F7F4;   /* 16.7:1 on night — the primary action    */
+    --color-dawn-deep:  #0B3B33;   /* 11.4:1 on cloud — the same on light     */
+    --color-mint:       #6FCBB0;   /* 9.3:1  on night                         */
+    --color-mint-deep:  #0E6E5A;   /* 5.6:1  on cloud                         */
+    --font-display: Cormorant, "Cormorant Garamond", Georgia, "Times New Roman", serif;
+    --font-sans: Jost, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+/* ── Type scale ────────────────────────────────────────────────────────────
+   Major third (1.25) for text, but the display sizes break the scale on
+   purpose — the hero is the one place this page raises its voice.          */
+:root{
+  --step--1: clamp(.82rem, .79rem + .12vw, .89rem);
+  --step-0 : clamp(.95rem, .91rem + .2vw, 1.13rem);
+  /* Steps 1 and up are set in Cormorant, whose cap height is about 12%
+     shorter than Marcellus at the same size. The scale is the same major
+     third; the whole run is simply lifted so the headings look the size
+     they looked before. */
+  --step-1 : clamp(1.4rem, 1.31rem + .43vw, 1.68rem);
+  --step-2 : clamp(1.75rem, 1.58rem + .83vw, 2.36rem);
+  --step-3 : clamp(2.18rem, 1.89rem + 1.46vw, 3.36rem);
+  --step-4 : clamp(2.73rem, 2.23rem + 2.51vw, 5rem);
+  --display: clamp(3rem, 1.7rem + 6.4vw, 8.6rem);
+  --rail: 4.5rem;                     /* left altitude rail gutter          */
+  --ease-out: cubic-bezier(.16,1,.3,1);
+  --ease-in-out: cubic-bezier(.65,0,.35,1);
+}
+@media (min-width:1024px){ :root{ --rail: 7.5rem } }
+/* The rail is a desktop device. On a phone it was spending 44 of 390
+   pixels — eleven per cent of the screen — on a decorative hairline, and
+   every heading and paragraph started that far in from the edge. Below
+   768px there is no rail and the content uses the page's own gutter. */
+@media (max-width:767.98px){
+  :root{ --rail: 0rem }
+  .rail-line{display:none}
+}
+
+/* lining-nums, and not only on the headings: Cormorant ships old-style
+   figures by default, so a 15 renders with the 1 at x-height and the 5
+   below the baseline. Charming in a sentence, wrong for a price, an area,
+   a drive time or a plot number — and on this page every figure is one of
+   those. Set once here so it reaches the parts drawn by script too. */
+body{font-size:var(--step-0);line-height:1.7;font-weight:300;
+     font-variant-numeric:lining-nums tabular-nums;letter-spacing:.004em}
+/* Cormorant is already a narrow face; the negative tracking Marcellus
+   needed at display size would close it up. 500 rather than 400 because a
+   Garamond at 400 goes thin the moment it is set in white on black.       */
+h1,h2,h3,.display,.font-display{font-family:var(--font-display);font-weight:500;
+     line-height:1.06;letter-spacing:0;text-wrap:balance}
+.display,h1{font-weight:400;letter-spacing:-.006em}
+p{max-width:62ch}                      /* under 80 chars, per the brief     */
+.lede{font-size:var(--step-1);line-height:1.55;font-weight:300;max-width:48ch}
+/* A lede set at the heading scale is a paragraph pretending to be a
+   headline. At 390px it filled seven lines and half the first screen. */
+@media (max-width:767.98px){
+  .lede{font-size:calc(var(--step-0) * 1.06);line-height:1.6}
+}
+
+/* ── Focus: one visible treatment everywhere, never removed ─────────────── */
+:where(a,button,input,textarea,select,summary,[tabindex]):focus-visible{
+  outline:2px solid var(--color-dawn);outline-offset:3px;border-radius:2px}
+.on-light :where(a,button,input,textarea,select,summary,[tabindex]):focus-visible{
+  outline-color:var(--color-dawn-deep)}
+.skip{position:absolute;left:-9999px;top:0;z-index:100;background:var(--color-dawn);
+  color:#061A18;padding:.75rem 1.25rem;font-weight:600}
+.skip:focus{left:1rem;top:1rem}
+
+/* ── The altitude rail ─────────────────────────────────────────────────────
+   A hairline down the left edge carrying real elevations. It replaces
+   01/02/03 numbering because this page genuinely is an ascent — the
+   numbers carry information rather than decorating the sections.          */
+.rail-line{position:absolute;left:0;top:0;bottom:0;width:1px;
+  background:linear-gradient(to bottom,transparent,currentColor 8%,currentColor 92%,transparent);
+  opacity:.22}
+.alt{font-size:var(--step--1);letter-spacing:.02em;font-weight:500;
+  font-variant-numeric:tabular-nums lining-nums}
+.alt-tick{position:relative;padding-left:1.15rem}
+.alt-tick::before{content:"";position:absolute;left:0;top:.62em;width:.7rem;height:1px;
+  background:currentColor;opacity:.6}
+
+/* ── Reveal primitives. Applied to a handful of elements, not to every
+   section — a page of identical fade-and-slide-ups is the generated look. */
+[data-anim="rise"]{opacity:0;transform:translate3d(0,14px,0)}
+[data-anim="wipe"]{clip-path:inset(0 0 100% 0)}
+/* A wash of cool light behind the enquiry section. It used to be a flood
+   of gold; now it is the same light the photographs are lit by, which is
+   what the section is actually about. */
+.sunwash{position:absolute;left:50%;bottom:14%;width:min(150vw,1500px);aspect-ratio:2/1;
+  translate:-50% 0;pointer-events:none;opacity:0;
+  background:radial-gradient(closest-side, rgba(111,203,176,.30), rgba(111,203,176,.08) 45%, transparent 72%);
+  filter:blur(14px)}
+@media (prefers-reduced-motion: reduce){ .sunwash{opacity:.5} }
+
+.word{display:inline-block;will-change:transform}
+.word-mask{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.08em}
+
+/* ── Masterplan plots ──────────────────────────────────────────────────── */
+.plot{cursor:pointer;transition:fill .28s var(--ease-out), stroke .28s var(--ease-out);
+  stroke-width:1.25;outline:none}
+.plot[data-status="available"]{fill:rgba(22,86,74,.16);stroke:#16564A}
+.plot[data-status="held"]     {fill:rgba(11,59,51,.18);stroke:#0B3B33}
+.plot[data-status="sold"]     {fill:rgba(85,103,106,.14);stroke:#7E9188;cursor:not-allowed}
+.plot:hover[data-status="available"],.plot[aria-pressed="true"]{fill:rgba(22,86,74,.42)}
+.plot:focus-visible{stroke:#0B3B33;stroke-width:2.5;
+  outline:2px solid #0B3B33;outline-offset:2px}
+
+/* ── Villa cards. Deliberately not one uniform radius + one grey shadow on
+   everything: the open card earns depth, the closed ones stay flat.      */
+.villa{border:1px solid rgba(8,25,26,.14);background:#fff;border-radius:16px;
+  transition:border-color .3s var(--ease-out), box-shadow .4s var(--ease-out)}
+.villa:hover{border-color:rgba(11,59,51,.5)}
+.villa[open]{box-shadow:0 24px 60px -28px rgba(8,25,26,.45);border-color:rgba(11,59,51,.6)}
+.villa{overflow:hidden}
+.villa summary{list-style:none;cursor:pointer}
+.villa summary::-webkit-details-marker{display:none}
+.villa .chev{width:1.25rem;height:1.25rem;flex:0 0 auto;color:var(--color-mist);
+  transition:transform .35s var(--ease-out)}
+.villa[open] .chev{transform:rotate(180deg)}
+
+/* ── The closed card ──────────────────────────────────────────────────────
+   A photograph, what it is, what it costs, and one affordance. On a phone
+   the price drops under the name rather than being squeezed against the
+   chevron, because a two-line row is better than a cramped one.          */
+.villa-summary{display:grid;align-items:center;gap:0 1rem;padding:.85rem;
+  grid-template-columns:auto minmax(0,1fr) auto;
+  grid-template-areas:"thumb id chev" "thumb price chev"}
+@media (min-width:768px){
+  .villa-summary{gap:0 1.5rem;padding:1.1rem 1.5rem;
+    grid-template-columns:auto minmax(0,1fr) auto auto;
+    grid-template-areas:"thumb id price chev"}
+}
+.villa-thumb{grid-area:thumb;display:block;width:74px;aspect-ratio:1;overflow:hidden;
+  border-radius:10px;background:var(--color-cloud-2)}
+@media (min-width:768px){ .villa-thumb{width:96px;border-radius:12px} }
+.villa-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.villa-thumb.is-blank img{display:none}
+
+.villa-id{grid-area:id;min-width:0}
+.villa-id h3{margin:0;line-height:1.1}
+.villa-specs{display:flex;flex-wrap:wrap;align-items:center;gap:.15rem .9rem;
+  margin-top:.3rem;color:var(--color-mist);font-size:.86rem}
+.villa-specs > span{display:inline-flex;align-items:center;gap:.35rem}
+.villa-specs svg{width:1rem;height:1rem}
+@media (max-width:639.98px){ .villa-specs > .villa-plot{display:none} }
+@media (min-width:768px){ .villa-specs{font-size:.94rem;gap:.15rem 1.25rem} }
+
+.villa-price{grid-area:price;display:flex;align-items:center;gap:.6rem;
+  margin-top:.45rem;color:var(--color-dawn-deep);white-space:nowrap}
+@media (min-width:768px){
+  .villa-price{flex-direction:column;align-items:flex-end;gap:.35rem;margin-top:0}
+}
+
+/* ── Pointer light ────────────────────────────────────────────────────────
+   A soft teal light that follows the pointer across the dark grounds. It is
+   painted inside each dark section rather than over the page: a fixed
+   overlay sits in front of the type and lightens the words, which was not
+   the effect. As a ::before at z-index -1 inside the section's own stacking
+   context it lands above the section's background and below everything in
+   it — behind the content, not over it. */
+.glow-ground{position:relative;isolation:isolate}
+.glow-ground::before{content:"";position:absolute;inset:0;z-index:-1;
+  pointer-events:none;opacity:0;transition:opacity .55s var(--ease-out);
+  background:radial-gradient(26rem 26rem at var(--gx,50%) var(--gy,50%),
+    rgba(110,205,180,.22), rgba(48,140,120,.08) 45%, rgba(48,140,120,0) 72%)}
+.glow-ground.is-lit::before{opacity:1}
+@media (prefers-reduced-motion:reduce){ .glow-ground::before{display:none} }
+
+/* ── The reach dial ──────────────────────────────────────────────────────
+   Four drive times drawn as distance from the gate, with the same four as a
+   list beside them. The drawing is aria-hidden and the list is not, so
+   nothing lives only in the picture. */
+.reach{display:grid;gap:clamp(2rem,5vw,4rem);align-items:center;max-width:64rem}
+@media (min-width:900px){ .reach{grid-template-columns:minmax(0,26rem) minmax(0,1fr)} }
+
+.reach-dial{position:relative;width:100%;max-width:26rem;margin-inline:auto}
+.reach-svg{display:block;width:100%;height:auto;color:var(--color-haze);
+  overflow:visible}
+
+/* The rings and spokes draw themselves in when the section arrives. */
+.reach-rings circle,.reach-spokes line{
+  stroke-dasharray:var(--len,700);stroke-dashoffset:var(--len,700)}
+.reach.is-drawn .reach-rings circle,.reach.is-drawn .reach-spokes line{
+  stroke-dashoffset:0;transition:stroke-dashoffset 1.4s var(--ease-out)}
+.reach.is-drawn .reach-rings circle:nth-child(2){transition-delay:.1s}
+.reach.is-drawn .reach-rings circle:nth-child(3){transition-delay:.2s}
+.reach.is-drawn .reach-rings circle:nth-child(4){transition-delay:.3s}
+.reach.is-drawn .reach-spokes line{transition-duration:.9s;transition-delay:.45s}
+/* The outer ring keeps its dashes, so it must not be drawn this way. */
+.reach-rings circle:last-child{stroke-dasharray:none;stroke-dashoffset:0}
+
+.reach-ticks text,.reach-home{opacity:0}
+.reach.is-drawn .reach-ticks text,.reach.is-drawn .reach-home{opacity:1;
+  transition:opacity .8s var(--ease-out) .5s}
+
+.reach-dot{fill:var(--color-cloud);stroke:var(--color-night-2);stroke-width:2;
+  transform-box:fill-box;transform-origin:center;scale:0;
+  transition:scale .5s var(--ease-out),fill .3s var(--ease-out)}
+.reach.is-drawn .reach-dot{scale:1}
+.reach.is-drawn [data-reach-dot]:nth-child(1) .reach-dot{transition-delay:.75s}
+.reach.is-drawn [data-reach-dot]:nth-child(2) .reach-dot{transition-delay:.85s}
+.reach.is-drawn [data-reach-dot]:nth-child(3) .reach-dot{transition-delay:.95s}
+.reach.is-drawn [data-reach-dot]:nth-child(4) .reach-dot{transition-delay:1.05s}
+[data-reach-dot]{cursor:default}
+[data-reach-dot].is-lit .reach-dot{fill:var(--color-dawn);scale:1.5}
+[data-reach-spoke].is-lit{stroke:var(--color-dawn);stroke-opacity:.9}
+
+.reach-list{display:grid;gap:0;margin:0}
+.reach-row{display:flex;align-items:baseline;justify-content:space-between;
+  gap:1.5rem;padding:1.1rem .75rem;margin-inline:-.75rem;
+  border-top:1px solid rgba(163,183,175,.22);cursor:default;
+  transition:background-color .3s var(--ease-out)}
+.reach-row:last-child{border-bottom:1px solid rgba(163,183,175,.22)}
+.reach-row dt{color:var(--color-haze);font-size:.95rem}
+.reach-row dd{margin:0;font-family:var(--font-display);color:var(--color-cloud);
+  font-size:var(--step-1);white-space:nowrap;
+  transition:color .3s var(--ease-out)}
+.reach-row.is-lit,.reach-row:hover{background:rgba(243,245,242,.07)}
+.reach-row.is-lit dd,.reach-row:hover dd{color:var(--color-dawn)}
+.reach-row:focus-visible{outline:2px solid var(--color-dawn);outline-offset:-2px}
+
+/* With motion off it is simply a finished drawing. */
+@media (prefers-reduced-motion:reduce){
+  .reach-rings circle,.reach-spokes line{stroke-dashoffset:0}
+  .reach-ticks text,.reach-home{opacity:1}
+  .reach-dot{scale:1}
+  .reach-rings circle,.reach-spokes line,.reach-dot,.reach-ticks text,
+  .reach-home{transition:none}
+}
+
+/* ── The film ─────────────────────────────────────────────────────────────
+   A poster, a play button, and nothing loaded until it is asked for. The
+   trigger is a real <button>: the reference used a div with tabindex and a
+   keydown handler to fake one, which is three lines of code to get back what
+   the element already does. */
+.video-card{position:relative;display:flex;flex-direction:column;width:100%;max-width:1100px;
+  overflow:hidden;padding:0;border:0;cursor:pointer;text-align:left;
+  border-radius:14px;background:var(--color-night-2);
+  box-shadow:0 50px 100px -55px rgba(0,0,0,.95)}
+/* The frame takes its height from the picture rather than the other way
+   round. A <button> does not grow to fit a child that is sized only by
+   aspect-ratio — the frame came out 197px tall inside a 79px card — but it
+   does grow to fit an image with a real laid-out height. */
+.video-shot{position:relative;display:block;overflow:hidden;border-radius:inherit;
+  background:var(--color-night-2)}
+.video-poster{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;display:block;
+  opacity:0;transition:opacity .8s var(--ease-out), transform 1.1s var(--ease-out)}
+.video-poster.is-loaded{opacity:1}
+.video-card:hover .video-poster{transform:scale(1.035)}
+.video-scrim{position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(3,16,15,.78) 0%,
+             rgba(3,16,15,.22) 45%,rgba(3,16,15,.28) 100%)}
+
+.video-play{position:absolute;top:50%;left:50%;translate:-50% -50%;
+  display:grid;place-items:center;width:5rem;height:5rem;border-radius:50%;
+  color:var(--color-cloud);background:rgba(243,245,242,.16);
+  backdrop-filter:blur(8px);border:1px solid rgba(243,245,242,.35);
+  transition:transform .4s var(--ease-out),background-color .4s var(--ease-out),
+             border-color .4s var(--ease-out),color .4s var(--ease-out)}
+.video-play svg{width:2rem;height:2rem;margin-left:.2rem}
+.video-card:hover .video-play,.video-card:focus-visible .video-play{
+  transform:scale(1.09);background:var(--color-dawn);color:var(--color-night);
+  border-color:var(--color-dawn)}
+.video-card:focus-visible{outline:2px solid var(--color-dawn);outline-offset:4px}
+
+.video-meta{position:absolute;left:0;bottom:0;display:block;text-align:left;
+  padding:clamp(1.1rem,3vw,2rem)}
+@media (max-width:767.98px){
+  .video-meta{position:static;padding:.95rem 1rem 1.05rem}
+  .video-desc{max-width:none}
+}
+.video-title{display:block;font-family:var(--font-display);
+  font-size:var(--step-1);color:var(--color-cloud);line-height:1.15}
+.video-desc{display:block;margin-top:.35rem;font-size:.88rem;
+  color:var(--color-haze);max-width:38ch}
+
+/* On a phone the card is about 220px tall, so a 5rem button in the middle
+   and a two-line caption at the bottom end up on top of each other. */
+@media (max-width:767.98px){
+  .video-play{width:3.6rem;height:3.6rem;background:rgba(243,245,242,.24)}
+  .video-play svg{width:1.4rem;height:1.4rem}
+  .video-title{font-size:1.1rem}
+  .video-desc{font-size:.83rem;margin-top:.25rem}
+  /* With the caption out of the frame the scrim only has to keep the play
+     button legible, so the photograph is barely touched. */
+  .video-scrim{background:radial-gradient(60% 60% at 50% 50%,
+               rgba(3,16,15,.42) 0%, rgba(3,16,15,.06) 100%)}
+}
+
+/* The player. 100dvh for the same reason the enquiry popup needs it: a fixed
+   box on Android Chrome is laid out against the viewport without the address
+   bar, and the bottom of the video ends up behind it. */
+#video-modal{position:fixed;inset:0;height:100dvh;z-index:200;
+  display:grid;place-items:center;padding:clamp(.75rem,4vw,3rem)}
+.video-panel{position:relative;width:min(1100px,100%);aspect-ratio:16/9;
+  max-height:100%;background:#000;
+  box-shadow:0 40px 90px -50px rgba(0,0,0,.95)}
+.video-frame{position:absolute;inset:0}
+.video-frame iframe{width:100%;height:100%;border:0;display:block}
+.video-close{position:absolute;top:-3.25rem;right:0;width:44px;height:44px;
+  display:grid;place-items:center;background:rgba(243,245,242,.12);
+  border:1px solid rgba(243,245,242,.3);border-radius:50%;cursor:pointer;
+  color:var(--color-cloud);transition:background-color .25s var(--ease-out),
+                                      color .25s var(--ease-out)}
+.video-close:hover{background:var(--color-dawn);color:var(--color-night);
+  border-color:var(--color-dawn)}
+.video-close svg{width:20px;height:20px}
+/* On a short screen the button has nowhere above the video to sit, so it
+   moves inside the frame rather than off the top of it. */
+@media (max-height:520px), (max-width:520px){
+  .video-close{top:.6rem;right:.6rem;background:rgba(3,16,15,.6)}
+}
+
+/* ── The ownership cards ──────────────────────────────────────────────────
+   A skewed panel stands behind each card with a blurred copy of itself
+   underneath, so the colour reads as light thrown onto the ground rather
+   than as a shape. On hover the skew straightens, the panel opens to the
+   card's width and the glass body slides out over it.
+
+   The reference this came from used neon on black. The mechanism is the
+   same; the colours are the site's, because a card that glows magenta in
+   the middle of this page would belong to a different one. */
+.skew-card{position:relative;display:grid;align-items:center;
+  min-height:26rem;isolation:isolate}
+
+.skew-panel{position:absolute;top:0;left:3rem;width:50%;height:100%;
+  border-radius:2px;background:linear-gradient(315deg,var(--from),var(--to));
+  transform:skewX(15deg);
+  transition:transform .6s var(--ease-out), left .6s var(--ease-out),
+             width .6s var(--ease-out)}
+.skew-panel-glow{filter:blur(34px);opacity:.55}
+
+.skew-card:hover .skew-panel,
+.skew-card:focus-within .skew-panel{
+  transform:skewX(0);left:1.25rem;width:calc(100% - 5rem)}
+
+/* The two drifting squares. They are the only thing here that moves on its
+   own, and they only exist once the card is open. */
+.skew-blob{position:absolute;width:0;height:0;border-radius:2px;opacity:0;
+  background:rgba(243,245,242,.10);backdrop-filter:blur(10px);
+  box-shadow:0 5px 15px rgba(0,0,0,.2);pointer-events:none;z-index:10;
+  transition:all .5s var(--ease-out);animation:skew-drift 3.4s ease-in-out infinite}
+.skew-blob-a{top:0;left:0}
+.skew-blob-b{bottom:0;right:0;animation-delay:-1.7s}
+.skew-card:hover .skew-blob-a,
+.skew-card:focus-within .skew-blob-a{top:-2.5rem;left:2.5rem;width:5rem;height:5rem;opacity:1}
+.skew-card:hover .skew-blob-b,
+.skew-card:focus-within .skew-blob-b{bottom:-2.5rem;right:2.5rem;width:5rem;height:5rem;opacity:1}
+@keyframes skew-drift{0%,100%{transform:translateY(8px)}50%{transform:translateY(-8px)}}
+
+.skew-body{position:relative;z-index:20;left:0;padding:2rem 2.25rem;
+  border-radius:2px;background:rgba(6,26,24,.55);
+  backdrop-filter:blur(14px);border:1px solid rgba(243,245,242,.12);
+  box-shadow:0 24px 60px -30px rgba(0,0,0,.8);
+  transition:left .6s var(--ease-out), padding .6s var(--ease-out),
+             background-color .6s var(--ease-out)}
+.skew-card:hover .skew-body,
+.skew-card:focus-within .skew-body{left:-1.5rem;padding:2.75rem 2.25rem;
+  background:rgba(6,26,24,.68)}
+
+.skew-kicker{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--color-dawn);margin:0}
+.skew-head{font-family:var(--font-display);font-size:var(--step-2);
+  line-height:1.15;margin:.9rem 0 0;color:var(--color-cloud)}
+.skew-copy{margin:1rem 0 0;font-size:.96rem;line-height:1.6;
+  color:var(--color-haze);max-width:34ch}
+.skew-cta{display:inline-flex;align-items:center;gap:.55rem;margin-top:1.6rem;
+  padding:.7rem 1.2rem;font-size:.85rem;font-weight:600;letter-spacing:.01em;
+  color:var(--color-night);background:var(--color-cloud);border-radius:2px;
+  cursor:pointer;transition:background-color .3s var(--ease-out),
+                            gap .3s var(--ease-out)}
+.skew-cta:hover{background:var(--color-dawn);gap:.85rem}
+
+/* On a phone the card is 340px wide, so a panel skewed 15deg and offset
+   3rem stuck out past both ends of it and read as a misprint. There is no
+   hover on a touch screen either, so the resting state is the only state:
+   it rests open, contained, and the colour becomes a glow behind the card
+   rather than a slab beside it. */
+@media (max-width:767.98px){
+  .skew-card{min-height:0}
+  .skew-panel{top:1.25rem;left:1.25rem;height:calc(100% - 2.5rem);
+    width:calc(100% - 2.5rem);transform:none}
+  .skew-panel-glow{filter:blur(28px);opacity:.4}
+  .skew-card:hover .skew-panel,.skew-card:focus-within .skew-panel{
+    left:1.25rem;width:calc(100% - 2.5rem)}
+  .skew-body,.skew-card:hover .skew-body,.skew-card:focus-within .skew-body{
+    left:0;padding:1.75rem 1.5rem}
+  .skew-blob{display:none}
+}
+
+/* Nothing here is load-bearing, so with motion off it simply rests open. */
+@media (prefers-reduced-motion:reduce){
+  .skew-panel,.skew-body,.skew-blob,.skew-cta{transition:none}
+  .skew-blob{animation:none}
+}
+
+/* ── The views, and the coverflow that carries them ───────────────────────
+   Cards sit on one absolutely-positioned rail and are placed entirely by
+   transform: no reflow while dragging, and the loop is arithmetic on the
+   index rather than nodes moved through the DOM. Every measurement derives
+   from --cf-card, so the whole rake scales with one number. */
+#views{isolation:isolate}
+.views-scrim{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(6,26,24,.82) 0%,rgba(6,26,24,.62) 38%,
+                             rgba(6,26,24,.86) 100%)}
+.views-lead{position:relative;max-width:42ch;margin-inline:auto;text-align:center;
+  font-family:var(--font-display);font-size:var(--step-2);line-height:1.3;
+  color:var(--color-cloud);text-wrap:balance}
+
+/* 26vw of a 390px screen is 101px, so the clamp floor was doing all the
+   work and the centre card came out at 190px. A phone can give the card
+   more than half its width without the neighbours disappearing. */
+.cf{--cf-card:clamp(220px,30vw,340px);width:100%}
+.cf-frame{perspective:calc(var(--cf-card) * 3);padding-block:2.75rem;
+  overflow:hidden;cursor:grab;touch-action:pan-y;outline:none}
+.cf-frame:active{cursor:grabbing}
+.cf-frame:focus-visible{outline:2px solid var(--color-dawn);outline-offset:-4px}
+.cf-track{position:relative;height:calc(var(--cf-card) * .75);
+  transform-style:preserve-3d;user-select:none}
+.cf-card{position:absolute;left:50%;top:0;margin:0;width:var(--cf-card);
+  aspect-ratio:4/3;overflow:hidden;background:var(--color-frond);
+  box-shadow:0 34px 70px -30px rgba(0,0,0,.85);
+  will-change:transform,opacity;backface-visibility:hidden}
+.cf-card img{display:block;width:100%;height:100%;object-fit:cover;
+  user-select:none;-webkit-user-drag:none}
+
+/* The arrows sit outside the cards on a wide screen and over them on a
+   phone, where there is no outside to sit in. */
+.cf-nav{position:absolute;top:calc(50% - 1.4rem);z-index:200;
+  display:grid;place-items:center;width:2.75rem;height:2.75rem;
+  color:var(--color-cloud);background:rgba(6,26,24,.45);
+  border:1px solid rgba(243,245,242,.22);border-radius:50%;
+  backdrop-filter:blur(6px);cursor:pointer;
+  transition:background-color .3s var(--ease-out),border-color .3s var(--ease-out),
+             transform .3s var(--ease-out)}
+.cf-nav:hover{background:var(--color-dawn);border-color:var(--color-dawn);
+  color:var(--color-night)}
+.cf-nav:active{transform:scale(.94)}
+.cf-nav svg{width:1.1rem;height:1.1rem}
+.cf-prev{left:clamp(.75rem,3vw,2.5rem)}
+.cf-next{right:clamp(.75rem,3vw,2.5rem)}
+
+.cf-caption{margin:.25rem auto 0;text-align:center;color:var(--color-cloud);
+  font-family:var(--font-display);font-size:var(--step-1);min-height:1.6em}
+.cf-dots{display:flex;justify-content:center;gap:.15rem;margin-top:1rem}
+/* The dot a finger has to hit is 28px square; the dot the eye sees is 8px
+   of it, drawn by the pseudo-element. Padding, not size, is what makes a
+   small mark tappable. */
+.cf-dot{position:relative;width:1.75rem;height:1.75rem;border-radius:50%;
+  cursor:pointer;background:none;border:0;padding:0}
+.cf-dot::before{content:"";position:absolute;inset:0;margin:auto;
+  width:.5rem;height:.5rem;border-radius:50%;background:var(--color-cloud);
+  opacity:.3;transition:opacity .3s var(--ease-out),transform .3s var(--ease-out)}
+.cf-dot[aria-current="true"]::before{opacity:1;transform:scale(1.3)}
+.cf-dot:hover::before{opacity:.65}
+.cf-dot:focus-visible{outline:2px solid var(--color-dawn);outline-offset:-2px}
+
+/* ── Horizontal gallery track ─────────────────────────────────────────── */
+#inside{background:#0F3F37}
+.frame{position:relative;overflow:hidden;background:#16564A}
+.frame img{width:100%;height:100%;object-fit:cover;opacity:0;
+  transition:opacity 1s var(--ease-out),transform 1.2s var(--ease-out);transform:scale(1.06)}
+.frame img.is-loaded{opacity:1;transform:scale(1)}
+.frame figcaption{position:absolute;left:0;right:0;bottom:0;padding:1.5rem 1.35rem 1.15rem;
+  background:linear-gradient(to top,rgba(11,18,14,.88),transparent);font-size:var(--step--1)}
+
+/* ── Form ─────────────────────────────────────────────────────────────── */
+.field input,.field select,.field textarea{
+  width:100%;min-height:48px;background:transparent;color:inherit;
+  border:0;border-bottom:1px solid rgba(163,183,175,.42);padding:.7rem .1rem;
+  font:inherit;font-size:var(--step-0);border-radius:0;
+  transition:border-color .25s var(--ease-out)}
+.field input:hover,.field select:hover,.field textarea:hover{border-bottom-color:rgba(163,183,175,.8)}
+.field input:focus,.field select:focus,.field textarea:focus{
+  outline:none;border-bottom-color:var(--color-dawn)}
+.field input[aria-invalid="true"],.field textarea[aria-invalid="true"],
+.field select[aria-invalid="true"]{border-bottom-color:#F0806A}
+.field .err{display:none;color:#F0806A;font-size:var(--step--1);margin-top:.45rem}
+.field.is-invalid .err{display:block}
+.field select option{background:#0B2A25;color:#F3F5F2}
+#form-summary{display:none}
+#form-summary.is-shown{display:block}
+
+/* ── Buttons ──────────────────────────────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;
+  min-height:48px;padding:.8rem 1.6rem;font-weight:500;font-size:var(--step-0);
+  letter-spacing:0;cursor:pointer;border:1px solid transparent;
+  border-radius:980px;                    /* a pill, not a slab */
+  transition:background-color .28s var(--ease-out),color .28s var(--ease-out),
+             border-color .28s var(--ease-out),transform .18s var(--ease-out),
+             opacity .28s var(--ease-out)}
+@media (min-width:640px){ .btn{min-height:52px;padding:.85rem 1.9rem} }
+.btn:active{transform:scale(.97)}
+.btn-dawn{background:var(--color-dawn);color:#061A18}
+.btn-dawn:hover{background:#fff}
+.btn-quiet{background:rgba(243,245,242,.1);color:var(--color-cloud);
+  border-color:rgba(243,245,242,.22);backdrop-filter:blur(8px)}
+.btn-quiet:hover{background:rgba(243,245,242,.18);border-color:rgba(243,245,242,.4)}
+.on-light .btn-quiet{background:rgba(8,25,26,.06);color:var(--color-ink);
+  border-color:rgba(8,25,26,.16)}
+.on-light .btn-quiet:hover{background:rgba(8,25,26,.1)}
+.btn-ink{background:var(--color-ink);color:var(--color-cloud)}
+.btn-ink:hover{background:var(--color-dawn-deep)}
+.btn[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+
+/* WhatsApp. The glyph carries the recognition, so the button itself stays in
+   the page's own language rather than becoming a slab of #25D366 in the
+   middle of the hero — the brand green appears only in the mark, and fills
+   the button on hover so the association is still made. */
+.btn-whatsapp{background:transparent;color:var(--color-cloud);
+  border-color:rgba(37,211,102,.55)}
+.btn-whatsapp .wa-icon{width:20px;height:20px;color:#25D366;
+  transition:color .3s var(--ease-out)}
+.btn-whatsapp:hover{background:#25D366;color:#04120E;border-color:#25D366}
+.btn-whatsapp:hover .wa-icon{color:#04120E}
+
+.call-icon{width:18px;height:18px}
+/* The number stays on one line with its label — a phone number broken across
+   two lines is unreadable and unmemorable. */
+.btn-dawn [data-call-label]{white-space:nowrap}
+
+
+/* ── The brand lockup ──────────────────────────────────────────────────────
+   The Triton mark, then the group name, then the project under it. The
+   hierarchy matters: Triton is the developer and the reason to trust the
+   page, Humming Valley is the thing being sold. Setting them at two sizes
+   says that without a word of explanation.
+
+   The mark is drawn from one <symbol>, so it takes its colour from
+   currentColor and turns gold on hover along with everything else.        */
+.brand{display:flex;align-items:center;gap:.6rem;min-width:0;
+  text-decoration:none;color:inherit;padding-block:.25rem}
+.brand-mark{width:auto;height:1.75rem;flex:0 0 auto;fill:currentColor;color:var(--color-dawn);
+  transition:color .35s var(--ease-out), transform .5s var(--ease-out)}
+.brand:hover .brand-mark{transform:translateY(-1px)}
+.brand-words{display:flex;flex-direction:column;min-width:0;gap:.1em}
+.brand-name{font-family:var(--font-display);font-weight:500;
+  font-size:.98rem;line-height:1;letter-spacing:.22em;text-transform:uppercase;
+  white-space:nowrap}
+/* text-transform, not typed capitals: a screen reader spells out T-R-I-T-O-N
+   when the letters are capitals in the markup. */
+.brand-sub{font-family:var(--font-sans);font-weight:400;font-size:.5rem;
+  line-height:1;letter-spacing:.2em;text-transform:uppercase;white-space:nowrap;
+  opacity:.72}
+@media (min-width:640px){
+  .brand{gap:.75rem}
+  .brand-mark{height:2.1rem}
+  .brand-name{font-size:1.12rem}
+  .brand-sub{font-size:.58rem;letter-spacing:.24em}
+}
+/* Below 360px the nav has the lockup and the enquiry button to fit into
+   280 usable pixels. The tracking is what gives way first — it is the part
+   that is decoration rather than information. */
+@media (max-width:359.98px){
+  .brand{gap:.45rem}
+  .brand-mark{height:1.55rem}
+  .brand-name{font-size:.86rem;letter-spacing:.14em}
+  .brand-sub{font-size:.46rem;letter-spacing:.1em}
+}
+.brand:hover .brand-name{color:var(--color-dawn)}
+
+/* ── Nav ──────────────────────────────────────────────────────────────────
+   One bar, present from the first pixel and the same on every ground. The
+   translucency is what makes it feel attached to the page rather than
+   floating over it; the hairline underneath is what stops it dissolving
+   into a dark section.                                                    */
+#nav{background:rgba(6,26,24,.72);backdrop-filter:blur(20px) saturate(1.4);
+  -webkit-backdrop-filter:blur(20px) saturate(1.4);
+  border-bottom:1px solid rgba(243,245,242,.1);
+  transition:background-color .4s var(--ease-out),border-color .4s var(--ease-out)}
+#nav.is-stuck{background:rgba(4,20,18,.86);border-bottom-color:rgba(243,245,242,.14)}
+/* is-light no longer inverts the bar. A white bar would need a white mark,
+   and a mark that changes colour halfway down a page is two marks. */
+#nav.is-light.is-stuck{background:rgba(3,16,15,.9)}
+
+.nav-bar{display:flex;align-items:center;gap:.75rem;width:100%;max-width:1600px;
+  margin-inline:auto;padding:.6rem clamp(1rem,4vw,3rem);min-height:56px}
+@media (min-width:1024px){ .nav-bar{padding-block:.7rem;min-height:64px;gap:1.5rem} }
+
+.nav-links{display:none;margin-left:auto;align-items:center;gap:2rem;
+  font-size:.88rem;font-weight:400;letter-spacing:.01em}
+.nav-cta{display:none;min-height:40px!important;padding:.5rem 1.2rem!important;
+  font-size:.85rem!important}
+@media (min-width:1024px){ .nav-links{display:flex} .nav-cta{display:inline-flex} }
+
+.nav-link{position:relative;padding:.35rem 0;color:var(--color-cloud);opacity:.82;
+  transition:opacity .25s var(--ease-out)}
+.nav-link:hover{opacity:1}
+.nav-link::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:100%;
+  background:currentColor;transform:scaleX(0);transform-origin:right;
+  transition:transform .4s var(--ease-out)}
+.nav-link:hover::after,.nav-link:focus-visible::after{transform:scaleX(1);transform-origin:left}
+
+/* ── The menu button and its sheet ────────────────────────────────────────
+   Two bars that become an x. The rule is drawn with ::before/::after on
+   each <i> so the cross is geometrically centred at every size.          */
+.nav-toggle{margin-left:auto;display:grid;place-items:center;width:44px;height:44px;
+  background:transparent;border:0;color:inherit;cursor:pointer}
+@media (min-width:1024px){ .nav-toggle{display:none} }
+.nav-burger{position:relative;display:block;width:19px;height:12px}
+.nav-burger i{position:absolute;left:0;width:100%;height:1.5px;border-radius:2px;
+  background:currentColor;transition:transform .38s var(--ease-out),opacity .2s linear}
+.nav-burger i:first-child{top:0}
+.nav-burger i:last-child{bottom:0}
+[aria-expanded="true"] .nav-burger i:first-child{transform:translateY(5.25px) rotate(45deg)}
+[aria-expanded="true"] .nav-burger i:last-child{transform:translateY(-5.25px) rotate(-45deg)}
+
+.nav-sheet{position:fixed;left:0;right:0;top:0;padding-top:calc(56px + 1.5rem);
+  height:100dvh;overflow-y:auto;overscroll-behavior:contain;
+  background:#04120E;
+  z-index:-1;
+  display:flex;flex-direction:column;justify-content:space-between;gap:2rem;
+  padding-inline:clamp(1.25rem,5vw,2.5rem);padding-bottom:2rem;
+  opacity:0;transition:opacity .32s var(--ease-out)}
+.nav-sheet[hidden]{display:none}
+.nav-sheet.is-open{opacity:1}
+.nav-sheet-links{display:flex;flex-direction:column;gap:.1rem;margin:0;padding:0;list-style:none}
+.nav-sheet-links a{display:block;padding:.7rem 0;font-family:var(--font-display);
+  font-size:clamp(1.6rem,7vw,2.4rem);font-weight:400;line-height:1.15;
+  color:var(--color-cloud);text-decoration:none;
+  opacity:0;transform:translateY(12px);
+  transition:opacity .5s var(--ease-out),transform .5s var(--ease-out),color .2s}
+.nav-sheet.is-open .nav-sheet-links a{opacity:1;transform:none}
+/* Each line arrives a beat after the one above it — the difference between
+   a menu appearing and a menu being opened. */
+.nav-sheet-links li:nth-child(1) a{transition-delay:.04s}
+.nav-sheet-links li:nth-child(2) a{transition-delay:.08s}
+.nav-sheet-links li:nth-child(3) a{transition-delay:.12s}
+.nav-sheet-links li:nth-child(4) a{transition-delay:.16s}
+.nav-sheet-links li:nth-child(5) a{transition-delay:.2s}
+.nav-sheet-links li:nth-child(6) a{transition-delay:.24s}
+.nav-sheet-links li:nth-child(7) a{transition-delay:.28s}
+.nav-sheet-links li:nth-child(8) a{transition-delay:.32s}
+.nav-sheet-links a:hover{color:var(--color-mint)}
+.nav-sheet-foot{display:flex;flex-direction:column;gap:1rem;
+  padding-top:1.5rem;border-top:1px solid rgba(243,245,242,.12)}
+.nav-sheet-call{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;
+  min-height:48px;color:var(--color-haze);text-decoration:none;font-size:.95rem}
+.nav-sheet-call svg{width:18px;height:18px}
+@media (prefers-reduced-motion:reduce){
+  .nav-sheet,.nav-sheet-links a{transition:none;opacity:1;transform:none}
+}
+
+/* ── The dock ─────────────────────────────────────────────────────────────
+   A phone cannot hold the call to action in the bar without crowding out
+   the brand, and a page that sells by private viewing should never be more
+   than a thumb away from asking for one. It hides while the menu or a
+   modal is open, and above 1024px it does not exist. */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:45;display:flex;align-items:center;
+  gap:.6rem;padding:.7rem clamp(1rem,4vw,1.5rem);
+  padding-bottom:calc(.7rem + env(safe-area-inset-bottom));
+  background:rgba(4,20,18,.82);backdrop-filter:blur(20px) saturate(1.4);
+  -webkit-backdrop-filter:blur(20px) saturate(1.4);
+  border-top:1px solid rgba(243,245,242,.1);
+  transform:translateY(120%);transition:transform .45s var(--ease-out)}
+.dock.is-up{transform:none}
+.dock.is-hidden{transform:translateY(120%)}
+.dock-cta{flex:1 1 auto;min-height:46px!important;font-size:.95rem!important}
+.dock-call{display:grid;place-items:center;flex:0 0 auto;width:46px;height:46px;
+  border-radius:980px;border:1px solid rgba(243,245,242,.22);color:var(--color-cloud);
+  background:rgba(243,245,242,.08)}
+.dock-call svg{width:19px;height:19px}
+@media (min-width:1024px){ .dock{display:none} }
+@media (prefers-reduced-motion:reduce){ .dock{transition:none} }
+/* The footer must be able to end. Without this the dock covers the last
+   line of the legal type on every phone. */
+@media (max-width:1023.98px){ #site-footer{padding-bottom:6rem} }
+
+/* ── Lightbox ─────────────────────────────────────────────────────────── */
+#lightbox[hidden]{display:none}
+#lightbox{position:fixed;inset:0;z-index:90;background:rgba(3,16,15,.94);
+  display:grid;place-items:center;padding:clamp(1rem,4vw,3rem)}
+#lightbox img{max-width:100%;max-height:82vh;object-fit:contain}
+
+/* ── Reduced motion: the page must be complete without any of it ──────── */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;
+    transition-duration:.01ms!important;scroll-behavior:auto!important}
+  [data-anim]{opacity:1!important;transform:none!important;clip-path:none!important}
+  .hero-photo.is-loaded{opacity:.34}
+  .frame img{opacity:1;transform:none}
+  .sunwash{opacity:.5}
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   MOTION LAYER
+   The page's fluidity comes from one decision, not from many effects: a
+   smooth-scroll layer under everything, so every movement inherits the same
+   weight and easing. The effects below are tuned to that rhythm rather than
+   each carrying its own.
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* ── Custom cursor ────────────────────────────────────────────────────────
+   A dot that tracks precisely plus a ring that lags behind it. The lag is
+   the whole effect — the ring easing toward the dot is what reads as weight.
+   Fine pointers only: on touch there is no cursor to augment, and a coarse
+   pointer must never have the native cursor taken away. */
+@media (hover:hover) and (pointer:fine){
+  .has-cursor, .has-cursor *{cursor:none}
+  /* Text inputs keep a real caret — hiding it makes a form feel broken. */
+  .has-cursor :where(input,textarea,select){cursor:auto}
+}
+#cursor-dot,#cursor-ring{position:fixed;top:0;left:0;z-index:9999;
+  pointer-events:none;border-radius:50%;opacity:0;
+  will-change:transform;mix-blend-mode:difference}
+#cursor-dot{width:7px;height:7px;background:#F3F5F2;margin:-3.5px 0 0 -3.5px}
+
+/* Position and scale live on DIFFERENT elements on purpose. Both were on the
+   ring at first and the scale silently never applied: the x/y tweens and the
+   scale tween were writing to one transform and overwriting each other. */
+#cursor-ring{width:38px;height:38px;margin:-19px 0 0 -19px;background:none;border:0}
+#cursor-ring > i{display:block;width:100%;height:100%;border-radius:50%;
+  border:1px solid rgba(243,245,242,.55);will-change:transform;
+  transition:border-color .32s var(--ease-out), background-color .32s var(--ease-out)}
+#cursor-ring.is-active > i{border-color:rgba(243,245,242,.9);background:rgba(243,245,242,.14)}
+/* Over the site plan it tightens instead — a 64px ring over a 54px plot
+   would cover the thing being pointed at. */
+#cursor-ring.is-precise > i{border-color:rgba(111,203,176,.95)}
+
+/* ── Magnetic elements ───────────────────────────────────────────────── */
+[data-magnetic]{will-change:transform}
+
+/* ── Line reveals ────────────────────────────────────────────────────────
+   Headings arrive from behind a mask rather than fading. A fade says the
+   text appeared; a mask says it was already there and has been uncovered. */
+.line-mask{display:block;overflow:hidden}
+.line-inner{display:block;will-change:transform}
+
+/* ── Image reveals ───────────────────────────────────────────────────────
+   A clip wipe with the image counter-scaling inside it, so the picture holds
+   still while the frame opens. Fading an image in makes it look like it
+   loaded late; wiping it in looks intentional. */
+[data-reveal-img]{overflow:hidden}
+[data-reveal-img] > img{will-change:transform}
+
+/* ── Link sweep and card hover ───────────────────────────────────────── */
+.nav-link::after{transition:transform .45s var(--ease-out)}
+.villa-shot img{transition:transform .9s var(--ease-out)}
+.villa:hover .villa-shot img{transform:scale(1.045)}
+.frame img{transition:opacity 1s var(--ease-out), transform 1.2s var(--ease-out)}
+.frame:hover img.is-loaded{transform:scale(1.05)}
+
+/* ── Scroll progress ─────────────────────────────────────────────────────
+   The one piece of permanent chrome that earns its place: on a page this
+   long, how far through you are is real information. */
+#scroll-progress{position:fixed;top:0;left:0;height:2px;width:100%;z-index:60;
+  transform:scaleX(0);transform-origin:0 50%;
+  background:linear-gradient(to right,#0E6E5A,#6FCBB0);will-change:transform}
+
+/* Lenis needs these to own the scroll; without them the wheel and the
+   library fight each other. */
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto !important}
+.lenis.lenis-stopped{overflow:hidden}
+
+/* ── Reduced motion switches the whole layer off ──────────────────────── */
+@media (prefers-reduced-motion: reduce){
+  .has-cursor,.has-cursor *{cursor:auto !important}
+  #cursor-dot,#cursor-ring,#scroll-progress{display:none !important}
+  .line-inner{transform:none !important}
+  [data-reveal-img]{clip-path:none !important}
+  [data-reveal-img] > img{transform:none !important}
+  [data-magnetic]{transform:none !important}
+  .villa:hover .villa-shot img,.frame:hover img.is-loaded{transform:none}
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   SCROLL CHOREOGRAPHY  (Inside section)
+   Four frames in the quadrants swap diagonally, gather to the centre, and
+   the last one opens to fill the screen.
+
+   Held by position:sticky, not a ScrollTrigger pin. Sticky is native, needs
+   no pin-spacer, and does not fight the smooth-scroll layer — which leaves
+   the page with one pinned section instead of three.
+   ══════════════════════════════════════════════════════════════════════ */
+#choreo{height:300vh}
+.choreo-stage{position:sticky;top:0;height:100svh;width:100%;overflow:hidden}
+.choreo-inner{position:absolute;inset:0}
+
+/* Light on the ground the frames converge on, so the centre of the stage is
+   somewhere rather than nowhere. It brightens as they gather. */
+.choreo-halo{position:absolute;inset:0;pointer-events:none;opacity:.35;
+  background:radial-gradient(58% 52% at 50% 50%,
+    rgba(143,212,155,.20), rgba(34,56,45,0) 72%)}
+
+.choreo-frame{position:absolute;left:50%;top:50%;margin:0;
+  width:42vw;height:25vh;overflow:hidden;background:var(--color-frond);
+  transform:translate(-50%,-50%);
+  box-shadow:0 40px 80px -42px rgba(0,0,0,.85), 0 4px 18px -8px rgba(0,0,0,.5);
+  will-change:transform,width,height}
+
+/* The photograph is larger than the frame it shows through, so it can drift
+   inside it. That is what makes a frame read as a window onto something
+   rather than as a picture pasted on. */
+.choreo-frame img{width:100%;height:100%;object-fit:cover;display:block;
+  will-change:transform}
+
+/* A phone is portrait, so the four frames are squarer and taller: at
+   44vw x 32vh the two-by-two block fills 90vw and 66vh, which is a
+   composition rather than four stamps adrift in a field. */
+@media (max-width:767.98px){
+  .choreo-frame{width:44vw;height:32vh}
+}
+
+
+
+/* The caption belongs to the final full-screen frame, so it only appears
+   once that frame has arrived. */
+.choreo-caption{position:absolute;left:0;right:0;bottom:0;z-index:50;opacity:0;
+  padding:5rem clamp(1.25rem,4vw,3rem) clamp(1.5rem,4vh,2.5rem);
+  color:var(--color-cloud);font-size:var(--step--1);
+  background:linear-gradient(to top,rgba(11,18,14,.85),transparent);
+  pointer-events:none}
+
+/* ── Reduced motion, and the no-JS case ─────────────────────────────────
+   The choreography is the presentation; the photographs are the content.
+   With motion off, the section collapses from a 300vh scroll region to an
+   ordinary grid so the pictures are still all there, at rest. */
+@media (prefers-reduced-motion: reduce){
+  #choreo{height:auto}
+  .choreo-stage{position:static;height:auto;overflow:visible}
+  .choreo-inner{position:static;display:grid;gap:1rem;
+    padding:0 clamp(1.25rem,4vw,3rem);max-width:1600px;margin-inline:auto}
+  .choreo-frame{position:static;width:auto;height:auto;aspect-ratio:3/2;
+    transform:none;will-change:auto;opacity:1!important}
+  .choreo-caption{display:none}
+}
+@media (prefers-reduced-motion: reduce) and (min-width:640px){
+  .choreo-inner{grid-template-columns:1fr 1fr}
+}
+
+/* ── The site plan on a small screen ─────────────────────────────────────
+   Thirty plots drawn across 300px give each villa 19x33px: unreadable, and
+   under half the size a finger can hit. A map that scrolls sideways inside
+   a page that scrolls down was worse — it reads as a broken layout, not as
+   a map.
+
+   So below 640px the drawing goes and the same thirty villas come back as
+   chips, still grouped into the three rows. What is lost is the shape of
+   the site; what is gained is thirty numbers you can read and press. The
+   full plan returns the moment there is room for it. */
+.plan-chips{display:none}
+@media (max-width:639.98px){
+  .plan-map{display:none}
+  .plan-chips{display:block}
+}
+
+.chip-row + .chip-row{margin-top:1.5rem}
+.chip-row-name{margin:0 0 .6rem;font-size:.78rem;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--color-mist)}
+/* auto-fill rather than a fixed five: at 320px it settles on five chips of
+   57px, and as the screen widens it works towards ten across — which is the
+   row as it is actually laid out on the ground. */
+.chip-grid{display:grid;gap:.5rem;
+  grid-template-columns:repeat(auto-fill,minmax(3.4rem,1fr))}
+
+.plot-chip{display:flex;flex-direction:column;align-items:center;border-radius:10px;
+  justify-content:center;gap:.1rem;min-height:3.25rem;padding:.4rem .2rem;
+  border:1px solid rgba(8,25,26,.16);background:#fff;cursor:pointer;
+  font-family:var(--font-display);font-size:1.05rem;color:var(--color-ink);
+  transition:border-color .25s var(--ease-out),background-color .25s var(--ease-out)}
+.plot-chip small{font-family:var(--font-sans);font-size:.6rem;font-weight:600;
+  letter-spacing:.04em;color:var(--color-frond)}
+.plot-chip[data-status="available"]{border-color:var(--color-frond);
+  background:rgba(22,86,74,.07)}
+.plot-chip[data-status="held"]{border-color:var(--color-dawn-deep);
+  background:rgba(11,59,51,.07)}
+.plot-chip[data-status="held"] small{color:var(--color-dawn-deep)}
+.plot-chip[data-status="sold"]{color:#93A79F;background:rgba(8,25,26,.03);
+  border-style:dashed;cursor:default}
+.plot-chip[aria-pressed="true"]{background:var(--color-frond);color:var(--color-cloud);
+  border-color:var(--color-frond)}
+.plot-chip[aria-pressed="true"] small{color:rgba(243,245,242,.85)}
+
+.chip-key{display:flex;flex-wrap:wrap;gap:1rem;margin-top:1.25rem;
+  font-size:.78rem;color:var(--color-mist)}
+.chip-key span{display:inline-flex;align-items:center;gap:.4rem}
+.chip-key i{width:.7rem;height:.7rem;border:1px solid currentColor;
+  font-style:normal}
+.chip-key .k-open{color:var(--color-frond);background:rgba(22,86,74,.07)}
+.chip-key .k-sold{color:#93A79F;border-style:dashed}
+
+/* ── The gallery, now a calm grid ─────────────────────────────────────────
+   It follows the choreography, so it should be still: two scroll-driven
+   sequences back to back is exhausting rather than impressive. */
+#gallery .frame{position:relative;width:auto;aspect-ratio:4/3;overflow:hidden;
+  background:var(--color-frond)}
+#gallery .frame img{width:100%;height:100%;object-fit:cover}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   HERO — photograph, headline, enquiry card
+   ══════════════════════════════════════════════════════════════════════ */
+#hero{display:grid;background:var(--color-night)}
+.hero-ground{position:absolute;inset:0;
+  background:radial-gradient(120% 80% at 70% 20%, #17383A 0%, transparent 60%),
+             linear-gradient(160deg,#051417 0%,#0B2A25 55%,#123336 100%)}
+.hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;transition:opacity 1.4s var(--ease-out);will-change:transform}
+.hero-photo.is-loaded{opacity:1}
+/* Two scrims, not one: a vertical wash so the headline holds at the bottom
+   left, and a horizontal one so the card's own panel is not fighting the
+   picture behind it. */
+.hero-scrim{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(to top, rgba(3,16,15,.9) 0%, rgba(3,16,15,.42) 46%,
+             rgba(3,16,15,.05) 72%, rgba(3,16,15,.42) 100%)}
+/* The sideways wash exists to stop the enquiry card fighting the picture
+   behind it, and the card is only beside the copy from 1024px up. Below
+   that it was simply painting 75% black over the whole photograph, which
+   is why the hero read as a grey rectangle on a phone. */
+@media (min-width:1024px){
+  .hero-scrim{background:linear-gradient(to top, rgba(3,16,15,.92) 0%, rgba(3,16,15,.45) 42%, rgba(3,16,15,.15) 70%, rgba(3,16,15,.5) 100%),
+              linear-gradient(to right, rgba(3,16,15,.75) 0%, rgba(3,16,15,.15) 45%, transparent 70%)}
+}
+
+.hero-grid{position:relative;z-index:2;display:grid;align-items:end;gap:clamp(2rem,4vw,4rem);
+  width:100%;max-width:1600px;margin-inline:auto;
+  padding:8rem clamp(1.25rem,4vw,3rem) clamp(2.5rem,6vh,4.5rem);
+  min-height:100svh;grid-template-columns:1fr}
+@media (min-width:1024px){
+  .hero-grid{grid-template-columns:minmax(0,1.25fr) minmax(360px,.75fr)}
+}
+
+.hero-eyebrow,.eyebrow{color:var(--color-mint);font-size:.78rem;font-weight:500;
+  text-transform:uppercase;letter-spacing:.09em;margin:0 0 1rem}
+/* The hero eyebrow is one long line of place names. At 390px it wrapped
+   onto a second line with a single orphaned word, which reads as a mistake
+   rather than as a line break. */
+@media (max-width:479.98px){
+  .hero-eyebrow{font-size:.68rem;letter-spacing:.06em}
+}
+.on-light .eyebrow{color:var(--color-mint-deep)}
+@media (min-width:768px){ .hero-eyebrow,.eyebrow{margin-bottom:1.25rem} }
+
+#hero h1{font-size:var(--display);color:var(--color-cloud);max-width:15ch;margin:0}
+/* Two sentences, each on its own line. The second is set a step smaller so
+   the pair reads as a statement and its answer rather than as two competing
+   headlines — and so the longer line does not wrap into three. */
+.hero-line{display:block}
+/* The second line reads as a subheading under the name, not as a second
+   headline, so it sits well below the display size. */
+/* max() keeps it above the lede on a phone, where .34em of a 50px display
+   line would land under the body size and stop reading as a heading. */
+.hero-line-2{font-size:max(1.4rem, .34em);color:var(--color-haze);letter-spacing:.005em;
+  display:block;margin-top:.6em}
+#hero .lede{margin-top:1.5rem;color:var(--color-haze);max-width:52ch}
+
+.hero-facts{display:flex;flex-wrap:wrap;gap:2rem 2.75rem;margin:2.25rem 0 0;padding:1.5rem 0 0;
+  border-top:1px solid rgba(163,183,175,.22)}
+
+/* On a phone the scrim carries the copy on its own: the second gradient
+   here darkens from the left, which does nothing when the text runs the
+   full width. Without this the lede sat over the bright part of the
+   photograph and was barely readable. The facts go to two columns rather
+   than three cramped ones. */
+@media (max-width:767.98px){
+  .hero-scrim{background:linear-gradient(to top,
+    rgba(3,16,15,.94) 0%, rgba(3,16,15,.78) 45%, rgba(3,16,15,.62) 72%,
+    rgba(3,16,15,.72) 100%)}
+  .hero-facts{display:grid;grid-template-columns:1fr 1fr;gap:1.35rem 1.25rem;
+    margin-top:1.75rem;padding-top:1.25rem}
+  .hero-facts dd{font-size:var(--step-1)}
+  .hero-actions{gap:.75rem}
+  .hero-actions .btn{flex:1 1 100%;justify-content:center;min-width:0;
+    padding-inline:1rem}
+}
+/* 2rem of padding either side of "Call +91 90366 82626" does not fit a 320px
+   screen. The label is the content; the padding is not. */
+@media (max-width:359.98px){
+  .btn{padding-inline:.9rem;font-size:.92rem}
+}
+.hero-facts dt{font-size:.82rem;color:var(--color-haze);margin-bottom:.3rem}
+.hero-facts dt .incl{margin-bottom:.1rem}
+.hero-facts dd{margin:0;font-family:var(--font-display);font-size:var(--step-2);
+  color:var(--color-cloud);line-height:1}
+.hero-facts dd span{font-family:var(--font-sans);font-size:.42em;font-weight:500;
+  color:var(--color-haze);margin-left:.35rem}
+.hero-actions{display:flex;flex-wrap:wrap;gap:1rem;margin-top:2.5rem}
+@media (max-width:767.98px){ .hero-actions{margin-top:1.75rem} }
+
+/* Below 1024px the enquiry card is not beside the copy — it is a fourth
+   screen of hero, arrived at after the headline, the paragraph, four
+   figures and two buttons. The dock, the menu and the enquiry section all
+   reach the same form, so on a phone the hero ends at the buttons. */
+@media (max-width:1023.98px){ .hero-card{display:none} }
+
+/* ── The enquiry card ──────────────────────────────────────────────────── */
+.hero-card{background:rgba(11,18,27,.72);backdrop-filter:blur(18px) saturate(1.2);
+  border:1px solid rgba(163,183,175,.2);padding:clamp(1.5rem,2.4vw,2rem);
+  align-self:end;box-shadow:0 30px 70px -40px rgba(0,0,0,.9)}
+/* Set uppercase through text-transform rather than typing capitals into the
+   markup: several screen readers spell out short all-caps strings letter by
+   letter. The rendered result is identical. */
+.hero-card h2{font-family:var(--font-sans);font-size:var(--step-0);font-weight:600;
+  text-transform:uppercase;letter-spacing:.06em;
+  color:var(--color-cloud);margin:0;display:flex;align-items:center;gap:.5rem}
+.hero-card h2 span{color:var(--color-dawn);transition:transform .35s var(--ease-out)}
+.hero-card:hover h2 span{transform:translateX(4px)}
+.hero-card > p{color:var(--color-haze);font-size:.9rem;margin:.6rem 0 1.4rem;max-width:34ch}
+.hero-card-alt{margin:1.25rem 0 0;font-size:.85rem;color:var(--color-haze)}
+.hero-card-alt a{color:var(--color-dawn)}
+.hero-scrollcue{position:absolute;left:clamp(1.25rem,4vw,3rem);bottom:1rem;z-index:2;
+  margin:0;font-size:.78rem;letter-spacing:.12em;color:rgba(163,183,175,.6)}
+@media (max-width:1023.98px){ .hero-scrollcue{display:none} }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ENQUIRY FORM  (hero card, popup, enquiry section)
+   ══════════════════════════════════════════════════════════════════════ */
+/* The price and the fact that it is all inclusive belong together: read
+   apart, a figure like this is assumed to be a base price with registration,
+   stamp duty and GST still to come. So it is marked rather than muttered —
+   the one badge on the page, small enough not to shout and coloured enough
+   to be read before the eye moves on.
+
+   Uppercase is set with text-transform, not typed: a screen reader spells
+   typed capitals letter by letter. */
+.incl{display:inline-block;border-radius:980px;font-family:var(--font-sans);font-size:.62rem;
+  font-weight:700;letter-spacing:.11em;text-transform:uppercase;
+  padding:.2rem .5rem;border-radius:2px;white-space:nowrap;
+  color:var(--color-mint);background:rgba(111,203,176,.12);
+  border:1px solid rgba(111,203,176,.4)}
+/* On a light ground the gold has to go darker to stay legible. */
+.on-light .incl{color:var(--color-mint-deep);background:rgba(14,110,90,.09);
+  border-color:rgba(11,59,51,.35)}
+
+.price{display:inline-flex;flex-direction:column;align-items:flex-end;
+  line-height:1.05}
+.price .incl{margin-top:.4rem}
+
+/* ── The layout, as a stack of levels ────────────────────────────────────
+   A wireframe rather than a plan: each floor is a row of blocks standing for
+   its rooms, in the order you climb them. It tells a buyer how the villa is
+   arranged and how much of it there is, without publishing the drawings.
+   The blocks carry no dimensions and no doors on purpose. */
+.levels{border:1px solid rgba(8,25,26,.12);background:#F6F8F5;padding:1.25rem}
+.level + .level{margin-top:.9rem;padding-top:.9rem;
+  border-top:1px dashed rgba(8,25,26,.16)}
+.level-name{margin:0;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--color-dawn-deep)}
+.level-plan{display:flex;gap:.35rem;margin:.55rem 0 .5rem;height:1.6rem}
+/* The first block is the room you arrive in, so it takes the most width. */
+.level-plan i{flex:1 1 0;background:rgba(22,86,74,.13);
+  border:1px solid rgba(22,86,74,.3)}
+.level-plan i:first-child{flex:1.9 1 0;background:rgba(22,86,74,.22)}
+.level-plan i:last-child{flex:.8 1 0;background:rgba(11,59,51,.13);
+  border-color:rgba(11,59,51,.35)}
+.level-rooms{margin:0;font-size:.86rem;color:var(--color-mist);line-height:1.5}
+.levels-note{margin:1.1rem 0 0;padding-top:.9rem;
+  border-top:1px solid rgba(8,25,26,.12);
+  font-size:.78rem;letter-spacing:.01em;color:var(--color-mist)}
+
+/* ── Villa type, as a set of chips ────────────────────────────────────────
+   A dropdown asks for one answer, and someone weighing a 3 against a 4 has
+   two. A native multiple-select is worse than either on a phone — it is a
+   scrolling box with no affordance and ctrl-click on a desktop. Checkboxes
+   drawn as chips take as many answers as the person actually has, and every
+   one of them is a 44px target.
+
+   The input is the state; the span is the paint. :has() would be neater but
+   the sibling selector works everywhere. */
+.choice{border:0;padding:0;margin:0;min-width:0}
+.choice legend{padding:0;font-size:.82rem;color:var(--color-haze);
+  letter-spacing:.01em}
+.choice-hint{color:var(--color-mist)}
+.choice-set{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.85rem}
+.choice-chip{position:relative;display:inline-flex}
+.choice-chip input{position:absolute;inset:0;width:100%;height:100%;
+  margin:0;opacity:0;cursor:pointer}
+.choice-chip span{display:flex;flex-direction:column;gap:.15rem;
+  min-height:44px;justify-content:center;padding:.5rem 1rem;
+  border:1px solid rgba(163,183,175,.32);color:var(--color-cloud);
+  font-size:.95rem;line-height:1.15;
+  transition:border-color .25s var(--ease-out),background-color .25s var(--ease-out),
+             color .25s var(--ease-out)}
+.choice-chip small{font-size:.72rem;color:var(--color-haze);font-weight:500}
+.choice-chip input:hover + span{border-color:rgba(163,183,175,.7)}
+.choice-chip input:focus-visible + span{outline:2px solid var(--color-dawn);
+  outline-offset:2px}
+.choice-chip input:checked + span{background:var(--color-dawn);
+  border-color:var(--color-dawn);color:var(--color-night);font-weight:600}
+.choice-chip input:checked + span small{color:rgba(6,26,24,.75)}
+
+/* On a light ground the same chips need the ink palette. */
+.on-light .choice legend{color:var(--color-mist)}
+.on-light .choice-chip span{border-color:rgba(8,25,26,.22);color:var(--color-ink)}
+.on-light .choice-chip small{color:var(--color-mist)}
+.on-light .choice-chip input:checked + span{color:var(--color-night)}
+
+.enquiry .fields{display:grid;gap:1.25rem}
+.enquiry .fields.is-full{grid-template-columns:1fr}
+@media (min-width:560px){
+  .enquiry .fields.is-full{grid-template-columns:1fr 1fr}
+  .enquiry .field-wide{grid-column:1 / -1}
+}
+.enquiry label{display:block;font-size:.82rem;color:var(--color-haze);margin-bottom:.3rem}
+.enquiry .req{color:var(--color-dawn)}
+.enquiry input,.enquiry select,.enquiry textarea{
+  width:100%;min-height:46px;background:transparent;color:var(--color-cloud);
+  border:0;border-bottom:1px solid rgba(163,183,175,.4);padding:.55rem .1rem;
+  font:inherit;font-size:var(--step-0);border-radius:0;
+  transition:border-color .25s var(--ease-out)}
+.enquiry textarea{min-height:auto;resize:vertical}
+.enquiry input:hover,.enquiry select:hover,.enquiry textarea:hover{border-bottom-color:rgba(163,183,175,.75)}
+.enquiry input:focus,.enquiry select:focus,.enquiry textarea:focus{
+  outline:none;border-bottom-color:var(--color-dawn)}
+.enquiry [aria-invalid="true"]{border-bottom-color:#F0806A}
+.enquiry select option{background:#0B2A25;color:#F3F5F2}
+.enquiry .err{display:none;color:#F0806A;font-size:.8rem;margin:.4rem 0 0}
+.enquiry .field.is-invalid .err{display:block}
+.enquiry .form-submit{margin-top:1.75rem;width:100%}
+.enquiry .form-note{margin:.9rem 0 0;font-size:.78rem;color:rgba(163,183,175,.75)}
+.enquiry .form-summary{display:none;margin-bottom:1.5rem;padding:1rem 1.15rem;
+  border-left:2px solid #F0806A;background:rgba(240,128,106,.1)}
+.enquiry .form-summary.is-shown{display:block}
+.enquiry .form-summary h3{margin:0;font-size:.9rem;font-weight:600;color:#F0806A;font-family:var(--font-sans)}
+.enquiry .form-summary ul{margin:.5rem 0 0;padding-left:1.1rem;font-size:.86rem}
+.enquiry .form-summary a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+.enquiry .form-done{border-left:2px solid var(--color-mint);background:rgba(111,203,176,.1);padding:1.25rem}
+.enquiry .form-done h3{margin:0;font-family:var(--font-display);font-size:var(--step-1);color:var(--color-cloud)}
+.enquiry .form-done p{margin:.5rem 0 0;color:var(--color-haze);font-size:.9rem}
+/* Honeypot: out of sight, out of the accessibility tree, out of the tab order. */
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+/* On the light enquiry section the same component needs dark text. */
+.on-light .enquiry label,.on-light .enquiry .form-note{color:var(--color-mist)}
+.on-light .enquiry input,.on-light .enquiry select,.on-light .enquiry textarea{
+  color:var(--color-ink);border-bottom-color:rgba(8,25,26,.28)}
+.on-light .enquiry input:focus,.on-light .enquiry select:focus,
+.on-light .enquiry textarea:focus{border-bottom-color:var(--color-dawn-deep)}
+.on-light .enquiry .req{color:var(--color-dawn-deep)}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   POPUP
+   ══════════════════════════════════════════════════════════════════════ */
+#enquiry-modal[hidden]{display:none}
+/* 100dvh rather than inset:0 alone. A fixed box on Android Chrome is laid
+   out against the larger viewport, the one without the address bar, so the
+   bottom of the panel sat behind the browser's own chrome and the form
+   looked cut off at the screen edge. dvh is the height actually on screen,
+   whatever the toolbar is doing. */
+#enquiry-modal{position:fixed;inset:0;height:100dvh;z-index:200;
+  display:grid;place-items:center;padding:clamp(.75rem,4vw,2.5rem)}
+.modal-scrim{position:fixed;inset:0;background:rgba(6,10,16,.82);
+  backdrop-filter:blur(6px)}
+/* Three rows: the heading, the fields, the button. Only the middle row
+   scrolls.
+
+   Before this the whole panel was one scroll box, and on a phone the form is
+   taller than any screen — so it cut through the middle of a field with no
+   visible edge and no scrollbar (Android draws none until you touch it). It
+   read as a broken layout rather than as something you could scroll, and the
+   button that sends the enquiry was somewhere below the fold. Now the title
+   stays, the fields scroll under it, and the button never leaves. */
+.modal-panel{--pad:clamp(1.5rem,3vw,2.5rem);
+  position:relative;width:min(560px,100%);max-height:100%;
+  display:flex;flex-direction:column;overflow:hidden;
+  background:#0A1F1C;border:1px solid rgba(163,183,175,.2);
+  box-shadow:0 40px 90px -50px rgba(0,0,0,.95)}
+.modal-head{flex:0 0 auto;padding:var(--pad) var(--pad) 0}
+.modal-panel > [data-enquiry-mount]{display:flex;min-height:0;flex:1 1 auto}
+.modal-panel .enquiry{display:flex;flex-direction:column;min-height:0;flex:1 1 auto}
+.modal-panel .form-summary{flex:0 0 auto;margin-inline:var(--pad)}
+
+/* The scrolling row. overscroll-behavior stops the page behind from taking
+   over the moment this hits its end. */
+.modal-panel .fields{flex:1 1 auto;min-height:0;overflow-y:auto;
+  overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+  padding:0 var(--pad) .25rem;scroll-padding-block:1rem}
+
+/* A hairline and a shadow under the heading, so the edge the fields pass
+   beneath is visible and the row reads as a window rather than a cut. */
+.modal-head{border-bottom:1px solid rgba(163,183,175,.14);
+  padding-bottom:1.25rem;margin-bottom:1.25rem}
+/* width:auto, not the 100% the inline forms use: the button is a flex item
+   with side margins here, and 100% of the panel plus those margins put its
+   right edge 40px past the fields. */
+.modal-panel .form-submit{flex:0 0 auto;width:auto;margin:1.25rem var(--pad) 0}
+.modal-panel .form-note{flex:0 0 auto;margin:.75rem var(--pad) var(--pad)}
+.modal-panel .form-done{padding:var(--pad)}
+.modal-panel:focus{outline:none}
+.modal-panel h2{font-family:var(--font-display);font-size:var(--step-3);
+  color:var(--color-cloud);margin:0;max-width:16ch}
+.modal-sub{color:var(--color-haze);font-size:.92rem;margin:.75rem 0 0;max-width:46ch}
+.modal-close{position:absolute;top:.9rem;right:.9rem;width:44px;height:44px;
+  display:grid;place-items:center;background:transparent;border:0;cursor:pointer;
+  color:var(--color-haze);transition:color .25s var(--ease-out)}
+.modal-close:hover{color:var(--color-dawn)}
+.modal-close svg{width:20px;height:20px}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   FOOTER — plain on purpose
+   ══════════════════════════════════════════════════════════════════════ */
+#site-footer{background:var(--color-night-2);color:var(--color-haze);
+  padding:clamp(3rem,7vh,4.5rem) 0 2rem}
+.foot-inner,.foot-legal{max-width:1600px;margin-inline:auto;padding-inline:clamp(1.25rem,4vw,3rem)}
+.foot-inner{display:grid;gap:2.5rem;align-items:start}
+@media (min-width:768px){ .foot-inner{grid-template-columns:1.2fr 1fr 1fr} }
+
+/* The mark again in the footer, at the size it deserves when nothing is
+   competing with it, plus one oversized ghost of it behind the legal type.
+   The ghost is decoration and is hidden from the accessibility tree. */
+.foot-mark{display:block;width:auto;height:3.25rem;fill:currentColor;color:var(--color-dawn);
+  margin:0 0 1.4rem}
+#site-footer{position:relative;overflow:clip}
+.foot-legal,.foot-inner{position:relative;z-index:1}
+
+.foot-name{font-family:var(--font-display);font-size:1.5rem;font-weight:500;
+  letter-spacing:.01em;color:var(--color-cloud);margin:0}
+.foot-by{margin:.5rem 0 0;font-size:.88rem}
+/* The one outward link in the footer: quiet enough not to compete with the
+   enquiry form above it, but a target rather than a line of text. */
+.foot-site{display:inline-flex;align-items:center;gap:.5rem;margin-top:1.25rem;
+  padding:.65rem 1.2rem;border-radius:980px;font-size:.85rem;letter-spacing:.02em;
+  color:var(--color-cloud);text-decoration:none;
+  border:1px solid rgba(163,183,175,.35);
+  transition:border-color .3s var(--ease-out), color .3s var(--ease-out),
+             background-color .3s var(--ease-out)}
+.foot-site svg{width:.9rem;height:.9rem;transition:transform .3s var(--ease-out)}
+.foot-site:hover{color:var(--color-night);background:var(--color-dawn);
+  border-color:var(--color-dawn)}
+.foot-site:hover svg{transform:translate(2px,-2px)}
+@media (prefers-reduced-motion:reduce){ .foot-site:hover svg{transform:none} }
+
+/* Telephone and email links are the ones a thumb goes for, and a 19px line
+   of text is under every touch-target guideline there is.
+
+   :not([class]) matters: an attribute selector outranks a class, so this
+   rule was overriding the layout of every contact link that had one — the
+   menu's call row was laid out as a block and its icon and number stacked. */
+a[data-field]:not([class]){display:inline-block;padding-block:.2rem}
+
+.foot-nav{display:flex;flex-direction:column;gap:.65rem}
+.foot-nav a,.foot-contact a{color:var(--color-haze);text-decoration:none;
+  transition:color .25s var(--ease-out)}
+.foot-nav a:hover,.foot-contact a:hover{color:var(--color-dawn)}
+.foot-contact{display:flex;flex-direction:column;gap:.65rem;font-size:.95rem}
+.foot-contact p{margin:.35rem 0 0;font-size:.88rem;line-height:1.6}
+
+/* Address as a map link. The pin sits on the first line rather than centred
+   against a two-line address, and the "View on Google Maps" cue only appears
+   where there is room for it. */
+.map-link{display:flex;gap:.6rem;align-items:flex-start;color:var(--color-haze);
+  text-decoration:none;transition:color .25s var(--ease-out);line-height:1.6}
+.map-link:hover{color:var(--color-dawn)}
+.map-pin{width:18px;height:18px;flex:0 0 auto;margin-top:.15em;color:var(--color-dawn)}
+.map-link em{display:block;margin-top:.4rem;font-style:normal;font-size:.8rem;
+  letter-spacing:.02em;color:var(--color-dawn);opacity:.85}
+.map-link:hover em{opacity:1}
+.foot-legal{margin-top:3rem;padding-top:1.5rem;border-top:1px solid rgba(163,183,175,.15);
+  display:grid;gap:.6rem;font-size:.78rem;line-height:1.6}
+.foot-legal p{max-width:78ch;margin:0}

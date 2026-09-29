@@ -1,0 +1,26 @@
+TRITON HUMMING VALLEY — how to put this on the server
+=====================================================
+
+This zip is the COMPLETE site: page, stylesheet, scripts, fonts, and every
+photograph in images/.
+
+  1. In cPanel File Manager, go to the folder the site is served from.
+  2. Upload this zip and Extract it there.
+  3. Open config.sample.php, copy it to config.php, and fill in:
+       api_key       from the Leadi5 integration screen
+       webhook_url   from the same screen
+       notify_email  where enquiries are emailed. Several addresses may be
+                     given, separated by commas.
+  4. Delete mailtest.php once the enquiry email is arriving.
+
+WARNING ABOUT IMAGES
+--------------------
+images/ in this zip holds the working copies of the photographs. If you have
+uploaded newer photography to the server yourself, extracting this zip will
+OVERWRITE it. If that is a risk, extract everything EXCEPT the images folder,
+or back up your images/ first.
+
+config.php is deliberately NOT in this zip — it holds the live API key and
+must never travel in an archive or a repository.
+
+Read HANDOVER.md for everything else.

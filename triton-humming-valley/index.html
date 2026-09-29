@@ -1,0 +1,949 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Triton Humming Valley — Boutique villas above the Nandi cloud line</title>
+<meta name="description" content="Thirty Bali-inspired boutique villas in North Bangalore, at the foothills of Nandi Hills. 3, 4 and 5 BHK. Possession October 2026. Private viewings by appointment.">
+<meta name="theme-color" content="#061A18">
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="images/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="images/favicon-180.png">
+<meta property="og:title" content="Triton Humming Valley — Boutique villas near Nandi Hills">
+<meta property="og:description" content="Thirty Bali-inspired villas in North Bangalore, at the foothills of Nandi Hills. Private viewings by appointment.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/">
+<meta property="og:site_name" content="Triton Group">
+<meta property="og:locale" content="en_IN">
+<meta property="og:image" content="https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/images/hero.jpg">
+<meta property="og:image:width" content="2000">
+<meta property="og:image:height" content="1116">
+<meta property="og:image:alt" content="The villa rows at Triton Humming Valley at sunset, the Nandi hills behind them.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Triton Humming Valley — Boutique villas near Nandi Hills">
+<meta name="twitter:description" content="Thirty Bali-inspired villas in North Bangalore, at the foothills of Nandi Hills. Private viewings by appointment.">
+<meta name="twitter:image" content="https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/images/hero.jpg">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<link rel="canonical" href="https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/">
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     TRITON HUMMING VALLEY  ·  static build, ready for cPanel
+     ───────────────────────────────────────────────────────────────────────────
+     Upload the whole folder. No Node, no build step, no server config needed.
+
+       index.html          this file
+       css/styles.css      compiled stylesheet — DO NOT hand-edit
+       css/src.css         the source it is compiled FROM — edit this
+       js/site.js          all site behaviour, and the DATA object
+       js/gsap.min.js      animation library (bundled, no CDN)
+       js/ScrollTrigger.min.js
+       js/lenis.min.js
+       fonts/*.woff2       Cormorant Garamond and Jost, from this domain
+       images/             the photographs — see images/README.txt
+       submit.php          receives the enquiry forms
+       config.php          your API key and notification address (never commit)
+       robots.txt          points crawlers at the sitemap
+       sitemap.xml         one URL; update <lastmod> when the page changes
+
+     To change project facts, edit the DATA object at the top of js/site.js.
+     To change styling, edit css/src.css then re-run:  npm run build:css
+
+     ⚠ AFTER REPLACING ANY PHOTOGRAPH, bump BUILD at the top of js/site.js
+       and the two ?v= numbers in the head below. Browsers keep images for a
+       day, and without a new number a visitor who has been here before
+       carries on seeing the old picture.
+
+     ⚠ STILL UNCONFIRMED, all marked in js/site.js:
+       · the BHK against each villa on the site plan, derived from plot area
+       · the built-up areas on the three villa cards (2,400 / 3,100 / 3,800),
+         which disagree with the "Upto 4448 sq ft" figure in The Land
+     ═══════════════════════════════════════════════════════════════════════ -->
+
+<!-- Critical CSS, inline and first: paints the night ground before the
+     stylesheet resolves, so a slow connection never flashes white over a
+     night-sky hero. -->
+<style>
+  html{background:#061A18;color-scheme:dark}
+  body{margin:0;background:#061A18;color:#F3F5F2;-webkit-font-smoothing:antialiased;
+       font-family:Jost,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  .no-js [data-anim]{opacity:1!important;transform:none!important;clip-path:none!important}
+</style>
+
+<!-- The two typefaces are served from this domain, so there is no third
+     party to resolve, connect to and wait for before the first letter is
+     drawn. Both latin files are preloaded because the stylesheet only
+     discovers them after it has parsed, which is a request too late. -->
+<link rel="preload" href="fonts/cormorant-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/jost-latin.woff2" as="font" type="font/woff2" crossorigin>
+
+<link rel="stylesheet" href="css/styles.css?v=3">
+
+<!-- The hero photograph is the largest thing on the first screen, and it is
+     fetched by script rather than found in the markup, so the browser is
+     told about it here instead of discovering it a second late. -->
+<link rel="preload" href="images/hero.jpg?v=2" as="image" fetchpriority="high">
+
+<!-- Deferred, not at the foot of the page: the download starts while the
+     HTML is still parsing and execution still waits for it, in order. -->
+<script src="js/lenis.min.js" defer></script>
+<script src="js/gsap.min.js" defer></script>
+<script src="js/ScrollTrigger.min.js" defer></script>
+<script src="js/site.js?v=2" defer></script>
+
+<!-- Structured data. Everything in here is stated on the page as well;
+     nothing is claimed to Google that a visitor cannot read. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tritongroup.in/#organization",
+      "name": "Triton Group",
+      "url": "https://tritongroup.in/",
+      "telephone": "+91-90366-82626",
+      "email": "sales@tritongroup.in",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Bengaluru",
+        "addressRegion": "Karnataka",
+        "addressCountry": "IN"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/#webpage",
+      "url": "https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/",
+      "name": "Triton Humming Valley — Boutique villas near Nandi Hills",
+      "description": "Thirty Bali-inspired boutique villas in North Bangalore, at the foothills of Nandi Hills. 3, 4 and 5 BHK. Possession October 2026.",
+      "inLanguage": "en-IN",
+      "isPartOf": {
+        "@id": "https://tritongroup.in/#organization"
+      },
+      "primaryImageOfPage": "https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/images/hero.jpg"
+    },
+    {
+      "@type": "ApartmentComplex",
+      "@id": "https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/#project",
+      "name": "Triton Humming Valley",
+      "url": "https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/",
+      "description": "A private collection of thirty Bali-inspired villas in North Bangalore, at the foothills of Nandi Hills. Each villa is built around a fifteen-foot indoor waterfall and a private pool.",
+      "numberOfAccommodationUnits": {
+        "@type": "QuantitativeValue",
+        "value": 30
+      },
+      "numberOfAvailableAccommodationUnits": {
+        "@type": "QuantitativeValue",
+        "value": 4
+      },
+      "image": [
+        "https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/images/hero.jpg",
+        "https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/images/cover-1.jpg",
+        "https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/images/cover-4.jpg"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Bengaluru North",
+        "addressRegion": "Karnataka",
+        "addressCountry": "IN"
+      },
+      "amenityFeature": [
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Clubhouse",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "24/7 security",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Gated access",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Private pool",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Rainwater harvesting",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Solar integration",
+          "value": true
+        }
+      ],
+      "provider": {
+        "@id": "https://tritongroup.in/#organization"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is the project RERA registered?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The registration number is shown in the footer of this page."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What do I actually see at a viewing?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Your own plot, on the ground, and the villas as they stand today — the structures are up and finishing work is under way ahead of possession in October 2026. Early morning slots are worth taking between November and February, when the cloud sits in the valley."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are home loans available?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The project is approved by leading lenders. Our team can put you in touch with the relevant bank relationship manager."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Who maintains the common areas?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A facilities team manages landscaping, security, the clubhouse and water systems, funded by a monthly maintenance charge confirmed at booking."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+
+<body class="no-js">
+<a class="skip" href="#main">Skip to main content</a>
+
+<!-- The villa list, the site plan, the gallery and the enquiry forms are all
+     built from the DATA object, so with scripting off they are empty. Search
+     engines render the page and see them; a person with scripting off would
+     not, and the facts they would want are the ones below. -->
+<noscript>
+  <div style="background:#0B2A25;color:#F3F5F2;padding:1.5rem clamp(1.25rem,4vw,3rem);
+              font:400 15px/1.6 Jost,system-ui,sans-serif">
+    <p style="margin:0 0 .75rem;font-family:Cormorant,Georgia,serif;font-size:1.4rem">
+      Triton Humming Valley &mdash; villas in Nandi Hills, Bangalore
+    </p>
+    <p style="margin:0 0 .5rem">
+      Thirty Bali-inspired villas at the foothills of Nandi Hills, North Bangalore.
+      3&nbsp;BHK from &#8377;2.9&nbsp;Cr, 4&nbsp;BHK from &#8377;3.5&nbsp;Cr,
+      5&nbsp;BHK from &#8377;4.5&nbsp;Cr. Possession October 2026.
+    </p>
+    <p style="margin:0">
+      To arrange a viewing, call
+      <a href="tel:+919036682626" style="color:#6FCBB0">+91&nbsp;90366&nbsp;82626</a>
+      or email
+      <a href="mailto:sales@tritongroup.in" style="color:#6FCBB0">sales@tritongroup.in</a>.
+      RERA PRM/KA/RERA/1254/460/PR/131224/007292.
+    </p>
+  </div>
+</noscript>
+
+<!-- The Triton mark, defined once. Every <use href="#triton-mark"> on the
+     page draws this path and inherits its colour from currentColor, so the
+     logo costs 3 KB of markup in total rather than 3 KB per placement. -->
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <symbol id="triton-mark" viewBox="0 0 100 146.97"><path d="M33.21 146.8C33.21 146.55 33.84 146.01 34.41 145.78C34.68 145.66 35.2 145.3 35.54 144.96C35.89 144.63 36.46 144.14 36.81 143.89C37.21 143.58 37.73 142.98 38.26 142.19C39.33 140.6 40.26 138.02 40.65 135.57C40.91 133.97 40.91 133.58 40.91 90.14C40.91 50.84 40.89 46.27 40.71 45.9C40.61 45.68 40.37 45.42 40.19 45.34C39.94 45.23 37.74 45.19 31.59 45.2C21.35 45.21 20.62 45.27 17.93 46.33C17.27 46.6 16.43 46.88 16.07 46.96C15.71 47.05 15.09 47.32 14.68 47.57C14.28 47.82 13.64 48.19 13.26 48.4C10.63 49.84 6.02 54.57 4.74 57.13C4.03 58.58 3.3 60.36 3.03 61.35C2.57 63 2.05 63.39 1.54 62.45C1.36 62.11 1.32 61.58 1.28 58.78C1.23 54.2 1.44 52.41 2.39 49.43C2.59 48.81 2.88 47.64 3.03 46.84C3.29 45.46 4.22 42.62 4.65 41.89C5.11 41.1 1.37 41.16 50 41.16C98.63 41.16 94.89 41.1 95.35 41.89C95.78 42.62 96.71 45.46 96.97 46.84C97.12 47.64 97.41 48.81 97.61 49.43C98.56 52.41 98.77 54.2 98.72 58.78C98.68 61.58 98.64 62.11 98.46 62.45C97.95 63.39 97.43 63 96.97 61.35C96.7 60.36 95.97 58.58 95.26 57.13C93.98 54.57 89.37 49.84 86.74 48.4C86.36 48.19 85.72 47.82 85.32 47.57C84.91 47.32 84.29 47.05 83.93 46.96C83.57 46.88 82.73 46.6 82.07 46.33C79.38 45.27 78.65 45.21 68.41 45.2C62.26 45.19 60.06 45.23 59.81 45.34C59.63 45.42 59.39 45.68 59.29 45.9C59.11 46.27 59.09 50.84 59.09 90.14C59.09 133.58 59.09 133.97 59.35 135.57C59.74 138.02 60.67 140.6 61.74 142.19C62.27 142.98 62.79 143.58 63.19 143.89C63.54 144.14 64.11 144.63 64.46 144.96C64.8 145.3 65.32 145.66 65.59 145.78C66.16 146.01 66.79 146.55 66.79 146.8C66.79 146.94 63.78 146.97 50 146.97C36.22 146.97 33.21 146.94 33.21 146.8ZM37.53 32.07L32.58 32.01L32.2 31.63C31.93 31.35 31.77 31.01 31.62 30.37C31.51 29.88 31.26 28.94 31.06 28.28C30.86 27.62 30.55 26.4 30.37 25.56C30.2 24.73 29.88 23.53 29.67 22.91C29.45 22.29 29.09 20.93 28.85 19.89C28.62 18.84 28.26 17.5 28.05 16.89C27.84 16.29 27.48 14.84 27.26 13.69C26.89 11.78 26.86 11.55 27.03 11.25C27.25 10.87 27.74 10.66 28.19 10.78C28.65 10.89 30.19 12.14 31.53 13.47C33.22 15.15 34.51 16.97 35.38 18.85C36.5 21.29 36.62 22.65 35.86 24.26C35.11 25.85 35.23 26.35 36.6 27.45C37.97 28.54 38.14 28.61 40.47 29.04C43.54 29.6 43.94 29.63 45.19 29.31C46.38 29.01 46.89 28.75 47.25 28.27C47.48 27.97 47.49 27.7 47.48 23.5L47.47 19.05L46.98 17.76C46.09 15.44 46.03 15.13 46.03 13.19C46.04 11.22 46.16 10.28 46.8 7.47C47.11 6.07 47.39 5.2 47.78 4.37C48.08 3.74 48.42 2.95 48.54 2.63C49.18 0.83 50.82 0.83 51.46 2.63C51.58 2.95 51.92 3.74 52.22 4.37C52.61 5.2 52.89 6.07 53.2 7.47C53.84 10.28 53.96 11.22 53.97 13.19C53.97 15.13 53.91 15.44 53.02 17.76L52.53 19.05L52.52 23.5C52.51 27.7 52.52 27.97 52.75 28.27C53.11 28.75 53.62 29.01 54.81 29.31C56.06 29.63 56.46 29.6 59.53 29.04C61.86 28.61 62.03 28.54 63.4 27.45C64.77 26.35 64.89 25.85 64.14 24.26C63.38 22.65 63.5 21.29 64.62 18.85C65.49 16.97 66.78 15.15 68.47 13.47C69.81 12.14 71.35 10.89 71.81 10.78C72.26 10.66 72.75 10.87 72.97 11.25C73.14 11.55 73.11 11.78 72.74 13.69C72.52 14.84 72.16 16.29 71.95 16.89C71.74 17.5 71.38 18.84 71.15 19.89C70.91 20.93 70.55 22.29 70.33 22.91C70.12 23.53 69.8 24.73 69.63 25.56C69.45 26.4 69.14 27.62 68.94 28.28C68.74 28.94 68.49 29.88 68.38 30.36C68.15 31.36 67.74 31.9 67.12 32.01C66.59 32.1 43.69 32.15 37.53 32.07Z"/></symbol>
+</svg>
+
+<!-- ══ NAV ═══════════════════════════════════════════════════════════════
+     The bar is opaque from the first pixel of scroll rather than fading in
+     over the hero. It used to be transparent until 80px down, which on a
+     phone — where the hero photograph fills the screen and the top of it is
+     a bright hillside — meant white type on a pale picture, and the header
+     read as simply absent.
+
+     Below 1024px the links move into a sheet behind a menu button. Before,
+     they were display:none there, so a phone and a tablet had no navigation
+     at all: a brand and one button on a page with eleven sections. -->
+<header id="nav" class="fixed inset-x-0 top-0 z-50 text-cloud">
+  <nav aria-label="Primary" class="nav-bar">
+    <a href="#ascent" class="brand" aria-label="Triton Humming Valley, back to the top">
+      <svg class="brand-mark" viewBox="0 0 100 146.97" aria-hidden="true"><use href="#triton-mark"/></svg>
+      <span class="brand-words">
+        <span class="brand-name">Triton</span>
+        <span class="brand-sub">Humming Valley</span>
+      </span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a class="nav-link" href="#film">Film</a></li>
+      <li><a class="nav-link" href="#land">The land</a></li>
+      <li><a class="nav-link" href="#masterplan">Masterplan</a></li>
+      <li><a class="nav-link" href="#villas">Villas</a></li>
+      <li><a class="nav-link" href="#ownership">Ownership</a></li>
+    </ul>
+
+    <button type="button" data-enquire="Nav" class="btn btn-dawn nav-cta">Book a viewing</button>
+
+    <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="nav-sheet">
+      <span class="nav-burger" aria-hidden="true"><i></i><i></i></span>
+      <span class="sr-only">Menu</span>
+    </button>
+  </nav>
+
+  <!-- The sheet is in the markup, not built by script, so it exists for a
+       crawler and for anyone whose JS failed. -->
+  <div id="nav-sheet" class="nav-sheet" hidden>
+    <ul class="nav-sheet-links">
+      <li><a href="#film">Film</a></li>
+      <li><a href="#approach">Location</a></li>
+      <li><a href="#land">The land</a></li>
+      <li><a href="#views">Views</a></li>
+      <li><a href="#masterplan">Masterplan</a></li>
+      <li><a href="#villas">Villas</a></li>
+      <li><a href="#ownership">Ownership</a></li>
+      <li><a href="#assurance">Assurance</a></li>
+    </ul>
+    <div class="nav-sheet-foot">
+      <button type="button" data-enquire="Menu" class="btn btn-dawn w-full">Book a viewing</button>
+      <a class="nav-sheet-call" href="tel:+919036682626" data-field="phone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8.1 9.6a16 16 0 0 0 6 6l1.2-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z"/></svg>
+        <span>+91 90366 82626</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- A phone has no room for a call to action in the bar, and a sales page
+     should never be more than a thumb away from one. -->
+<div class="dock" aria-hidden="false">
+  <button type="button" data-enquire="Dock" class="btn btn-dawn dock-cta">Book a viewing</button>
+  <a class="dock-call" href="tel:+919036682626" data-field="phone" aria-label="Call +91 90366 82626">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8.1 9.6a16 16 0 0 0 6 6l1.2-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z"/></svg>
+  </a>
+</div>
+
+<div class="page-shell">
+<main id="main">
+
+<!-- ══ 1 · HERO ═════════════════════════════════════════════════════════
+     A photograph carries the whole frame, with the enquiry card sitting in
+     the corner over it. The card is the point: on a project selling by
+     private viewing, the first screen should let someone ask for one without
+     scrolling or hunting for a button. -->
+<section id="hero" class="relative min-h-[100svh] overflow-clip">
+  <!-- Drawn ground beneath the photograph, so the frame is never empty
+       while the image loads and never broken if it fails. -->
+  <div class="hero-ground" aria-hidden="true"></div>
+  <img class="hero-photo" alt=""
+       data-src="images/hero.jpg" width="2000" height="1116"
+       aria-hidden="true" decoding="async" fetchpriority="high">
+  <div class="hero-scrim" aria-hidden="true"></div>
+
+  <div class="hero-grid">
+    <div class="hero-copy">
+      <p class="hero-eyebrow">North Bangalore &nbsp;·&nbsp; foothills of Nandi Hills</p>
+      <h1 class="display">
+        <span class="hero-line">
+          <span class="word-mask"><span class="word">Humming</span></span>
+          <span class="word-mask"><span class="word">Valley</span></span>
+        </span>
+        <span class="hero-line hero-line-2">
+          <span class="word-mask"><span class="word">Live</span></span>
+          <span class="word-mask"><span class="word">above</span></span>
+          <span class="word-mask"><span class="word">the</span></span>
+          <span class="word-mask"><span class="word">ordinary.</span></span>
+        </span>
+      </h1>
+      <p class="lede">
+        A private collection of <span data-villa-count>30</span> Bali-inspired villas
+        in Nandi Hills, Bangalore &mdash; where mornings begin with mist, days unfold
+        at your own pace, and the city feels wonderfully far away.
+      </p>
+      <dl class="hero-facts">
+        <div><dt>Villas</dt><dd data-villa-count>30</dd></div>
+        <div><dt>Built-up</dt><dd>Upto 4448<span>sq ft</span></dd></div>
+        <div><dt><b class="incl">All inclusive</b></dt><dd>₹2.9<span>Cr</span></dd></div>
+        <div data-possession-row><dt>Possession</dt><dd data-possession>October 2026</dd></div>
+      </dl>
+      <div class="hero-actions">
+        <a class="btn btn-dawn" data-call href="tel:+919036682626"><svg class="call-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8.1 9.6a16 16 0 0 0 6 6l1.2-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z"/></svg>Call <span data-call-label>+91 90366 82626</span></a>
+        <a class="btn btn-whatsapp" data-whatsapp href="https://wa.me/919036682626"><svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.65-2.05-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.53.15-.18.2-.3.3-.5.1-.2.05-.38-.02-.53-.08-.15-.67-1.6-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.53.07-.8.38-.28.3-1.05 1.02-1.05 2.5s1.08 2.9 1.23 3.1c.15.2 2.12 3.24 5.15 4.54.72.31 1.28.5 1.72.63.72.23 1.38.2 1.9.12.58-.09 1.75-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35Z"/><path d="M12.04 2.5c-5.24 0-9.5 4.26-9.5 9.5 0 1.67.44 3.3 1.27 4.74L2.5 21.5l4.9-1.28a9.46 9.46 0 0 0 4.64 1.2h.01c5.23 0 9.49-4.26 9.49-9.5 0-2.54-.99-4.92-2.78-6.71a9.42 9.42 0 0 0-6.72-2.79Zm5.55 15.05a7.87 7.87 0 0 1-5.55 2.3h-.01a7.9 7.9 0 0 1-4.02-1.1l-.29-.17-2.98.78.8-2.9-.19-.3a7.87 7.87 0 0 1-1.21-4.2 7.9 7.9 0 0 1 13.48-5.58 7.83 7.83 0 0 1 2.31 5.58c0 2.1-.82 4.08-2.3 5.57Z"/></svg>WhatsApp us</a>
+      </div>
+    </div>
+
+    <!-- The enquiry card. Three fields only: asking for more on a first
+         screen costs more enquiries than the extra detail is worth. -->
+    <aside class="hero-card" aria-labelledby="hero-card-h">
+      <h2 id="hero-card-h">Step into Humming Valley <span aria-hidden="true">&rarr;</span></h2>
+      <p>One party at a time. We confirm within a working day.</p>
+      <div data-enquiry-mount data-variant="compact" data-source="Hero card"></div>
+      <p class="hero-card-alt">
+        Or call <a href="tel:+919036682626" data-field="phone">+91 90366 82626</a>
+      </p>
+    </aside>
+  </div>
+
+  <p class="hero-scrollcue" aria-hidden="true">Scroll</p>
+</section>
+
+<!-- ══ 1b · THE FILM ═════════════════════════════════════════════════════
+     A poster and a play button. The YouTube player is not on the page until
+     someone asks for it: an embed costs about half a megabyte and sets
+     cookies before a visitor has decided to watch anything. The poster is
+     one of the project's own stills, served from this domain. -->
+<section id="film" class="relative bg-night text-cloud py-[clamp(3rem,8vh,7rem)]">
+  <div class="mx-auto w-full max-w-[1600px] px-[clamp(1.25rem,4vw,3rem)]">
+    <div class="relative pl-[var(--rail)]">
+      <div class="rail-line text-haze" aria-hidden="true"></div>
+
+      <p class="eyebrow" data-anim="rise">The film</p>
+      <h2 style="font-size:var(--step-3)" class="max-w-[18ch]" data-anim="rise">
+        Watch the valley.
+      </h2>
+
+      <button type="button" class="video-card mt-8 sm:mt-10" data-video="85QY818IoOc"
+              aria-label="Play the film about Triton Humming Valley">
+        <!-- The picture and its caption are separate boxes, so the caption
+             can sit under the frame on a phone instead of across the middle
+             of it. At 390px the card is 219px tall and the caption used to
+             land on the swimmers. -->
+        <span class="video-shot">
+          <img class="video-poster" data-src="images/video-poster.jpg" alt=""
+               width="1400" height="788" decoding="async" loading="lazy">
+          <span class="video-scrim" aria-hidden="true"></span>
+          <span class="video-play" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>
+          </span>
+        </span>
+        <span class="video-meta">
+          <span class="video-title">Triton Humming Valley</span>
+          <span class="video-desc">A short film of the project and the land it stands on</span>
+        </span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 2 · THE DRIVE UP  (still below the cloud line) ═════════════════════ -->
+<section id="approach" class="relative bg-night-2 py-[clamp(3.25rem,9vh,9rem)]">
+  <div class="mx-auto w-full max-w-[1600px] px-[clamp(1.25rem,4vw,3rem)]">
+    <div class="relative pl-[var(--rail)]">
+      <div class="rail-line text-haze" aria-hidden="true"></div>
+
+      <p class="eyebrow mb-10" data-anim="rise">The world around you</p>
+
+      <h2 class="text-cloud max-w-[18ch]" style="font-size:var(--step-4)" data-anim="rise">
+        Close to what matters.
+      </h2>
+
+      <p class="lede mt-7 text-haze" data-anim="rise">
+        From the airport to the vineyards, everything you need is within reach. Yet
+        once you arrive, Bengaluru feels beautifully distant. Spend the morning in the
+        hills, take an afternoon drive through the vineyards, or simply stay home and
+        let the day unfold slowly.
+      </p>
+
+      <!-- Drive times, drawn and listed. The rings are minutes from the
+           gate, so the vineyards being nearer than the airport is something
+           you see rather than something you work out. The list underneath is
+           the same four facts as text — it is what a screen reader gets, and
+           what anyone gets with the diagram off. Built from DATA.reach. -->
+      <div class="reach mt-14" data-reach>
+        <div class="reach-dial">
+          <svg viewBox="0 0 420 420" class="reach-svg" aria-hidden="true">
+            <g class="reach-rings" fill="none" stroke="currentColor"></g>
+            <g class="reach-ticks"></g>
+            <g class="reach-spokes" fill="none" stroke="currentColor"></g>
+            <g class="reach-dots"></g>
+            <g class="reach-home">
+              <circle cx="210" cy="210" r="6" fill="#6FCBB0"/>
+              <circle cx="210" cy="210" r="13" fill="none" stroke="#6FCBB0" stroke-opacity=".45"/>
+            </g>
+          </svg>
+        </div>
+        <dl class="reach-list"><!-- from DATA.reach --></dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 4 · THE LAND  (above the line — light ground from here) ════════════ -->
+<section id="land" class="on-light bg-cloud text-ink py-[clamp(3.25rem,9vh,10rem)]">
+  <div class="mx-auto w-full max-w-[1600px] px-[clamp(1.25rem,4vw,3rem)]">
+    <div class="relative pl-[var(--rail)]">
+      <div class="rail-line text-mist" aria-hidden="true"></div>
+
+      <p class="eyebrow mb-10" data-anim="rise">Luxury villas in Bangalore</p>
+
+      <div class="grid gap-14 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,.95fr)] lg:gap-24">
+        <div>
+          <h2 class="max-w-[15ch]" style="font-size:var(--step-4)" data-anim="rise"
+              data-lines="More Space|More Life">
+            More Space More Life
+          </h2>
+          <p class="mt-7 text-mist" style="font-size:var(--step-1);line-height:1.55;font-weight:200" data-anim="rise">
+            Only <span data-villa-count>30</span> villas share a landscape where 50% of
+            the site remains open and green. More room between homes.
+          </p>
+          <p class="mt-4 text-mist" data-anim="rise">
+            More privacy. More places to walk, gather, play and simply be.
+          </p>
+        </div>
+
+        <dl class="grid grid-cols-2 gap-x-8 gap-y-10 self-start pt-2">
+          <div data-anim="rise">
+            <dt class="text-[.85rem] text-mist">Villas</dt>
+            <dd class="font-display mt-1.5" style="font-size:var(--step-3)" data-villa-count>30</dd>
+          </div>
+          <div data-anim="rise">
+            <dt class="text-[.85rem] text-mist">Open Green Spaces</dt>
+            <dd class="font-display mt-1.5" style="font-size:var(--step-3)">50%</dd>
+          </div>
+          <div data-anim="rise">
+            <dt class="text-[.85rem] text-mist">Built-up range</dt>
+            <dd class="font-display mt-1.5" style="font-size:var(--step-3)">Upto 4448<span class="text-[.42em] text-mist ml-1.5 font-sans font-medium">sq ft</span></dd>
+          </div>
+          <div data-anim="rise">
+            <dt class="text-[.85rem] text-mist">Villa Configurations</dt>
+            <dd class="font-display mt-1.5" data-no-count style="font-size:var(--step-3)">3,4 &amp; 5<span class="text-[.42em] text-mist ml-1.5 font-sans font-medium">BHK</span></dd>
+          </div>
+          <div data-anim="rise" data-possession-row class="col-span-2 border-t border-ink/12 pt-6">
+            <dt class="text-[.85rem] text-mist">Possession</dt>
+            <dd class="font-display mt-1.5 text-dawn-deep" style="font-size:var(--step-3)"
+                data-possession>October 2026</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 4b · THE VIEWS ═══════════════════════════════════════════════════
+     A coverflow of seven photographs over the site photograph. The cards
+     are built from DATA.coverflow; the carriage is at the foot of site.js. -->
+<section id="views" class="relative overflow-hidden bg-night pt-[clamp(3.5rem,9vh,8.5rem)] pb-[clamp(2.5rem,6vh,6rem)]">
+  <div class="absolute inset-0"
+       style="background:linear-gradient(140deg,#0B2A25,#0F3F37 45%,#3E6B5E)" aria-hidden="true"></div>
+  <img class="band-photo absolute inset-0 h-full w-full object-cover opacity-0"
+       data-src="images/band.jpg"
+       alt="The villa rows along the internal street, the hillside standing in monsoon cloud behind them."
+       loading="lazy" decoding="async" width="2000" height="1200">
+  <div class="views-scrim" aria-hidden="true"></div>
+
+  <div class="relative mx-auto w-full max-w-[1600px] px-[clamp(1.25rem,4vw,3rem)]">
+    <p class="views-lead" data-anim="rise">
+      If you feel like you have seen it all, wait till you watch our villa
+      views from the bedrooms&hellip;
+    </p>
+  </div>
+
+  <div class="relative mt-8" data-coverflow data-label="Villa views"><!-- from DATA.coverflow --></div>
+</section>
+
+<!-- ══ 5 · MASTERPLAN ════════════════════════════════════════════════════
+     Plots are real <button> elements inside foreignObject-free SVG: each
+     is focusable, has an accessible name, and reports pressed state. The
+     detail panel is a live region, so selecting a plot with a keyboard
+     announces the change without moving focus away from the map.        -->
+<section id="masterplan" class="on-light bg-cloud-2 text-ink py-[clamp(3rem,8vh,8rem)]">
+  <div class="mx-auto w-full max-w-[1600px] px-[clamp(1.25rem,4vw,3rem)]">
+    <div class="relative pl-[var(--rail)]">
+      <div class="rail-line text-mist" aria-hidden="true"></div>
+
+      <div class="flex flex-wrap items-end justify-between gap-6">
+        <h2 style="font-size:var(--step-3)" data-anim="rise">Choose your ground</h2>
+      </div>
+
+      <div class="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] lg:gap-16">
+
+        <!-- The map. Ridge contours give the plots a site to sit in. -->
+        <div class="plan-map relative min-w-0 border border-ink/12 bg-white p-3 sm:p-5">
+          <svg id="plan" viewBox="0 0 640 460" class="w-full h-auto"
+               role="group" aria-label="Site plan. Thirty villas in three rows, clubhouse to the south-west, approach road along the eastern edge.">
+            <defs>
+              <pattern id="canopy" width="16" height="16" patternUnits="userSpaceOnUse">
+                <rect width="16" height="16" fill="#EDF1EC"/>
+                <circle cx="5" cy="5" r="3.1" fill="#16564A" fill-opacity=".10"/>
+                <circle cx="13" cy="12" r="2.6" fill="#16564A" fill-opacity=".08"/>
+              </pattern>
+            </defs>
+
+            <!-- Coconut canopy surrounds the site on three sides -->
+            <rect width="640" height="460" fill="url(#canopy)"/>
+            <rect x="16" y="30" width="604" height="404" fill="#F6F8F5" stroke="#16564A" stroke-opacity=".28"/>
+
+            <!-- Landscaped strip and clubhouse along the western edge -->
+            <rect x="24" y="38" width="68" height="256" fill="#16564A" fill-opacity=".12"/>
+            <text x="58" y="170" text-anchor="middle" fill="#55676A" font-size="9"
+                  font-family="Jost, sans-serif" transform="rotate(-90 58 170)">landscaped green</text>
+            <rect x="24" y="306" width="68" height="76" fill="#16564A" fill-opacity=".9"/>
+            <text x="58" y="338" text-anchor="middle" fill="#F3F5F2" font-size="10"
+                  font-family="Jost, sans-serif" font-weight="600">Clubhouse</text>
+            <text x="58" y="352" text-anchor="middle" fill="#F3F5F2" fill-opacity=".8" font-size="8.5"
+                  font-family="Jost, sans-serif">6,900 sq ft</text>
+
+            <!-- Internal driveways between the rows -->
+            <rect x="96" y="126" width="490" height="46" fill="#0B3B33" fill-opacity=".12"/>
+            <rect x="96" y="256" width="490" height="46" fill="#0B3B33" fill-opacity=".12"/>
+            <!-- Approach road along the eastern boundary -->
+            <rect x="592" y="38" width="18" height="344" fill="#0B3B33" fill-opacity=".2"/>
+            <text x="601" y="215" text-anchor="middle" fill="#55676A" font-size="8.5"
+                  font-family="Jost, sans-serif" transform="rotate(-90 601 215)">approach road</text>
+
+            <g id="plots"><!-- injected from DATA.plots --></g>
+          </svg>
+        </div>
+
+        <!-- The same thirty villas for a phone. Thirty plots drawn across
+             300px are unreadable and untappable, and a map that scrolls
+             sideways inside a page that scrolls down reads as a mistake. The
+             rows are kept, so the site is still legible as three rows with
+             the clubhouse at one end — it is the drawing that goes, not the
+             information. Built from DATA.plots, same handler as the map. -->
+        <div id="plot-chips" class="plan-chips"><!-- from DATA.plots --></div>
+
+        <!-- Detail panel -->
+        <aside class="lg:sticky lg:top-28 self-start" aria-labelledby="plot-detail-h">
+          <h3 id="plot-detail-h" class="sr-only">Selected plot</h3>
+          <div id="plot-detail" aria-live="polite" class="border-t-2 border-ink pt-6 min-h-[16rem]"></div>
+        </aside>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 6 · THE VILLAS ════════════════════════════════════════════════════
+     <details>/<summary> so the expansion works with no JavaScript and is
+     keyboard- and screen-reader-correct by construction. GSAP animates the
+     open/close; it never owns the state.                                 -->
+<section id="villas" class="on-light bg-cloud text-ink py-[clamp(3.25rem,9vh,10rem)]">
+  <div class="mx-auto w-full max-w-[1600px] px-[clamp(1.25rem,4vw,3rem)]">
+    <div class="relative pl-[var(--rail)]">
+      <div class="rail-line text-mist" aria-hidden="true"></div>
+
+      <h2 style="font-size:var(--step-4)" class="max-w-[16ch]" data-anim="rise">Three ways to live here.</h2>
+      <p class="mt-6 text-mist max-w-[58ch]" data-anim="rise">
+        Every villa runs over three levels with a lift to each one, a double-height
+        living volume around the signature indoor waterfall, and a roof terrace with
+        its own plunge pool and bar counter. What changes is how much space you want
+        around your home.
+      </p>
+
+      <div id="villa-list" class="mt-14 grid gap-5"><!-- injected from DATA.villas --></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 7 · INSIDE  (warm dark — the Balinese world) ══════════════════════
+     The third ground. Above the cloud line the page has been cool and open;
+     stepping inside the villa it turns warm and enclosed. One pinned
+     horizontal track — the only other pinned section on the page.       -->
+<section id="inside" class="text-cloud py-[clamp(3.25rem,9vh,9rem)]">
+  <div class="mx-auto w-full max-w-[1600px] px-[clamp(1.25rem,4vw,3rem)]">
+    <div class="relative pl-[var(--rail)]">
+      <div class="rail-line text-cloud" aria-hidden="true"></div>
+      <p class="eyebrow" data-anim="rise">A waterfall at the heart of home.</p>
+      <h2 style="font-size:var(--step-4)" class="max-w-[17ch]" data-anim="rise">
+        Come home to the sound of water.
+      </h2>
+      <p class="lede mt-7" style="color:#C7D6CC;max-width:56ch" data-anim="rise">
+        A 15-foot waterfall descends through the heart of each villa, flowing into a
+        private pool embraced by the living spaces. Open the doors, slow down, and let
+        the sound of falling water become part of everyday life.
+      </p>
+    </div>
+  </div>
+
+  <!-- Scroll choreography. Four frames sit in the quadrants, swap
+       diagonally, gather to the centre and the last one opens to fill the
+       screen. Held by CSS position:sticky rather than a ScrollTrigger pin —
+       sticky is native, needs no pin-spacer and does not fight the smooth
+       scroll layer, so the page is left with a single pinned section. -->
+  <section id="choreo" aria-label="The villa interiors" class="relative mt-16">
+    <div class="choreo-stage">
+      <div class="choreo-halo" aria-hidden="true"></div>
+      <div class="choreo-inner"><!-- injected from DATA.choreography --></div>
+      <figcaption class="choreo-caption" aria-hidden="true"></figcaption>
+    </div>
+  </section>
+
+  <div id="gallery" class="mx-auto mt-20 grid max-w-[1600px] gap-4 px-[clamp(1.25rem,4vw,3rem)]
+                            sm:grid-cols-2 lg:grid-cols-3"><!-- injected from DATA.gallery --></div>
+
+</section>
+
+<!-- ══ 7b · THE OWNERSHIP MODEL ══════════════════════════════════════════
+     Three cards, built from DATA.ownership. The skew, the glow behind it and
+     the panel that opens on hover are in the stylesheet — nothing here needs
+     script beyond the markup. -->
+<section id="ownership" class="relative overflow-hidden bg-night text-cloud py-[clamp(3.25rem,9vh,9rem)]">
+  <div class="mx-auto w-full max-w-[1600px] px-[clamp(1.25rem,4vw,3rem)]">
+    <div class="relative pl-[var(--rail)]">
+      <div class="rail-line text-haze" aria-hidden="true"></div>
+
+      <p class="eyebrow" data-anim="rise">The ownership model</p>
+      <h2 style="font-size:var(--step-4)" class="max-w-[18ch]" data-anim="rise"
+          data-lines="Own it. Forget it.|Let it earn.">
+        Own it. Forget it. Let it earn.
+      </h2>
+      <p class="lede mt-7" style="color:var(--color-haze);max-width:54ch" data-anim="rise">
+        A residence at Humming Valley can be yours to live in, and yours to leave
+        running when you are not there.
+      </p>
+
+      <div id="ownership-cards" class="mt-16 grid gap-x-10 gap-y-14 md:grid-cols-2 lg:grid-cols-3"><!-- from DATA.ownership --></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 8 · THE CASE ══════════════════════════════════════════════════════ -->
+<section id="case" class="on-light bg-cloud text-ink py-[clamp(3.25rem,9vh,9rem)]">
+  <div class="mx-auto w-full max-w-[1600px] px-[clamp(1.25rem,4vw,3rem)]">
+    <div class="relative pl-[var(--rail)]">
+      <div class="rail-line text-mist" aria-hidden="true"></div>
+      <h2 style="font-size:var(--step-3)" class="max-w-[20ch]" data-anim="rise">
+        Why North Bengaluru and Why Now?
+      </h2>
+
+      <div class="mt-12 grid gap-x-16 gap-y-12 md:grid-cols-2 lg:grid-cols-3 max-w-6xl">
+        <article data-anim="rise">
+          <h3 class="font-display" style="font-size:var(--step-1)">The airport corridor</h3>
+          <p class="mt-3 text-mist">
+            The airport has changed the north of Bengaluru. What was once the city&rsquo;s
+            edge is becoming a major economic corridor &mdash; driven by aviation,
+            infrastructure, employment and limited land supply.
+          </p>
+        </article>
+        <article data-anim="rise">
+          <h3 class="font-display" style="font-size:var(--step-1)">Supply that cannot grow</h3>
+          <p class="mt-3 text-mist">
+            Ridge-facing land near Nandi is finite and building on it is constrained.
+            Thirty villas is the whole project; there is no phase two on this site.
+          </p>
+        </article>
+        <article data-anim="rise">
+          <h3 class="font-display" style="font-size:var(--step-1)">It works as a second home</h3>
+          <p class="mt-3 text-mist">
+            An hour from north Bengaluru makes this usable on an ordinary weekend,
+            not just a holiday — which is what separates a home you visit from one
+            you keep meaning to.
+          </p>
+        </article>
+        <article data-anim="rise" data-possession-row>
+          <h3 class="font-display" style="font-size:var(--step-1)">Tangible, not a promise</h3>
+          <p class="mt-3 text-mist">
+            Possession is <span data-possession>October 2026</span>. The land is here,
+            the villas are taking shape, and what you are buying is tangible &mdash; not
+            just a promise on paper.
+          </p>
+        </article>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ 9 · ASSURANCE ═════════════════════════════════════════════════════ -->
+<section id="assurance" class="on-light bg-cloud-2 text-ink py-[clamp(3.25rem,9vh,9rem)]">
+  <div class="mx-auto w-full max-w-[1600px] px-[clamp(1.25rem,4vw,3rem)]">
+    <div class="relative pl-[var(--rail)]">
+      <div class="rail-line text-mist" aria-hidden="true"></div>
+      <h2 style="font-size:var(--step-3)" data-anim="rise">The paperwork, plainly</h2>
+
+      <div class="mt-12 grid gap-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] [&>div]:min-w-0">
+
+        <!-- Specifications -->
+        <div>
+          <h3 class="font-display" style="font-size:var(--step-1)" data-anim="rise">What is built in</h3>
+          <ul class="mt-6 divide-y divide-ink/12 border-t border-ink/12">
+            <li class="flex flex-col gap-1 py-3.5 sm:flex-row sm:gap-6"><span class="text-mist text-[.88rem] sm:w-40 sm:shrink-0">Architecture</span><span>Balinese, single and split level</span></li>
+            <li class="flex flex-col gap-1 py-3.5 sm:flex-row sm:gap-6"><span class="text-mist text-[.88rem] sm:w-40 sm:shrink-0">Water feature</span><span>15 ft indoor waterfall, private jacuzzi</span></li>
+            <li class="flex flex-col gap-1 py-3.5 sm:flex-row sm:gap-6"><span class="text-mist text-[.88rem] sm:w-40 sm:shrink-0">Flooring</span><span>Imported stone and engineered timber</span></li>
+            <li class="flex flex-col gap-1 py-3.5 sm:flex-row sm:gap-6"><span class="text-mist text-[.88rem] sm:w-40 sm:shrink-0">Automation</span><span>Smart home, lighting and climate</span></li>
+            <li class="flex flex-col gap-1 py-3.5 sm:flex-row sm:gap-6"><span class="text-mist text-[.88rem] sm:w-40 sm:shrink-0">Energy</span><span>Solar integration</span></li>
+            <li class="flex flex-col gap-1 py-3.5 sm:flex-row sm:gap-6"><span class="text-mist text-[.88rem] sm:w-40 sm:shrink-0">Water</span><span>Rainwater harvesting</span></li>
+            <li class="flex flex-col gap-1 py-3.5 sm:flex-row sm:gap-6"><span class="text-mist text-[.88rem] sm:w-40 sm:shrink-0">Community</span><span>Clubhouse, 24/7 security, gated access</span></li>
+            <li class="flex gap-6 py-3.5" data-possession-row><span class="w-40 shrink-0 text-mist text-[.88rem]">Possession</span><span data-possession>October 2026</span></li>
+          </ul>
+        </div>
+
+        <!-- FAQ -->
+        <div>
+          <h3 class="font-display" style="font-size:var(--step-1)" data-anim="rise">Questions we are asked</h3>
+          <div class="mt-6 border-t border-ink/12">
+            <details class="group border-b border-ink/12 py-4">
+              <summary class="flex cursor-pointer items-center justify-between gap-4 font-medium">
+                Is the project RERA registered?
+                <svg class="chev h-4 w-4 shrink-0 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              </summary>
+              <p class="mt-3 text-mist" id="faq-rera">Yes. The registration number is shown in the footer of this page.</p>
+            </details>
+            <details class="group border-b border-ink/12 py-4">
+              <summary class="flex cursor-pointer items-center justify-between gap-4 font-medium">
+                What do I actually see at a viewing?
+                <svg class="chev h-4 w-4 shrink-0 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              </summary>
+              <p class="mt-3 text-mist">Your own plot, on the ground, and the villas as they stand today &mdash; the structures are up and finishing work is under way ahead of possession in October 2026. Early morning slots are worth taking between November and February, when the cloud sits in the valley.</p>
+            </details>
+            <details class="group border-b border-ink/12 py-4">
+              <summary class="flex cursor-pointer items-center justify-between gap-4 font-medium">
+                Are home loans available?
+                <svg class="chev h-4 w-4 shrink-0 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              </summary>
+              <p class="mt-3 text-mist">The project is approved by leading lenders. Our team can put you in touch with the relevant bank relationship manager.</p>
+            </details>
+            <details class="group border-b border-ink/12 py-4">
+              <summary class="flex cursor-pointer items-center justify-between gap-4 font-medium">
+                Who maintains the common areas?
+                <svg class="chev h-4 w-4 shrink-0 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              </summary>
+              <p class="mt-3 text-mist">A facilities team manages landscaping, security, the clubhouse and water systems, funded by a monthly maintenance charge confirmed at booking.</p>
+            </details>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 10 · BOOK A VIEWING ═══════════════════════════════════════════════
+     Back to night ground, and the only place the sunrise wash returns —
+     dawn breaks on the conversion, which is the whole point of the page. -->
+<section id="viewing" class="relative overflow-clip bg-night text-cloud py-[clamp(3.5rem,10vh,10rem)]">
+  <div class="sunwash" style="bottom:-30%" aria-hidden="true"></div>
+
+  <div class="relative mx-auto w-full max-w-[1600px] px-[clamp(1.25rem,4vw,3rem)]">
+    <div class="relative pl-[var(--rail)]">
+      <div class="rail-line text-haze" aria-hidden="true"></div>
+      <p class="alt alt-tick text-dawn mb-8">First light &middot; 06:14</p>
+
+      <div class="grid gap-16 lg:grid-cols-[minmax(0,.9fr)_minmax(0,1.1fr)] lg:gap-24">
+        <div>
+          <h2 style="font-size:var(--step-4)" class="max-w-[16ch]"
+              data-lines="Come see it.|Feel the difference.">Come see it. Feel the difference.</h2>
+          <p class="lede mt-7 text-haze">
+            Viewings are by appointment, one party at a time. Tell us when suits and
+            we will confirm within a working day.
+          </p>
+          <dl class="mt-12 space-y-6">
+            <div>
+              <dt class="text-[.85rem] text-haze">Sales</dt>
+              <dd class="mt-1"><a class="nav-link font-display text-[1.35rem]" href="tel:+919036682626" data-field="phone">+91 90366 82626</a></dd>
+            </div>
+            <div>
+              <dt class="text-[.85rem] text-haze">Email</dt>
+              <dd class="mt-1"><a class="nav-link font-display text-[1.35rem]" href="mailto:sales@tritongroup.in" data-field="email">sales@tritongroup.in</a></dd>
+            </div>
+            <div>
+              <dt class="text-[.85rem] text-haze">Site</dt>
+              <dd class="mt-1">
+                <a class="map-link" data-map href="https://maps.app.goo.gl/qKgAu1p8eE1tc8KK6">
+                  <svg class="map-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><span>Near Nandi Hills,<br>Bangalore North, Karnataka
+                  <em>View on Google Maps</em></span>
+                </a>
+              </dd>
+            </div>
+          </dl>
+        </div>
+
+        <div data-enquiry-mount data-variant="full" data-source="Enquiry section"></div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+</div><!-- /.page-shell -->
+
+<!-- ══ FOOTER ════════════════════════════════════════════════════════════
+     Deliberately plain. The reveal that used to sit here competed with the
+     enquiry form directly above it for the same attention, and the form is
+     what matters. -->
+<footer id="site-footer">
+  <div class="foot-inner">
+    <div class="foot-brand">
+      <svg class="foot-mark" viewBox="0 0 100 146.97" role="img"
+           aria-label="Triton Group"><use href="#triton-mark"/></svg>
+      <p class="foot-name">Triton Humming Valley</p>
+      <p class="foot-by">Developed by Triton Group, Bengaluru</p>
+      <a class="foot-site" href="https://tritongroup.in/" target="_blank" rel="noopener">
+        Visit tritongroup.in
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+        <span class="sr-only">(opens in a new tab)</span>
+      </a>
+    </div>
+    <nav class="foot-nav" aria-label="Footer">
+      <a href="#land">The land</a>
+      <a href="#masterplan">Masterplan</a>
+      <a href="#villas">Villas</a>
+      <a href="#inside">Inside</a>
+      <a href="#assurance">Assurance</a>
+    </nav>
+    <div class="foot-contact">
+      <a href="tel:+919036682626" data-field="phone">+91 90366 82626</a>
+      <a href="mailto:sales@tritongroup.in" data-field="email">sales@tritongroup.in</a>
+      <p><a class="map-link" data-map href="https://maps.app.goo.gl/qKgAu1p8eE1tc8KK6">
+        <svg class="map-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><span>Near Nandi Hills,<br>Bangalore North, Karnataka</span>
+      </a></p>
+    </div>
+  </div>
+  <div class="foot-legal">
+    <p id="rera-line">RERA registration &mdash; not yet configured.</p>
+    <p>Images, plans and areas are indicative and subject to change. They do not
+       form part of any offer or contract.</p>
+    <p>&copy; <span id="year">2026</span> Triton Group. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- ══ ENQUIRY POPUP ═════════════════════════════════════════════════════
+     Opened by every call to action on the page. -->
+<div id="enquiry-modal" hidden>
+  <div class="modal-scrim" data-close></div>
+  <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modal-h">
+    <button type="button" class="modal-close" data-close aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+        <path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="modal-head">
+      <h2 id="modal-h">Book a private viewing</h2>
+      <p class="modal-sub">Viewings are by appointment, one party at a time.
+         Tell us when suits and we will confirm within a working day.</p>
+    </div>
+    <div data-enquiry-mount data-variant="full" data-source="Popup"></div>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<!-- The film. The iframe is written on open and cleared on close, so the
+     player is never loaded until it is wanted and never keeps playing behind
+     a closed dialog. -->
+<div id="video-modal" hidden>
+  <div class="modal-scrim" data-video-close></div>
+  <div class="video-panel" role="dialog" aria-modal="true" aria-label="Triton Humming Valley, the film">
+    <button type="button" class="video-close" data-video-close aria-label="Close the film">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+        <path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="video-frame"><!-- iframe written here on open --></div>
+  </div>
+</div>
+
+<div id="lightbox" hidden role="dialog" aria-modal="true" aria-labelledby="lb-cap">
+  <button id="lb-close" class="absolute right-5 top-5 btn btn-quiet min-h-[44px]! px-4! py-2!">
+    Close
+  </button>
+  <figure class="text-center">
+    <img id="lb-img" alt="">
+    <figcaption id="lb-cap" class="mt-4 text-haze text-[.9rem]"></figcaption>
+  </figure>
+</div>
+
+
+</body>
+</html>
