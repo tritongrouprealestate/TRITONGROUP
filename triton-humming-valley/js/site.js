@@ -1739,135 +1739,200 @@ if (!mount || typeof DATA === 'undefined' || !DATA.coverflow) return;
 const slides = DATA.coverflow, count = slides.length;
 if (!count) return;
 
+/* Geometry. Every one of these is a look, not a mechanism — change them
+   freely, nothing below depends on a particular value.
+
+   ROTATE    degrees the first neighbour tilts
+   DEPTH     how far it recedes, as a fraction of card width
+   FALLOFF   exponent on distance: below 1 the rake eases off as cards
+             travel out, which is what keeps the second card readable
+   FADE      opacity lost per step from the centre
+   GAP       space between cards, as a fraction of card width           */
 const ROTATE = 44, DEPTH = 0.6, FALLOFF = 0.56, FADE = 0.1, GAP = 0.05;
+const LOOP = true, MAX_TILT = 82;
 
-mount.innerHTML = `<div class="cf" role="region" aria-label="${mount.dataset.label || 'Gallery'}">
-  <button type="button" class="cf-nav cf-prev" aria-label="Previous slide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
-  <button type="button" class="cf-nav cf-next" aria-label="Next slide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
-  <div class="cf-frame" tabindex="0">
-    <div class="cf-track" role="region">
-      ${slides.map((s, i) => `
-        <button type="button" class="cf-card" data-index="${i}" aria-label="${s.title || 'View ' + (i + 1)}: ${s.alt}">
-          <img alt="${s.alt || ''}" data-src="${s.src}" draggable="false" decoding="async" width="1000" height="750" ${i > 2 ? 'loading="lazy"' : ''}>
-        </button>`).join('')}
+const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+const chev = d => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+  stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`;
+
+mount.innerHTML = `
+  <div class="cf" role="region" aria-roledescription="carousel"
+       aria-label="${mount.dataset.label || 'Gallery'}">
+    <div class="cf-frame" tabindex="0">
+      <div class="cf-track">
+        ${slides.map((s, i) => `
+          <figure class="cf-card" role="group" aria-roledescription="slide"
+                  aria-label="${i + 1} of ${count}">
+            <img alt="${s.alt}" data-src="${s.src}" draggable="false"
+                 decoding="async" width="1000" height="750"
+                 ${i > 2 ? 'loading="lazy"' : ''}>
+          </figure>`).join('')}
+      </div>
     </div>
-  </div>
-  <div class="cf-caption" role="status" aria-live="polite" aria-atomic="true"></div>
-  <div class="cf-dots" role="tablist" aria-label="Slides">
-    ${slides.map((s, i) => `<button type="button" class="cf-dot" data-index="${i}" ${i === 0 ? 'aria-current="true"' : ''}" aria-label="Go to slide ${i + 1}"></button>`).join('')}
-  </div>
-</div>`;
+    <button type="button" class="cf-nav cf-prev" aria-label="Previous view">${chev('m15 18-6-6 6-6')}</button>
+    <button type="button" class="cf-nav cf-next" aria-label="Next view">${chev('m9 18 6-6-6-6')}</button>
+    <p class="cf-caption" aria-live="polite"></p>
+    <div class="cf-dots">
+      ${slides.map((s, i) => `<button type="button" class="cf-dot"
+         aria-label="Go to ${s.title || 'view ' + (i + 1)}" data-dot="${i}"></button>`).join('')}
+    </div>
+  </div>`;
 
-const $ = (s, r = mount) => r.querySelector(s);
+const $  = (s, r = mount) => r.querySelector(s);
 const $$ = (s, r = mount) => Array.from(r.querySelectorAll(s));
-const frame = $('.cf-frame');
-const track = $('.cf-track');
-const cards = $$('.cf-card');
-const dots = $$('.cf-dot');
+const frame   = $('.cf-frame');
+const cards   = $$('.cf-card');
+const dots    = $$('.cf-dot');
 const caption = $('.cf-caption');
-const prev_btn = $('.cf-prev');
-const next_btn = $('.cf-next');
 
-let curr = 0, settle_req = null;
-
-const ease = (x) => (1 - Math.cos(x * Math.PI)) / 2;
-
-const render = () => {
-  const card_width = cards[0]?.offsetWidth || 220;
-  for (let i = 0; i < count; i++) {
-    const rel = (i - curr + count) % count;
-    const offset = rel > count / 2 ? rel - count : rel;
-    const angle = offset * (Math.PI / ROTATE);
-    const scale = 1 - Math.abs(offset) * (1 - DEPTH);
-    const z = Math.sin(Math.abs(angle)) * FALLOFF;
-    const opacity = 1 - Math.abs(offset) * FADE;
-
-    cards[i].style.transform = `translateX(calc(-50% + ${offset * (card_width * (1 + GAP))}px)) translateZ(${z * 40}px) rotateY(${-angle * 180 / Math.PI}deg) scale(${scale})`;
-    cards[i].style.opacity = opacity;
-    cards[i].style.zIndex = Math.round(100 - Math.abs(offset) * 10);
-    cards[i].setAttribute('aria-current', String(offset === 0));
-  }
-  const idx = Math.round(curr) % count;
-  dots.forEach((d, i) => d.setAttribute('aria-current', String(i === idx)));
-  if (caption) caption.textContent = slides[idx].title || `View ${idx + 1}`;
-};
-
-let drag_start = null, drag_curr = null, drag_vel = 0;
-
-const on_pointer_down = (e) => {
-  if (settle_req) cancelAnimationFrame(settle_req);
-  drag_start = e.clientX || (e.touches?.[0]?.clientX);
-  drag_curr = drag_start;
-};
-
-const on_pointer_move = (e) => {
-  if (drag_start == null) return;
-  const x = e.clientX || (e.touches?.[0]?.clientX);
-  drag_vel = (x - drag_curr) / 10;
-  drag_curr = x;
-  curr -= (x - drag_start) / 200;
-  render();
-};
-
-const on_pointer_up = () => {
-  if (drag_start == null) return;
-  drag_start = drag_curr = null;
-  const target = Math.round(curr + Math.sign(drag_vel) * 0.3);
-  settle_to(target);
-};
-
-const settle_to = (target) => {
-  if (settle_req) cancelAnimationFrame(settle_req);
-  const reduce = matchMedia('(prefers-reduced-motion)').matches;
-  const from = curr, t0 = Date.now();
-
-  const tick = () => {
-    if (reduce) { curr = target; render(); return; }
-    const t = (Date.now() - t0) / 300;
-    if (t >= 1) {
-      curr = target;
-      render();
-      select(((target % count) + count) % count);
-      return;
-    }
-    curr = from + (target - from) * ease(t);
-    render();
-    settle_req = requestAnimationFrame(tick);
-  };
-  tick();
-};
-
-const go_to = (i) => { settle_to(i); };
-
-cards.forEach((card, i) => {
-  card.addEventListener('click', () => go_to(i));
-});
-
-dots.forEach((dot, i) => {
-  dot.addEventListener('click', () => go_to(i));
-});
-
-if (prev_btn) prev_btn.addEventListener('click', () => go_to(curr - 1));
-if (next_btn) next_btn.addEventListener('click', () => go_to(curr + 1));
-
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'ArrowLeft') go_to(curr - 1);
-  if (e.key === 'ArrowRight') go_to(curr + 1);
-});
-
-frame.addEventListener('pointerdown', on_pointer_down, { passive: true });
-frame.addEventListener('pointermove', on_pointer_move, { passive: true });
-frame.addEventListener('pointerup', on_pointer_up, { passive: true });
-frame.addEventListener('pointerleave', on_pointer_up, { passive: true });
-
-const start = () => {
-  $$('.cf-card img').forEach(img => {
-    loadImage(img, img.dataset.src, ok => { if (!ok) img.parentElement?.removeChild(img); });
+/* Same loading rule as the rest of the page: show the photograph once it has
+   decoded, and leave the card's own colour if it never arrives. */
+/* The gallery is watched as one thing, not seven. Each card used to observe
+   itself, and the cards away from the centre are translated far off to the
+   sides — on a phone four of the seven never intersected the viewport at
+   all, so their pictures never loaded and swiping reached empty frames.
+   The track is what the visitor can see; when it arrives, all seven load. */
+(() => {
+  const track = document.querySelector('.cf-track') || document.querySelector('.cf-stage')
+             || (cards[0] && cards[0].parentElement);
+  const imgs = $$('.cf-card img');
+  if (!track || !imgs.length) return;
+  const start = () => imgs.forEach(img => {
+    const card = img.closest('.cf-card');
+    loadImage(img, img.dataset.src, ok => { if (!ok) img.remove(); });
+    if (card) card.dataset.loading = '1';
   });
-  render();
-};
+  near(track, start);
+})();
 
-near(mount, start);
+let pos = 0;        // fractional index at the centre — the single source of truth
+let target = 0;     // where the current settle is headed
+let width = 0;      // card width in px; pitch, depth and perspective all derive
+let raf = null;
+let drag = null;
+let selected = -1;
+
+const indexAt = p => ((Math.round(p) % count) + count) % count;
+const wrap = i => LOOP ? i : Math.max(0, Math.min(count - 1, i));
+
+function select(i) {
+  if (i === selected) return;
+  selected = i;
+  caption.textContent = slides[i].title || '';
+  dots.forEach((d, n) => d.setAttribute('aria-current', String(n === i)));
+}
+
+function paint() {
+  if (!width) return;
+  const pitch = width * (1 + GAP);
+
+  cards.forEach((card, i) => {
+    /* Fold the distance into the shorter way round the ring. This is the
+       whole looping mechanism. */
+    let offset = i - pos;
+    if (LOOP) {
+      offset = ((offset % count) + count) % count;
+      if (offset > count / 2) offset -= count;
+    }
+
+    const distance = Math.abs(offset);
+    /* Tilt and recession both ease off with distance: doubling it adds only
+       about half again as much of each. A linear ramp folds the second card
+       shut and the strip stops reading. */
+    const ramp = Math.pow(distance, FALLOFF);
+    const tilt = Math.min(ROTATE * ramp, MAX_TILT) * Math.sign(offset);
+
+    card.style.transform =
+      `translateX(calc(-50% + ${offset * pitch}px)) ` +
+      `translateZ(${-DEPTH * width * ramp}px) rotateY(${-tilt}deg)`;
+
+    /* A card is teleported across the ring at exactly half a turn out, so it
+       has to be gone by then or the jump is visible. */
+    const edge = LOOP ? Math.min(1, Math.max(0, count / 2 - distance)) : 1;
+    card.style.opacity = String(Math.max(0, 1 - FADE * distance) * edge);
+    card.style.zIndex  = String(100 - Math.round(distance));
+  });
+}
+
+function settle(to) {
+  if (raf !== null) cancelAnimationFrame(raf);
+  target = to;
+  select(indexAt(to));
+
+  if (reduced.matches) { pos = to; paint(); raf = null; return; }
+
+  const step = () => {
+    const remaining = target - pos;
+    if (Math.abs(remaining) < 0.0004) {
+      pos = target; paint(); raf = null; return;
+    }
+    pos += remaining * 0.16;      // exponential ease-out, no overshoot
+    paint();
+    raf = requestAnimationFrame(step);
+  };
+  raf = requestAnimationFrame(step);
+}
+
+/* Step off the target rather than off pos, or a click that lands mid-flight
+   is swallowed by the round-off. */
+const nudge = by => settle(wrap(Math.round(target) + by));
+const goTo  = i  => settle(wrap(LOOP
+  ? i + Math.round((target - i) / count) * count     // the shorter way round
+  : i));
+
+/* ── Drag ─────────────────────────────────────────────────────────────── */
+frame.addEventListener('pointerdown', e => {
+  if (raf !== null) { cancelAnimationFrame(raf); raf = null; }
+  frame.setPointerCapture(e.pointerId);
+  target = pos;
+  drag = { id: e.pointerId, x: e.clientX, pos, v: 0, t: performance.now() };
+});
+
+frame.addEventListener('pointermove', e => {
+  if (!drag || drag.id !== e.pointerId) return;
+  const pitch = width * (1 + GAP);
+  if (!pitch) return;
+
+  const now = performance.now(), previous = pos;
+  pos = wrap(drag.pos - (e.clientX - drag.x) / pitch);
+  drag.v = ((pos - previous) / Math.max(now - drag.t, 1)) * 1000;   // cards/sec
+  drag.t = now;
+  select(indexAt(pos));
+  paint();
+});
+
+function endDrag(e) {
+  if (!drag || drag.id !== e.pointerId) return;
+  const carried = Math.max(-2, Math.min(2, drag.v * 0.18));  // let a flick carry
+  drag = null;
+  settle(wrap(Math.round(pos + carried)));
+}
+frame.addEventListener('pointerup', endDrag);
+frame.addEventListener('pointercancel', endDrag);
+
+/* ── Keyboard, buttons, dots ──────────────────────────────────────────── */
+frame.addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft')       { e.preventDefault(); nudge(-1); }
+  else if (e.key === 'ArrowRight') { e.preventDefault(); nudge(1);  }
+});
+$('.cf-prev').addEventListener('click', () => nudge(-1));
+$('.cf-next').addEventListener('click', () => nudge(1));
+dots.forEach(d => d.addEventListener('click', () => goTo(+d.dataset.dot)));
+
+/* A click on a card that is not the centre brings it in, which is what
+   everyone tries first. A drag must not count as a click. */
+cards.forEach((card, i) => {
+  card.addEventListener('click', () => {
+    if (Math.abs(pos - target) > 0.02) return;
+    if (indexAt(pos) !== i) goTo(i);
+  });
+});
+
+/* Card width drives pitch, depth and perspective, so it is the only thing
+   worth measuring — and only when the box actually changes. */
+const measure = () => { width = cards[0].offsetWidth; paint(); };
+measure();
+new ResizeObserver(measure).observe(frame);
 select(0);
 })();
 
