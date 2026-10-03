@@ -59,6 +59,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .legend-swatch{width:16px;height:16px;border-radius:5px;flex:0 0 auto}
 .legend-swatch.live{background:var(--accent-soft);border:1.5px solid var(--accent)}
 .legend-swatch.mute{background:var(--panel-2);border:1.5px solid var(--line-2)}
+.legend-swatch.sold{background:var(--panel-2);border:1.5px dashed var(--fg-faint)}
 
 /* ---------- stage ---------- */
 .stage-wrap{position:relative;flex:1 1 auto;display:flex;min-height:min(78vh,780px)}
@@ -78,6 +79,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .plot-num{font:600 20px/1 var(--sans);fill:var(--fg-faint);text-anchor:middle;
   dominant-baseline:middle;pointer-events:none}
 .plot.live .plot-num{font-weight:700;font-size:26px;fill:var(--accent-2)}
+.plot.sold .plot-num{fill:var(--fg-faint)}
+.plot.sold rect.base{stroke-dasharray:4 3}
 .plot-ring{fill:none;stroke:var(--accent);stroke-width:2;opacity:.6;
   transform-box:fill-box;transform-origin:center;
   animation:ringPulse 2.8s var(--ease) infinite}
@@ -150,6 +153,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .badge-available{flex:0 0 auto;margin-top:10px;padding:6px 14px;border-radius:99px;
   border:1.5px solid var(--accent);color:var(--accent-2);
   font:700 10px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.badge-sold{border-color:var(--line-2);color:var(--fg-faint)}
 
 .spectable{margin-top:16px;border-top:1px solid var(--line)}
 .specrow{display:flex;align-items:baseline;justify-content:space-between;gap:16px;
@@ -267,6 +271,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
   <nav class="legend" aria-hidden="true">
     <span class="legend-item"><span class="legend-swatch live"></span>Available villa (tap for details)</span>
+    <span class="legend-item"><span class="legend-swatch sold"></span>Sold (tap for details)</span>
     <span class="legend-item"><span class="legend-swatch mute"></span>Other residences (context only)</span>
   </nav>
 
@@ -365,7 +370,14 @@ var reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
    All 7 villas' cost sheets (8, 10, 11, 20, 22, 23, 30) were re-verified
    against the actual scans in the Cost Sheet folder and match exactly
    what's below and in price-calculator-data.js. Villa 10's scan arrived
-   last and needed no data changes — its numbers were already correct. */
+   last and needed no data changes — its numbers were already correct.
+
+   Villa 30 sold: status is 'Sold' rather than removed, so its plot, cost
+   sheet and spec stay reachable for reference (matching how sold Sanvi
+   units already work in price-calculator-data.js) — it just renders
+   muted/dashed on the site plan and excluded from every place a customer
+   would pick a unit (Price Calculator dropdown, EMI Calculator, ROI
+   Calculator's availability list). */
 var VILLAS = {
   8:  { bhk: '3 BHK', builtUp: '2,680 sq ft', plot: '1,080 sq ft', aspect: 'East Facing',  price: '₹2.35 Cr', status: 'Available', costSheet: '../Cost Sheet/Villa 8.png' },
   10: { bhk: '4 BHK', builtUp: '3,724 sq ft', plot: '1,389 sq ft', aspect: 'East Facing',  price: '₹3.26 Cr', status: 'Available', costSheet: '../Cost Sheet/Villa 10.png' },
@@ -373,7 +385,7 @@ var VILLAS = {
   20: { bhk: '4 BHK', builtUp: '3,494 sq ft', plot: '1,356 sq ft', aspect: 'North Facing', price: '₹3.06 Cr', status: 'Available', costSheet: '../Cost Sheet/Villa 20.png' },
   22: { bhk: '3 BHK', builtUp: '2,680 sq ft', plot: '1,080 sq ft', aspect: 'North Facing', price: '₹2.41 Cr', status: 'Available', costSheet: '../Cost Sheet/Villa 22.png' },
   23: { bhk: '3 BHK', builtUp: '2,680 sq ft', plot: '1,080 sq ft', aspect: 'North Facing', price: '₹2.35 Cr', status: 'Available', costSheet: '../Cost Sheet/Villa 23.png' },
-  30: { bhk: '3 BHK', builtUp: '2,680 sq ft', plot: '1,080 sq ft', aspect: 'North Facing', price: '₹2.35 Cr', status: 'Available', costSheet: '../Cost Sheet/Villa 30.png' }
+  30: { bhk: '3 BHK', builtUp: '2,680 sq ft', plot: '1,080 sq ft', aspect: 'North Facing', price: '₹2.35 Cr', status: 'Sold', costSheet: '../Cost Sheet/Villa 30.png' }
 };
 
 function floorPhotos(num, slug) {
@@ -501,17 +513,20 @@ function siteplan() {
       var num = rowNumber(row, i);
       var x = colX(i), y = GRID.rowY[row], w = GRID.colW, h = GRID.rowH;
       var live = !!VILLAS[num];
-      var g = el('g', { class: 'plot' + (live ? ' live' : '') });
+      var sold = live && VILLAS[num].status === 'Sold';
+      var g = el('g', { class: 'plot' + (live ? ' live' : '') + (sold ? ' sold' : '') });
       if (live) {
         g.setAttribute('tabindex', '0');
         g.setAttribute('role', 'button');
-        g.setAttribute('aria-label', 'Villa ' + num + ', view details');
-        g.appendChild(el('rect', { class: 'plot-ring', x: x, y: y, width: w, height: h, rx: 12 }));
+        g.setAttribute('aria-label', 'Villa ' + num + (sold ? ', sold, view details' : ', view details'));
+        /* The pulsing ring specifically signals "tap me, I'm available" -
+           skipped for a sold plot so it doesn't invite that expectation. */
+        if (!sold) g.appendChild(el('rect', { class: 'plot-ring', x: x, y: y, width: w, height: h, rx: 12 }));
       }
       g.appendChild(el('rect', {
         class: 'base', x: x, y: y, width: w, height: h, rx: 12,
-        fill: live ? 'var(--accent-soft)' : 'var(--panel-2)',
-        stroke: live ? 'var(--accent)' : 'var(--line-2)',
+        fill: (live && !sold) ? 'var(--accent-soft)' : 'var(--panel-2)',
+        stroke: (live && !sold) ? 'var(--accent)' : 'var(--line-2)',
         'stroke-width': live ? 2 : 1.2
       }));
       g.appendChild(vtext(x + w / 2, y + h / 2 + 7, String(num), 'plot-num'));
@@ -677,7 +692,7 @@ function openModal(num) {
 
   $('#mbody').innerHTML =
     '<div class="mhead"><h2>Villa ' + esc(num) + '</h2>' +
-      '<span class="badge-available">' + esc(v.status) + '</span></div>' +
+      '<span class="badge-available' + (v.status === 'Sold' ? ' badge-sold' : '') + '">' + esc(v.status) + '</span></div>' +
     '<div class="spectable">' + specHtml + '</div>' +
     '<div class="msection">' +
       '<div class="msection-head"><h3>Floor Plans</h3></div>' +

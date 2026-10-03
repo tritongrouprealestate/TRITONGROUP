@@ -188,7 +188,12 @@ window.PRICE_CALC_DATA = {
          matches what was already here exactly, so nothing changed for it.
          Villa 22 was not part of this update and still stands at
          ₹9,000/sqft — worth confirming with the sales desk whether that's
-         intentional, since 22 and 23 were originally identical siblings. */
+         intentional, since 22 and 23 were originally identical siblings.
+
+         Villa 30 sold: status flipped to "sold", same as the three sold
+         Sanvi units above — Price Calculator shows it disabled/"(SOLD)" in
+         the unit picker and greyed in the reference table, and the EMI
+         Calculator excludes it entirely (it filters on this same field). */
       units: [
         { no: "8",  floor: null, sba: 2680, plotArea: 1080, config: "3 BHK", facing: "East Facing", rate: 8750, status: "available" },
         { no: "10", floor: null, sba: 3724, plotArea: 1389, config: "4 BHK", facing: "East Facing", rate: 8750, status: "available" },
@@ -196,7 +201,7 @@ window.PRICE_CALC_DATA = {
         { no: "20", floor: null, sba: 3494, plotArea: 1356, config: "4 BHK", facing: "North Facing", rate: 8750, status: "available" },
         { no: "22", floor: null, sba: 2680, plotArea: 1080, config: "3 BHK", facing: "North Facing", rate: 9000, status: "available" },
         { no: "23", floor: null, sba: 2680, plotArea: 1080, config: "3 BHK", facing: "North Facing", rate: 8750, status: "available" },
-        { no: "30", floor: null, sba: 2680, plotArea: 1080, config: "3 BHK", facing: "North Facing", rate: 8750, status: "available" }
+        { no: "30", floor: null, sba: 2680, plotArea: 1080, config: "3 BHK", facing: "North Facing", rate: 8750, status: "sold" }
       ],
 
       ratePerSqft: 8750,

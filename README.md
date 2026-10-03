@@ -322,15 +322,27 @@ cards — checked by re-deriving each sheet's full charges/GST/Grand Total math 
 confirming it matches exactly. "Aspect" is each villa's real compass facing from its
 sheet, not the marketing wording:
 
-| Villa | Type | Built-up | Plot | Aspect | Base Price | Grand Total (all-inclusive) |
-|---|---|---|---|---|---|---|
-| 8  | 3 BHK | 2,680 sq ft | 1,080 sq ft | East Facing | ₹2.35 Cr | ₹2.78 Cr |
-| 10 | 4 BHK | 3,724 sq ft | 1,389 sq ft | East Facing | ₹3.26 Cr | ₹3.81 Cr |
-| 11 | 5 BHK | 4,448 sq ft | 1,555 sq ft | North Facing | ₹3.89 Cr | ₹4.52 Cr |
-| 20 | 4 BHK | 3,494 sq ft | 1,356 sq ft | North Facing | ₹3.06 Cr | ₹3.59 Cr |
-| 22 | 3 BHK | 2,680 sq ft | 1,080 sq ft | North Facing | ₹2.41 Cr | ₹2.85 Cr |
-| 23 | 3 BHK | 2,680 sq ft | 1,080 sq ft | North Facing | ₹2.35 Cr | ₹2.78 Cr |
-| 30 | 3 BHK | 2,680 sq ft | 1,080 sq ft | North Facing | ₹2.35 Cr | ₹2.78 Cr |
+| Villa | Type | Built-up | Plot | Aspect | Base Price | Grand Total (all-inclusive) | Status |
+|---|---|---|---|---|---|---|---|
+| 8  | 3 BHK | 2,680 sq ft | 1,080 sq ft | East Facing | ₹2.35 Cr | ₹2.78 Cr | Available |
+| 10 | 4 BHK | 3,724 sq ft | 1,389 sq ft | East Facing | ₹3.26 Cr | ₹3.81 Cr | Available |
+| 11 | 5 BHK | 4,448 sq ft | 1,555 sq ft | North Facing | ₹3.89 Cr | ₹4.52 Cr | Available |
+| 20 | 4 BHK | 3,494 sq ft | 1,356 sq ft | North Facing | ₹3.06 Cr | ₹3.59 Cr | Available |
+| 22 | 3 BHK | 2,680 sq ft | 1,080 sq ft | North Facing | ₹2.41 Cr | ₹2.85 Cr | Available |
+| 23 | 3 BHK | 2,680 sq ft | 1,080 sq ft | North Facing | ₹2.35 Cr | ₹2.78 Cr | Available |
+| 30 | 3 BHK | 2,680 sq ft | 1,080 sq ft | North Facing | ₹2.35 Cr | ₹2.78 Cr | **Sold** |
+
+**Villa 30 sold**: its status is `'Sold'`, not deleted, in `VILLAS` inside
+`Interactive Master Plan.html` and in
+`price-calculator-data.js` — same pattern as the three already-sold Sanvi units. On the
+site plan its plot renders muted with a dashed border instead of the pulsing green
+"available" look (see the legend), and its popup shows a grey **SOLD** badge instead of
+green; the villa, its floor plans and cost sheet all stay reachable for reference, same
+tap-for-details behavior as before. It's excluded from the Price Calculator's active
+unit list (shown disabled, "(SOLD)") and from the EMI Calculator entirely (the EMI tool
+filters out anything with `status: "sold"`), and flagged "(Sold)" in the ROI Calculator's
+3 BHK availability list. To bring a sold villa back on the market, flip its `status`
+back to `'Available'` in both files — nothing else needs to change.
 
 **The popup's own "Base Price" row shows each sheet's Basic Price Total** (SBU ×
 rate per sqft), before Recreation/KEB/Legal/PLC/Jacuzzi/DG Backup charges and 5% GST
