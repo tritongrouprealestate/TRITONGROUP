@@ -475,6 +475,123 @@ $$('.villa').forEach(d => {
 
 })();
 
+/* ═══ MONTHLY COST ═══════════════════════════════════════════════════════
+   An EMI estimate per villa type. The prices come from DATA.villas, so a
+   price edited there changes this too. Indicative only: the rate and tenure
+   are the visitor's to set, and the page says so. */
+(() => {
+'use strict';
+const mount = document.getElementById('emi');
+if (typeof DATA === 'undefined' || !mount || !(DATA.villas || []).length) return;
+
+/* '₹2.9 Cr' -> 29,000,000. A price in any other shape is skipped rather than
+   guessed at. */
+const rupees = v => {
+  const m = /([\d.]+)\s*(Cr|L|Lakh)/i.exec(v.price || '');
+  if (!m) return 0;
+  return Math.round(parseFloat(m[1]) * (/^cr/i.test(m[2]) ? 1e7 : 1e5));
+};
+const villas = DATA.villas.map(v => ({ name: v.name, id: v.id, price: rupees(v) })).filter(v => v.price > 0);
+if (!villas.length) return;
+
+const inr = n => '₹ ' + Math.round(n).toLocaleString('en-IN');
+const crore = n => '₹ ' + (n / 1e7).toFixed(2).replace(/\.?0+$/, '') + ' Cr';
+
+mount.innerHTML = `
+  <div class="emi">
+    <div class="emi-controls">
+      <p class="eyebrow">Plan the purchase</p>
+      <h3 id="emi-title" class="font-display" style="font-size:var(--step-3)">What would it cost each month?</h3>
+
+      <div class="emi-pills" role="radiogroup" aria-label="Villa type">
+        ${villas.map((v, i) => `<button type="button" role="radio" class="emi-pill" data-i="${i}"
+          aria-checked="${i === 0}" tabindex="${i === 0 ? 0 : -1}">${v.name}</button>`).join('')}
+      </div>
+
+      <div class="emi-field">
+        <label for="emi-down">Down payment <output id="emi-down-out" for="emi-down"></output></label>
+        <input id="emi-down" class="emi-range" type="range" min="10" max="80" step="5" value="20">
+      </div>
+      <div class="emi-field">
+        <label for="emi-rate">Interest rate <output id="emi-rate-out" for="emi-rate"></output></label>
+        <input id="emi-rate" class="emi-range" type="range" min="7" max="12" step="0.25" value="8.5">
+      </div>
+      <div class="emi-field">
+        <label for="emi-years">Tenure <output id="emi-years-out" for="emi-years"></output></label>
+        <input id="emi-years" class="emi-range" type="range" min="5" max="30" step="1" value="20">
+      </div>
+    </div>
+
+    <div class="emi-result" aria-live="polite">
+      <p class="emi-kicker">Estimated monthly instalment</p>
+      <p class="emi-amount font-display tabular-nums" id="emi-amount"></p>
+      <div class="emi-split" aria-hidden="true"><i id="emi-bar-principal"></i><i id="emi-bar-interest"></i></div>
+      <dl class="emi-rows tabular-nums">
+        <div><dt>Villa price</dt><dd id="emi-price"></dd></div>
+        <div><dt>Down payment</dt><dd id="emi-downamt"></dd></div>
+        <div><dt>Loan amount</dt><dd id="emi-loan"></dd></div>
+        <div><dt>Total interest</dt><dd id="emi-interest"></dd></div>
+      </dl>
+      <button type="button" class="btn btn-dawn w-full" id="emi-cta" data-enquire="Financing the villa">Talk to us about financing</button>
+      <p class="emi-note">An estimate to help you plan, not an offer of credit. Prices are the all-inclusive figures above. Your lender sets the rate and the terms.</p>
+    </div>
+  </div>`;
+
+const $ = s => mount.querySelector(s);
+const pills = Array.from(mount.querySelectorAll('.emi-pill'));
+const down = $('#emi-down'), rate = $('#emi-rate'), years = $('#emi-years');
+let sel = 0;
+
+const fill = el => el.style.setProperty('--p', ((el.value - el.min) / (el.max - el.min) * 100) + '%');
+
+function update(){
+  const v = villas[sel];
+  const dPct = +down.value, r = +rate.value / 1200, n = +years.value * 12;
+  const deposit = v.price * dPct / 100, loan = v.price - deposit;
+  const emi = r === 0 ? loan / n : loan * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+  const interest = emi * n - loan;
+
+  $('#emi-down-out').textContent = dPct + '%';
+  $('#emi-rate-out').textContent = (+rate.value).toFixed(2).replace(/0$/, '') + '%';
+  $('#emi-years-out').textContent = years.value + ' years';
+  $('#emi-amount').textContent = inr(emi);
+  $('#emi-price').textContent = crore(v.price);
+  $('#emi-downamt').textContent = crore(deposit);
+  $('#emi-loan').textContent = crore(loan);
+  $('#emi-interest').textContent = crore(interest);
+  $('#emi-bar-principal').style.flexGrow = loan;
+  $('#emi-bar-interest').style.flexGrow = interest;
+  $('#emi-cta').dataset.villa = v.name;
+  $('#emi-cta').dataset.enquire = 'Financing the ' + v.name;
+  [down, rate, years].forEach(fill);
+}
+
+function choose(i, focus){
+  sel = (i + pills.length) % pills.length;
+  pills.forEach((b, k) => { b.setAttribute('aria-checked', String(k === sel)); b.tabIndex = k === sel ? 0 : -1; });
+  if (focus) pills[sel].focus();
+  update();
+}
+pills.forEach((b, i) => {
+  b.addEventListener('click', () => choose(i));
+  b.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown'){ e.preventDefault(); choose(sel + 1, true); }
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp'){   e.preventDefault(); choose(sel - 1, true); }
+  });
+});
+[down, rate, years].forEach(el => el.addEventListener('input', update));
+
+/* Opening a villa card above should leave the calculator on that villa. */
+document.addEventListener('toggle', e => {
+  const d = e.target;
+  if (!(d instanceof HTMLDetailsElement) || !d.open || !d.id || !d.id.startsWith('villa-')) return;
+  const i = villas.findIndex(v => 'villa-' + v.id === d.id);
+  if (i > -1 && i !== sel) choose(i);
+}, true);
+
+update();
+})();
+
 (() => {
 'use strict';
 const $  = (s, r=document) => r.querySelector(s);

@@ -1295,8 +1295,9 @@ html.lenis,html.lenis body{height:auto}
    menu's call row was laid out as a block and its icon and number stacked. */
 a[data-field]:not([class]){display:inline-block;padding-block:.2rem}
 
-.foot-nav{display:flex;flex-direction:column;gap:.65rem}
+.foot-nav{display:flex;flex-direction:column;gap:.15rem}
 .foot-nav a,.foot-contact a{color:var(--color-haze);text-decoration:none;
+  display:inline-flex;align-items:center;min-height:44px;
   transition:color .25s var(--ease-out)}
 .foot-nav a:hover,.foot-contact a:hover{color:var(--color-dawn)}
 .foot-contact{display:flex;flex-direction:column;gap:.65rem;font-size:.95rem}
@@ -1315,3 +1316,47 @@ a[data-field]:not([class]){display:inline-block;padding-block:.2rem}
 .foot-legal{margin-top:3rem;padding-top:1.5rem;border-top:1px solid rgba(163,183,175,.15);
   display:grid;gap:.6rem;font-size:.78rem;line-height:1.6}
 .foot-legal p{max-width:78ch;margin:0}
+
+
+/* ── Monthly cost ──────────────────────────────────────────────────────── */
+.emi{display:grid;gap:2.5rem;border-top:1px solid rgba(8,25,26,.12);padding-top:3rem}
+@media (min-width:900px){ .emi{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:4rem} }
+.emi-controls{display:grid;gap:1.75rem;align-content:start}
+.emi-pills{display:flex;flex-wrap:wrap;gap:.6rem}
+.emi-pill{min-height:44px;padding:.55rem 1.4rem;border:1px solid rgba(8,25,26,.28);border-radius:999px;
+  background:transparent;color:var(--color-ink);font:inherit;font-size:.95rem;cursor:pointer;
+  transition:background-color .25s var(--ease-out),color .25s var(--ease-out),border-color .25s var(--ease-out)}
+.emi-pill:hover{border-color:var(--color-dawn-deep)}
+.emi-pill[aria-checked="true"]{background:var(--color-dawn-deep);border-color:var(--color-dawn-deep);color:var(--color-cloud)}
+.emi-field label{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;
+  font-size:.9rem;color:var(--color-mist)}
+.emi-field output{font-family:var(--font-display);font-size:1.35rem;color:var(--color-ink);
+  font-variant-numeric:tabular-nums}
+.emi-range{-webkit-appearance:none;appearance:none;display:block;width:100%;height:44px;margin:0;
+  background:transparent;cursor:pointer;--p:0%}
+.emi-range::-webkit-slider-runnable-track{height:4px;border-radius:4px;
+  background:linear-gradient(to right,var(--color-dawn-deep) var(--p),rgba(8,25,26,.16) var(--p))}
+.emi-range::-moz-range-track{height:4px;border-radius:4px;
+  background:linear-gradient(to right,var(--color-dawn-deep) var(--p),rgba(8,25,26,.16) var(--p))}
+.emi-range::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;margin-top:-10px;
+  border-radius:50%;background:var(--color-cloud);border:2px solid var(--color-dawn-deep);
+  box-shadow:0 2px 8px rgba(8,25,26,.25);transition:transform .2s var(--ease-out)}
+.emi-range::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--color-cloud);
+  border:2px solid var(--color-dawn-deep);box-shadow:0 2px 8px rgba(8,25,26,.25)}
+.emi-range:active::-webkit-slider-thumb{transform:scale(1.15)}
+.emi-result{display:grid;gap:1.4rem;align-content:start;padding:clamp(1.5rem,4vw,2.5rem);
+  background:var(--color-night-2);color:var(--color-cloud)}
+.emi-kicker{margin:0;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--color-haze)}
+.emi-amount{margin:0;font-size:var(--step-4);line-height:1.05}
+.emi-split{display:flex;height:6px;border-radius:6px;overflow:hidden;background:rgba(255,255,255,.1)}
+.emi-split i{display:block;flex:1 1 0;min-width:0;transition:flex-grow .35s var(--ease-out)}
+.emi-split i:first-child{background:var(--color-dawn)}
+.emi-split i:last-child{background:#6FA89A}
+.emi-rows{display:grid;gap:.1rem;margin:0}
+.emi-rows div{display:flex;justify-content:space-between;gap:1rem;padding:.7rem 0;
+  border-bottom:1px solid rgba(255,255,255,.1)}
+.emi-rows dt{color:var(--color-haze);font-size:.92rem}
+.emi-rows dd{margin:0;font-family:var(--font-display);font-size:1.15rem}
+.emi-note{margin:0;font-size:.8rem;line-height:1.55;color:var(--color-haze)}
+@media (prefers-reduced-motion:reduce){ .emi-split i,.emi-pill,.emi-range::-webkit-slider-thumb{transition:none} }
+.emi-amount,.emi-rows dd,.emi-field output{font-variant-numeric:lining-nums tabular-nums}
