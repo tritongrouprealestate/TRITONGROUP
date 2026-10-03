@@ -6,8 +6,8 @@
 <title>Monisha's Momo Mission</title>
 <style>
   :root{
-    --bg1:#ffe3d6; --bg2:#ffc4d6; --ink:#4a2330; --soft:#8a5565;
-    --pink:#ff6f91; --pink-d:#e24d73; --cream:#fffaf5; --gold:#ffb703;
+    --bg1:#ffe3d6; --bg2:#ffd3b8; --ink:#43251f; --soft:#85594e;
+    --accent:#e8643c; --accent-d:#c24a25; --cream:#fffaf5; --gold:#ffb703; --ok:#2a9d5c;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;height:100%}
@@ -20,45 +20,54 @@
   .screen{display:none;height:100%;flex-direction:column;justify-content:center;gap:14px;animation:pop .45s ease}
   .screen.active{display:flex}
   @keyframes pop{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
-  .card{background:var(--cream);border-radius:22px;padding:22px 20px;box-shadow:0 10px 30px rgba(120,40,70,.18)}
+  .card{background:var(--cream);border-radius:22px;padding:22px 20px;box-shadow:0 10px 30px rgba(110,50,20,.18)}
   h1{font-size:28px;line-height:1.15;margin:0 0 6px}
-  h2{font-size:21px;margin:0 0 8px}
+  h2{font-size:21px;margin:0 0 8px;text-wrap:balance}
   p{margin:6px 0;line-height:1.45}
-  .tag{display:inline-block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--pink-d);font-weight:bold}
+  .tag{display:inline-block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-d);font-weight:bold}
   .soft{color:var(--soft);font-size:14px}
-  .big{font-size:64px;text-align:center;margin:4px 0}
+  .big{font-size:60px;text-align:center;margin:4px 0}
   button{
     font:inherit;font-weight:bold;border:0;cursor:pointer;border-radius:999px;
-    padding:14px 22px;background:var(--pink);color:#fff;font-size:17px;
-    box-shadow:0 5px 0 var(--pink-d);transition:transform .08s,box-shadow .08s;
+    padding:14px 22px;background:var(--accent);color:#fff;font-size:17px;
+    box-shadow:0 5px 0 var(--accent-d);transition:transform .08s,box-shadow .08s;
   }
-  button:active{transform:translateY(4px);box-shadow:0 1px 0 var(--pink-d)}
-  button.alt{background:#fff;color:var(--ink);box-shadow:0 5px 0 #e6c7d0}
+  button:active{transform:translateY(4px);box-shadow:0 1px 0 var(--accent-d)}
+  button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+  button.alt{background:#fff;color:var(--ink);box-shadow:0 5px 0 #e8cdbd;text-align:left;border-radius:16px}
+  button[disabled]{opacity:.5;pointer-events:none}
   .stack{display:flex;flex-direction:column;gap:11px}
   .hud{display:flex;justify-content:space-between;align-items:center;font-weight:bold}
   .bar{flex:1;height:12px;background:#fff;border-radius:99px;margin:0 12px;overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.12)}
-  .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--pink));transition:width .25s}
+  .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--accent));transition:width .25s}
   #arena{flex:1;min-height:0;position:relative;overflow:hidden;border-radius:22px;touch-action:none;
-    background:linear-gradient(#fff6ee,#ffe9ef);box-shadow:inset 0 0 0 3px #fff,0 10px 30px rgba(120,40,70,.18)}
+    background:linear-gradient(#fff6ee,#ffeadb);box-shadow:inset 0 0 0 3px #fff,0 10px 30px rgba(110,50,20,.18)}
   .item{position:absolute;font-size:34px;line-height:1;will-change:transform;user-select:none}
   #plate{position:absolute;bottom:6px;font-size:52px;line-height:1;will-change:transform;user-select:none}
-  #toast{position:absolute;left:50%;top:12px;transform:translateX(-50%);background:rgba(74,35,48,.92);color:#fff;
+  #toast{position:absolute;left:50%;top:12px;transform:translateX(-50%);background:rgba(67,37,31,.92);color:#fff;
     padding:8px 14px;border-radius:14px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none;
     max-width:90%;text-align:center;z-index:5}
   #toast.show{opacity:1}
-  .reply{min-height:44px;font-style:italic;color:var(--pink-d)}
-  .stat{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px dashed #e8c9d2;font-size:15px}
-  .stat b{color:var(--pink-d)}
-  .form{border:2px dashed #d9a9b8;border-radius:14px;padding:12px 14px;margin-top:10px;font-size:14px}
-  .form div{padding:3px 0}
-  .stamp{display:inline-block;margin-top:8px;border:3px solid #2a9d5c;color:#2a9d5c;border-radius:10px;padding:2px 10px;
-    font-weight:bold;transform:rotate(-8deg);letter-spacing:.1em;opacity:.0}
+  .reply{min-height:44px;font-style:italic;color:var(--accent-d)}
+  /* maggi meter */
+  .meter{position:relative;height:30px;border-radius:99px;background:#f3d9c9;overflow:hidden;margin:14px 0 6px;box-shadow:inset 0 1px 4px rgba(0,0,0,.15)}
+  .zone{position:absolute;top:0;bottom:0;left:38%;width:24%;background:var(--ok);opacity:.85}
+  .needle{position:absolute;top:-2px;bottom:-2px;width:6px;margin-left:-3px;background:var(--ink);border-radius:4px}
+  .scale{display:flex;justify-content:space-between;font-size:12px;color:var(--soft)}
+  /* offer */
+  .perk{padding:7px 0;border-bottom:1px dashed #e8cdbd;font-size:15px}
+  .perk:last-of-type{border:0}
+  .letter{border:2px dashed #d9b49f;border-radius:14px;padding:12px 14px;margin-top:10px;font-size:15px}
+  .stamp{display:inline-block;margin-top:10px;border:3px solid var(--ok);color:var(--ok);border-radius:10px;padding:2px 10px;
+    font-weight:bold;transform:rotate(-8deg);letter-spacing:.1em;opacity:0}
   .stamp.on{animation:stamp .4s ease forwards}
   @keyframes stamp{from{opacity:0;transform:rotate(-8deg) scale(2.2)}to{opacity:1;transform:rotate(-8deg) scale(1)}}
   .conf{position:fixed;top:-40px;font-size:26px;pointer-events:none;z-index:50;animation:fall linear forwards}
   @keyframes fall{to{transform:translateY(112vh) rotate(540deg)}}
   .shake{animation:shake .35s}
   @keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+  @media (prefers-reduced-motion:reduce){.conf{display:none}.screen{animation:none}}
+  .scroll{overflow:auto}
 </style>
 </head>
 <body>
@@ -67,18 +76,18 @@
   <!-- 1. INTRO -->
   <section class="screen active" id="s-intro">
     <div class="card">
-      <span class="tag">Confidential HR Memo</span>
+      <span class="tag">A small break from the job hunt</span>
       <div class="big">🥟</div>
       <h1>Monisha's Momo Mission</h1>
-      <p>A short game, made with great seriousness, for the most soft spoken and politest HR professional in the building.</p>
-      <p class="soft">Takes about 2 minutes. No paperwork, we promise. Well, one form at the end.</p>
+      <p>Three tiny games for the softest voice in HR. Momos, Maggi and a bus ride, with a little surprise at the end.</p>
+      <p class="soft">Takes about 2 minutes. No reply needed.</p>
     </div>
-    <button id="go1">Open the memo 📂</button>
+    <button id="go1">Start</button>
   </section>
 
-  <!-- 2. GAME -->
+  <!-- 2. MOMO CATCH -->
   <section class="screen" id="s-game">
-    <div class="hud"><span>🥟 <span id="score">0</span>/10</span><div class="bar"><i id="prog"></i></div><span>HR</span></div>
+    <div class="hud"><span>🥟 <span id="score">0</span>/8</span><div class="bar"><i id="prog"></i></div><span>Round 1</span></div>
     <div id="arena">
       <div id="toast"></div>
       <div id="plate">🍽️</div>
@@ -86,106 +95,94 @@
     <p class="soft" style="text-align:center;margin:0">Slide to catch momos. Dodge Excel sheets and meeting invites.</p>
   </section>
 
-  <!-- 3. QUIZ -->
+  <!-- 3. MAGGI -->
+  <section class="screen" id="s-maggi">
+    <div class="card">
+      <span class="tag" id="mround">Round 2 · Office pantry</span>
+      <div class="big">🍜</div>
+      <h2>Cook the perfect Maggi</h2>
+      <p class="soft">Two minutes, they said. Tap Stop when the needle is in the green.</p>
+      <div class="meter"><div class="zone"></div><div class="needle" id="needle"></div></div>
+      <div class="scale"><span>Kachi</span><span>Perfect</span><span>Jali</span></div>
+      <p class="reply" id="mreply"></p>
+    </div>
+    <button id="mstop">Stop</button>
+    <button id="mnext" hidden>Next</button>
+  </section>
+
+  <!-- 4. QUICK FIRE -->
   <section class="screen" id="s-quiz">
     <div class="card">
-      <span class="tag" id="qno">Question 1 of 3</span>
+      <span class="tag" id="qno">Round 3</span>
       <h2 id="qtext"></h2>
       <div class="stack" id="qopts"></div>
       <p class="reply" id="qreply"></p>
     </div>
   </section>
 
-  <!-- 4. REPORT -->
-  <section class="screen" id="s-report">
+  <!-- 5. OFFER LETTER -->
+  <section class="screen scroll" id="s-offer">
     <div class="card">
-      <span class="tag">Official Performance Review</span>
-      <h2>Employee of the Month, Momo Division 🏆</h2>
-      <div class="stat"><span>Soft spoken level</span><b>99%</b></div>
-      <div class="stat"><span>Politeness</span><b>Off the charts</b></div>
-      <div class="stat"><span>Flirting level</span><b>Legally unclear 😌</b></div>
-      <div class="stat"><span>Love for momos</span><b>Infinite</b></div>
-      <div class="stat" style="border:0"><span>Chutney demand</span><b>Extra, always</b></div>
-      <p class="soft" id="who"></p>
-    </div>
-    <button id="go3">One last form 📝</button>
-  </section>
-
-  <!-- 5. FORM -->
-  <section class="screen" id="s-form">
-    <div class="card">
-      <span class="tag">Form MOM-01</span>
-      <h2>Momo Outing Request</h2>
-      <div class="form">
-        <div><b>From:</b> <span class="me">Your manager</span></div>
-        <div><b>To:</b> Monisha, HR (final approver)</div>
-        <div><b>Subject:</b> Momos together, you pick the place</div>
-        <div><b>Reason:</b> Great company and better chutney</div>
-        <div><b>Budget:</b> Manager pays, no negotiation</div>
+      <span class="tag">Offer letter</span>
+      <h2>Dear Monisha</h2>
+      <p>We are delighted to offer you the role of <b>Your Dream Job</b>, effective as soon as the right company realises how lucky they are.</p>
+      <div style="margin-top:6px">
+        <div class="perk">Unlimited Maggi, at the office and at home</div>
+        <div class="perk">Minimum 8 hours of sleep, nap breaks included</div>
+        <div class="perk">Zero surprise 5pm meetings</div>
+        <div class="perk">Old Bollywood on the office speaker, you pick the song</div>
+        <div class="perk">Momos every Friday</div>
       </div>
-      <span class="stamp" id="stamp">APPROVED</span>
-      <p class="reply" id="freply" style="margin-top:12px"></p>
+      <span class="stamp" id="stamp">ACCEPTED</span>
     </div>
-    <div class="stack" id="fbtns">
-      <button id="y1">Approved, I love momos 🥟</button>
-      <button id="y2">Approved, but I choose the stall 😌</button>
-      <button class="alt" id="y3">Let me think about it 🙂</button>
+    <div class="card" id="note">
+      <p id="notetext"></p>
     </div>
+    <button id="again" class="alt" style="text-align:center">Play again</button>
   </section>
 
 </div>
 
 <script>
-// ---- EDIT THIS: put your name here ----
+// ---- EDIT THESE ----
 const MY_NAME = "Your Name";
-// ---------------------------------------
+const NOTE = "No reply needed. Take all the break you need. You are kind, funny and great at what you do, and the right job will see it soon. Rooting for you.";
+// --------------------
 
 const $ = id => document.getElementById(id);
 const show = id => {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   $(id).classList.add('active');
 };
-document.querySelectorAll('.me').forEach(e => e.textContent = MY_NAME);
-$('who').textContent = 'Review conducted by ' + MY_NAME + ', manager and full time momo supporter.';
+$('notetext').innerHTML = NOTE + '<br><b>' + MY_NAME + '</b>';
 
 $('go1').onclick = () => { show('s-game'); startGame(); };
 
-/* ---------- GAME ---------- */
+/* ---------- MOMO CATCH ---------- */
 const arena = $('arena'), plate = $('plate');
-let W, H, px, items, score, running, last, spawnT, toastT, tt;
-const GOAL = 10;
+let W, H, px, items = [], score, running, last, spawnT, tt;
+const GOAL = 8;
 const catchLines = [
-  'Policy 4.2: momos are a fundamental right',
   'Soft catch. Very polite plate work',
   'HR approves this momo',
-  'Steamed to perfection 👌',
-  'That one had extra chutney energy',
-  'Monisha is cooking... or catching'
+  'Steamed to perfection',
+  'That one had extra chutney energy'
 ];
 const types = [
   {e:'🥟', w:62, pts:1},
-  {e:'🌶️', w:10, pts:2, msg:'Spicy chutney bonus! Double points'},
-  {e:'📊', w:16, pts:-1, msg:'Excel sheet! Nobody wants that'},
-  {e:'📅', w:12, pts:-1, msg:'Surprise 5pm meeting invite 😭'}
+  {e:'🌶️', w:10, pts:2, msg:'Spicy chutney bonus. Double points'},
+  {e:'📊', w:16, pts:-1, msg:'Excel sheet. Nobody wants that'},
+  {e:'📅', w:12, pts:-1, msg:'Surprise 5pm meeting invite'}
 ];
 function pick(){
   let r = Math.random()*100;
-  for(const t of types){ if((r-=t.w) < 0) return t; }
+  for(const t of types){ if((r -= t.w) < 0) return t; }
   return types[0];
 }
 function toast(m){
   const t = $('toast'); t.textContent = m; t.classList.add('show');
   clearTimeout(tt); tt = setTimeout(() => t.classList.remove('show'), 1400);
 }
-function startGame(){
-  items.forEach?.(i => i.el.remove());
-  W = arena.clientWidth; H = arena.clientHeight;
-  px = W/2; items = []; score = 0; spawnT = 0; running = true; last = performance.now();
-  setScore(0); movePlate();
-  toast('Catch 10 momos to unlock the memo');
-  requestAnimationFrame(loop);
-}
-items = [];
 function setScore(n){
   score = Math.max(0, n);
   $('score').textContent = score;
@@ -197,6 +194,14 @@ function setX(clientX){
   px = Math.max(26, Math.min(W-26, clientX - r.left));
   movePlate();
 }
+function startGame(){
+  items.forEach(i => i.el.remove());
+  W = arena.clientWidth; H = arena.clientHeight;
+  px = W/2; items = []; spawnT = 0; running = true; last = performance.now();
+  setScore(0); movePlate();
+  toast('Catch 8 momos to move on');
+  requestAnimationFrame(loop);
+}
 arena.addEventListener('pointermove', e => setX(e.clientX));
 arena.addEventListener('pointerdown', e => setX(e.clientX));
 addEventListener('keydown', e => {
@@ -207,9 +212,8 @@ addEventListener('keydown', e => {
 function spawn(){
   const t = pick(), el = document.createElement('div');
   el.className = 'item'; el.textContent = t.e;
-  const x = 20 + Math.random()*(W-60);
   arena.appendChild(el);
-  items.push({el, t, x, y:-40, v:(110 + Math.random()*90) * (H/560) + score*5});
+  items.push({el, t, x:20 + Math.random()*(W-60), y:-40, v:(110 + Math.random()*90) * (H/560) + score*5});
 }
 function loop(now){
   if(!running) return;
@@ -237,32 +241,65 @@ function loop(now){
 }
 function finishGame(){
   running = false;
-  confetti(18, ['🥟','✨','💖']);
-  toast('Mission complete! Opening the memo...');
-  setTimeout(() => { items.forEach(i => i.el.remove()); items = []; startQuiz(); }, 1200);
+  confetti(14, ['🥟','✨','🌶️']);
+  toast('Momos secured. Time for Maggi');
+  setTimeout(() => { items.forEach(i => i.el.remove()); items = []; startMaggi(); }, 1200);
 }
 
-/* ---------- QUIZ ---------- */
+/* ---------- MAGGI TIMING ---------- */
+const places = ['Office pantry', 'Home kitchen'];
+let mi = 0, mrun = false, mt = 0, mlast = 0, mpos = 0;
+function startMaggi(){ mi = 0; show('s-maggi'); roundMaggi(); }
+function roundMaggi(){
+  $('mround').textContent = 'Round 2 · ' + places[mi];
+  $('mreply').textContent = '';
+  $('mstop').hidden = false; $('mnext').hidden = true;
+  mt = Math.random()*6; mrun = true; mlast = performance.now();
+  requestAnimationFrame(mloop);
+}
+function mloop(now){
+  if(!mrun) return;
+  mt += (now-mlast)/1000 * (2.6 + mi*0.9); mlast = now;
+  mpos = (Math.sin(mt)+1)/2*100;
+  $('needle').style.left = mpos + '%';
+  requestAnimationFrame(mloop);
+}
+$('mstop').onclick = () => {
+  mrun = false;
+  $('mstop').hidden = true; $('mnext').hidden = false;
+  let msg;
+  if(mpos >= 38 && mpos <= 62){ msg = 'Perfect. ' + places[mi] + ' gives you a standing ovation.'; confetti(10, ['🍜','✨']); }
+  else if(mpos < 38) msg = 'A little kachi. Still edible, you will eat it anyway.';
+  else msg = 'Jali. It is now one single noodle brick. Add chutney.';
+  $('mreply').textContent = msg;
+  $('mnext').textContent = mi === 0 ? 'Now cook it at home' : 'Next';
+};
+$('mnext').onclick = () => {
+  if(mi === 0){ mi = 1; roundMaggi(); }
+  else startQuiz();
+};
+
+/* ---------- QUICK FIRE ---------- */
 const quiz = [
-  { q:'A team member misses a deadline. Your HR response?',
-    a:[['"It is totally okay, take your time 🥺"','Soft. The deadline felt so safe it cried a little.'],
-       ['"No worries at all, shall I get you some tea?"','Legend. The deadline got promoted.'],
-       ['"Let us circle back, only if you are comfortable 🙏"','Corporate poetry. Someone frame this.']] },
-  { q:'Someone says "Hi Monisha" in the corridor. You reply:',
-    a:[['"Hiii, how are you? 😊"','Friendly. Fourteen people now believe they are your favourite.'],
-       ['"Hello! Nice shirt."','Compliment delivered. HR audit pending, ironically.'],
-       ['"Heyyy 🙈"','Dangerously charming. Please file this under hazards.']] },
-  { q:'Momos arrive at the office. Your move?',
-    a:[['Take just one, very politely','Liar. We both know it is six.'],
-       ['Take the whole plate, say nothing','Respect. Maximum HR energy.'],
-       ['Ask who ordered, thank them softly, take three','The politest momo thief in company history.']] }
+  { q:'The bus conductor shouts "Aage badho, aage jagah hai!" You:',
+    a:[['Say hi and ask how his day is going','He now waves at your bus every morning. Fan club of one.'],
+       ['Smile and move ahead, very politely','Politest passenger on the route. The ticket feels cheaper.'],
+       ['Request an old Bollywood song on the speaker','Route 47 is now a live concert. Standing room only.']] },
+  { q:'Interview morning. Which song gets you ready?',
+    a:[['Lag Jaa Gale','Calm and classic. The panel sits up straight before you even speak.'],
+       ['Pal Pal Dil Ke Paas','Soft voice plus this song. They forget their tough questions.'],
+       ['Ek Ladki Ko Dekha Toh Aisa Laga','Bold choice. They will ask you to sing the next line.']] },
+  { q:'It is Sunday and nothing is due. Your plan?',
+    a:[['Sleep till noon, then sleep a bit more','Rest is a recognised productivity strategy. HR approved.'],
+       ['Maggi in bed, no questions asked','Peak performance. Nothing to add.'],
+       ['Sleep, Maggi, sleep','Balanced and optimal. Promotion pending.']] }
 ];
 let qi = 0, lock = false;
 function startQuiz(){ qi = 0; show('s-quiz'); renderQ(); }
 function renderQ(){
   lock = false;
   const q = quiz[qi];
-  $('qno').textContent = `Question ${qi+1} of ${quiz.length}`;
+  $('qno').textContent = `Round 3 · Question ${qi+1} of ${quiz.length}`;
   $('qtext').textContent = q.q;
   $('qreply').textContent = '';
   const box = $('qopts'); box.innerHTML = '';
@@ -274,28 +311,20 @@ function renderQ(){
       $('qreply').textContent = reply;
       setTimeout(() => {
         if(++qi < quiz.length) renderQ();
-        else { show('s-report'); confetti(14, ['🏆','💖','✨']); }
+        else showOffer();
       }, 1900);
     };
     box.appendChild(b);
   });
 }
-$('go3').onclick = () => show('s-form');
 
-/* ---------- FINAL FORM ---------- */
-function approve(msg){
-  $('fbtns').style.display = 'none';
-  $('stamp').classList.add('on');
-  $('freply').textContent = msg;
-  confetti(40, ['🥟','💖','🌶️','✨']);
+/* ---------- OFFER ---------- */
+function showOffer(){
+  show('s-offer');
+  $('stamp').classList.remove('on');
+  setTimeout(() => { $('stamp').classList.add('on'); confetti(30, ['🥟','🍜','✨']); }, 500);
 }
-$('y1').onclick = () => approve('Request approved. Reply with a 🥟 and I will handle the rest. Chutney is on me.');
-$('y2').onclick = () => approve('Approved, and the stall is entirely your call. I will just bring the appetite and the good mood.');
-$('y3').onclick = () => {
-  $('freply').textContent = 'Of course, take all the time you need. No pressure at all. The momos can wait, and so can I. 🙂';
-  $('y3').textContent = 'Okay, I am in 🥟';
-  $('y3').onclick = () => approve('Approved! Worth the wait. Reply with a 🥟 and we are set.');
-};
+$('again').onclick = () => { $('stamp').classList.remove('on'); show('s-intro'); };
 
 /* ---------- CONFETTI ---------- */
 function confetti(n, set){
