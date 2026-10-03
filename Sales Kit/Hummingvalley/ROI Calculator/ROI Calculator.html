@@ -3784,50 +3784,6 @@ function drawComparisonChart(data){
   line(villa,"#005050",3); line(gold,"#b69867",2,[6,4]); line(mf,"#567977",2,[2,4]); line(fd,"#939c9d",2,[9,4]);
 }
 
-function allVillaSeries(){
-  const out={};
-  Object.keys(PRODUCTS).forEach(k=>{
-    const s=states[k],d=yearData(s); let cum=0;
-    out[k]=d.map((row,i)=>{cum+=row.economic;return appreciatedAssetValue(s,i+1)+cum});
-  });
-  return out;
-}
-
-function drawAllVillaChart(){
-  const canvas=document.getElementById("allVillaChart"); if(!canvas)return;
-  const rect=canvas.getBoundingClientRect(),dpr=Math.max(1,window.devicePixelRatio||1);
-  const cssW=Math.max(280,rect.width),cssH=window.innerWidth<=600?300:340;canvas.width=Math.floor(cssW*dpr);canvas.height=Math.floor(cssH*dpr);
-  const ctx=canvas.getContext("2d");ctx.scale(dpr,dpr);const W=canvas.width/dpr,H=canvas.height/dpr;ctx.clearRect(0,0,W,H);
-  const series=allVillaSeries(); const maxVal=Math.max(...series["3"],...series["4"],...series["5"])*1.1;
-  const pad={l:62,r:30,t:38,b:38},pw=W-pad.l-pad.r,ph=H-pad.t-pad.b,x=i=>pad.l+pw*(i/14),y=v=>pad.t+ph-(v/maxVal)*ph;
-  ctx.strokeStyle="#e5e8e5";ctx.fillStyle="#778181";ctx.font="11px system-ui";
-  for(let i=0;i<=4;i++){const yy=pad.t+ph*i/4;ctx.beginPath();ctx.moveTo(pad.l,yy);ctx.lineTo(W-pad.r,yy);ctx.stroke();ctx.fillText(fmtINR(maxVal*(1-i/4)),4,yy+4)}
-  for(let i=0;i<15;i++){if(i%2===0||i===14)ctx.fillText("Y"+(i+1),x(i)-7,H-12)}
-  const styles={"3":["#005050",3,[]],"4":["#b69867",2.5,[6,4]],"5":["#253334",2.5,[2,4]]};
-  Object.keys(series).forEach(k=>{const [c,w,dash]=styles[k];ctx.save();ctx.strokeStyle=c;ctx.lineWidth=w;ctx.setLineDash(dash);ctx.beginPath();series[k].forEach((v,i)=>{i?ctx.lineTo(x(i),y(v)):ctx.moveTo(x(i),y(v))});ctx.stroke();ctx.restore()});
-}
-
-function buildAllVillaTable(){
-  const t=document.getElementById("allVillaTable"); if(!t)return;
-  const rows=Object.entries(PRODUCTS).map(([k,p])=>{
-    const s=states[k],d=yearData(s),cash15=d.reduce((a,b)=>a+b.economic,0),asset15=appreciatedAssetValue(s,15),irr=villaCashIRR(s,d);
-    const avgEco10=d.slice(0,10).reduce((a,b)=>a+b.economicYield,0)/10;
-    return `<tr>
-      <td>${p.label}</td>
-      <td>${fmtNum(p.sbu)} SBU</td>
-      <td class="cell-click" data-info="bsp" data-product="${k}">${fmtINR(s.bsp)}</td>
-      <td class="cell-click" data-info="investment" data-product="${k}">${fmtINR(s.investment)}</td>
-      <td class="cell-click" data-info="year1EconomicYield" data-product="${k}" data-year="0">${fmtPct(d[0].economicYield)}</td>
-      <td class="cell-click" data-info="avgEconomicYield" data-product="${k}">${fmtPct(avgEco10)}</td>
-      <td class="cell-click" data-info="propertyAppreciation" data-product="${k}">${fmtPct(s.appreciationRate)}</td>
-      <td class="cell-click" data-info="propertyAppreciation" data-product="${k}">${fmtINR(asset15)}</td>
-      <td class="cell-click" data-info="villaCash15" data-product="${k}">${fmtINR(cash15)}</td>
-      <td class="cell-click" data-info="villaIRR" data-product="${k}">${isFinite(irr)?fmtPct(irr*100):"—"}</td>
-      <td class="cell-click" data-info="villaComparison" data-product="${k}">${fmtINR(asset15+cash15)}</td>
-    </tr>`}).join("");
-  t.innerHTML=`<thead><tr><th>Villa</th><th>SBU</th><th>BSP</th><th>All-inclusive</th><th>Y1 economic yield</th><th>10Y avg economic yield</th><th>Appreciation CAGR</th><th>15-year asset value</th><th>15-year cumulative economic benefit</th><th>15-year total IRR</th><th>Total position after 15 years</th></tr></thead><tbody>${rows}</tbody>`;
-}
-
 
 function getRecoveryData(state,data){
   let cumulative=0;
@@ -4827,31 +4783,6 @@ function printA4Report(){
 window.addEventListener("beforeprint",prepareA4PrintSheet);
 
 
-function buildAllVillaCards(){
-  const wrap=document.getElementById("allVillaCards");
-  if(!wrap) return;
-  wrap.innerHTML=`<div class="villa-card-grid">${
-    Object.entries(PRODUCTS).map(([k,p])=>{
-      const s=states[k], d=yearData(s), asset15=appreciatedAssetValue(s,15), cash15=d.reduce((a,b)=>a+b.economic,0), irr=villaCashIRR(s,d), avgEco10=d.slice(0,10).reduce((a,b)=>a+b.economicYield,0)/10;
-      return `<div class="villa-metric-card">
-        <div class="villa-top">
-          <div class="villa-name">${p.label}</div>
-          <div class="year-card-sub">${fmtNum(p.sbu)} SBU</div>
-        </div>
-        <div class="villa-meta">BSP ${fmtINR(s.bsp)} • All-inclusive ${fmtINR(s.investment)} • ${p.available.join(" • ")}</div>
-        <div class="mini-metrics">
-          <div class="mini-metric" data-info="year1EconomicYield" data-product="${k}" data-year="0" role="button" tabindex="0"><small>Y1 economic yield</small><b>${fmtPct(d[0].economicYield)}</b></div>
-          <div class="mini-metric" data-info="avgEconomicYield" data-product="${k}" role="button" tabindex="0"><small>10Y avg economic yield</small><b>${fmtPct(avgEco10)}</b></div>
-          <div class="mini-metric" data-info="propertyAppreciation" data-product="${k}" role="button" tabindex="0"><small>15Y asset value</small><b>${fmtINR(asset15)}</b></div>
-          <div class="mini-metric" data-info="villaCash15" data-product="${k}" role="button" tabindex="0"><small>15Y cumulative economic benefit</small><b>${fmtINR(cash15)}</b></div>
-          <div class="mini-metric" data-info="villaIRR" data-product="${k}" role="button" tabindex="0"><small>15Y total IRR</small><b>${isFinite(irr)?fmtPct(irr*100):"—"}</b></div>
-          <div class="mini-metric" data-info="villaComparison" data-product="${k}" role="button" tabindex="0"><small>15Y total position</small><b>${fmtINR(asset15+cash15)}</b></div>
-        </div>
-      </div>`
-    }).join("")
-  }</div>`;
-}
-
 let revenueChartSelectedIndex=0;
 
 function compactChartMoney(n){
@@ -5221,56 +5152,6 @@ function drawComparisonChart(data){
   line(gold,"#b69867",compact?2:2.4,[7,4]);
   line(mf,"#466a6a",compact?2:2.4,[2,5]);
   line(fd,"#7a8587",compact?2:2.4,[10,4]);
-}
-
-function drawAllVillaChart(){
-  const canvas=document.getElementById("allVillaChart");
-  if(!canvas) return;
-  const rect=canvas.getBoundingClientRect();
-  const dpr=Math.max(1,window.devicePixelRatio||1);
-  const compact=(window.innerWidth<=1024 || rect.width<760);
-  const cssW=Math.max(280,rect.width);
-  const cssH=compact ? (window.innerWidth<=480 ? 260 : 290) : 340;
-  canvas.width=Math.floor(cssW*dpr);
-  canvas.height=Math.floor(cssH*dpr);
-  const ctx=canvas.getContext("2d");
-  ctx.scale(dpr,dpr);
-  const W=canvas.width/dpr,H=canvas.height/dpr;
-  ctx.clearRect(0,0,W,H);
-
-  const series=allVillaSeries();
-  const maxVal=Math.max(...series["3"],...series["4"],...series["5"])*1.1;
-  const pad=compact ? {l:52,r:14,t:16,b:34} : {l:62,r:24,t:22,b:38};
-  const pw=W-pad.l-pad.r, ph=H-pad.t-pad.b;
-  const x=i=>pad.l+pw*(i/14), y=v=>pad.t+ph-(v/maxVal)*ph;
-
-  ctx.strokeStyle="#e5e8e5";
-  ctx.lineWidth=1;
-  ctx.fillStyle="#778181";
-  ctx.font=(compact?10:11)+"px system-ui";
-  const ticks=compact?3:4;
-  for(let i=0;i<=ticks;i++){
-    const yy=pad.t+ph*i/ticks;
-    ctx.beginPath();ctx.moveTo(pad.l,yy);ctx.lineTo(W-pad.r,yy);ctx.stroke();
-    ctx.fillText(fmtINR(maxVal*(1-i/ticks)),4,yy+4);
-  }
-  for(let i=0;i<15;i++){
-    if((compact && (i===0 || i===4 || i===9 || i===14)) || (!compact && (i%2===0 || i===14))){
-      ctx.fillText("Y"+(i+1),x(i)-7,H-10);
-    }
-  }
-  const styles={"3":["#005f5f",compact?2.4:3,[]],"4":["#b69867",compact?2:2.5,[7,4]],"5":["#1f2326",compact?2:2.5,[2,5]]};
-  Object.keys(series).forEach(k=>{
-    const [c,w,dash]=styles[k];
-    ctx.save();
-    ctx.beginPath();
-    ctx.rect(pad.l,pad.t,pw,ph);
-    ctx.clip();
-    ctx.strokeStyle=c;ctx.lineWidth=w;ctx.setLineDash(dash);ctx.beginPath();
-    series[k].forEach((v,i)=>{i?ctx.lineTo(x(i),y(v)):ctx.moveTo(x(i),y(v))});
-    ctx.stroke();
-    ctx.restore();
-  });
 }
 
 

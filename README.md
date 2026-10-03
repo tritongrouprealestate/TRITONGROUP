@@ -223,6 +223,11 @@ Until the file is there, the portal falls back to setting "Triton" and the tagli
 display typeface. That fallback is presentable — it is not a broken state — but the real
 logo is better.
 
+**The browser tab icon** is `Sales Kit/_Portal/favicon.png` — just the trident/crown
+mark cropped out of the full logo above, since the full wordmark is illegible at tab-icon
+size. Replace that file (keep it square, transparent background) to change it; it's
+linked from a plain `<link rel="icon">` in the page's `<head>`, nothing fancier.
+
 ### The hero section
 
 The first screen is a tagline, a title, a description, a button, and a strip of images
@@ -343,6 +348,13 @@ unit list (shown disabled, "(SOLD)") and from the EMI Calculator entirely (the E
 filters out anything with `status: "sold"`), and flagged "(Sold)" in the ROI Calculator's
 3 BHK availability list. To bring a sold villa back on the market, flip its `status`
 back to `'Available'` in both files — nothing else needs to change.
+
+**A third place to update when a villa sells**: the Hummingvalley project page itself
+shows "6 of 7 Villas Available" next to its folder count, next to the Screensaver
+toggle. That number comes from a `villas: { available, total }` field on Hummingvalley's
+entry in `PORTAL_DATA` (`Triton Sales Portal.html`) — there's no live link between this
+count and the `status` fields in the other two files on `file://`, so all three need
+updating by hand together whenever a villa sells or comes back on the market.
 
 **The popup's own "Base Price" row shows each sheet's Basic Price Total** (SBU ×
 rate per sqft), before Recreation/KEB/Legal/PLC/Jacuzzi/DG Backup charges and 5% GST
@@ -737,13 +749,18 @@ the kit elsewhere, and clearing browser data resets every project back to on.
 | Eloria | `Sales Kit/Eloria/Screensaver/` |
 | Triton Branded | `Sales Kit/Triton Branded/Screensaver/` |
 
-Right now each one holds the same 3 placeholder photos you supplied, listed in
-`Triton Sales Portal.html`'s `screensaver: [...]` array on that project's entry (search
-for `screensaver:`). To swap in a project's real photos: drop as many `.jpg`/`.png`
-files as you want into its folder (10-15 works well for a slow-rotating loop), then
-list their file names in that project's `screensaver` array in the same order you want
-them to play. The slideshow works with however many images are listed — there's no
-fixed count to hit.
+**Current state**: Hummingvalley has 5 real photos and plays all 5. The other four
+projects (Sanvi, Up in the Clouds, Eloria, Triton Branded) only had their one homepage
+`cover.jpg` as an actual photo of the property — rather than loop 3 generic stock images
+that aren't that project, their screensaver was switched to play that one real cover
+photo instead. The original 3 stock placeholders are still sitting unused in each
+`Screensaver/` folder if you'd rather bring those back.
+
+To swap in a project's real photos: drop as many `.jpg`/`.png` files as you want into
+its `Screensaver/` folder (10-15 works well for a slow-rotating loop), then list their
+file names in that project's `screensaver` array in `Triton Sales Portal.html` (search
+for `screensaver:`), in the order you want them to play. The slideshow works with
+however many images are listed — there's no fixed count to hit, not even one.
 
 ---
 
