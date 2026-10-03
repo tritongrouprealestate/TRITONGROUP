@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Monisha's Momo Mission</title>
+<style>
+  :root{
+    --bg1:#ffe3d6; --bg2:#ffc4d6; --ink:#4a2330; --soft:#8a5565;
+    --pink:#ff6f91; --pink-d:#e24d73; --cream:#fffaf5; --gold:#ffb703;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;height:100%}
+  body{
+    font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;color:var(--ink);
+    background:linear-gradient(160deg,var(--bg1),var(--bg2));
+    display:flex;align-items:center;justify-content:center;overflow:hidden;
+  }
+  #app{width:100%;max-width:460px;height:100%;max-height:820px;padding:16px;position:relative}
+  .screen{display:none;height:100%;flex-direction:column;justify-content:center;gap:14px;animation:pop .45s ease}
+  .screen.active{display:flex}
+  @keyframes pop{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
+  .card{background:var(--cream);border-radius:22px;padding:22px 20px;box-shadow:0 10px 30px rgba(120,40,70,.18)}
+  h1{font-size:28px;line-height:1.15;margin:0 0 6px}
+  h2{font-size:21px;margin:0 0 8px}
+  p{margin:6px 0;line-height:1.45}
+  .tag{display:inline-block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--pink-d);font-weight:bold}
+  .soft{color:var(--soft);font-size:14px}
+  .big{font-size:64px;text-align:center;margin:4px 0}
+  button{
+    font:inherit;font-weight:bold;border:0;cursor:pointer;border-radius:999px;
+    padding:14px 22px;background:var(--pink);color:#fff;font-size:17px;
+    box-shadow:0 5px 0 var(--pink-d);transition:transform .08s,box-shadow .08s;
+  }
+  button:active{transform:translateY(4px);box-shadow:0 1px 0 var(--pink-d)}
+  button.alt{background:#fff;color:var(--ink);box-shadow:0 5px 0 #e6c7d0}
+  .stack{display:flex;flex-direction:column;gap:11px}
+  .hud{display:flex;justify-content:space-between;align-items:center;font-weight:bold}
+  .bar{flex:1;height:12px;background:#fff;border-radius:99px;margin:0 12px;overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.12)}
+  .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--pink));transition:width .25s}
+  #arena{flex:1;min-height:0;position:relative;overflow:hidden;border-radius:22px;touch-action:none;
+    background:linear-gradient(#fff6ee,#ffe9ef);box-shadow:inset 0 0 0 3px #fff,0 10px 30px rgba(120,40,70,.18)}
+  .item{position:absolute;font-size:34px;line-height:1;will-change:transform;user-select:none}
+  #plate{position:absolute;bottom:6px;font-size:52px;line-height:1;will-change:transform;user-select:none}
+  #toast{position:absolute;left:50%;top:12px;transform:translateX(-50%);background:rgba(74,35,48,.92);color:#fff;
+    padding:8px 14px;border-radius:14px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none;
+    max-width:90%;text-align:center;z-index:5}
+  #toast.show{opacity:1}
+  .reply{min-height:44px;font-style:italic;color:var(--pink-d)}
+  .stat{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px dashed #e8c9d2;font-size:15px}
+  .stat b{color:var(--pink-d)}
+  .form{border:2px dashed #d9a9b8;border-radius:14px;padding:12px 14px;margin-top:10px;font-size:14px}
+  .form div{padding:3px 0}
+  .stamp{display:inline-block;margin-top:8px;border:3px solid #2a9d5c;color:#2a9d5c;border-radius:10px;padding:2px 10px;
+    font-weight:bold;transform:rotate(-8deg);letter-spacing:.1em;opacity:.0}
+  .stamp.on{animation:stamp .4s ease forwards}
+  @keyframes stamp{from{opacity:0;transform:rotate(-8deg) scale(2.2)}to{opacity:1;transform:rotate(-8deg) scale(1)}}
+  .conf{position:fixed;top:-40px;font-size:26px;pointer-events:none;z-index:50;animation:fall linear forwards}
+  @keyframes fall{to{transform:translateY(112vh) rotate(540deg)}}
+  .shake{animation:shake .35s}
+  @keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- 1. INTRO -->
+  <section class="screen active" id="s-intro">
+    <div class="card">
+      <span class="tag">Confidential HR Memo</span>
+      <div class="big">🥟</div>
+      <h1>Monisha's Momo Mission</h1>
+      <p>A short game, made with great seriousness, for the most soft spoken and politest HR professional in the building.</p>
+      <p class="soft">Takes about 2 minutes. No paperwork, we promise. Well, one form at the end.</p>
+    </div>
+    <button id="go1">Open the memo 📂</button>
+  </section>
+
+  <!-- 2. GAME -->
+  <section class="screen" id="s-game">
+    <div class="hud"><span>🥟 <span id="score">0</span>/10</span><div class="bar"><i id="prog"></i></div><span>HR</span></div>
+    <div id="arena">
+      <div id="toast"></div>
+      <div id="plate">🍽️</div>
+    </div>
+    <p class="soft" style="text-align:center;margin:0">Slide to catch momos. Dodge Excel sheets and meeting invites.</p>
+  </section>
+
+  <!-- 3. QUIZ -->
+  <section class="screen" id="s-quiz">
+    <div class="card">
+      <span class="tag" id="qno">Question 1 of 3</span>
+      <h2 id="qtext"></h2>
+      <div class="stack" id="qopts"></div>
+      <p class="reply" id="qreply"></p>
+    </div>
+  </section>
+
+  <!-- 4. REPORT -->
+  <section class="screen" id="s-report">
+    <div class="card">
+      <span class="tag">Official Performance Review</span>
+      <h2>Employee of the Month, Momo Division 🏆</h2>
+      <div class="stat"><span>Soft spoken level</span><b>99%</b></div>
+      <div class="stat"><span>Politeness</span><b>Off the charts</b></div>
+      <div class="stat"><span>Flirting level</span><b>Legally unclear 😌</b></div>
+      <div class="stat"><span>Love for momos</span><b>Infinite</b></div>
+      <div class="stat" style="border:0"><span>Chutney demand</span><b>Extra, always</b></div>
+      <p class="soft" id="who"></p>
+    </div>
+    <button id="go3">One last form 📝</button>
+  </section>
+
+  <!-- 5. FORM -->
+  <section class="screen" id="s-form">
+    <div class="card">
+      <span class="tag">Form MOM-01</span>
+      <h2>Momo Outing Request</h2>
+      <div class="form">
+        <div><b>From:</b> <span class="me">Your manager</span></div>
+        <div><b>To:</b> Monisha, HR (final approver)</div>
+        <div><b>Subject:</b> Momos together, you pick the place</div>
+        <div><b>Reason:</b> Great company and better chutney</div>
+        <div><b>Budget:</b> Manager pays, no negotiation</div>
+      </div>
+      <span class="stamp" id="stamp">APPROVED</span>
+      <p class="reply" id="freply" style="margin-top:12px"></p>
+    </div>
+    <div class="stack" id="fbtns">
+      <button id="y1">Approved, I love momos 🥟</button>
+      <button id="y2">Approved, but I choose the stall 😌</button>
+      <button class="alt" id="y3">Let me think about it 🙂</button>
+    </div>
+  </section>
+
+</div>
+
+<script>
+// ---- EDIT THIS: put your name here ----
+const MY_NAME = "Your Name";
+// ---------------------------------------
+
+const $ = id => document.getElementById(id);
+const show = id => {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  $(id).classList.add('active');
+};
+document.querySelectorAll('.me').forEach(e => e.textContent = MY_NAME);
+$('who').textContent = 'Review conducted by ' + MY_NAME + ', manager and full time momo supporter.';
+
+$('go1').onclick = () => { show('s-game'); startGame(); };
+
+/* ---------- GAME ---------- */
+const arena = $('arena'), plate = $('plate');
+let W, H, px, items, score, running, last, spawnT, toastT, tt;
+const GOAL = 10;
+const catchLines = [
+  'Policy 4.2: momos are a fundamental right',
+  'Soft catch. Very polite plate work',
+  'HR approves this momo',
+  'Steamed to perfection 👌',
+  'That one had extra chutney energy',
+  'Monisha is cooking... or catching'
+];
+const types = [
+  {e:'🥟', w:62, pts:1},
+  {e:'🌶️', w:10, pts:2, msg:'Spicy chutney bonus! Double points'},
+  {e:'📊', w:16, pts:-1, msg:'Excel sheet! Nobody wants that'},
+  {e:'📅', w:12, pts:-1, msg:'Surprise 5pm meeting invite 😭'}
+];
+function pick(){
+  let r = Math.random()*100;
+  for(const t of types){ if((r-=t.w) < 0) return t; }
+  return types[0];
+}
+function toast(m){
+  const t = $('toast'); t.textContent = m; t.classList.add('show');
+  clearTimeout(tt); tt = setTimeout(() => t.classList.remove('show'), 1400);
+}
+function startGame(){
+  items.forEach?.(i => i.el.remove());
+  W = arena.clientWidth; H = arena.clientHeight;
+  px = W/2; items = []; score = 0; spawnT = 0; running = true; last = performance.now();
+  setScore(0); movePlate();
+  toast('Catch 10 momos to unlock the memo');
+  requestAnimationFrame(loop);
+}
+items = [];
+function setScore(n){
+  score = Math.max(0, n);
+  $('score').textContent = score;
+  $('prog').style.width = Math.min(100, score/GOAL*100) + '%';
+}
+function movePlate(){ plate.style.transform = `translateX(${px-26}px)`; }
+function setX(clientX){
+  const r = arena.getBoundingClientRect();
+  px = Math.max(26, Math.min(W-26, clientX - r.left));
+  movePlate();
+}
+arena.addEventListener('pointermove', e => setX(e.clientX));
+arena.addEventListener('pointerdown', e => setX(e.clientX));
+addEventListener('keydown', e => {
+  if(!running) return;
+  if(e.key === 'ArrowLeft'){ px = Math.max(26, px-40); movePlate(); }
+  if(e.key === 'ArrowRight'){ px = Math.min(W-26, px+40); movePlate(); }
+});
+function spawn(){
+  const t = pick(), el = document.createElement('div');
+  el.className = 'item'; el.textContent = t.e;
+  const x = 20 + Math.random()*(W-60);
+  arena.appendChild(el);
+  items.push({el, t, x, y:-40, v:(110 + Math.random()*90) * (H/560) + score*5});
+}
+function loop(now){
+  if(!running) return;
+  const dt = Math.min(0.05, (now-last)/1000); last = now;
+  spawnT -= dt;
+  if(spawnT <= 0){ spawn(); spawnT = Math.max(0.45, 0.85 - score*0.03); }
+  const plateTop = H - 62;
+  for(let i = items.length-1; i >= 0; i--){
+    const it = items[i];
+    it.y += it.v*dt;
+    it.el.style.transform = `translate(${it.x}px,${it.y}px)`;
+    const caught = it.y > plateTop && it.y < plateTop+40 && Math.abs(it.x+17 - px) < 40;
+    if(caught){
+      setScore(score + it.t.pts);
+      if(it.t.pts < 0){ arena.classList.remove('shake'); void arena.offsetWidth; arena.classList.add('shake'); toast(it.t.msg); }
+      else if(it.t.msg) toast(it.t.msg);
+      else if(Math.random() < .3) toast(catchLines[Math.random()*catchLines.length|0]);
+      it.el.remove(); items.splice(i,1);
+      if(score >= GOAL){ finishGame(); return; }
+    } else if(it.y > H){
+      it.el.remove(); items.splice(i,1);
+    }
+  }
+  requestAnimationFrame(loop);
+}
+function finishGame(){
+  running = false;
+  confetti(18, ['🥟','✨','💖']);
+  toast('Mission complete! Opening the memo...');
+  setTimeout(() => { items.forEach(i => i.el.remove()); items = []; startQuiz(); }, 1200);
+}
+
+/* ---------- QUIZ ---------- */
+const quiz = [
+  { q:'A team member misses a deadline. Your HR response?',
+    a:[['"It is totally okay, take your time 🥺"','Soft. The deadline felt so safe it cried a little.'],
+       ['"No worries at all, shall I get you some tea?"','Legend. The deadline got promoted.'],
+       ['"Let us circle back, only if you are comfortable 🙏"','Corporate poetry. Someone frame this.']] },
+  { q:'Someone says "Hi Monisha" in the corridor. You reply:',
+    a:[['"Hiii, how are you? 😊"','Friendly. Fourteen people now believe they are your favourite.'],
+       ['"Hello! Nice shirt."','Compliment delivered. HR audit pending, ironically.'],
+       ['"Heyyy 🙈"','Dangerously charming. Please file this under hazards.']] },
+  { q:'Momos arrive at the office. Your move?',
+    a:[['Take just one, very politely','Liar. We both know it is six.'],
+       ['Take the whole plate, say nothing','Respect. Maximum HR energy.'],
+       ['Ask who ordered, thank them softly, take three','The politest momo thief in company history.']] }
+];
+let qi = 0, lock = false;
+function startQuiz(){ qi = 0; show('s-quiz'); renderQ(); }
+function renderQ(){
+  lock = false;
+  const q = quiz[qi];
+  $('qno').textContent = `Question ${qi+1} of ${quiz.length}`;
+  $('qtext').textContent = q.q;
+  $('qreply').textContent = '';
+  const box = $('qopts'); box.innerHTML = '';
+  q.a.forEach(([label, reply]) => {
+    const b = document.createElement('button');
+    b.className = 'alt'; b.textContent = label;
+    b.onclick = () => {
+      if(lock) return; lock = true;
+      $('qreply').textContent = reply;
+      setTimeout(() => {
+        if(++qi < quiz.length) renderQ();
+        else { show('s-report'); confetti(14, ['🏆','💖','✨']); }
+      }, 1900);
+    };
+    box.appendChild(b);
+  });
+}
+$('go3').onclick = () => show('s-form');
+
+/* ---------- FINAL FORM ---------- */
+function approve(msg){
+  $('fbtns').style.display = 'none';
+  $('stamp').classList.add('on');
+  $('freply').textContent = msg;
+  confetti(40, ['🥟','💖','🌶️','✨']);
+}
+$('y1').onclick = () => approve('Request approved. Reply with a 🥟 and I will handle the rest. Chutney is on me.');
+$('y2').onclick = () => approve('Approved, and the stall is entirely your call. I will just bring the appetite and the good mood.');
+$('y3').onclick = () => {
+  $('freply').textContent = 'Of course, take all the time you need. No pressure at all. The momos can wait, and so can I. 🙂';
+  $('y3').textContent = 'Okay, I am in 🥟';
+  $('y3').onclick = () => approve('Approved! Worth the wait. Reply with a 🥟 and we are set.');
+};
+
+/* ---------- CONFETTI ---------- */
+function confetti(n, set){
+  for(let i = 0; i < n; i++){
+    const c = document.createElement('div');
+    c.className = 'conf';
+    c.textContent = set[Math.random()*set.length|0];
+    c.style.left = Math.random()*100 + 'vw';
+    c.style.animationDuration = (2 + Math.random()*2.2) + 's';
+    c.style.animationDelay = Math.random()*0.8 + 's';
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 5500);
+  }
+}
+</script>
+</body>
+</html>
