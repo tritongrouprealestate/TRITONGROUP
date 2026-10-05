@@ -80,7 +80,7 @@ the one file sales actually opens on-screen.
 | `Sales Kit/Hummingvalley/` | `cover.jpg` |
 | `Sales Kit/Hummingvalley/` | `logo.png` — Hummingvalley's own logo; see "Project logos" below |
 | `Sales Kit/Hummingvalley/Brochure/` | `Brochure.pdf` |
-| `Sales Kit/Hummingvalley/Cost Sheet/` | `Villa 8.png`, `Villa 10.png`, `Villa 11.png`, `Villa 20.png`, `Villa 22.png`, `Villa 23.png`, `Villa 30.png` |
+| `Sales Kit/Hummingvalley/Cost Sheet/` | `Villa 8.pdf`, `Villa 10.pdf`, `Villa 11.pdf`, `Villa 20.pdf`, `Villa 22.pdf`, `Villa 23.pdf`, `Villa 30.pdf` |
 | `Sales Kit/Hummingvalley/Master Plan/` | `Master Plan.png` |
 | `Sales Kit/Hummingvalley/Master Plan/` | `Interactive Master Plan.html`, **hand-built, see below** |
 | `Sales Kit/_Portal/Price Calculator/` | `Price Calculator.html` — shared with Sanvi, see below |
@@ -92,9 +92,21 @@ the one file sales actually opens on-screen.
 
 Villas 10 and 30 are confirmed and priced everywhere in the portal — the Price
 Calculator, the EMI Calculator and the Interactive Master Plan all work for
-them, and their scanned cost sheets (`Villa 10.png`, `Villa 30.png`) are now in
+them, and their scanned cost sheets (`Villa 10.pdf`, `Villa 30.pdf`) are now in
 the Cost Sheet folder too, so both the folder listing and the Master Plan
 popup's "View Cost Sheet" link work like the other five villas.
+
+**Cost sheets moved from image to PDF.** All seven villas' cost sheets are now
+`.pdf` files instead of `.png`, in both the Cost Sheet folder listing and the
+Master Plan popup's "View Cost Sheet" link. One visible side effect: a PDF
+tile in the folder view shows a generic file icon and a "PDF" badge instead
+of the inline image thumbnail the old PNGs had — `kindOf()` in `Triton Sales
+Portal.html` only gives thumbnail/preview treatment to `image` and `video`
+kinds, not `pdf`. As of this commit, the seven PDFs are placeholder pages
+(clearly labelled "PLACEHOLDER" on the page itself) standing in until the real
+scanned PDFs are dropped in under the exact same file names. The original
+seven `.png` scans are left in the Cost Sheet folder, unreferenced, as a
+backup of the verified source data until the real PDFs are confirmed working.
 
 ### Project logos
 
@@ -322,7 +334,8 @@ floor) and, where one exists, a link straight to that villa's cost sheet.
 There is deliberately no "Enquire" button — this kit has no backend to send an enquiry to.
 
 **The specification table is confirmed data, transcribed from each villa's own cost
-sheet** (`Sales Kit/Hummingvalley/Cost Sheet/Villa <N>.png`), not the earlier marketing
+sheet** (originally `Sales Kit/Hummingvalley/Cost Sheet/Villa <N>.png`, now `.pdf` —
+see "Cost sheets moved from image to PDF" above), not the earlier marketing
 cards — checked by re-deriving each sheet's full charges/GST/Grand Total math and
 confirming it matches exactly. "Aspect" is each villa's real compass facing from its
 sheet, not the marketing wording:
@@ -361,13 +374,14 @@ rate per sqft), before Recreation/KEB/Legal/PLC/Jacuzzi/DG Backup charges and 5%
 — it used to show the all-inclusive Grand Total, but the sales team asked for the base
 figure to lead instead. The Grand Total is still one click away via **View Cost Sheet**
 or the **Price Calculator** link right below it, so nothing is hidden. Every villa's
-popup links to **View Cost Sheet**, pointing at `Villa <N>.png` next to this page — save
+popup links to **View Cost Sheet**, pointing at `Villa <N>.pdf` next to this page — save
 each villa's cost sheet under that exact name for the link to resolve; all seven are in
-place now. All seven cost sheets were re-verified against the actual scans in the Cost
-Sheet folder (re-deriving each sheet's Base Price → Other Charges → GST → Grand Total
-math) and match exactly. Villa 22 is priced at ₹9,000/sqft while Villa 23 — its
-originally-identical sibling — is at ₹8,750/sqft; worth confirming with the sales desk
-whether that's intentional.
+place now, currently as the placeholder PDFs described above pending the real scans.
+Before the format switch, all seven cost sheets were re-verified against the actual
+scans in the Cost Sheet folder (re-deriving each sheet's Base Price → Other Charges →
+GST → Grand Total math) and matched exactly. Villa 22 is priced at ₹9,000/sqft while
+Villa 23 — its originally-identical sibling — is at ₹8,750/sqft; worth confirming with
+the sales desk whether that's intentional.
 
 Beside it, **Price Calculator** opens the shared calculator already on Hummingvalley,
 with that exact villa preselected in the unit picker, same numbers as the popup itself,
@@ -589,10 +603,10 @@ and unselectable in the picker, exactly like the other two projects will be once
 sold units are recorded the same way.
 
 **Hummingvalley's seven confirmed-available villas — 8, 10, 11, 20, 22, 23 and 30 —
-now come straight from each villa's own cost sheet** (`Sales Kit/Hummingvalley/Cost
-Sheet/Villa <N>.png`), not the earlier marketing cards. Every sheet was checked by
-re-deriving its full Base Price → Other Charges → GST → Grand Total and confirming an
-exact match before trusting its numbers.
+now come straight from each villa's own cost sheet** (originally `Sales Kit/
+Hummingvalley/Cost Sheet/Villa <N>.png`, now `.pdf`), not the earlier marketing cards.
+Every sheet was checked by re-deriving its full Base Price → Other Charges → GST →
+Grand Total and confirming an exact match before trusting its numbers.
 
 - **Rate per sqft is not uniform across the project.** Villas 10, 11, 20 and 30 are
   ₹8,750/sqft; villa 22 is ₹9,000/sqft. Each unit in `price-calculator-data.js`
