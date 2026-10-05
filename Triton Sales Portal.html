@@ -159,7 +159,12 @@ body.cur-hot .cursor{opacity:0}
 @media (prefers-reduced-motion:reduce){.ss-slide{animation:none}}
 
 /* ---------- project-page screensaver toggle ---------- */
-.sec-head-right{display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+/* margin-left:auto keeps this pinned to the right edge even when .sec-head
+   wraps onto two lines at narrower widths — justify-content:space-between
+   on the parent has nothing to space a lone wrapped item away from, so
+   without this it collapses to the left instead of staying right-aligned
+   under the title. */
+.sec-head-right{display:flex;flex-direction:column;align-items:flex-end;gap:12px;margin-left:auto}
 .ss-toggle{display:inline-flex;align-items:center;gap:9px;cursor:pointer;user-select:none}
 .ss-toggle input{position:absolute;opacity:0;width:1px;height:1px}
 .ss-toggle-track{position:relative;width:34px;height:19px;border-radius:99px;
