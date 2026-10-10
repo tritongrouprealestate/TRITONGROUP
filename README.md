@@ -65,8 +65,7 @@ the one file sales actually opens on-screen.
 | `Sales Kit/Sanvi/` | `cover.jpg` — the photo on the project card |
 | `Sales Kit/Sanvi/` | `logo.png` — Sanvi's own logo; see "Project logos" below |
 | `Sales Kit/Sanvi/Brochure/` | `Brochure.pdf` |
-| `Sales Kit/Sanvi/Cost Sheet/` | `Cost Sheet.png` |
-| `Sales Kit/Sanvi/Cost Sheet/` | `Price List.xlsx` |
+| `Sales Kit/Sanvi/Cost Sheet/` | `Price List.html`, **hand-built, see below** |
 | `Sales Kit/_Portal/Price Calculator/` | `Price Calculator.html` — shared with Hummingvalley, see below |
 | `Sales Kit/Sanvi/Availability Sheet/` | `Availability.xlsx` |
 | `Sales Kit/Sanvi/Comparison Sheet/` | `Comparison.xlsx` |
@@ -593,18 +592,29 @@ checkbox off first, so the sheet handed to a customer never carries a
 "Triton Humming Valley Price Calculator" title line or a `file:///...` path in the
 margins. The tip itself is hidden in the actual print output.
 
-**Sanvi's 44 units are the real building.** Its master list (`Sheet3` in the original
-workbook) and its Availability sheet disagreed on three flats' configuration —
-Flat 120 (Sheet3 said 3 BHK, Availability said 2 BHK, and at 1,090 sqft it doesn't
-match *any* named size on the official Price List either), Flat 320 (3 BHK vs 2 BHK —
-its 1,215 sqft matches the "2 BHK Delta" size exactly, so Availability is very likely
-right) and Flat 531 (1 BHK vs 2 BHK — its 1,075 sqft matches "2 BHK Gamma" exactly, same
-conclusion). Availability's value was used for all three since it's the sheet your team
-actually keeps current, but Flat 120 in particular is worth a manual check — it's
-editable in the app regardless, so a wrong label there costs nothing to fix on the spot.
-Flats 130, 225 and 235 have no Availability row at all (already sold) and are greyed out
-and unselectable in the picker, exactly like the other two projects will be once their
-sold units are recorded the same way.
+**Sanvi now has both blocks — 85 units total.** Block A (36 units, all 1 BHK,
+₹9,700/sqft) and Block B (48 units, a 1/2/3 BHK mix, ₹8,999/sqft) each have their own
+rate; the Unit Details section gets a **Block A / Block B toggle** above the unit
+picker (only shown for a project whose `PRICE_CALC_DATA` entry declares a `blocks`
+array — every other project is unaffected). Resynced against
+`SAG_COST_SHEET_Availability.xlsx` (09 Oct 2026): flats 124, 320, 414, 531, 601, 613,
+614 and 624 dropped off the live availability sheet since the last update and are now
+marked sold; flats 18, 203, 318 and 428 are new additions. Flat A-508 has no status on
+the Availability sheet at all (treated as sold — worth a quick confirm with the sales
+desk). Flat 120's config is still shown as "2 BHK" per the Availability sheet even
+though at 1,090 sqft it doesn't match any named size on the official Price List
+(925 / 1,040 / 1,075 / 1,215 for 2 BHK); flagged, editable in the app regardless.
+The Reference Sheet tab now shows a **Block** column alongside every unit so both
+blocks read as one list when you're just browsing, not quoting.
+
+**Sanvi's Price List is now a hand-built page, not a spreadsheet download.**
+`Sales Kit/Sanvi/Cost Sheet/Price List.html` replaces the old `Price List.xlsx` —
+same two blocks, same per-type rate-card format (Built-up Area → Rate → Facing →
+Basic Cost → Charges → GST → Final Cost), just re-typeset to match the rest of the
+portal and to stay in sync with the Price Calculator's unit data instead of a second,
+separately-maintained file. The old placeholder `Cost Sheet.png` (fabricated example
+numbers, explicitly watermarked "PLACEHOLDER — REPLACE BEFORE USE") is retired now
+that real pricing is in place.
 
 **Hummingvalley's seven confirmed-available villas — 8, 10, 11, 20, 22, 23 and 30 —
 now come straight from each villa's own cost sheet** (originally `Sales Kit/
