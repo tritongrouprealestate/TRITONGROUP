@@ -65,6 +65,7 @@ the one file sales actually opens on-screen.
 | `Sales Kit/Sanvi/` | `cover.jpg` — the photo on the project card |
 | `Sales Kit/Sanvi/` | `logo.png` — Sanvi's own logo; see "Project logos" below |
 | `Sales Kit/Sanvi/Brochure/` | `Brochure.pdf` |
+| `Sales Kit/Sanvi/Floor Plans/` | `Ground Floor Plan.png`, `First Floor Plan.png`, `Typical Floor Plan (2nd-6th).png` |
 | `Sales Kit/Sanvi/Cost Sheet/` | `Price List.html`, **hand-built, see below** |
 | `Sales Kit/_Portal/Price Calculator/` | `Price Calculator.html` — shared with Hummingvalley, see below |
 | `Sales Kit/Sanvi/Availability Sheet/` | `Availability.xlsx` |
@@ -606,6 +607,16 @@ though at 1,090 sqft it doesn't match any named size on the official Price List
 (925 / 1,040 / 1,075 / 1,215 for 2 BHK); flagged, editable in the app regardless.
 The Reference Sheet tab now shows a **Block** column alongside every unit so both
 blocks read as one list when you're just browsing, not quoting.
+
+**Sanvi's Floor Plans folder is a simple viewer, not a clickable master plan.**
+The three images (Ground / First / Typical 2nd–6th) are the architect's own CAD
+drawings, rasterized as-is — each sheet shows both blocks together, exactly as
+drawn, since that's how the source PDFs are laid out. Unlike Hummingvalley's
+Interactive Master Plan, there's no tap-a-flat popup here: the drawings are dense
+CAD output with tiny flat-number labels, and tracing precise per-flat hotspots
+against them would risk mislabeling a unit. The Price Calculator's Reference
+Sheet is still the reliable source for "which exact flat, what price, what
+status" — the floor plans are for showing the building's actual layout.
 
 **Sanvi's Price List is now a hand-built page, not a spreadsheet download.**
 `Sales Kit/Sanvi/Cost Sheet/Price List.html` replaces the old `Price List.xlsx` —
