@@ -155,6 +155,13 @@ table.sched input.pct-input{text-align:right}
   transition:.15s var(--ease)}
 .tab:hover{color:var(--fg)}
 .tab.on{color:var(--accent);border-bottom-color:var(--accent);background:var(--accent-soft)}
+
+.block-toggle{display:flex;gap:6px;margin:-4px 0 14px}
+.block-toggle button{padding:7px 16px;border-radius:999px;border:1px solid var(--line-2);
+  background:transparent;font:700 11.5px/1 var(--sans);letter-spacing:.03em;color:var(--fg-dim);
+  transition:.15s var(--ease)}
+.block-toggle button:hover{border-color:var(--accent);color:var(--fg)}
+.block-toggle button.on{background:var(--accent);border-color:var(--accent);color:#fff}
 #referenceView{padding-top:18px}
 .ref-head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap;
   margin-bottom:12px}
@@ -303,6 +310,7 @@ table.sched input.pct-input{text-align:right}
 
     <div class="section">
       <p class="section-title" id="unitSectionTitle">Unit Details</p>
+      <div class="block-toggle" id="blockToggle" hidden></div>
       <div class="grid" style="margin-bottom:12px">
         <div class="f grow">
           <label id="unitSelectLabel">Unit No</label>
@@ -412,6 +420,7 @@ function num(el) { return Number(el && el.value) || 0; }
 var project = null;
 var charges = [];   // { id, label, type, rate, amount, enabled, fixed:bool }
 var schedule = [];  // { label, type, percent, amount }
+var selectedBlock = null;  // id of the active block when p.blocks is set, else null
 
 /* ============================================================
    PROJECT SWITCH
@@ -454,10 +463,12 @@ function loadProject(p) {
     $('#sheetLogo').hidden = true; $('#sheetLogoText').hidden = false; $('#sheetLogoText').textContent = p.developer || p.name;
   }
 
-  $('#unitSectionTitle').textContent = (p.blockLabel ? p.blockLabel + ' · ' : '') + 'Unit Details';
   $('#unitSelectLabel').textContent = p.unitLabel || 'Unit No';
   $('#unitSbaLabel').textContent = p.areaLabel || 'Area (sqft)';
 
+  selectedBlock = (p.blocks && p.blocks.length) ? p.blocks[0].id : null;
+  renderBlockToggle(p);
+  updateUnitSectionTitle(p);
   populateUnitSelect(p);
   $('#custDate').value = new Date().toISOString().slice(0, 10);
   $('#custName').value = ''; $('#custMobile').value = ''; $('#custEmail').value = '';
@@ -508,13 +519,47 @@ function escHtml(s) {
 /* ============================================================
    UNIT PICKER
    ============================================================ */
+var visibleUnits = [];  // the (possibly block-filtered) array the dropdown's indices refer to
+
+function unitsForBlock(p, blockId) {
+  var all = p.units || [];
+  return blockId ? all.filter(function (u) { return u.block === blockId; }) : all;
+}
+
+function updateUnitSectionTitle(p) {
+  var block = (p.blocks || []).find(function (b) { return b.id === selectedBlock; });
+  var label = block ? block.label : p.blockLabel;
+  $('#unitSectionTitle').textContent = (label ? label + ' · ' : '') + 'Unit Details';
+}
+
+function renderBlockToggle(p) {
+  var wrap = $('#blockToggle');
+  if (!p.blocks || !p.blocks.length) { wrap.hidden = true; wrap.innerHTML = ''; return; }
+  wrap.hidden = false;
+  wrap.innerHTML = p.blocks.map(function (b) {
+    return '<button type="button" class="' + (b.id === selectedBlock ? 'on' : '') +
+      '" data-block="' + escHtml(b.id) + '">' + escHtml(b.label) + '</button>';
+  }).join('');
+  $$('#blockToggle button').forEach(function (btn) {
+    btn.onclick = function () {
+      selectedBlock = btn.dataset.block;
+      $$('#blockToggle button').forEach(function (b) { b.classList.toggle('on', b === btn); });
+      updateUnitSectionTitle(p);
+      populateUnitSelect(p);
+      applyUnit(null);
+      recalc();
+    };
+  });
+}
+
 function populateUnitSelect(p) {
   var sel = $('#unitSelect');
   sel.innerHTML = '';
   var blank = document.createElement('option');
   blank.value = ''; blank.textContent = 'Custom / not listed';
   sel.appendChild(blank);
-  (p.units || []).forEach(function (u, i) {
+  visibleUnits = unitsForBlock(p, selectedBlock);
+  visibleUnits.forEach(function (u, i) {
     var o = document.createElement('option');
     o.value = i;
     var bits = [u.no, u.config, (u.sba ? u.sba + ' sqft' : ''), u.facing].filter(Boolean);
@@ -523,7 +568,7 @@ function populateUnitSelect(p) {
     sel.appendChild(o);
   });
   sel.onchange = function () {
-    var u = sel.value === '' ? null : p.units[+sel.value];
+    var u = sel.value === '' ? null : visibleUnits[+sel.value];
     applyUnit(u);
     recalc();
   };
@@ -787,6 +832,7 @@ function renderReferenceSheet(p) {
   var head = [p.unitLabel || 'Unit No', 'Configuration', p.areaLabel || 'Area (sqft)'];
   if (p.hasPlotArea) { cols.push('plotArea'); head.push(p.plotAreaLabel || 'Plot Area (sqft)'); }
   cols.push('facing'); head.push('Facing / Aspect');
+  if (p.blocks && p.blocks.length) { cols.push('block'); head.push('Block'); }
   cols.push('status'); head.push('Status');
 
   $('#refTableHead').innerHTML = head.map(function (h) { return '<th>' + escHtml(h) + '</th>'; }).join('');
@@ -797,6 +843,10 @@ function renderReferenceSheet(p) {
       if (c === 'status') {
         return '<td><span class="status-pill ' + (sold ? 'sold' : 'available') + '">' +
           (sold ? 'Sold' : 'Available') + '</span></td>';
+      }
+      if (c === 'block') {
+        var b = (p.blocks || []).find(function (bl) { return bl.id === u.block; });
+        return '<td>' + escHtml(b ? b.label : (u.block || '')) + '</td>';
       }
       var v = u[c];
       if (v === null || v === undefined || v === '') v = '<span style="color:var(--fg-faint)">TBD</span>';
@@ -829,12 +879,22 @@ if (DATA.length) {
   loadProject(DATA[startIdx]);
 
   if (wantedUnit) {
-    var units = DATA[startIdx].units || [];
-    var unitIdx = units.findIndex(function (u) { return String(u.no) === wantedUnit; });
-    if (unitIdx > -1) {
-      $('#unitSelect').value = unitIdx;
-      applyUnit(units[unitIdx]);
-      recalc();
+    var p0 = DATA[startIdx];
+    var allUnits = p0.units || [];
+    var wantedU = allUnits.find(function (u) { return String(u.no) === wantedUnit; });
+    if (wantedU) {
+      if (p0.blocks && p0.blocks.length && wantedU.block) {
+        selectedBlock = wantedU.block;
+        renderBlockToggle(p0);
+        updateUnitSectionTitle(p0);
+        populateUnitSelect(p0);
+      }
+      var unitIdx = visibleUnits.indexOf(wantedU);
+      if (unitIdx > -1) {
+        $('#unitSelect').value = unitIdx;
+        applyUnit(wantedU);
+        recalc();
+      }
     }
   }
 } else {
