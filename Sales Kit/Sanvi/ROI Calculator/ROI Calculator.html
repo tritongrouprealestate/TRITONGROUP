@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ROI Calculator, Sanvi Aero Gardens</title>
+<style>
+:root{
+  --accent:#7A1B35; --accent-dark:#5C1427; --accent-soft:#F4E6EA;
+  --ink:#1B1B1D; --ink-dim:#5B5B60; --ink-faint:#8A8A90;
+  --line:rgba(20,20,22,.12); --line-2:rgba(20,20,22,.22);
+  --paper:#FFFFFF; --bg:#F7F5F3;
+  --good:#1C7A4E; --good-tint:#E7F6EE;
+  --radius:16px;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  --display:"Fraunces","Georgia",serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;
+  -webkit-font-smoothing:antialiased}
+h1,h2,h3{margin:0}
+::selection{background:rgba(122,27,53,.18)}
+
+.wrap{max-width:1180px;margin:0 auto;padding:clamp(18px,3vw,40px)}
+.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}
+.brand img{height:36px;width:auto}
+.brand b{display:block;font:600 17px var(--display);color:var(--accent-dark)}
+.brand span{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);margin-top:2px}
+.back-link{font-size:12.5px;color:var(--ink-dim);text-decoration:none;border:1px solid var(--line);
+  border-radius:999px;padding:7px 14px}
+.back-link:hover{border-color:var(--accent)}
+
+.disclaimer{background:var(--accent-soft);border:1px solid rgba(122,27,53,.18);border-radius:12px;
+  padding:14px 18px;font-size:12.5px;color:var(--ink-dim);margin-bottom:24px;display:flex;gap:10px}
+.disclaimer b{color:var(--accent-dark)}
+
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(16px,2.4vw,24px)}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
+  padding:clamp(20px,2.6vw,28px);box-shadow:0 1px 2px rgba(16,16,18,.04),0 10px 30px rgba(16,16,18,.05)}
+.card + .card{margin-top:16px}
+.card-title{font-size:11.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink-faint);margin-bottom:18px}
+
+.field{margin-bottom:22px}
+.field:last-child{margin-bottom:0}
+.field-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:8px}
+.field-label{font-size:13.5px;font-weight:600;color:var(--ink)}
+.field-value{font:700 15px var(--sans);color:var(--accent-dark)}
+select,input[type=number]{width:100%;padding:11px 13px;border:1px solid var(--line-2);border-radius:10px;
+  font:inherit;font-size:14px;color:var(--ink);background:#fff}
+select:focus,input:focus{outline:2px solid var(--accent);outline-offset:1px}
+
+.block-toggle{display:flex;gap:6px;margin-bottom:14px}
+.block-toggle button{flex:1;padding:9px 10px;border-radius:10px;border:1px solid var(--line-2);
+  background:#fff;font:700 12px var(--sans);letter-spacing:.02em;color:var(--ink-dim);transition:.15s var(--ease)}
+.block-toggle button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+
+input[type=range]{-webkit-appearance:none;width:100%;height:4px;border-radius:99px;
+  background:linear-gradient(to right,var(--accent) 0%,var(--accent) var(--pct,50%),var(--line-2) var(--pct,50%),var(--line-2) 100%);
+  margin:6px 0}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;
+  background:var(--accent);border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.3);cursor:pointer}
+input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--accent);
+  border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.3);cursor:pointer}
+.field-note{font-size:11.5px;color:var(--ink-faint);margin-top:6px}
+.unit-note{font-size:12.5px;color:var(--ink-dim);background:var(--bg);border-radius:10px;padding:10px 13px;
+  margin-top:14px}
+.unit-note[hidden]{display:none}
+
+.summary{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.stat{background:var(--bg);border-radius:12px;padding:14px 16px}
+.stat.hero{grid-column:1/-1;background:var(--good-tint)}
+.stat-label{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint)}
+.stat-value{font:700 22px var(--display);color:var(--ink);margin-top:4px}
+.stat.hero .stat-value{color:var(--good-dark,#135C3C);font-size:26px}
+.stat-sub{font-size:11.5px;color:var(--ink-dim);margin-top:2px}
+
+canvas#chart{width:100%;height:180px;display:block;margin-bottom:18px}
+
+table.proj{width:100%;border-collapse:collapse;font-size:12.5px}
+table.proj th,table.proj td{padding:8px 10px;text-align:right;border-bottom:1px solid var(--line)}
+table.proj th:first-child,table.proj td:first-child{text-align:left}
+table.proj thead th{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);
+  font-weight:700}
+table.proj tbody tr:last-child{background:var(--accent-soft);font-weight:700}
+table.proj tbody tr:last-child td{color:var(--accent-dark)}
+
+.foot{margin-top:28px;padding-top:16px;border-top:1px solid var(--line);font-size:11.5px;color:var(--ink-faint);
+  display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+@media (max-width:480px){.summary{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="top">
+    <div class="brand">
+      <img src="../logo.png" alt="" onerror="this.remove()">
+      <div><b>Sanvi Aero Gardens</b><span>ROI Calculator</span></div>
+    </div>
+    <a class="back-link" href="../Cost Sheet/Price Calculator.html#sanvi">← Price Calculator</a>
+  </div>
+
+  <div class="disclaimer">
+    <span>⚠</span>
+    <span><b>Illustrative projection, not a promise.</b> Sanvi Aero Gardens does not run a managed
+      rental or short-term-stay program — this tool models capital appreciation only: what a unit
+      could be worth later if its value grows at the rate you choose below. The appreciation rate is
+      your own assumption, not a guaranteed or historical figure; change it to test different
+      scenarios. No rental income, yield or occupancy is assumed anywhere in this calculator.</span>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-title">Investment Inputs</div>
+
+      <div class="field">
+        <div class="field-head"><span class="field-label">Block</span></div>
+        <div class="block-toggle" id="blockToggle"></div>
+      </div>
+
+      <div class="field">
+        <div class="field-head"><span class="field-label">Unit</span></div>
+        <select id="unitSelect"><option value="">Custom / not listed</option></select>
+        <div class="unit-note" id="unitNote" hidden></div>
+      </div>
+
+      <div class="field">
+        <div class="field-head">
+          <span class="field-label">Investment Amount</span>
+          <span class="field-value" id="investmentLabel">₹0</span>
+        </div>
+        <input type="number" id="investment" min="0" step="10000" value="6500000">
+        <p class="field-note">Auto-fills to the selected unit's Final Cost (base + charges + GST,
+          same number the Price Calculator shows). Editable — overwrite it for a what-if scenario.</p>
+      </div>
+
+      <div class="field">
+        <div class="field-head">
+          <span class="field-label">Appreciation Rate (per year)</span>
+          <span class="field-value" id="rateLabel">8%</span>
+        </div>
+        <input type="range" id="rate" min="0" max="20" step="0.5" value="8">
+        <p class="field-note">Your own assumption — not Sanvi's or Triton's forecast. Bangalore
+          airport-corridor apartments have historically ranged widely year to year; 6–10% is a
+          commonly used planning band, not a guarantee.</p>
+      </div>
+
+      <div class="field">
+        <div class="field-head">
+          <span class="field-label">Holding Period</span>
+          <span class="field-value" id="yearsLabel">5 years</span>
+        </div>
+        <input type="range" id="years" min="1" max="15" step="1" value="5">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Projected Outcome</div>
+
+      <div class="summary">
+        <div class="stat hero">
+          <div class="stat-label">Projected Value</div>
+          <div class="stat-value" id="outValue">₹0</div>
+          <div class="stat-sub" id="outValueSub">at year 0</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Total Gain</div>
+          <div class="stat-value" id="outGain">₹0</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Gain</div>
+          <div class="stat-value" id="outGainPct">0%</div>
+          <div class="stat-sub">over the holding period</div>
+        </div>
+      </div>
+
+      <canvas id="chart" width="600" height="180"></canvas>
+
+      <table class="proj">
+        <thead><tr><th>Year</th><th>Projected Value</th><th>Gain</th><th>Gain %</th></tr></thead>
+        <tbody id="projBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="foot">
+    <span>Sanvi Constructions · Sanvi Aero Gardens</span>
+    <span>Contact: +91 90366 82626 · Figures are illustrative, not investment advice</span>
+  </div>
+</div>
+
+<script src="../../_Portal/Price Calculator/price-calculator-data.js"></script>
+<script>
+/* ============================================================
+   UNIT PRICING
+   ------------------------------------------------------------
+   Reads the same price-calculator-data.js the Price Calculator and
+   Cost Sheet use, so a unit's "Investment Amount" here is always the
+   same Final Cost the Price Calculator shows for it. Same pattern as
+   Hummingvalley's EMI Calculator — one source of truth, no separate
+   figure to keep in sync by hand.
+   ============================================================ */
+var SV = ((window.PRICE_CALC_DATA || {}).projects || [])
+  .filter(function (p) { return p.id === 'sanvi'; })[0] || null;
+
+function unitFinalPrice(u) {
+  var sba = u.sba || 0;
+  var rate = u.rate != null ? u.rate : ((SV && SV.ratePerSqft) || 0);
+  var base = rate * sba;
+  var otherTotal = ((SV && SV.charges) || []).reduce(function (a, c) {
+    if (c.enabledByDefault === false) return a;
+    if (c.type === 'fixed') return a + (c.default || 0);
+    if (c.type === 'perSqft') return a + (c.rate || 0) * sba;
+    if (c.type === 'perSqftByFloor') {
+      var r = (c.rates || {})[String(u.floor)] || 0;
+      return a + r * sba;
+    }
+    return a;
+  }, 0);
+  var gstBase = (SV && SV.gstBase) || [];
+  var gstBaseAmt = (gstBase.indexOf('basePrice') > -1 ? base : 0) +
+                   (gstBase.indexOf('otherCharges') > -1 ? otherTotal : 0);
+  var gstAmt = ((SV && SV.gstPercent) || 0) / 100 * gstBaseAmt;
+  return base + otherTotal + gstAmt;
+}
+
+function inr(n) {
+  n = Math.round(n || 0);
+  var neg = n < 0; n = Math.abs(n);
+  var s = String(n), last3 = s.slice(-3), rest = s.slice(0, -3);
+  if (rest) last3 = ',' + last3;
+  rest = rest.replace(/\B(?=(\d{2})+(?!\d))/g, ',');
+  return (neg ? '-' : '') + '₹' + rest + last3;
+}
+function inrCompact(n) {
+  n = Math.round(n || 0);
+  if (n >= 10000000) return '₹' + (n / 10000000).toFixed(2).replace(/\.00$/, '') + ' Cr';
+  if (n >= 100000) return '₹' + (n / 100000).toFixed(2).replace(/\.00$/, '') + ' L';
+  return inr(n);
+}
+
+/* ---------------- block toggle + unit picker ---------------- */
+var selectedBlock = (SV && SV.blocks && SV.blocks[0]) ? SV.blocks[0].id : null;
+var blockToggle = document.getElementById('blockToggle');
+var unitSelect = document.getElementById('unitSelect');
+var unitNote = document.getElementById('unitNote');
+var investmentInput = document.getElementById('investment');
+
+function renderBlockToggle() {
+  if (!SV || !SV.blocks || !SV.blocks.length) { blockToggle.hidden = true; return; }
+  blockToggle.innerHTML = SV.blocks.map(function (b) {
+    return '<button type="button" class="' + (b.id === selectedBlock ? 'on' : '') +
+      '" data-block="' + b.id + '">' + b.label + '</button>';
+  }).join('');
+  Array.prototype.forEach.call(blockToggle.querySelectorAll('button'), function (btn) {
+    btn.onclick = function () {
+      selectedBlock = btn.dataset.block;
+      renderBlockToggle();
+      populateUnitSelect();
+    };
+  });
+}
+
+function populateUnitSelect() {
+  unitSelect.innerHTML = '<option value="">Custom / not listed</option>';
+  var units = ((SV && SV.units) || [])
+    .filter(function (u) { return u.status !== 'sold'; })
+    .filter(function (u) { return !selectedBlock || u.block === selectedBlock; });
+  units.forEach(function (u) {
+    var o = document.createElement('option');
+    o.value = u.no;
+    o.textContent = u.no + ' · ' + (u.config || '') + ' · ' + (u.sba || 0) + ' sqft · ' + inrCompact(unitFinalPrice(u));
+    unitSelect.appendChild(o);
+  });
+  unitNote.hidden = true;
+}
+
+function applyUnit(unitNo) {
+  if (!unitNo) { unitNote.hidden = true; return; }
+  var u = ((SV && SV.units) || []).filter(function (x) { return String(x.no) === String(unitNo); })[0];
+  if (!u) { unitNote.hidden = true; return; }
+  var price = unitFinalPrice(u);
+  investmentInput.value = Math.round(price);
+  unitNote.hidden = false;
+  unitNote.textContent = 'Unit ' + u.no + ' (' + (u.config || '') + ', ' + (u.sba || 0) + ' sqft) — Final Cost ' +
+    inrCompact(price) + ', same figure the Price Calculator shows.';
+  render();
+}
+
+unitSelect.addEventListener('change', function () { applyUnit(unitSelect.value); });
+
+/* ---------------- sliders ---------------- */
+var rateInput = document.getElementById('rate');
+var yearsInput = document.getElementById('years');
+
+function setSliderPct(el) {
+  var pct = (el.value - el.min) / (el.max - el.min) * 100;
+  el.style.setProperty('--pct', pct + '%');
+}
+
+/* ---------------- projection + render ---------------- */
+function projection() {
+  var investment = Number(investmentInput.value) || 0;
+  var rate = Number(rateInput.value) || 0;
+  var years = Number(yearsInput.value) || 1;
+  var rows = [];
+  for (var y = 0; y <= years; y++) {
+    var value = investment * Math.pow(1 + rate / 100, y);
+    rows.push({ year: y, value: value, gain: value - investment, gainPct: investment ? (value - investment) / investment * 100 : 0 });
+  }
+  return rows;
+}
+
+function drawChart(rows) {
+  var canvas = document.getElementById('chart');
+  var ctx = canvas.getContext('2d');
+  var dpr = window.devicePixelRatio || 1;
+  var w = canvas.clientWidth, h = canvas.clientHeight;
+  canvas.width = w * dpr; canvas.height = h * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, w, h);
+
+  var pad = { l: 8, r: 8, t: 10, b: 20 };
+  var maxVal = Math.max.apply(null, rows.map(function (r) { return r.value; })) || 1;
+  var minVal = rows[0] ? rows[0].value : 0;
+  var innerW = w - pad.l - pad.r, innerH = h - pad.t - pad.b;
+
+  function x(i) { return pad.l + (rows.length > 1 ? i / (rows.length - 1) * innerW : 0); }
+  function y(v) { return pad.t + innerH - ((v - minVal) / (maxVal - minVal || 1)) * innerH; }
+
+  // area fill
+  ctx.beginPath();
+  ctx.moveTo(x(0), pad.t + innerH);
+  rows.forEach(function (r, i) { ctx.lineTo(x(i), y(r.value)); });
+  ctx.lineTo(x(rows.length - 1), pad.t + innerH);
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(122,27,53,.08)';
+  ctx.fill();
+
+  // line
+  ctx.beginPath();
+  rows.forEach(function (r, i) {
+    var px = x(i), py = y(r.value);
+    if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+  });
+  ctx.strokeStyle = '#7A1B35';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // endpoint dot
+  var last = rows[rows.length - 1];
+  ctx.beginPath();
+  ctx.arc(x(rows.length - 1), y(last.value), 4, 0, Math.PI * 2);
+  ctx.fillStyle = '#7A1B35';
+  ctx.fill();
+
+  // baseline
+  ctx.strokeStyle = 'rgba(20,20,22,.12)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(pad.l, pad.t + innerH + 0.5);
+  ctx.lineTo(w - pad.r, pad.t + innerH + 0.5);
+  ctx.stroke();
+}
+
+function render() {
+  setSliderPct(rateInput);
+  setSliderPct(yearsInput);
+  document.getElementById('rateLabel').textContent = Number(rateInput.value) + '%';
+  document.getElementById('yearsLabel').textContent = yearsInput.value + (yearsInput.value == 1 ? ' year' : ' years');
+  document.getElementById('investmentLabel').textContent = inrCompact(Number(investmentInput.value));
+
+  var rows = projection();
+  var last = rows[rows.length - 1];
+  document.getElementById('outValue').textContent = inrCompact(last.value);
+  document.getElementById('outValueSub').textContent = 'at year ' + last.year;
+  document.getElementById('outGain').textContent = inrCompact(last.gain);
+  document.getElementById('outGainPct').textContent = last.gainPct.toFixed(1) + '%';
+
+  document.getElementById('projBody').innerHTML = rows.map(function (r) {
+    return '<tr><td>' + r.year + '</td><td>' + inrCompact(r.value) + '</td><td>' + inrCompact(r.gain) +
+      '</td><td>' + r.gainPct.toFixed(1) + '%</td></tr>';
+  }).join('');
+
+  drawChart(rows);
+}
+
+['investment', 'rate', 'years'].forEach(function (id) {
+  document.getElementById(id).addEventListener('input', render);
+});
+window.addEventListener('resize', render);
+
+/* ---------------- boot ---------------- */
+renderBlockToggle();
+populateUnitSelect();
+setSliderPct(rateInput);
+setSliderPct(yearsInput);
+render();
+</script>
+</body>
+</html>

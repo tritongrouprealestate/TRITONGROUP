@@ -70,6 +70,7 @@ the one file sales actually opens on-screen.
 | `Sales Kit/_Portal/Price Calculator/` | `Price Calculator.html` — shared with Hummingvalley, see below |
 | `Sales Kit/Sanvi/Availability Sheet/` | `Availability.xlsx` |
 | `Sales Kit/Sanvi/Comparison Sheet/` | `Comparison.xlsx` |
+| `Sales Kit/Sanvi/ROI Calculator/` | `ROI Calculator.html`, **hand-built, see below** |
 | `Sales Kit/Sanvi/Location Advantage/` | `Location Advantage.html` |
 | `Sales Kit/Sanvi/Video/` | `Walkthrough.mp4` |
 
@@ -617,6 +618,20 @@ CAD output with tiny flat-number labels, and tracing precise per-flat hotspots
 against them would risk mislabeling a unit. The Price Calculator's Reference
 Sheet is still the reliable source for "which exact flat, what price, what
 status" — the floor plans are for showing the building's actual layout.
+
+**Sanvi's ROI Calculator is deliberately NOT a port of Hummingvalley's.**
+Hummingvalley's `ROI Calculator.html` models a managed short-term-rental program —
+keys, nightly rack rate, occupancy curves, revenue share, free stay nights — and its
+"Total Economic Benefit" IRR comes from that rental pool. Sanvi has no such program;
+porting that model with invented occupancy/rack-rate numbers would have shown a buyer
+a fabricated rental-income projection. Sanvi's version instead models **capital
+appreciation only**: pick a unit (same Block A/B picker, same Final Cost as the Price
+Calculator — both read `price-calculator-data.js`, so the investment figure can't drift
+from what the Price Calculator shows), set an appreciation % and a holding period, see
+projected value / gain / gain % per year and a small chart. The appreciation rate has
+no default claim to accuracy — the page says so directly, in a banner, before any
+number loads. If Sanvi ever does launch a rental program with real figures, the
+Hummingvalley file is the pattern to follow instead of this one.
 
 **Sanvi's Price List is now a hand-built page, not a spreadsheet download.**
 `Sales Kit/Sanvi/Cost Sheet/Price List.html` replaces the old `Price List.xlsx` —
