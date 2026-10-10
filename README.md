@@ -176,6 +176,7 @@ and Eloria has its brochure, both dropped in and live.
 | `Sales Kit/Up in the Clouds/Location Advantage/` | `Location Advantage.html` | Not added yet |
 | `Sales Kit/Up in the Clouds/Video/` | `Walkthrough.mp4` | Not added yet |
 | `Sales Kit/Eloria/Brochure/` | `Brochure.pdf` | **Real — in place** |
+| `Sales Kit/Eloria/Master Plan/` | `Master Plan.webp` | **Real — in place** |
 | `Sales Kit/Eloria/Floor Plans/` | `30X50 East.webp`, `35X50 East.webp` | **Real — in place** |
 | `Sales Kit/Eloria/Cost Sheet/` | `Cost Sheet.png` | Not added yet |
 | `Sales Kit/Eloria/Location Advantage/` | `Location Advantage.html` | Not added yet |
