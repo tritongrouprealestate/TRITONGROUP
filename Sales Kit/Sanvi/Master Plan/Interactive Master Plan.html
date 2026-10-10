@@ -92,7 +92,7 @@
   Markers are shown only for flats that could be matched against the live Price Calculator data with
   confidence — a few units visible on the architectural drawing could not be reliably read off the
   scanned plan and are left unmarked here rather than guessed. Every flat below is still listed in full
-  on the <a href="../Cost Sheet/Price List.html">Price List</a> and the Price Calculator's reference sheet.
+  on the <a href="../Cost Sheet/Price List.html" target="_blank" rel="noopener">Price List</a> and the Price Calculator's reference sheet.
 </p>
 
 <div class="backdrop" id="backdrop">
@@ -248,7 +248,7 @@ function openUnit(block, pos) {
   var body = document.getElementById("mBody");
   if (!u) {
     body.innerHTML = "<p>No record found for this flat in the current price data. "
-      + "Please check the <a href=\"../Cost Sheet/Price List.html\">Price List</a> or contact the sales team.</p>";
+      + "Please check the <a href=\"../Cost Sheet/Price List.html\" target=\"_blank\" rel=\"noopener\">Price List</a> or contact the sales team.</p>";
   } else {
     var status = u.status === "sold" ? "sold" : "available";
     var price = unitFinalPrice(u);
@@ -264,8 +264,12 @@ function openUnit(block, pos) {
       + '<tr class="price-row"><td>Final Cost (incl. GST)</td><td>' + fmtINR(price) + '</td></tr>'
       + '</table>'
       + '<div class="modal-links">'
-      + '<a href="../../_Portal/Price Calculator/Price Calculator.html#sanvi/' + encodeURIComponent(u.no) + '">Open in Price Calculator</a>'
-      + '<a class="alt" href="../ROI Calculator/ROI Calculator.html">Open in ROI Calculator</a>'
+      /* target="_blank" here (offline file:// only — the online review copy
+         drops it, same reasoning as Hummingvalley's Interactive Master Plan:
+         without it, Chrome's file:// handling can replace this whole popup's
+         tab instead of opening the link, so a new tab is the reliable fix) */
+      + '<a href="../../_Portal/Price Calculator/Price Calculator.html#sanvi/' + encodeURIComponent(u.no) + '" target="_blank" rel="noopener">Open in Price Calculator</a>'
+      + '<a class="alt" href="../ROI Calculator/ROI Calculator.html" target="_blank" rel="noopener">Open in ROI Calculator</a>'
       + '</div>'
       + '<p class="disclaimer">Final cost is computed live from the same data and formula as the Price Calculator and will track any future price updates automatically.</p>';
   }
