@@ -173,6 +173,7 @@ and Eloria has its brochure, both dropped in and live.
 | Put the file here | Named | Status |
 |---|---|---|
 | `Sales Kit/Up in the Clouds/Brochure/` | `Brochure.pdf` | **Real — in place** |
+| `Sales Kit/Up in the Clouds/Master Plan/` | `Master Plan.webp` | **Real — in place** |
 | `Sales Kit/Up in the Clouds/Cost Sheet/` | `Cost Sheet.png` | Not added yet |
 | `Sales Kit/Up in the Clouds/Location Advantage/` | `Location Advantage.html` | Not added yet |
 | `Sales Kit/Up in the Clouds/Video/` | `Walkthrough.mp4` | Not added yet |
