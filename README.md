@@ -65,6 +65,8 @@ the one file sales actually opens on-screen.
 | `Sales Kit/Sanvi/` | `cover.jpg` — the photo on the project card |
 | `Sales Kit/Sanvi/` | `logo.png` — Sanvi's own logo; see "Project logos" below |
 | `Sales Kit/Sanvi/Brochure/` | `Brochure.pdf` |
+| `Sales Kit/Sanvi/Master Plan/` | `ground-floor.png`, `first-floor.png`, `typical-floor.png` — markers' image sources |
+| `Sales Kit/Sanvi/Master Plan/` | `Interactive Master Plan.html`, **hand-built, see below** |
 | `Sales Kit/Sanvi/Floor Plans/` | `Ground Floor Plan.png`, `First Floor Plan.png`, `Typical Floor Plan (2nd-6th).png` |
 | `Sales Kit/Sanvi/Cost Sheet/` | `Price List.html`, **hand-built, see below** |
 | `Sales Kit/_Portal/Price Calculator/` | `Price Calculator.html` — shared with Hummingvalley, see below |
@@ -610,15 +612,33 @@ though at 1,090 sqft it doesn't match any named size on the official Price List
 The Reference Sheet tab now shows a **Block** column alongside every unit so both
 blocks read as one list when you're just browsing, not quoting.
 
-**Sanvi's Floor Plans folder is a simple viewer, not a clickable master plan.**
-The three images (Ground / First / Typical 2nd–6th) are the architect's own CAD
-drawings, rasterized as-is — each sheet shows both blocks together, exactly as
-drawn, since that's how the source PDFs are laid out. Unlike Hummingvalley's
-Interactive Master Plan, there's no tap-a-flat popup here: the drawings are dense
-CAD output with tiny flat-number labels, and tracing precise per-flat hotspots
-against them would risk mislabeling a unit. The Price Calculator's Reference
-Sheet is still the reliable source for "which exact flat, what price, what
-status" — the floor plans are for showing the building's actual layout.
+**Sanvi's Floor Plans folder is a simple viewer** — the three images
+(Ground / First / Typical 2nd–6th) are the architect's own CAD drawings,
+rasterized as-is, each sheet showing both blocks together exactly as drawn in
+the source PDFs. It has no tap-a-flat popup; it's there for anyone who just
+wants to see the building's actual layout.
+
+**Sanvi now also has a clickable Interactive Master Plan** (`Master Plan →
+Interactive Master Plan`), the same tap-a-flat-see-a-popup pattern as
+Hummingvalley's. It was built by digitizing the same three CAD drawings a
+different way: a vision pipeline located every printed flat-position number on
+each 300dpi scan by color + shape (the position labels are a reliably distinct
+red box, landscape for Block B, portrait for Block A), OCR'd each one, then
+cross-checked every reading against `price-calculator-data.js` before trusting
+it — e.g. the drawing's "SA-625 SB" (super-area) label next to position 21 on
+the Ground sheet matches flat 21's `sba:625` exactly. A floor selector (Ground /
+First / 2nd–6th, the last five sharing the one "Typical" drawing) switches which
+image and which set of markers show; markers render only for positions that
+matched a real record this way — a handful of positions visible on the drawing
+that OCR couldn't read with confidence are left unmarked rather than guessed, so
+nothing on this page is a guess. Tapping a marker opens a popup with block,
+floor, configuration, SBA, facing, status and a **Final Cost** computed live
+from the exact same formula as the Price Calculator (both read
+`price-calculator-data.js`, so the two can never disagree), plus a deep link
+into the Price Calculator for that exact flat and a link to the ROI Calculator.
+The Price Calculator's Reference Sheet remains the complete list (every flat,
+including ones this page can't mark); this page is the visual, "where is it in
+the building" companion to it, not a replacement.
 
 **Sanvi's ROI Calculator is deliberately NOT a port of Hummingvalley's.**
 Hummingvalley's `ROI Calculator.html` models a managed short-term-rental program —

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sanvi Aero Gardens — Interactive Master Plan</title>
+<style>
+  :root{
+    --accent:#7A1B35; --accent-dark:#5C1427; --ink:#1B1B1D;
+    --bg:#F7F4F2; --card:#FFFFFF; --line:#E7DED9;
+    --available:#2E8B57; --sold:#B23B3B;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+  header{background:var(--accent);color:#fff;padding:16px 18px;position:sticky;top:0;z-index:20;
+    box-shadow:0 2px 10px rgba(0,0,0,.15)}
+  header h1{margin:0;font-size:18px;font-weight:700}
+  header p{margin:2px 0 0;font-size:12.5px;opacity:.9}
+
+  .toolbar{display:flex;flex-wrap:wrap;gap:8px;padding:12px 16px;background:var(--card);
+    border-bottom:1px solid var(--line);position:sticky;top:66px;z-index:19}
+  .floor-btn{border:1px solid var(--accent);background:#fff;color:var(--accent);
+    border-radius:20px;padding:7px 14px;font-size:13px;font-weight:600;cursor:pointer}
+  .floor-btn.on{background:var(--accent);color:#fff}
+
+  .legend{display:flex;gap:16px;padding:8px 16px;font-size:12px;color:#555;flex-wrap:wrap;align-items:center}
+  .legend span{display:inline-flex;align-items:center;gap:5px}
+  .dot{width:11px;height:11px;border-radius:50%;display:inline-block;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.25)}
+  .dot.available{background:var(--available)}
+  .dot.sold{background:var(--sold)}
+
+  .plan-wrap{padding:16px;max-width:900px;margin:0 auto}
+  .plan-stage{position:relative;width:100%;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .plan-stage img{display:block;width:100%;height:auto}
+
+  .pin{position:absolute;transform:translate(-50%,-50%);width:22px;height:22px;border-radius:50%;
+    border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4);cursor:pointer;
+    display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;
+    transition:transform .12s}
+  .pin:hover, .pin:focus{transform:translate(-50%,-50%) scale(1.3);z-index:5}
+  .pin.available{background:var(--available)}
+  .pin.sold{background:var(--sold)}
+
+  .note{font-size:12.5px;color:#666;padding:4px 16px 20px;max-width:900px;margin:0 auto;line-height:1.5}
+
+  .backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;
+    padding:16px;z-index:50}
+  .backdrop.on{display:flex}
+  .modal{background:#fff;border-radius:12px;max-width:380px;width:100%;overflow:hidden;
+    box-shadow:0 20px 60px rgba(0,0,0,.35)}
+  .modal-head{background:var(--accent);color:#fff;padding:14px 16px;display:flex;justify-content:space-between;align-items:center}
+  .modal-head h2{margin:0;font-size:17px}
+  .modal-head button{background:none;border:none;color:#fff;font-size:20px;cursor:pointer;line-height:1;padding:2px 6px}
+  .modal-body{padding:16px}
+  .status-chip{display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:12px;color:#fff;margin-bottom:10px}
+  .status-chip.available{background:var(--available)}
+  .status-chip.sold{background:var(--sold)}
+  .rows{width:100%;border-collapse:collapse;font-size:13.5px}
+  .rows td{padding:5px 0;border-bottom:1px solid var(--line)}
+  .rows td:first-child{color:#666;width:48%}
+  .rows td:last-child{font-weight:600;text-align:right}
+  .price-row td{font-size:16px;color:var(--accent);font-weight:800;padding-top:10px}
+  .modal-links{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+  .modal-links a{flex:1;min-width:140px;text-align:center;background:var(--accent);color:#fff;
+    text-decoration:none;font-size:12.5px;font-weight:700;padding:9px 10px;border-radius:7px}
+  .modal-links a.alt{background:#fff;color:var(--accent);border:1px solid var(--accent)}
+  .disclaimer{font-size:11px;color:#888;margin-top:12px;line-height:1.4}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Sanvi Aero Gardens — Interactive Master Plan</h1>
+  <p>Tap any flat marker to see its configuration, availability and price</p>
+</header>
+
+<div class="toolbar" id="floorBar"></div>
+
+<div class="legend">
+  <span><span class="dot available"></span> Available</span>
+  <span><span class="dot sold"></span> Sold</span>
+</div>
+
+<div class="plan-wrap">
+  <div class="plan-stage" id="stage">
+    <img id="planImg" alt="Floor plan">
+    <div id="pinLayer"></div>
+  </div>
+</div>
+
+<p class="note">
+  Markers are shown only for flats that could be matched against the live Price Calculator data with
+  confidence — a few units visible on the architectural drawing could not be reliably read off the
+  scanned plan and are left unmarked here rather than guessed. Every flat below is still listed in full
+  on the <a href="../Cost Sheet/Price List.html">Price List</a> and the Price Calculator's reference sheet.
+</p>
+
+<div class="backdrop" id="backdrop">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="mTitle">Flat</h2>
+      <button id="mClose" aria-label="Close">&times;</button>
+    </div>
+    <div class="modal-body" id="mBody"></div>
+  </div>
+</div>
+
+<script src="../../_Portal/Price Calculator/price-calculator-data.js"></script>
+<script>
+/* Hotspot coordinates (x/y = marker center, % of image width/height) were
+   extracted from the 300dpi architectural drawings via OCR of the printed
+   flat-position numbers, then verified against price-calculator-data.js
+   (e.g. the "SA-625 SB" super-area label on the drawing matches flat 21's
+   sba:625 exactly). Only positions that matched a real record here are
+   included — see the note under the plan for why some drawing positions
+   have no marker. Real flat number = floor*100 + pos (Block A gets an
+   "A-" prefix), same numbering the sheet and Price Calculator use. */
+var HOTSPOTS = {
+  ground: [
+    {block:"A",pos:3,x:34.332,y:55.606},{block:"A",pos:1,x:42.124,y:53.003},
+    {block:"B",pos:12,x:35.832,y:26.165},{block:"B",pos:18,x:63.833,y:20.369},
+    {block:"B",pos:9,x:35.832,y:18.862},{block:"B",pos:19,x:53.501,y:17.271},
+    {block:"B",pos:20,x:62.207,y:17.218},{block:"B",pos:7,x:35.832,y:13.994},
+    {block:"B",pos:21,x:45.875,y:13.688},{block:"B",pos:3,x:44.042,y:7.956}
+  ],
+  first: [
+    {block:"A",pos:7,x:30.617,y:68.241},{block:"A",pos:5,x:34.324,y:62.227},
+    {block:"A",pos:4,x:34.324,y:59.865},{block:"A",pos:9,x:39.828,y:57.836},
+    {block:"A",pos:2,x:34.324,y:55.15},{block:"A",pos:1,x:34.324,y:52.788},
+    {block:"A",pos:8,x:42.111,y:52.519},{block:"B",pos:35,x:49.042,y:32.102},
+    {block:"B",pos:31,x:57.603,y:25.973},{block:"B",pos:32,x:47.9,y:25.64},
+    {block:"B",pos:30,x:53.567,y:22.851},{block:"B",pos:27,x:63.839,y:19.552},
+    {block:"B",pos:28,x:45.904,y:19.23},{block:"B",pos:26,x:53.527,y:16.41},
+    {block:"B",pos:24,x:45.864,y:12.789},{block:"B",pos:20,x:61.883,y:9.864}
+  ],
+  typical: [
+    {block:"A",pos:7,x:28.214,y:68.279},{block:"A",pos:6,x:31.528,y:64.632},
+    {block:"A",pos:5,x:31.528,y:62.27},{block:"A",pos:4,x:31.528,y:59.918},
+    {block:"A",pos:9,x:36.537,y:57.891},{block:"A",pos:3,x:31.528,y:57.556},
+    {block:"A",pos:2,x:31.528,y:55.205},{block:"A",pos:1,x:31.528,y:52.843},
+    {block:"A",pos:8,x:38.599,y:52.581},{block:"B",pos:38,x:43.205,y:41.921},
+    {block:"B",pos:18,x:35.911,y:40.061},{block:"B",pos:37,x:42.615,y:38.796},
+    {block:"B",pos:36,x:51.271,y:35.733},{block:"B",pos:16,x:35.911,y:35.149},
+    {block:"B",pos:35,x:44.825,y:32.18},{block:"B",pos:14,x:35.911,y:30.236},
+    {block:"B",pos:13,x:34.88,y:27.78},{block:"B",pos:31,x:52.522,y:26.066},
+    {block:"B",pos:32,x:43.794,y:25.721},{block:"B",pos:27,x:58.123,y:19.659},
+    {block:"B",pos:28,x:41.99,y:19.314},{block:"B",pos:25,x:56.316,y:16.43},
+    {block:"B",pos:24,x:41.951,y:12.887},{block:"B",pos:20,x:56.355,y:9.982},
+    {block:"B",pos:1,x:56.28,y:8.507},{block:"B",pos:3,x:40.331,y:6.972},
+    {block:"B",pos:4,x:32.929,y:5.842}
+  ]
+};
+
+var FLOORS = [
+  {id:"ground", label:"Ground", num:0, sheet:"ground", img:"ground-floor.png"},
+  {id:"first",  label:"First",  num:1, sheet:"first",  img:"first-floor.png"},
+  {id:"f2", label:"2nd", num:2, sheet:"typical", img:"typical-floor.png"},
+  {id:"f3", label:"3rd", num:3, sheet:"typical", img:"typical-floor.png"},
+  {id:"f4", label:"4th", num:4, sheet:"typical", img:"typical-floor.png"},
+  {id:"f5", label:"5th", num:5, sheet:"typical", img:"typical-floor.png"},
+  {id:"f6", label:"6th", num:6, sheet:"typical", img:"typical-floor.png"}
+];
+
+var SV = ((window.PRICE_CALC_DATA || {}).projects || []).filter(function (p) { return p.id === "sanvi"; })[0];
+
+function unitFinalPrice(u) {
+  if (!SV || !u) return null;
+  var basePrice = (u.rate || SV.ratePerSqft) * u.sba;
+  var otherCharges = 0;
+  (SV.charges || []).forEach(function (c) {
+    if (c.enabledByDefault === false) return;
+    if (c.type === "fixed") otherCharges += (c.default || 0);
+    else if (c.type === "perSqft") otherCharges += (c.rate || 0) * u.sba;
+    else if (c.type === "perSqftByFloor") {
+      var r = (c.rates || {})[String(u.floor)];
+      if (r) otherCharges += r * u.sba;
+    }
+  });
+  var gstableBase = 0;
+  (SV.gstBase || []).forEach(function (k) {
+    if (k === "basePrice") gstableBase += basePrice;
+    if (k === "otherCharges") gstableBase += otherCharges;
+  });
+  var gst = gstableBase * (SV.gstPercent || 0) / 100;
+  return basePrice + otherCharges + gst;
+}
+
+function fmtINR(n) {
+  if (n == null) return "—";
+  return "₹" + Math.round(n).toLocaleString("en-IN");
+}
+
+function flatNo(block, floorNum, pos) {
+  var n = floorNum * 100 + pos;
+  return block === "A" ? ("A-" + n) : String(n);
+}
+
+function findUnit(block, floorNum, pos) {
+  if (!SV) return null;
+  var no = flatNo(block, floorNum, pos);
+  return (SV.units || []).filter(function (u) { return u.block === block && u.no === no; })[0] || null;
+}
+
+var currentFloor = FLOORS[0];
+
+function renderFloorBar() {
+  var bar = document.getElementById("floorBar");
+  bar.innerHTML = "";
+  FLOORS.forEach(function (f) {
+    var b = document.createElement("button");
+    b.className = "floor-btn" + (f.id === currentFloor.id ? " on" : "");
+    b.textContent = f.label;
+    b.addEventListener("click", function () { selectFloor(f.id); });
+    bar.appendChild(b);
+  });
+}
+
+function selectFloor(id) {
+  currentFloor = FLOORS.filter(function (f) { return f.id === id; })[0];
+  document.getElementById("planImg").src = currentFloor.img;
+  renderFloorBar();
+  renderPins();
+}
+
+function renderPins() {
+  var layer = document.getElementById("pinLayer");
+  layer.innerHTML = "";
+  var spots = HOTSPOTS[currentFloor.sheet] || [];
+  spots.forEach(function (s) {
+    var u = findUnit(s.block, currentFloor.num, s.pos);
+    var status = u ? (u.status === "sold" ? "sold" : "available") : "available";
+    var pin = document.createElement("button");
+    pin.className = "pin " + status;
+    pin.style.left = s.x + "%";
+    pin.style.top = s.y + "%";
+    pin.title = flatNo(s.block, currentFloor.num, s.pos);
+    pin.textContent = s.block;
+    pin.addEventListener("click", function () { openUnit(s.block, s.pos); });
+    layer.appendChild(pin);
+  });
+}
+
+function openUnit(block, pos) {
+  var u = findUnit(block, currentFloor.num, pos);
+  var no = flatNo(block, currentFloor.num, pos);
+  var backdrop = document.getElementById("backdrop");
+  document.getElementById("mTitle").textContent = "Flat " + no;
+  var body = document.getElementById("mBody");
+  if (!u) {
+    body.innerHTML = "<p>No record found for this flat in the current price data. "
+      + "Please check the <a href=\"../Cost Sheet/Price List.html\">Price List</a> or contact the sales team.</p>";
+  } else {
+    var status = u.status === "sold" ? "sold" : "available";
+    var price = unitFinalPrice(u);
+    body.innerHTML =
+      '<span class="status-chip ' + status + '">' + (status === "sold" ? "SOLD" : "AVAILABLE") + '</span>'
+      + '<table class="rows">'
+      + '<tr><td>Block</td><td>' + (block === "A" ? "Block A" : "Block B") + '</td></tr>'
+      + '<tr><td>Floor</td><td>' + (currentFloor.num === 0 ? "Ground" : currentFloor.num === 1 ? "First" : currentFloor.num + (currentFloor.num===2?"nd":currentFloor.num===3?"rd":"th")) + '</td></tr>'
+      + '<tr><td>Configuration</td><td>' + u.config + '</td></tr>'
+      + '<tr><td>SBA (Super Built-up Area)</td><td>' + u.sba + ' sqft</td></tr>'
+      + '<tr><td>Facing</td><td>' + u.facing + '</td></tr>'
+      + '<tr><td>Rate</td><td>₹' + u.rate.toLocaleString("en-IN") + '/sqft</td></tr>'
+      + '<tr class="price-row"><td>Final Cost (incl. GST)</td><td>' + fmtINR(price) + '</td></tr>'
+      + '</table>'
+      + '<div class="modal-links">'
+      + '<a href="../../_Portal/Price Calculator/Price Calculator.html#sanvi/' + encodeURIComponent(u.no) + '">Open in Price Calculator</a>'
+      + '<a class="alt" href="../ROI Calculator/ROI Calculator.html">Open in ROI Calculator</a>'
+      + '</div>'
+      + '<p class="disclaimer">Final cost is computed live from the same data and formula as the Price Calculator and will track any future price updates automatically.</p>';
+  }
+  backdrop.classList.add("on");
+}
+
+document.getElementById("mClose").addEventListener("click", function () {
+  document.getElementById("backdrop").classList.remove("on");
+});
+document.getElementById("backdrop").addEventListener("click", function (e) {
+  if (e.target === e.currentTarget) e.currentTarget.classList.remove("on");
+});
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Escape") document.getElementById("backdrop").classList.remove("on");
+});
+
+renderFloorBar();
+document.getElementById("planImg").src = currentFloor.img;
+renderPins();
+</script>
+</body>
+</html>
