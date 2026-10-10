@@ -162,26 +162,28 @@ you — this build machine has no access to YouTube.
 
 ### Pre-launch projects (Codename Up in the Clouds, Codename Eloria)
 
-Two upcoming villa projects sit on the home page as real cards with no real
-collateral behind them yet. Every file in their folders is deliberately marked
-missing in `PORTAL_DATA`, so each one shows an honest **"Not added yet"** tile
-instead of a fabricated brochure or cost sheet.
+Two upcoming villa projects sit on the home page as real cards with mostly no
+real collateral behind them yet. Each remaining file is deliberately marked
+missing in `PORTAL_DATA`, so it shows an honest **"Not added yet"** tile
+instead of a fabricated cost sheet or walkthrough. The Brochure is the one
+piece that's real for both projects — Up in the Clouds has its investor deck
+and Eloria has its brochure, both dropped in and live.
 
-| Put the file here | Named |
-|---|---|
-| `Sales Kit/Up in the Clouds/Brochure/` | `Brochure.pdf` |
-| `Sales Kit/Up in the Clouds/Cost Sheet/` | `Cost Sheet.png` |
-| `Sales Kit/Up in the Clouds/Location Advantage/` | `Location Advantage.html` |
-| `Sales Kit/Up in the Clouds/Video/` | `Walkthrough.mp4` |
-| `Sales Kit/Eloria/Brochure/` | `Brochure.pdf` |
-| `Sales Kit/Eloria/Cost Sheet/` | `Cost Sheet.png` |
-| `Sales Kit/Eloria/Location Advantage/` | `Location Advantage.html` |
-| `Sales Kit/Eloria/Video/` | `Walkthrough.mp4` |
+| Put the file here | Named | Status |
+|---|---|---|
+| `Sales Kit/Up in the Clouds/Brochure/` | `Brochure.pdf` | **Real — in place** |
+| `Sales Kit/Up in the Clouds/Cost Sheet/` | `Cost Sheet.png` | Not added yet |
+| `Sales Kit/Up in the Clouds/Location Advantage/` | `Location Advantage.html` | Not added yet |
+| `Sales Kit/Up in the Clouds/Video/` | `Walkthrough.mp4` | Not added yet |
+| `Sales Kit/Eloria/Brochure/` | `Brochure.pdf` | **Real — in place** |
+| `Sales Kit/Eloria/Cost Sheet/` | `Cost Sheet.png` | Not added yet |
+| `Sales Kit/Eloria/Location Advantage/` | `Location Advantage.html` | Not added yet |
+| `Sales Kit/Eloria/Video/` | `Walkthrough.mp4` | Not added yet |
 
-All eight folders above already exist in `Sales Kit/`, each holding a
-`PLACEHOLDER.txt` that names the exact file it's waiting on — that's what makes
-them show up to upload into on GitHub. Delete a `PLACEHOLDER.txt` once its real
-file has replaced it.
+The six folders still waiting hold a `PLACEHOLDER.txt` that names the exact
+file they're waiting on — that's what makes them show up to upload into on
+GitHub. Delete a `PLACEHOLDER.txt` once its real file has replaced it (already
+done for both Brochure folders).
 
 Dropping a real file in does not turn the tile live by itself — the matching entry
 in that project's `folders` array in `PORTAL_DATA` still carries `missing: true`.

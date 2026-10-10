@@ -854,11 +854,12 @@ window.PORTAL_DATA = {
       ]
     },
     {
-      /* Pre-launch project: no real collateral yet, so every file below is
-         flagged missing on purpose — it renders as an honest "Not added yet"
-         tile instead of a fabricated brochure or cost sheet. Swap missing:true
-         off (and drop the real file into the matching Sales Kit folder) as
-         each piece of collateral is actually ready. */
+      /* Pre-launch project: most collateral isn't ready yet, so those files
+         are flagged missing on purpose — it renders as an honest "Not added
+         yet" tile instead of a fabricated cost sheet or walkthrough. Swap
+         missing:true off (and drop the real file into the matching Sales
+         Kit folder) as each piece of collateral is actually ready; the
+         Brochure is the first piece in, as of this commit. */
       id: "up-in-the-clouds",
       name: "Up in the Clouds",
       displayName: "Codename Up in the Clouds",
@@ -871,7 +872,7 @@ window.PORTAL_DATA = {
       screensaver: ["cover.jpg"],
       folders: [
         { id: "brochure", name: "Brochure", files: [
-          { label: "Brochure",            name: "Brochure.pdf", missing: true } ] },
+          { label: "Brochure",            name: "Brochure.pdf" } ] },
         { id: "cost-sheet", name: "Cost Sheet", files: [
           { label: "Cost Sheet",          name: "Cost Sheet.png", missing: true } ] },
         { id: "location-advantage", name: "Location Advantage", files: [
@@ -893,7 +894,7 @@ window.PORTAL_DATA = {
       screensaver: ["cover.jpg"],
       folders: [
         { id: "brochure", name: "Brochure", files: [
-          { label: "Brochure",            name: "Brochure.pdf", missing: true } ] },
+          { label: "Brochure",            name: "Brochure.pdf" } ] },
         { id: "cost-sheet", name: "Cost Sheet", files: [
           { label: "Cost Sheet",          name: "Cost Sheet.png", missing: true } ] },
         { id: "location-advantage", name: "Location Advantage", files: [
