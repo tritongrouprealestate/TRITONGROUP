@@ -882,6 +882,22 @@ var esc = function (s) {
   });
 };
 var clamp = function (v, a, b) { return Math.min(Math.max(v, a), b); };
+/* A project/folder/file name typed into the file manager becomes a real
+   folder or file name on disk — Windows alone forbids \ / : * ? " < > | and
+   a name that's only dots or trailing spaces/dots, and every OS forbids a
+   bare "/" (it would try to create a sub-path instead of a single name).
+   Checking this up front, before it ever reaches the File System Access
+   API, means Marketing sees one clear sentence instead of a cryptic
+   browser error after already waiting through the folder-permission step. */
+function badNameReason(name) {
+  var n = (name || '').trim();
+  if (!n) return 'This can’t be empty.';
+  if (/[\\\/:*?"<>|]/.test(n)) return 'Can’t contain \\ / : * ? " < > |';
+  if (/^\.+$/.test(n)) return 'Can’t be just dots.';
+  if (/[\s.]$/.test(n)) return 'Can’t end with a space or a dot.';
+  if (n.length > 150) return 'That’s too long — keep it under 150 characters.';
+  return null;
+}
 var uri = function (p) {
   var s = String(p), hashAt = s.indexOf('#'), hash = '';
   if (hashAt > -1) { hash = s.slice(hashAt); s = s.slice(0, hashAt); }
@@ -1342,7 +1358,11 @@ function wireMarketingHome() {
   var btn = $('#mtNewProjectBtn');
   if (btn) btn.addEventListener('click', async function () {
     var name = ($('#mtNewProjectName').value || '').trim();
-    if (!name) { settingsMsg('#mtHomeMsg', 'Give the new project a folder name first.', true); return; }
+    var bad = badNameReason(name);
+    if (bad) { settingsMsg('#mtHomeMsg', bad, true); return; }
+    if (D.projects.some(function (p) { return p.name.toLowerCase() === name.toLowerCase(); })) {
+      settingsMsg('#mtHomeMsg', 'A project with that name already exists.', true); return;
+    }
     settingsMsg('#mtHomeMsg', 'Pick the "Sales Kit" folder if asked, then wait…');
     try { await Library.createProject(name); await Library.rebuild(); settingsMsg('#mtHomeMsg', 'Created. Reloading…'); setTimeout(function () { location.reload(); }, 500); }
     catch (e) { settingsMsg('#mtHomeMsg', e.message || String(e), true); }
@@ -1441,7 +1461,14 @@ function wireMarketingProject(p) {
   var btn = $('#mtNewFolderBtn'), fileInput = $('#mtNewFolderFile');
   if (btn && fileInput) btn.addEventListener('click', function () {
     var name = ($('#mtNewFolderName').value || '').trim();
-    if (!name) { settingsMsg('#mtProjectMsg', 'Give the new folder a name first.', true); return; }
+    var bad = badNameReason(name);
+    if (bad) { settingsMsg('#mtProjectMsg', bad, true); return; }
+    if (name.toLowerCase() === 'screensaver') {
+      settingsMsg('#mtProjectMsg', '"Screensaver" is reserved for this project’s auto-play photos — pick another name.', true); return;
+    }
+    if ((p.folders || []).some(function (f) { return f.name.toLowerCase() === name.toLowerCase(); })) {
+      settingsMsg('#mtProjectMsg', 'A folder with that name already exists.', true); return;
+    }
     fileInput.onchange = async function () {
       var file = fileInput.files[0];
       if (!file) return;
@@ -1576,6 +1603,16 @@ function wireMarketingFolder(p, f) {
       var oldName = btn.dataset.renameFile;
       var newName = prompt('Rename "' + oldName + '" to:', oldName);
       if (!newName || newName === oldName) return;
+      var bad = badNameReason(newName);
+      if (bad) { settingsMsg('#mtFolderMsg', bad, true); return; }
+      /* Renaming to a name that's already in this folder would silently
+         overwrite that other file's content with this one's -- the File
+         System Access API doesn't warn about that on its own, so this has
+         to be the thing that does. */
+      if ((f.files || []).some(function (x) { return x.name.toLowerCase() === newName.toLowerCase(); })) {
+        settingsMsg('#mtFolderMsg', '"' + newName + '" already exists in this folder — pick a different name, or delete that one first.', true);
+        return;
+      }
       settingsMsg('#mtFolderMsg', 'Pick the "Sales Kit" folder if asked, then wait…');
       try { await Library.renameFile(p.name, f.name, oldName, newName); await Library.rebuild(); settingsMsg('#mtFolderMsg', 'Renamed. Reloading…'); setTimeout(function () { location.reload(); }, 500); }
       catch (e) { settingsMsg('#mtFolderMsg', e.message || String(e), true); }
@@ -1586,6 +1623,8 @@ function wireMarketingFolder(p, f) {
     var input = $('#mtUploadFile');
     var file = input.files[0];
     if (!file) { settingsMsg('#mtFolderMsg', 'Choose a file first.', true); return; }
+    var existing = (f.files || []).some(function (x) { return x.name.toLowerCase() === file.name.toLowerCase(); });
+    if (existing && !confirm('"' + file.name + '" already exists in this folder — replace it?')) return;
     settingsMsg('#mtFolderMsg', 'Pick the "Sales Kit" folder if asked, then wait…');
     try { await Library.uploadFile(p.name, f.name, file); await Library.rebuild(); settingsMsg('#mtFolderMsg', 'Uploaded. Reloading…'); setTimeout(function () { location.reload(); }, 500); }
     catch (e) { settingsMsg('#mtFolderMsg', e.message || String(e), true); }
