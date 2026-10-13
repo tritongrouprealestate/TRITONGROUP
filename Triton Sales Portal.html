@@ -314,7 +314,9 @@ body.cur-hot .cursor{opacity:0}
 /* image + zoom on hover */
 .pcard-media{position:absolute;inset:0;z-index:0;overflow:hidden}
 .pcard-media img{width:100%;height:100%;object-fit:cover;
-  transition:transform .6s var(--ease-in-out)}
+  transition:transform .6s var(--ease-in-out),filter .9s ease,opacity .9s ease;
+  filter:blur(16px) saturate(1.05);opacity:.72}
+.pcard-media img.loaded{filter:blur(0) saturate(1);opacity:1}
 .pcard:hover .pcard-media img{transform:scale(1.10)}
 .pcard-fallback{position:absolute;inset:0;
   background:var(--pc,linear-gradient(150deg,#1c2734,#0a0d12 62%,#241d08));
@@ -1219,7 +1221,12 @@ function projectCard(p, i) {
      ' data-cursor="open">' +
     '<div class="pcard-media">' +
       '<div class="pcard-fallback"></div>' +
-      (p.cover ? '<img src="' + esc(p.cover) + '" alt="" onerror="this.remove()">' : '') +
+      /* Starts hazy (blurred, slightly dim) and sharpens once the photo has
+         actually finished loading — never shows a blank card while a big
+         image is still coming in over a slow connection, and it reads as a
+         deliberate reveal rather than a loading stall. */
+      (p.cover ? '<img src="' + esc(p.cover) + '" alt="" loading="eager" decoding="async" ' +
+        'onload="this.classList.add(\'loaded\')" onerror="this.remove()">' : '') +
     '</div>' +
     '<div class="pcard-scrim"></div>' +
     '<div class="pcard-sheen"></div>' +
