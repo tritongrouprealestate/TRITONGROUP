@@ -10,6 +10,17 @@ Sales Kit/                    ← one folder. All the content.
 Keep them **next to each other**. Copy both onto every sales laptop, or onto a USB
 stick. No internet, no server, nothing to install. It opens in Chrome or Edge.
 
+### Opening it like an app (one-time, per device)
+
+In Chrome or Edge, open `Triton Sales Portal.html`, then the **⋮** menu (top right)
+→ **Save and share** (Chrome) or **Apps** (Edge) → **Install page as app…** / **Create
+shortcut…** (tick "Open as window" if it's offered as a separate checkbox). That puts
+a **Triton** icon with its own logo on the desktop/Start Menu/Dock — one click opens
+it in its own window, no address bar, no browser chrome around it, exactly like any
+other installed app. This is a per-device, one-time thing; do it once on each sales
+laptop and it stays there. Everything underneath is still the same two things above —
+no server, no install in the traditional sense, just a shortcut Chrome manages.
+
 ---
 
 ## Updating content — the whole procedure
@@ -26,13 +37,21 @@ see the new version. This part never changed.
 **Adding, removing or renaming a file or a whole folder** — anywhere under
 `Sales Kit/`:
 
-1. Make the change on disk. A new PDF in `Sales Kit/Sanvi/Brochure/` just goes in
-   that folder; a whole new folder like `Sales Kit/Sanvi/Site Photos/` just gets
-   created with files in it; deleting the only file in a folder makes that folder
-   disappear from the portal entirely, automatically — **no file in a folder means
-   no tile for that folder**, nothing to clean up on the portal side.
-2. Open the portal, click the small shield icon in the top right (**Sales mode** —
-   see below), then **Settings → Rebuild Library**.
+**The easy way — entirely inside the portal:** sign in at Marketing level (shield
+icon, top right) and use the file manager panel under whatever you're looking at —
+upload, delete, rename, new folder, new project. See "The in-app file manager"
+below. Every action there already reruns Rebuild and reloads for you.
+
+**The manual way — a file browser plus one click:**
+
+1. Make the change on disk yourself. A new PDF in `Sales Kit/Sanvi/Brochure/` just
+   goes in that folder; a whole new folder like `Sales Kit/Sanvi/Site Photos/` just
+   gets created with files in it; deleting the only file in a folder makes that
+   folder disappear from the portal entirely, automatically — **no file in a folder
+   means no tile for that folder**, nothing to clean up on the portal side.
+2. Open the portal, sign in at **Marketing** level (shield icon, top right — see
+   below; Sales level only has Unit Status, not Rebuild), then **Settings → Rebuild
+   Library**.
 3. The first time ever, Chrome/Edge will ask you to pick a folder — pick
    **`Sales Kit`** itself (the one with Sanvi, Hummingvalley, etc. inside it, not a
    project folder, not its parent). After that first pick it's remembered on that
@@ -49,12 +68,13 @@ on a computer (no server behind it) is not allowed by the browser to silently re
 your folders on its own — that would let any website secretly read your hard drive.
 Rebuild Library uses the one API Chrome/Edge do allow for this (the File System
 Access API), which always requires a person to grant folder access first. A customer
-browsing the portal never sees any of this — only Sales mode needs it.
+browsing the portal never sees any of this — only Marketing (Rebuild, the file
+manager, branding, visibility) and, more narrowly, Sales (Unit Status) ever need it.
 
-**Browser requirement:** Rebuild Library and Settings need Chrome or Edge (the API
-behind them isn't in Safari or Firefox). Everything else — browsing, search,
-presentation mode, every file, Customer mode entirely — works in any modern browser,
-unchanged.
+**Browser requirement:** Rebuild Library, the file manager and the rest of Settings
+need Chrome or Edge (the API behind them isn't in Safari or Firefox). Everything
+else — browsing, search, presentation mode, every file, Customer mode entirely —
+works in any modern browser, unchanged.
 
 **A previous "Update" button existed here once and was deliberately removed** — it
 re-scanned a folder into `localStorage` (hidden browser storage, not a real file) and
@@ -110,30 +130,62 @@ these means you never have to ask anyone how to structure a new project.
   `Sales Kit/Sanvi/Cost Sheet/Price Calculator.html` for the pattern if a new
   project ever needs the same thing; the comment inside that file explains it.
 
-## Customer mode vs. Sales mode
+## Customer, Sales and Marketing — three levels, one PIN field
 
 The portal opens in **Customer mode** by default — what's safe to hand a buyer on a
-showroom device. The small shield icon in the top right switches to **Sales mode**,
-which needs a PIN (set the first time anyone uses it, from then on just entered).
-Sales mode is session-only — closing the tab/browser drops back to Customer mode on
-its own, nothing to remember to switch off.
+showroom device. The small shield icon in the top right opens one PIN field that
+recognises **two different PINs**, each unlocking a different level:
 
-Sales mode unlocks two things Customer mode never sees:
-
-- **Any folder marked "sales only"** for a project (Sanvi's Availability Sheet and
-  Comparison Sheet come that way out of the box — competitor pricing and internal
-  stock lists aren't for a buyer's eyes). Change which folders are sales-only per
-  project under **Settings → Folder Visibility**.
-- **Settings itself** — Rebuild Library (above), **Unit Status** (mark a unit
+- **Sales** — reps. Unlocks Settings → **Unit Status** only (mark a unit
   sold/available without touching `price-calculator-data.js` by hand — saved
   separately, in `status-overrides.js`, and always wins over what that file says),
-  **Branding** (display name, tagline, category, accent colour per project), and
-  changing the Sales PIN.
+  plus every folder a project marks "sales only" (see below).
+- **Marketing** — a strict superset of Sales. Everything Sales can do, plus
+  **Rebuild Library**, **Folder Visibility**, **Branding**, PIN management for both
+  levels, and the **in-app file manager** (next section) — add, delete, rename or
+  replace any file or folder, or add/delete a whole project, without ever opening a
+  file browser.
 
-The PIN is a deterrent, not real security — it's a hash stored in a plain file
-(`Sales Kit/_Portal/config.js`) that anyone with a text editor could read. Its only
-job is keeping a customer from wandering into Settings on a device they're handed,
-not protecting anything from someone who actually wants to look.
+Both levels are session-only — closing the tab/browser drops back to Customer mode
+on its own, nothing to remember to switch off. The very first time anyone ever opens
+Settings (no PIN set yet anywhere), that sets the **Marketing** PIN; a separate Sales
+PIN for reps is optional and set later, from Settings → PINs, once there's a reason
+to hand one out. Leave it unset and only the Marketing PIN works.
+
+**Sales-only folders.** Sanvi's Availability Sheet and Comparison Sheet come marked
+this way out of the box — competitor pricing and internal stock lists aren't for a
+buyer's eyes. Both Sales and Marketing see them; only Customer mode doesn't. Change
+which folders are sales-only per project under **Settings → Folder Visibility**
+(Marketing only).
+
+The PINs are a deterrent, not real security — they're hashes stored in a plain file
+(`Sales Kit/_Portal/config.js`) that anyone with a text editor could read. Their only
+job is keeping a customer from wandering into Settings or the file manager on a
+device they're handed, not protecting anything from someone who actually wants to
+look.
+
+## The in-app file manager (Marketing only)
+
+Everywhere you're already browsing — the home screen, a project page, a folder page
+— signing in at Marketing level adds a plain panel underneath the tiles (clearly
+marked, never mixed into the tiles themselves) with the matching actions:
+
+- **Home screen:** delete a whole project, or create a new one (makes the folder and
+  a starter `project.json`; fill in Branding afterwards for a real name/tagline/colour).
+- **A project's page:** delete one of its folders, or create a new one — a brand-new
+  folder needs at least one file to show up at all, so creating one asks for its
+  first file right away, in the same step. Also: replace the project's cover photo
+  or logo directly (handles the old one being a different file extension than the
+  new one).
+- **A folder's page:** upload a new file into it, or delete/rename an existing one.
+
+Every one of these writes a real change to a real file or folder on disk, through
+the same folder permission as Rebuild Library (the first action in a session asks
+for it; after that it's remembered), and then reruns Rebuild and reloads
+automatically — there's never a separate "now click Rebuild" step after using the
+file manager. **None of this is undo-able except by hand** (restoring from a backup,
+or from git history if this kit is kept in a repository) — every delete asks for
+confirmation first because of that, not as decoration.
 
 ---
 
