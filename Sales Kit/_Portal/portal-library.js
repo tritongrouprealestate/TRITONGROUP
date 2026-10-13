@@ -12,6 +12,8 @@ window.PORTAL_DATA.projects = [
     "location": "Designed to Outlive Trends",
     "tagline": "4 & 5 BHK Neo Classical villas in Rajanukunte.",
     "tag": "Villas",
+    "cover": "Sales Kit/Eloria/cover.jpg",
+    "logo": "Sales Kit/Eloria/logo.png",
     "accent": "linear-gradient(155deg,#a89073,#3f362a 55%,#c9b48f)",
     "salesOnly": false,
     "links": [],
@@ -58,9 +60,7 @@ window.PORTAL_DATA.projects = [
           }
         ]
       }
-    ],
-    "cover": "Sales Kit/Eloria/cover.jpg",
-    "logo": "Sales Kit/Eloria/logo.png"
+    ]
   },
   {
     "id": "hummingvalley",
@@ -69,6 +69,8 @@ window.PORTAL_DATA.projects = [
     "location": "Your Private Escape",
     "tagline": "Luxury 3, 4 and 5 BHK Villas Between Nandi Hills and Chandragiri Hills",
     "tag": "Villas",
+    "cover": "Sales Kit/Hummingvalley/cover.jpg",
+    "logo": "Sales Kit/Hummingvalley/logo.png",
     "accent": "linear-gradient(155deg,#6f8a72,#3a4a3c 55%,#7d8552)",
     "salesOnly": false,
     "links": [
@@ -234,9 +236,7 @@ window.PORTAL_DATA.projects = [
           }
         ]
       }
-    ],
-    "cover": "Sales Kit/Hummingvalley/cover.jpg",
-    "logo": "Sales Kit/Hummingvalley/logo.png"
+    ]
   },
   {
     "id": "sanvi",
@@ -245,6 +245,8 @@ window.PORTAL_DATA.projects = [
     "location": "Live Above the Ordinary",
     "tagline": "Airport side residences with rooftop living.",
     "tag": "Residential",
+    "cover": "Sales Kit/Sanvi/cover.jpg",
+    "logo": "Sales Kit/Sanvi/logo.png",
     "accent": "linear-gradient(155deg,#6d8399,#3b4a5c 55%,#8a7a52)",
     "salesOnly": false,
     "links": [],
@@ -381,9 +383,7 @@ window.PORTAL_DATA.projects = [
           }
         ]
       }
-    ],
-    "cover": "Sales Kit/Sanvi/cover.jpg",
-    "logo": "Sales Kit/Sanvi/logo.png"
+    ]
   },
   {
     "id": "triton-branded",
@@ -392,6 +392,7 @@ window.PORTAL_DATA.projects = [
     "location": "Beyond the Address",
     "tagline": "Explore our story, projects and vision.",
     "tag": "Corporate",
+    "cover": "Sales Kit/Triton Branded/cover.jpg",
     "accent": "linear-gradient(155deg,#9a8358,#4d4331 55%,#5c5a63)",
     "salesOnly": false,
     "links": [],
@@ -416,8 +417,7 @@ window.PORTAL_DATA.projects = [
           }
         ]
       }
-    ],
-    "cover": "Sales Kit/Triton Branded/cover.jpg"
+    ]
   },
   {
     "id": "up-in-the-clouds",
@@ -426,6 +426,8 @@ window.PORTAL_DATA.projects = [
     "location": "A Higher Way to Live",
     "tagline": "4 & 5 BHK luxury villas at Nandi Hills.",
     "tag": "Villas",
+    "cover": "Sales Kit/Up in the Clouds/cover.jpg",
+    "logo": "Sales Kit/Up in the Clouds/logo.png",
     "accent": "linear-gradient(155deg,#7fa0b8,#2f3d4a 55%,#a9b7c2)",
     "salesOnly": false,
     "links": [],
@@ -457,8 +459,6 @@ window.PORTAL_DATA.projects = [
           }
         ]
       }
-    ],
-    "cover": "Sales Kit/Up in the Clouds/cover.jpg",
-    "logo": "Sales Kit/Up in the Clouds/logo.png"
+    ]
   }
 ];
