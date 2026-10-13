@@ -688,6 +688,9 @@ div.tile.missing{cursor:default}
     <button class="tb-btn" id="presentBtn" data-cursor="present" title="Presentation mode  ( P )">
       <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>
     </button>
+    <button class="tb-btn" id="salesBtn" data-cursor="sales" title="Sales mode">
+      <svg viewBox="0 0 24 24"><path d="M12 2 3 6v6c0 5 4 8 9 10 5-2 9-5 9-10V6z"/></svg>
+    </button>
   </div>
 </header>
 
@@ -771,172 +774,30 @@ window.PORTAL_DATA = {
     }
   },
 
-  /* --- BEGIN GENERATED PROJECTS --- */
-  projects: [
-    {
-      id: "sanvi",
-      name: "Sanvi",
-      displayName: "Sanvi Aero Gardens",
-      location: "Live Above the Ordinary",
-      tagline: "Airport side residences with rooftop living.",
-      tag: "Residential",
-      cover: "Sales Kit/Sanvi/cover.jpg",
-      logo: "Sales Kit/Sanvi/logo.png",
-      accent: "linear-gradient(155deg,#6d8399,#3b4a5c 55%,#8a7a52)",
-      screensaver: ["cover.jpg"],
-      folders: [
-        { id: "brochure", name: "Brochure", files: [
-          { label: "Brochure",            name: "Brochure.pdf" } ] },
-        { id: "master-plan", name: "Master Plan", files: [
-          { label: "Interactive Master Plan", name: "Interactive Master Plan.html" } ] },
-        { id: "floor-plans", name: "Floor Plans", files: [
-          { label: "Ground Floor Plan",   name: "Ground Floor Plan.png" },
-          { label: "First Floor Plan",    name: "First Floor Plan.png" },
-          { label: "Typical Floor Plan (2nd-6th)", name: "Typical Floor Plan (2nd-6th).png" } ] },
-        { id: "cost-sheet", name: "Cost Sheet", files: [
-          { label: "Price List",          name: "Price List.html" },
-          { label: "Price Calculator",    name: "Price Calculator.html",
-            path: "Sales Kit/_Portal/Price Calculator/Price Calculator.html#sanvi" } ] },
-        { id: "availability-sheet", name: "Availability Sheet", files: [
-          { label: "Availability",        name: "Availability.xlsx" } ] },
-        { id: "comparison-sheet", name: "Comparison Sheet", files: [
-          { label: "Competitor Comparison", name: "Comparison.xlsx" } ] },
-        { id: "roi-calculator", name: "ROI Calculator", files: [
-          { label: "Appreciation ROI Calculator", name: "ROI Calculator.html" } ] },
-        { id: "location-advantage", name: "Location Advantage", files: [
-          { label: "Location Advantage",  name: "Location Advantage.html" } ] },
-        { id: "video", name: "Video", files: [
-          { label: "Project Walkthrough", name: "Walkthrough.mp4" } ] }
-      ]
-    },
-    {
-      id: "hummingvalley",
-      name: "Hummingvalley",
-      displayName: "Triton Humming Valley",
-      location: "Your Private Escape",
-      tagline: "Luxury 3, 4 and 5 BHK Villas Between Nandi Hills and Chandragiri Hills",
-      tag: "Villas",
-      cover: "Sales Kit/Hummingvalley/cover.jpg",
-      logo: "Sales Kit/Hummingvalley/logo.png",
-      accent: "linear-gradient(155deg,#6f8a72,#3a4a3c 55%,#7d8552)",
-      /* Kept in sync by hand alongside the "status" field in VILLAS (Interactive
-         Master Plan.html) and the unit "status" field in price-calculator-data.js
-         whenever a villa sells — there's no live link between the files on
-         file://, so this count has to be updated in all three places together. */
-      villas: { available: 6, total: 7 },
-      screensaver: ["Screensaver/1.jpg", "Screensaver/2.jpg", "Screensaver/3.jpg",
-                    "Screensaver/4.png", "Screensaver/5.png"],
-      /* Shown on the project page under the folders. These open on YouTube in a
-         new tab — the one thing in the kit that needs an internet connection. */
-      links: [
-        { label: "Old Film", youtube: "1SuGJy0W7fY" },
-        { label: "New Film", youtube: "85QY818IoOc" }
-      ],
-      folders: [
-        { id: "brochure", name: "Brochure", files: [
-          { label: "Brochure",            name: "Brochure.pdf" },
-          { label: "Brochure 2",          name: "Brochure 2.pdf" } ] },
-        { id: "cost-sheet", name: "Cost Sheet", files: [
-          { label: "Villa 8",             name: "Villa 8.pdf" },
-          { label: "Villa 10",            name: "Villa 10.pdf" },
-          { label: "Villa 11",            name: "Villa 11.pdf" },
-          { label: "Villa 20",            name: "Villa 20.pdf" },
-          { label: "Villa 22",            name: "Villa 22.pdf" },
-          { label: "Villa 23",            name: "Villa 23.pdf" },
-          { label: "Villa 30 (Sold)",      name: "Villa 30.pdf" },
-          { label: "Price Calculator",    name: "Price Calculator.html",
-            path: "Sales Kit/_Portal/Price Calculator/Price Calculator.html#hummingvalley" } ] },
-        { id: "master-plan", name: "Master Plan", files: [
-          { label: "Master Plan",             name: "Master Plan.png" },
-          { label: "Interactive Master Plan", name: "Interactive Master Plan.html" } ] },
-        { id: "location-advantage", name: "Location Advantage", files: [
-          { label: "Location Advantage",  name: "Location Advantage.html" } ] },
-        { id: "emi-calculator", name: "EMI Calculator", files: [
-          { label: "Home Loan EMI Calculator", name: "EMI Calculator.html" } ] },
-        { id: "roi-calculator", name: "ROI Calculator", files: [
-          { label: "15-Year Villa ROI Calculator", name: "ROI Calculator.html" } ] },
-        { id: "video", name: "Video", files: [
-          { label: "Project Walkthrough", name: "Walkthrough.mp4" },
-          { label: "AV Film",             name: "AV Film.mp4" } ] }
-      ]
-    },
-    {
-      /* Pre-launch project: most collateral isn't ready yet, so those files
-         are flagged missing on purpose — it renders as an honest "Not added
-         yet" tile instead of a fabricated cost sheet or walkthrough. Swap
-         missing:true off (and drop the real file into the matching Sales
-         Kit folder) as each piece of collateral is actually ready; the
-         Brochure is the first piece in, as of this commit. */
-      id: "up-in-the-clouds",
-      name: "Up in the Clouds",
-      displayName: "Codename Up in the Clouds",
-      location: "A Higher Way to Live",
-      tagline: "4 & 5 BHK luxury villas at Nandi Hills.",
-      tag: "Villas",
-      cover: "Sales Kit/Up in the Clouds/cover.jpg",
-      logo: "Sales Kit/Up in the Clouds/logo.png",
-      accent: "linear-gradient(155deg,#7fa0b8,#2f3d4a 55%,#a9b7c2)",
-      screensaver: ["cover.jpg"],
-      folders: [
-        { id: "brochure", name: "Brochure", files: [
-          { label: "Brochure",            name: "Brochure.pdf" } ] },
-        { id: "master-plan", name: "Master Plan", files: [
-          { label: "Master Plan",         name: "Master Plan.webp" } ] },
-        { id: "cost-sheet", name: "Cost Sheet", files: [
-          { label: "Cost Sheet",          name: "Cost Sheet.png", missing: true } ] },
-        { id: "location-advantage", name: "Location Advantage", files: [
-          { label: "Location Advantage",  name: "Location Advantage.html", missing: true } ] },
-        { id: "video", name: "Video", files: [
-          { label: "Project Walkthrough", name: "Walkthrough.mp4", missing: true } ] }
-      ]
-    },
-    {
-      id: "eloria",
-      name: "Eloria",
-      displayName: "Codename Eloria",
-      location: "Designed to Outlive Trends",
-      tagline: "4 & 5 BHK Neo Classical villas in Rajanukunte.",
-      tag: "Villas",
-      cover: "Sales Kit/Eloria/cover.jpg",
-      logo: "Sales Kit/Eloria/logo.png",
-      accent: "linear-gradient(155deg,#a89073,#3f362a 55%,#c9b48f)",
-      screensaver: ["cover.jpg"],
-      folders: [
-        { id: "brochure", name: "Brochure", files: [
-          { label: "Brochure",            name: "Brochure.pdf" } ] },
-        { id: "master-plan", name: "Master Plan", files: [
-          { label: "Master Plan",         name: "Master Plan.webp" } ] },
-        { id: "floor-plans", name: "Floor Plans", files: [
-          { label: "30X50 East",          name: "30X50 East.webp" },
-          { label: "35X50 East",          name: "35X50 East.webp" } ] },
-        { id: "cost-sheet", name: "Cost Sheet", files: [
-          { label: "Cost Sheet",          name: "Cost Sheet.png", missing: true } ] },
-        { id: "location-advantage", name: "Location Advantage", files: [
-          { label: "Location Advantage",  name: "Location Advantage.html", missing: true } ] },
-        { id: "video", name: "Video", files: [
-          { label: "Project Walkthrough", name: "Walkthrough.mp4", missing: true } ] }
-      ]
-    },
-    {
-      id: "triton-branded",
-      name: "Triton Branded",
-      displayName: "Triton Group",
-      location: "Beyond the Address",
-      tagline: "Explore our story, projects and vision.",
-      tag: "Corporate",
-      cover: "Sales Kit/Triton Branded/cover.jpg",
-      accent: "linear-gradient(155deg,#9a8358,#4d4331 55%,#5c5a63)",
-      screensaver: ["cover.jpg"],
-      folders: [
-        { id: "general", name: "General", files: [
-          { label: "Main Brochure",       name: "Main Brochure.pdf" },
-          { label: "Sales Feedback Form", name: "Feedback Form.pdf" } ] }
-      ]
-    }
-  ]
-  /* --- END GENERATED PROJECTS --- */
+  /* Populated at load time from Sales Kit/_Portal/portal-library.js —
+     see the <script> tags below. Never hand-edit a project in here;
+     drop files in the right folder on disk and use Sales -> Settings ->
+     Rebuild Library instead. This stays an empty array only until that
+     script runs. */
+  projects: []
 };
+</script>
 
+<!-- Auto-discovery chain: each of these fills in a piece of window.PORTAL_DATA
+     / adds a sibling global, purely from files already on disk — nothing
+     here is hand-typed. Order matters: config/overrides/price-calculator
+     data must exist before portal-library.js runs so it can compute each
+     project's live villas-available count, and portal-library.js must run
+     before the path-filling IIFE below. A brand-new project folder with no
+     portal-library.js yet (first run, before anyone has clicked Rebuild
+     Library) just leaves window.PORTAL_DATA.projects empty — the homepage
+     then shows "Nothing here yet" instead of a broken page. -->
+<script src="Sales Kit/_Portal/config.js"></script>
+<script src="Sales Kit/_Portal/status-overrides.js"></script>
+<script src="Sales Kit/_Portal/Price Calculator/price-calculator-data.js"></script>
+<script src="Sales Kit/_Portal/portal-library.js"></script>
+
+<script>
 /* Fill in each file's full path from its project + folder + name, so the
    manifest above stays readable and the paths can never drift out of sync. */
 (function (D) {
@@ -958,6 +819,31 @@ window.PORTAL_DATA = {
       return [root, p.name, name].join('/');
     });
   });
+
+  /* "X of Y Villas Available" on a project card used to be a hand-typed
+     count, kept in sync by hand in three different files whenever a unit
+     sold — exactly the kind of thing this whole rebuild exists to retire.
+     Any project whose id also exists in price-calculator-data.js gets this
+     computed live instead: take that project's own `units` array, apply
+     this project's entries in status-overrides.js on top (an override wins
+     over whatever price-calculator-data.js says), and count what's left
+     available. No PRICE_CALC_DATA entry for this project id — most
+     projects, pre-launch ones especially — and the line is simply omitted,
+     same as before. */
+  var calc = (window.PRICE_CALC_DATA && window.PRICE_CALC_DATA.projects) || [];
+  var overrides = window.STATUS_OVERRIDES || {};
+  D.projects.forEach(function (p) {
+    var cp = calc.filter(function (c) { return c.id === p.id; })[0];
+    if (!cp || !cp.units || !cp.units.length) return;
+    var ov = overrides[p.id] || {};
+    var total = cp.units.length;
+    var available = cp.units.filter(function (u) {
+      var status = ov[u.no] || u.status;
+      return status !== 'sold';
+    }).length;
+    var unitWord = (cp.unitLabel || 'Unit').replace(/\s*no\.?$/i, '').trim() || 'Unit';
+    p.villas = { available: available, total: total, unitWord: unitWord };
+  });
 })(window.PORTAL_DATA);
 
 /* ============================================================
@@ -969,7 +855,16 @@ window.PORTAL_DATA = {
 
 var D  = window.PORTAL_DATA || { projects: [] };
 var BASELINE = (D.projects || []).slice();   // what shipped in data.js
-function visible() { return (D.projects || []).filter(function (p) { return !p.hidden; }); }
+function visible() {
+  return (D.projects || []).filter(function (p) {
+    if (p.hidden) return false;
+    if (p.salesOnly && !Mode.isSales()) return false;
+    return true;
+  });
+}
+function visibleFolders(p) {
+  return (p.folders || []).filter(function (f) { return !f.salesOnly || Mode.isSales(); });
+}
 var $  = function (s, r) { return (r || document).querySelector(s); };
 var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
 var esc = function (s) {
@@ -1062,7 +957,7 @@ function mediaCandidates(file) {
 }
 
 function fileCount(p) {
-  return (p.folders || []).reduce(function (n, f) {
+  return visibleFolders(p).reduce(function (n, f) {
     return n + (f.files || []).filter(function (x) { return !x.missing; }).length; }, 0);
 }
 
@@ -1214,6 +1109,7 @@ function bindInteractive(root) {
     });
     el.addEventListener('pointerleave', function () { el.style.transform = ''; });
   });
+  if ($('.settings-view', root)) wireSettings(settingsCalc, settingsOverrides);
   var ssToggle = $('#ssToggle', root);
   if (ssToggle) {
     ssToggle.addEventListener('change', function () {
@@ -1302,7 +1198,7 @@ document.addEventListener('loadedmetadata', function (e) {
 }, true);
 
 function projectCard(p, i) {
-  var n = fileCount(p), folders = (p.folders || []).length;
+  var n = fileCount(p), folders = visibleFolders(p).length;
   var figure = n > 0
       ? '<b>' + n + '</b><span>' + (n === 1 ? 'file' : 'files') + '</span>'
       : '<b>' + folders + '</b><span>' + (folders === 1 ? 'folder' : 'folders') + '</span>';
@@ -1365,7 +1261,7 @@ function renderHome() {
 function renderProject(p) {
   Hero.hide(true);
   crumbs([{ t: p.displayName || p.name }]);
-  var folders = p.folders || [];
+  var folders = visibleFolders(p);
   var links   = p.links   || [];
   var body =
     '<div class="view">' +
@@ -1379,7 +1275,7 @@ function renderProject(p) {
         '<div class="sec-head-right">' +
           '<span class="sec-count">' + folders.length + ' Folders · ' + fileCount(p) + ' Files' +
             (links.length ? ' · ' + links.length + ' Online' : '') +
-            (p.villas ? ' · ' + p.villas.available + ' of ' + p.villas.total + ' Villas Available' : '') +
+            (p.villas ? ' · ' + p.villas.available + ' of ' + p.villas.total + ' ' + esc(p.villas.unitWord) + 's Available' : '') +
             '</span>' +
           ((p.screensaver || []).length
             ? '<label class="ss-toggle" title="Auto-play this project\'s photos on screen after 3 minutes of inactivity">' +
@@ -1502,13 +1398,18 @@ function findProject(id) {
   return visible().filter(function (p) { return p.id === id; })[0];
 }
 function findFolder(p, id) {
-  return (p.folders || []).filter(function (f) { return f.id === id; })[0];
+  return visibleFolders(p).filter(function (f) { return f.id === id; })[0];
 }
 
 function route() {
   var h = (location.hash || '#/').replace(/^#\/?/, '');
   var parts = h.split('/').filter(Boolean).map(decodeURIComponent);
 
+  if (parts[0] === 'settings') {
+    if (!Mode.isSales()) { location.hash = '#/'; return; }
+    Screensaver.setProject(null);
+    Route.away = true; renderSettings(); return;
+  }
   if (parts[0] === 'p' && parts[1]) {
     var p = findProject(parts[1]);
     if (!p) { location.hash = '#/'; return; }
@@ -1557,7 +1458,7 @@ var Search = (function () {
     visible().forEach(function (p) {
       var pname = p.displayName || p.name;
       index.push({ t: 'project', name: pname, path: 'Projects', href: '#/p/' + p.id, icon: 'folder' });
-      (p.folders || []).forEach(function (f) {
+      visibleFolders(p).forEach(function (f) {
         index.push({ t: 'folder', name: f.name, path: pname,
                      href: '#/p/' + p.id + '/' + f.id, icon: 'folder' });
         (f.files || []).forEach(function (file) {
@@ -1673,6 +1574,578 @@ addEventListener('keydown', function (e) {
 });
 
 /* ============================================================
+   LIBRARY — reads Sales Kit straight off disk via the File System
+   Access API and regenerates portal-library.js. This is the whole
+   point of this rebuild: adding a project becomes "make a folder,
+   drop files in it, click Rebuild Library" — nothing to type,
+   nothing to hand to anyone with Claude access, because there's no
+   PORTAL_DATA to hand-edit any more.
+   Chrome/Edge only — the File System Access API isn't in Safari or
+   Firefox; Settings says so plainly if it's missing, and every
+   other part of this portal still works fine without it. The
+   folder-pick permission has to be re-confirmed by the browser each
+   session (ordinary browser security, not something this code can
+   bypass) — the handle itself is remembered in IndexedDB so after
+   the first pick it's usually one "Allow" click, not re-navigating
+   to the folder every time.
+   A folder is only listed if it actually has files in it directly
+   inside it — nothing deeper. A sub-folder named "Screensaver"
+   becomes that project's auto-play photos instead of a folder tile,
+   same convention every project already uses on disk. A deeper
+   sub-folder (e.g. a tool's own supporting images) is never listed
+   separately — only two levels deep, project -> folder -> files,
+   same shape this portal has always rendered.
+   ============================================================ */
+var Library = (function () {
+  var SKIP_EXT = ['txt'];
+  var DEFAULT_ACCENT = 'linear-gradient(155deg,#8a8a8a,#3a3a3a 55%,#aaaaaa)';
+  var dirHandle = null;
+
+  function slugify(s) {
+    return String(s).toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'project';
+  }
+  function stemOf(name) { var d = name.lastIndexOf('.'); return d > 0 ? name.slice(0, d) : name; }
+  function extOf(name) { var d = name.lastIndexOf('.'); return d > -1 ? name.slice(d + 1).toLowerCase() : ''; }
+
+  function idb(mode, fn) {
+    return new Promise(function (resolve) {
+      if (!window.indexedDB) return resolve(mode === 'get' ? null : false);
+      var req = indexedDB.open('tritonPortal', 1);
+      req.onupgradeneeded = function () {
+        if (!req.result.objectStoreNames.contains('handles')) req.result.createObjectStore('handles');
+      };
+      req.onsuccess = function () {
+        var tx = req.result.transaction('handles', mode === 'get' ? 'readonly' : 'readwrite');
+        fn(tx.objectStore('handles'), resolve);
+      };
+      req.onerror = function () { resolve(mode === 'get' ? null : false); };
+    });
+  }
+  function rememberHandle(h) {
+    return idb('set', function (store, resolve) {
+      try { var r = store.put(h, 'salesKitRoot'); r.onsuccess = function () { resolve(true); }; r.onerror = function () { resolve(false); }; }
+      catch (e) { resolve(false); }
+    });
+  }
+  function recallHandle() {
+    return idb('get', function (store, resolve) {
+      try { var r = store.get('salesKitRoot'); r.onsuccess = function () { resolve(r.result || null); }; r.onerror = function () { resolve(null); }; }
+      catch (e) { resolve(null); }
+    });
+  }
+
+  async function grantedPermission(handle) {
+    try {
+      var p = await handle.queryPermission({ mode: 'readwrite' });
+      if (p === 'granted') return true;
+      p = await handle.requestPermission({ mode: 'readwrite' });
+      return p === 'granted';
+    } catch (e) { return false; }
+  }
+
+  async function ensureHandle(forcePick) {
+    if (!window.showDirectoryPicker) {
+      throw new Error('This browser can’t pick a local folder for you. Open this portal in Chrome or Edge to use Rebuild Library or Settings — everything else works fine as-is.');
+    }
+    if (!forcePick && dirHandle && await grantedPermission(dirHandle)) return dirHandle;
+    if (!forcePick) {
+      var saved = await recallHandle();
+      if (saved && await grantedPermission(saved)) { dirHandle = saved; return dirHandle; }
+    }
+    var picked = await window.showDirectoryPicker({ id: 'triton-sales-kit', mode: 'readwrite' });
+    if (!(await grantedPermission(picked))) throw new Error('Folder access was not granted.');
+    if (picked.name !== 'Sales Kit') {
+      if (!confirm('You picked "' + picked.name + '" — this should be the "Sales Kit" folder itself (the one with Sanvi, Hummingvalley, etc. inside it). Use it anyway?')) {
+        return ensureHandle(true);
+      }
+    }
+    dirHandle = picked;
+    await rememberHandle(picked);
+    return dirHandle;
+  }
+
+  async function readJSONFile(dir, name, fallback) {
+    try {
+      var fh = await dir.getFileHandle(name);
+      return JSON.parse(await (await fh.getFile()).text());
+    } catch (e) { return fallback; }
+  }
+  async function writeText(dir, path, text) {
+    var parts = path.split('/'), d = dir;
+    for (var i = 0; i < parts.length - 1; i++) d = await d.getDirectoryHandle(parts[i], { create: true });
+    var fh = await d.getFileHandle(parts[parts.length - 1], { create: true });
+    var w = await fh.createWritable();
+    await w.write(text);
+    await w.close();
+  }
+  function jsBody(globalName, data) { return 'window.' + globalName + ' = ' + JSON.stringify(data, null, 2) + ';\n'; }
+
+  async function listEntries(handle) {
+    var out = [];
+    for await (var entry of handle.values()) out.push(entry);
+    return out;
+  }
+
+  async function scanFolder(folderHandle, folderName, visibility) {
+    var entries = await listEntries(folderHandle);
+    var files = [];
+    for (var i = 0; i < entries.length; i++) {
+      var e = entries[i];
+      if (e.kind !== 'file') continue; // a nested sub-folder is a tool's own supporting assets, never listed
+      if (e.name.charAt(0) === '.') continue;
+      var ext = extOf(e.name);
+      if (!ext || SKIP_EXT.indexOf(ext) > -1) continue;
+      files.push({ label: stemOf(e.name), name: e.name });
+    }
+    files.sort(function (a, b) { return a.name.localeCompare(b.name, undefined, { numeric: true }); });
+    if (!files.length) return null; // empty folder -> no tile at all, the whole point of this rebuild
+    return { id: slugify(folderName), name: folderName, salesOnly: visibility[folderName] === 'sales-only', files: files };
+  }
+
+  async function scanProject(projectHandle, projectName) {
+    var pj = await readJSONFile(projectHandle, 'project.json', {});
+    var entries = await listEntries(projectHandle);
+    var cover, logo, screensaverDir = null, folders = [];
+    for (var i = 0; i < entries.length; i++) {
+      var e = entries[i];
+      if (e.kind === 'file') {
+        var ext = extOf(e.name), st = stemOf(e.name).toLowerCase();
+        if (st === 'cover' && IMAGE_EXTS.indexOf(ext) > -1) cover = e.name;
+        if (st === 'logo' && IMAGE_EXTS.indexOf(ext) > -1) logo = e.name;
+      } else if (e.name.toLowerCase() === 'screensaver') {
+        screensaverDir = e;
+      }
+    }
+    var screensaverFiles = null;
+    if (screensaverDir) {
+      var ssEntries = await listEntries(screensaverDir);
+      screensaverFiles = ssEntries
+        .filter(function (e) { return e.kind === 'file' && IMAGE_EXTS.indexOf(extOf(e.name)) > -1; })
+        .map(function (e) { return e.name; })
+        .sort(function (a, b) { return a.localeCompare(b, undefined, { numeric: true }); })
+        .map(function (n) { return 'Screensaver/' + n; });
+    }
+    for (var j = 0; j < entries.length; j++) {
+      var e2 = entries[j];
+      if (e2.kind !== 'directory' || e2.name.toLowerCase() === 'screensaver') continue;
+      var folder = await scanFolder(e2, e2.name, pj.folderVisibility || {});
+      if (folder) folders.push(folder);
+    }
+    return {
+      id: slugify(projectName), name: projectName,
+      displayName: pj.displayName || projectName,
+      location: pj.location || '', tagline: pj.tagline || '', tag: pj.tag || 'Project',
+      cover: cover ? ['Sales Kit', projectName, cover].join('/') : undefined,
+      logo: logo ? ['Sales Kit', projectName, logo].join('/') : undefined,
+      accent: pj.accent || DEFAULT_ACCENT,
+      salesOnly: !!pj.salesOnly,
+      links: pj.links || [],
+      screensaver: (screensaverFiles && screensaverFiles.length) ? screensaverFiles : (cover ? [cover] : []),
+      folders: folders
+    };
+  }
+
+  async function scan(root) {
+    var entries = await listEntries(root);
+    var projects = [];
+    for (var i = 0; i < entries.length; i++) {
+      var e = entries[i];
+      if (e.kind !== 'directory' || e.name.charAt(0) === '_') continue; // "_Portal" etc. is infra, not a project
+      projects.push(await scanProject(e, e.name));
+    }
+    projects.sort(function (a, b) { return a.name.localeCompare(b.name); });
+    return projects;
+  }
+
+  async function rebuild() {
+    var root = await ensureHandle();
+    var projects = await scan(root);
+    var text =
+      '/* GENERATED by Sales -> Settings -> Rebuild Library. Do not hand-edit\n' +
+      '   this file — it is overwritten the next time anyone clicks Rebuild.\n' +
+      '   To change a project’s folders or files, change what’s on disk and\n' +
+      '   Rebuild again. To change its branding or folder visibility, use\n' +
+      '   Sales -> Settings, or hand-edit that project’s own project.json. */\n' +
+      'window.PORTAL_DATA = window.PORTAL_DATA || {};\n' +
+      'window.PORTAL_DATA.projects = ' + JSON.stringify(projects, null, 2) + ';\n';
+    await writeText(root, '_Portal/portal-library.js', text);
+    return projects.length;
+  }
+
+  async function readProjectJSON(projectName) {
+    var root = await ensureHandle();
+    var dir = await root.getDirectoryHandle(projectName);
+    return readJSONFile(dir, 'project.json', {});
+  }
+  async function writeProjectJSON(projectName, data) {
+    var root = await ensureHandle();
+    await writeText(root, projectName + '/project.json', JSON.stringify(data, null, 2) + '\n');
+  }
+  async function writeConfig(data) {
+    var root = await ensureHandle();
+    await writeText(root, '_Portal/config.js', jsBody('PORTAL_CONFIG', data));
+  }
+  async function writeOverrides(data) {
+    var root = await ensureHandle();
+    await writeText(root, '_Portal/status-overrides.js', jsBody('STATUS_OVERRIDES', data));
+  }
+
+  return {
+    get supported() { return !!window.showDirectoryPicker; },
+    ensureHandle: ensureHandle, rebuild: rebuild,
+    readProjectJSON: readProjectJSON, writeProjectJSON: writeProjectJSON,
+    writeConfig: writeConfig, writeOverrides: writeOverrides
+  };
+})();
+
+/* ============================================================
+   MODE — Customer (default) vs Sales. Sales mode unlocks Settings
+   and any folder a project's own project.json marks sales-only.
+   Session-only (sessionStorage): closing the tab always drops back
+   to Customer mode, so nobody has to remember to log out of a
+   device left in a showroom.
+   ============================================================ */
+var Mode = (function () {
+  var KEY = 'tritonSalesMode';
+  function isSales() { return sessionStorage.getItem(KEY) === '1'; }
+  function setSales(on) { if (on) sessionStorage.setItem(KEY, '1'); else sessionStorage.removeItem(KEY); }
+  async function sha256Hex(text) {
+    var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+    return Array.prototype.map.call(new Uint8Array(buf), function (b) { return b.toString(16).padStart(2, '0'); }).join('');
+  }
+  return { isSales: isSales, setSales: setSales, sha256Hex: sha256Hex };
+})();
+
+function updateSalesButton() {
+  var btn = $('#salesBtn');
+  if (!btn) return;
+  var on = Mode.isSales();
+  btn.style.color = on ? '#c0392b' : '';
+  btn.title = on ? 'Sales mode is on — open Settings' : 'Sales mode';
+}
+
+/* A customer stumbling into this is the whole reason it exists; it is
+   not real security (anyone with a text editor can read the hash out of
+   config.js), just a deterrent, and Settings says so. */
+function openPinGate() {
+  var cfg = window.PORTAL_CONFIG || { setupDone: false, salesPinHash: '' };
+  var needsSetup = !cfg.setupDone;
+  var overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(10,10,12,.72);display:flex;' +
+    'align-items:center;justify-content:center;z-index:999;padding:16px;font-family:inherit;';
+  overlay.innerHTML =
+    '<div style="background:#16181c;color:#f3f1ee;padding:26px;border-radius:14px;width:320px;' +
+    'box-shadow:0 24px 70px rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.08)">' +
+      '<h3 style="margin:0 0 6px;font-size:16px">' + (needsSetup ? 'Set a Sales PIN' : 'Enter Sales PIN') + '</h3>' +
+      '<p style="margin:0 0 14px;font-size:12.5px;line-height:1.5;opacity:.72">' + (needsSetup
+        ? 'First time in Sales mode on this device — pick a PIN (4+ digits) so a customer handed this device can’t wander into Settings.'
+        : 'This area is for the sales team only.') + '</p>' +
+      '<input id="pinIn1" type="password" inputmode="numeric" placeholder="PIN" autocomplete="off" ' +
+        'style="width:100%;box-sizing:border-box;padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.18);' +
+        'background:#0c0d0f;color:#fff;font-size:16px;margin-bottom:8px">' +
+      (needsSetup ? '<input id="pinIn2" type="password" inputmode="numeric" placeholder="Confirm PIN" autocomplete="off" ' +
+        'style="width:100%;box-sizing:border-box;padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.18);' +
+        'background:#0c0d0f;color:#fff;font-size:16px;margin-bottom:8px">' : '') +
+      '<p id="pinErr" style="color:#e2766f;font-size:12px;min-height:16px;margin:0 0 6px"></p>' +
+      '<div style="display:flex;gap:8px;margin-top:4px">' +
+        '<button id="pinCancel" type="button" style="flex:1;padding:10px;border-radius:8px;' +
+          'border:1px solid rgba(255,255,255,.18);background:transparent;color:#fff;cursor:pointer;font-size:13px">Cancel</button>' +
+        '<button id="pinOk" type="button" style="flex:1;padding:10px;border-radius:8px;border:none;' +
+          'background:#c0392b;color:#fff;cursor:pointer;font-weight:600;font-size:13px">' + (needsSetup ? 'Set PIN' : 'Unlock') + '</button>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(overlay);
+  var in1 = overlay.querySelector('#pinIn1');
+  setTimeout(function () { in1.focus(); }, 30);
+  function close() { overlay.remove(); }
+  overlay.querySelector('#pinCancel').addEventListener('click', close);
+  async function submit() {
+    var errEl = overlay.querySelector('#pinErr');
+    var pin = in1.value.trim();
+    if (needsSetup) {
+      var pin2 = overlay.querySelector('#pinIn2').value.trim();
+      if (pin.length < 4) { errEl.textContent = 'PIN needs at least 4 digits.'; return; }
+      if (pin !== pin2) { errEl.textContent = 'PINs don’t match.'; return; }
+      var hash = await Mode.sha256Hex(pin);
+      try { await Library.writeConfig({ setupDone: true, salesPinHash: hash }); }
+      catch (e) { errEl.textContent = e.message || 'Could not save the PIN.'; return; }
+      window.PORTAL_CONFIG = { setupDone: true, salesPinHash: hash };
+      close(); Mode.setSales(true); updateSalesButton(); location.hash = '#/settings'; route();
+    } else {
+      var hash2 = await Mode.sha256Hex(pin);
+      if (hash2 !== cfg.salesPinHash) { errEl.textContent = 'Wrong PIN.'; in1.value = ''; in1.focus(); return; }
+      close(); Mode.setSales(true); updateSalesButton(); location.hash = '#/settings'; route();
+    }
+  }
+  overlay.querySelector('#pinOk').addEventListener('click', submit);
+  overlay.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') submit();
+    if (e.key === 'Escape') close();
+  });
+}
+
+/* ============================================================
+   SETTINGS — Sales-mode-only screen. Everything here edits a real
+   file on disk (project.json / status-overrides.js / config.js)
+   through the same File System Access handle as Rebuild Library,
+   then re-runs Rebuild and reloads so the change is live immediately.
+   ============================================================ */
+function settingsMsg(targetSel, text, isError) {
+  var el = $(targetSel);
+  if (!el) return;
+  el.textContent = text;
+  el.style.color = isError ? '#e2766f' : '#6fbf8b';
+}
+
+var settingsCalc = [], settingsOverrides = {};
+function renderSettings() {
+  Hero.hide(true);
+  crumbs([{ t: 'Settings' }]);
+  var calc = settingsCalc = (window.PRICE_CALC_DATA && window.PRICE_CALC_DATA.projects) || [];
+  var overrides = settingsOverrides = window.STATUS_OVERRIDES || {};
+
+  var unitProjectOptions = calc.map(function (c) {
+    return '<option value="' + esc(c.id) + '">' + esc(c.name) + '</option>';
+  }).join('');
+
+  var brandingProjectOptions = visible().concat(D.projects.filter(function (p) { return p.salesOnly; }))
+    .filter(function (p, i, arr) { return arr.indexOf(p) === i; })
+    .map(function (p) { return '<option value="' + esc(p.name) + '">' + esc(p.displayName || p.name) + '</option>'; }).join('');
+
+  var body =
+    '<div class="view settings-view">' +
+    '<style>' +
+      '.settings-view .s-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);' +
+        'border-radius:14px;padding:20px 22px;margin-bottom:18px}' +
+      '.settings-view h3{margin:0 0 4px;font-size:16px}' +
+      '.settings-view .s-sub{margin:0 0 14px;font-size:12.5px;opacity:.65;line-height:1.5}' +
+      '.settings-view select,.settings-view input[type=text]{background:rgba(255,255,255,.05);' +
+        'border:1px solid rgba(255,255,255,.15);color:inherit;padding:8px 10px;border-radius:7px;font-size:13px;' +
+        'margin-bottom:8px;width:100%;box-sizing:border-box}' +
+      '.settings-view label.s-field{display:block;font-size:11.5px;opacity:.6;margin:10px 0 2px}' +
+      '.settings-view .s-row{display:flex;align-items:center;justify-content:space-between;' +
+        'padding:7px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:13px;gap:10px}' +
+      '.settings-view .s-row:last-child{border-bottom:none}' +
+      '.settings-view .s-btn{background:#c0392b;color:#fff;border:none;padding:9px 16px;border-radius:7px;' +
+        'cursor:pointer;font-size:13px;font-weight:600;margin-top:10px}' +
+      '.settings-view .s-btn.secondary{background:transparent;border:1px solid rgba(255,255,255,.2);color:inherit}' +
+      '.settings-view .s-msg{font-size:12px;min-height:16px;margin-top:8px}' +
+      '.settings-view .s-unit-list{max-height:320px;overflow:auto;margin-top:6px}' +
+    '</style>' +
+    '<a class="back" href="#/" data-cursor="back">' + svg('back') + ' All projects</a>' +
+    '<div class="sec-head rv"><div><p class="sec-eyebrow">Sales</p><h2 class="sec-title">Settings</h2>' +
+      '<p class="sec-sub">Everything here edits real files on disk, through the folder you grant access to —' +
+      ' nothing lives only in this browser.</p></div></div>' +
+
+    '<div class="s-card">' +
+      '<h3>Library</h3>' +
+      '<p class="s-sub">Re-scans the Sales Kit folder and rebuilds the project list from whatever is actually' +
+      ' on disk right now. Run this after dropping new files or folders in — or after any change made below,' +
+      ' which already runs it for you.</p>' +
+      (Library.supported
+        ? '<button class="s-btn" id="btnRebuild" type="button">Rebuild Library</button><p class="s-msg" id="msgRebuild"></p>'
+        : '<p class="s-msg" style="color:#e2766f">This browser can’t pick a local folder. Open this portal in Chrome or Edge to use Rebuild Library.</p>') +
+    '</div>' +
+
+    '<div class="s-card">' +
+      '<h3>Unit Status</h3>' +
+      '<p class="s-sub">Flip a unit sold/available without touching price-calculator-data.js. Saved separately' +
+      ' from it, in status-overrides.js — an override here always wins.</p>' +
+      (unitProjectOptions
+        ? '<select id="unitProject">' + unitProjectOptions + '</select>' +
+          '<div class="s-unit-list" id="unitList"></div>' +
+          '<button class="s-btn" id="btnSaveUnits" type="button">Save Changes</button><p class="s-msg" id="msgUnits"></p>'
+        : '<p class="s-sub">No project has a unit list in price-calculator-data.js yet.</p>') +
+    '</div>' +
+
+    '<div class="s-card">' +
+      '<h3>Folder Visibility</h3>' +
+      '<p class="s-sub">Mark a folder “sales only” to hide it from Customer mode (competitor comparisons,' +
+      ' internal availability sheets, anything not meant for a buyer to see).</p>' +
+      '<select id="visProject">' + brandingProjectOptions + '</select>' +
+      '<div id="visList"></div>' +
+      '<button class="s-btn" id="btnSaveVis" type="button">Save &amp; Rebuild</button><p class="s-msg" id="msgVis"></p>' +
+    '</div>' +
+
+    '<div class="s-card">' +
+      '<h3>Branding</h3>' +
+      '<p class="s-sub">Display name, eyebrow line, tagline, category and accent colour — shown on that' +
+      ' project’s card and page. Writes that project’s own project.json.</p>' +
+      '<select id="brandProject">' + brandingProjectOptions + '</select>' +
+      '<div id="brandForm"></div>' +
+      '<button class="s-btn" id="btnSaveBrand" type="button">Save &amp; Rebuild</button><p class="s-msg" id="msgBrand"></p>' +
+    '</div>' +
+
+    '<div class="s-card">' +
+      '<h3>Sales PIN</h3>' +
+      '<p class="s-sub">Change the PIN that gates this screen.</p>' +
+      '<button class="s-btn secondary" id="btnChangePin" type="button">Change PIN</button>' +
+    '</div>' +
+
+    '<div class="s-card">' +
+      '<h3>Exit Sales Mode</h3>' +
+      '<p class="s-sub">Back to the Customer view — sales-only folders disappear again.</p>' +
+      '<button class="s-btn secondary" id="btnExitSales" type="button">Switch to Customer View</button>' +
+    '</div>' +
+    '</div>';
+  paint(body);
+  /* Actual event wiring happens in bindInteractive(), which paint() calls
+     once the DOM above is really in the page — see the .settings-view
+     check near the top of bindInteractive(). */
+}
+
+function wireSettings(calc, overrides) {
+  var stage = $('#stage');
+  if (!stage) return;
+
+  /* ---- Library ---- */
+  var btnRebuild = $('#btnRebuild', stage);
+  if (btnRebuild) btnRebuild.addEventListener('click', async function () {
+    settingsMsg('#msgRebuild', 'Pick the "Sales Kit" folder if asked, then wait…');
+    try {
+      var n = await Library.rebuild();
+      settingsMsg('#msgRebuild', 'Done — ' + n + ' project(s) found. Reloading…');
+      setTimeout(function () { location.reload(); }, 700);
+    } catch (e) { settingsMsg('#msgRebuild', e.message || String(e), true); }
+  });
+
+  /* ---- Unit Status ---- */
+  var unitProjectSel = $('#unitProject', stage);
+  function renderUnitList() {
+    var list = $('#unitList', stage);
+    if (!list || !unitProjectSel) return;
+    var cp = calc.filter(function (c) { return c.id === unitProjectSel.value; })[0];
+    if (!cp) { list.innerHTML = ''; return; }
+    var ov = overrides[cp.id] || {};
+    list.innerHTML = (cp.units || []).map(function (u) {
+      var status = ov[u.no] || u.status;
+      return '<div class="s-row"><span>' + esc(u.no) + ' · ' + esc(u.config || '') + '</span>' +
+        '<select data-unit="' + esc(u.no) + '" style="width:120px;margin:0">' +
+          '<option value="available"' + (status !== 'sold' ? ' selected' : '') + '>Available</option>' +
+          '<option value="sold"' + (status === 'sold' ? ' selected' : '') + '>Sold</option>' +
+        '</select></div>';
+    }).join('');
+  }
+  if (unitProjectSel) { unitProjectSel.addEventListener('change', renderUnitList); renderUnitList(); }
+  var btnSaveUnits = $('#btnSaveUnits', stage);
+  if (btnSaveUnits) btnSaveUnits.addEventListener('click', async function () {
+    var cp = calc.filter(function (c) { return c.id === unitProjectSel.value; })[0];
+    if (!cp) return;
+    var merged = JSON.parse(JSON.stringify(overrides));
+    merged[cp.id] = merged[cp.id] || {};
+    $('#unitList', stage).querySelectorAll('select[data-unit]').forEach(function (sel) {
+      var u = cp.units.filter(function (x) { return x.no === sel.dataset.unit; })[0];
+      if (u && sel.value === u.status) delete merged[cp.id][sel.dataset.unit];
+      else merged[cp.id][sel.dataset.unit] = sel.value;
+    });
+    if (!Object.keys(merged[cp.id]).length) delete merged[cp.id];
+    settingsMsg('#msgUnits', 'Pick the "Sales Kit" folder if asked…');
+    try {
+      await Library.writeOverrides(merged);
+      window.STATUS_OVERRIDES = merged;
+      settingsMsg('#msgUnits', 'Saved. Reloading…');
+      setTimeout(function () { location.reload(); }, 600);
+    } catch (e) { settingsMsg('#msgUnits', e.message || String(e), true); }
+  });
+
+  /* ---- Folder Visibility ---- */
+  var visProjectSel = $('#visProject', stage);
+  function renderVisList() {
+    var list = $('#visList', stage);
+    if (!list || !visProjectSel) return;
+    var p = D.projects.filter(function (x) { return x.name === visProjectSel.value; })[0];
+    if (!p) { list.innerHTML = ''; return; }
+    list.innerHTML = (p.folders || []).map(function (f) {
+      return '<div class="s-row"><span>' + esc(f.name) + '</span>' +
+        '<label style="display:flex;align-items:center;gap:6px;font-size:12px;opacity:.85">' +
+        '<input type="checkbox" data-folder="' + esc(f.name) + '"' + (f.salesOnly ? ' checked' : '') + '> Sales only</label></div>';
+    }).join('') || '<p class="s-sub">No folders yet.</p>';
+  }
+  if (visProjectSel) { visProjectSel.addEventListener('change', renderVisList); renderVisList(); }
+  var btnSaveVis = $('#btnSaveVis', stage);
+  if (btnSaveVis) btnSaveVis.addEventListener('click', async function () {
+    var pname = visProjectSel.value;
+    settingsMsg('#msgVis', 'Pick the "Sales Kit" folder if asked, then wait…');
+    try {
+      var pj = await Library.readProjectJSON(pname);
+      pj.folderVisibility = pj.folderVisibility || {};
+      $('#visList', stage).querySelectorAll('input[data-folder]').forEach(function (cb) {
+        if (cb.checked) pj.folderVisibility[cb.dataset.folder] = 'sales-only';
+        else delete pj.folderVisibility[cb.dataset.folder];
+      });
+      await Library.writeProjectJSON(pname, pj);
+      await Library.rebuild();
+      settingsMsg('#msgVis', 'Saved. Reloading…');
+      setTimeout(function () { location.reload(); }, 600);
+    } catch (e) { settingsMsg('#msgVis', e.message || String(e), true); }
+  });
+
+  /* ---- Branding ---- */
+  var brandProjectSel = $('#brandProject', stage);
+  var ACCENT_PRESETS = [
+    'linear-gradient(155deg,#6d8399,#3b4a5c 55%,#8a7a52)',
+    'linear-gradient(155deg,#6f8a72,#3a4a3c 55%,#7d8552)',
+    'linear-gradient(155deg,#7fa0b8,#2f3d4a 55%,#a9b7c2)',
+    'linear-gradient(155deg,#a89073,#3f362a 55%,#c9b48f)',
+    'linear-gradient(155deg,#9a8358,#4d4331 55%,#5c5a63)'
+  ];
+  function renderBrandForm() {
+    var form = $('#brandForm', stage);
+    if (!form || !brandProjectSel) return;
+    var p = D.projects.filter(function (x) { return x.name === brandProjectSel.value; })[0];
+    if (!p) { form.innerHTML = ''; return; }
+    form.innerHTML =
+      '<label class="s-field">Display name</label><input type="text" id="bDisplayName" value="' + esc(p.displayName || '') + '">' +
+      '<label class="s-field">Eyebrow / location line</label><input type="text" id="bLocation" value="' + esc(p.location || '') + '">' +
+      '<label class="s-field">Tagline</label><input type="text" id="bTagline" value="' + esc(p.tagline || '') + '">' +
+      '<label class="s-field">Category</label><input type="text" id="bTag" value="' + esc(p.tag || '') + '">' +
+      '<label class="s-field">Accent (CSS gradient)</label><input type="text" id="bAccent" value="' + esc(p.accent || '') + '">' +
+      '<div style="display:flex;gap:6px;margin:4px 0 2px">' + ACCENT_PRESETS.map(function (g) {
+        return '<button type="button" class="accent-swatch" data-accent="' + esc(g) + '" ' +
+          'style="width:28px;height:28px;border-radius:6px;border:1px solid rgba(255,255,255,.25);cursor:pointer;background:' + esc(g) + '"></button>';
+      }).join('') + '</div>';
+    form.querySelectorAll('.accent-swatch').forEach(function (btn) {
+      btn.addEventListener('click', function () { $('#bAccent', stage).value = btn.dataset.accent; });
+    });
+  }
+  if (brandProjectSel) { brandProjectSel.addEventListener('change', renderBrandForm); renderBrandForm(); }
+  var btnSaveBrand = $('#btnSaveBrand', stage);
+  if (btnSaveBrand) btnSaveBrand.addEventListener('click', async function () {
+    var pname = brandProjectSel.value;
+    settingsMsg('#msgBrand', 'Pick the "Sales Kit" folder if asked, then wait…');
+    try {
+      var pj = await Library.readProjectJSON(pname);
+      pj.displayName = $('#bDisplayName', stage).value.trim();
+      pj.location = $('#bLocation', stage).value.trim();
+      pj.tagline = $('#bTagline', stage).value.trim();
+      pj.tag = $('#bTag', stage).value.trim();
+      pj.accent = $('#bAccent', stage).value.trim();
+      await Library.writeProjectJSON(pname, pj);
+      await Library.rebuild();
+      settingsMsg('#msgBrand', 'Saved. Reloading…');
+      setTimeout(function () { location.reload(); }, 600);
+    } catch (e) { settingsMsg('#msgBrand', e.message || String(e), true); }
+  });
+
+  /* ---- PIN / exit ---- */
+  var btnChangePin = $('#btnChangePin', stage);
+  if (btnChangePin) btnChangePin.addEventListener('click', function () {
+    window.PORTAL_CONFIG = { setupDone: false, salesPinHash: '' };
+    openPinGate();
+  });
+  var btnExitSales = $('#btnExitSales', stage);
+  if (btnExitSales) btnExitSales.addEventListener('click', function () {
+    Mode.setSales(false); updateSalesButton(); location.hash = '#/';
+  });
+}
+
+var salesBtnEl = $('#salesBtn');
+if (salesBtnEl) salesBtnEl.addEventListener('click', function () {
+  if (Mode.isSales()) { location.hash = '#/settings'; return; }
+  openPinGate();
+});
+
+/* ============================================================
    BOOT
    ============================================================ */
 (function boot() {
@@ -1698,6 +2171,7 @@ addEventListener('keydown', function (e) {
   $('#topbar').classList.add('show');
   $('#stage').classList.add('show');
 
+  updateSalesButton();
   route();
 })();
 

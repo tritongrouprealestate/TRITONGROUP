@@ -14,33 +14,137 @@ stick. No internet, no server, nothing to install. It opens in Chrome or Edge.
 
 ## Updating content — the whole procedure
 
-**Replace the file in `Sales Kit/`, keeping the same file name. That's it.**
+**Nothing is hand-typed any more. Drop files where they belong, click Rebuild
+Library, done.** This replaced an older "edit a JSON-shaped list by hand" workflow —
+if you're reading an old printout or an old session's notes that talks about editing
+`PORTAL_DATA`, that part is out of date; this section is the current one.
 
-Every file has a fixed name. The portal is wired to those names, so a new brochure
-saved as `Brochure.pdf` simply becomes the brochure. Nothing to re-run, nothing to
-re-link, no button to press. Close and reopen the portal to see it.
+**Replacing an existing file** — same name, same folder: just overwrite it. No
+rebuild needed, nothing to click; close and reopen the portal (or just refresh) to
+see the new version. This part never changed.
 
-**Adding something genuinely new** — a file that isn't already one of the named slots
-above, a new villa, a new folder, a whole new project — needs one line added to
-`Triton Sales Portal.html`'s `PORTAL_DATA` (near the top of the file) so the portal
-knows the new name and where it lives. That's a text edit, not something to click a
-button for; ask whoever set this kit up (or Claude, if this is a Claude Code session)
-to add it, the same way every villa, calculator and project in here so far was added.
+**Adding, removing or renaming a file or a whole folder** — anywhere under
+`Sales Kit/`:
 
-There used to be an **Update** button that tried to do this automatically by
-re-scanning a folder you picked. It's gone now — it would silently overwrite this
-hand-curated list with whatever it found on disk, including files that were never
-meant to be customer-facing (like a villa's raw floor plan renders or the
-screensaver's own photos), and there was no obvious way back. If your portal ever
-looks unrecognizable after someone clicked something in the top right, that button is
-almost certainly why; the fix shipped in this version, and it self-corrects the moment
-you open the updated `Triton Sales Portal.html` — nothing to press.
+1. Make the change on disk. A new PDF in `Sales Kit/Sanvi/Brochure/` just goes in
+   that folder; a whole new folder like `Sales Kit/Sanvi/Site Photos/` just gets
+   created with files in it; deleting the only file in a folder makes that folder
+   disappear from the portal entirely, automatically — **no file in a folder means
+   no tile for that folder**, nothing to clean up on the portal side.
+2. Open the portal, click the small shield icon in the top right (**Sales mode** —
+   see below), then **Settings → Rebuild Library**.
+3. The first time ever, Chrome/Edge will ask you to pick a folder — pick
+   **`Sales Kit`** itself (the one with Sanvi, Hummingvalley, etc. inside it, not a
+   project folder, not its parent). After that first pick it's remembered on that
+   browser/device, so it's normally just one quick permission click, not re-picking
+   the folder every time.
+4. The page reloads and the change is live. That's the whole procedure, for a brand
+   new project too — make the folder, give it a `cover.jpg`/`logo.png` if you want
+   one, drop files into sub-folders, Rebuild. There is no file anywhere that needs
+   a name match any more; a file is identified by its extension (PDF, image, video,
+   page, spreadsheet, …), not by matching a name this portal already knows about.
+
+**Why a click is still needed, not truly automatic:** a page opened as a plain file
+on a computer (no server behind it) is not allowed by the browser to silently read
+your folders on its own — that would let any website secretly read your hard drive.
+Rebuild Library uses the one API Chrome/Edge do allow for this (the File System
+Access API), which always requires a person to grant folder access first. A customer
+browsing the portal never sees any of this — only Sales mode needs it.
+
+**Browser requirement:** Rebuild Library and Settings need Chrome or Edge (the API
+behind them isn't in Safari or Firefox). Everything else — browsing, search,
+presentation mode, every file, Customer mode entirely — works in any modern browser,
+unchanged.
+
+**A previous "Update" button existed here once and was deliberately removed** — it
+re-scanned a folder into `localStorage` (hidden browser storage, not a real file) and
+could silently jumble the portal with files that were never meant to be
+customer-facing, with no easy way back. If you find that old warning still sitting in
+`Triton Sales Portal.html`'s code, it's describing history, not this feature: Rebuild
+Library is a different, narrower design — it only looks one folder level deep, it has
+one reserved folder name (`Screensaver`) instead of guessing, it writes an ordinary
+file you can open and read yourself (`Sales Kit/_Portal/portal-library.js`) instead of
+hidden browser storage, and every project/folder is still a deliberate choice (via
+`project.json`, see below) rather than "whatever Chrome happened to find."
+
+---
+
+## How the portal decides what to show — the conventions
+
+Everything below is what Rebuild Library actually does when you click it. Knowing
+these means you never have to ask anyone how to structure a new project.
+
+- **A folder directly inside `Sales Kit/`** (not starting with `_`) **is a project.**
+  `Sales Kit/_Portal/` is the one exception — the underscore marks it as the
+  portal's own shared infrastructure (logo, hero images, the Price Calculator,
+  thumbnails), never shown as a project.
+- **A folder directly inside a project is a folder tile** — *if it has at least one
+  file directly inside it.* An empty folder, or one with only a stray `.txt` note,
+  shows nothing — no placeholder, no "coming soon" tile to remember to remove later.
+- **A folder named `Screensaver` (any case) is never a folder tile.** Its images
+  become that project's auto-play screensaver instead. Every project already has
+  one of these.
+- **Anything nested deeper than project → folder → file is ignored by the scan** —
+  it's treated as a tool's own supporting assets (like the Interactive Master
+  Plan's villa photos), never listed as its own tile. This is also why a page like
+  the Interactive Master Plan can keep its own sub-folders of images/videos without
+  them leaking into the portal as loose files.
+- **A file's icon, thumbnail and "kind" badge come from its extension**, not its
+  name — a PDF always gets the PDF icon and opens in a new tab; an image gets a real
+  thumbnail; a video gets a thumbnail too (a live one second into the clip, not a
+  separate generated file); anything else (`.xlsx`, `.pptx`, `.docx`, …) gets a
+  generic file icon and opens/downloads however the browser handles that type.
+- **`cover.jpg`/`cover.png`/… and `logo.png`/`logo.jpg`/… sitting directly in a
+  project folder** (not inside any sub-folder) become that project's card photo and
+  logo. Any image extension works; only the `cover`/`logo` part of the name matters.
+- **A project's own `project.json`** (next to its `cover.jpg`, not inside any
+  sub-folder) is where branding and folder visibility actually live —
+  `displayName`, `location`, `tagline`, `tag`, `accent`, and `folderVisibility`
+  (which folders are sales-only). All of this is editable through **Settings**
+  without ever opening the file by hand, but it's plain JSON if you ever do need to.
+  A brand-new project with no `project.json` yet just gets sensible defaults
+  (its own folder name as the display name, a neutral grey accent, every folder
+  visible to customers) until someone fills it in.
+- **A shared tool (like the Price Calculator) shows up inside a project's own
+  folder as a tiny redirect file**, not a copy of the tool — see
+  `Sales Kit/Sanvi/Cost Sheet/Price Calculator.html` for the pattern if a new
+  project ever needs the same thing; the comment inside that file explains it.
+
+## Customer mode vs. Sales mode
+
+The portal opens in **Customer mode** by default — what's safe to hand a buyer on a
+showroom device. The small shield icon in the top right switches to **Sales mode**,
+which needs a PIN (set the first time anyone uses it, from then on just entered).
+Sales mode is session-only — closing the tab/browser drops back to Customer mode on
+its own, nothing to remember to switch off.
+
+Sales mode unlocks two things Customer mode never sees:
+
+- **Any folder marked "sales only"** for a project (Sanvi's Availability Sheet and
+  Comparison Sheet come that way out of the box — competitor pricing and internal
+  stock lists aren't for a buyer's eyes). Change which folders are sales-only per
+  project under **Settings → Folder Visibility**.
+- **Settings itself** — Rebuild Library (above), **Unit Status** (mark a unit
+  sold/available without touching `price-calculator-data.js` by hand — saved
+  separately, in `status-overrides.js`, and always wins over what that file says),
+  **Branding** (display name, tagline, category, accent colour per project), and
+  changing the Sales PIN.
+
+The PIN is a deterrent, not real security — it's a hash stored in a plain file
+(`Sales Kit/_Portal/config.js`) that anyone with a text editor could read. Its only
+job is keeping a customer from wandering into Settings on a device they're handed,
+not protecting anything from someone who actually wants to look.
 
 ---
 
 ## The file names
 
-Save files under exactly these names. Case does not matter; spelling does.
+The table below is now a **reference of what's already in each project**, not a
+list of names a file must match — any file, any name, any extension works, per the
+conventions above. It's still useful to know what each existing project already has
+and where. Case does not matter; spelling does, if you want a tile to keep reading
+the way it already does (the tile's label is just the file name without its
+extension, unless something's been renamed through Settings → Branding).
 
 **Photo and video slots don't care about the file extension.** Cost sheets, the
 master plan image, cover photos, floor plans and the walkthrough/AV films will all
@@ -166,55 +270,51 @@ you — this build machine has no access to YouTube.
 ### Pre-launch projects (Codename Up in the Clouds, Codename Eloria)
 
 Two upcoming villa projects sit on the home page as real cards with mostly no
-real collateral behind them yet. Each remaining file is deliberately marked
-missing in `PORTAL_DATA`, so it shows an honest **"Not added yet"** tile
-instead of a fabricated cost sheet or walkthrough. The Brochure is the one
-piece that's real for both projects — Up in the Clouds has its investor deck
-and Eloria has its brochure, both dropped in and live.
+real collateral behind them yet. Under the current (auto-discovery) model, a
+folder with nothing real in it simply doesn't appear — no "Not added yet" tile,
+nothing to clean up later. That's why these two currently show far fewer folders
+than Sanvi or Hummingvalley: Cost Sheet, Location Advantage and Video have no
+real file behind them yet for either project, so none of those three folders are
+visible right now, for either one.
 
 | Put the file here | Named | Status |
 |---|---|---|
 | `Sales Kit/Up in the Clouds/Brochure/` | `Brochure.pdf` | **Real — in place** |
 | `Sales Kit/Up in the Clouds/Master Plan/` | `Master Plan.webp` | **Real — in place** |
-| `Sales Kit/Up in the Clouds/Cost Sheet/` | `Cost Sheet.png` | Not added yet |
-| `Sales Kit/Up in the Clouds/Location Advantage/` | `Location Advantage.html` | Not added yet |
-| `Sales Kit/Up in the Clouds/Video/` | `Walkthrough.mp4` | Not added yet |
+| `Sales Kit/Up in the Clouds/Cost Sheet/` | *(anything)* | Not added yet — folder hidden until something is |
+| `Sales Kit/Up in the Clouds/Location Advantage/` | *(anything)* | Not added yet — folder hidden until something is |
+| `Sales Kit/Up in the Clouds/Video/` | *(anything)* | Not added yet — folder hidden until something is |
 | `Sales Kit/Eloria/Brochure/` | `Brochure.pdf` | **Real — in place** |
 | `Sales Kit/Eloria/Master Plan/` | `Master Plan.webp` | **Real — in place** |
 | `Sales Kit/Eloria/Floor Plans/` | `30X50 East.webp`, `35X50 East.webp` | **Real — in place** |
-| `Sales Kit/Eloria/Cost Sheet/` | `Cost Sheet.png` | Not added yet |
-| `Sales Kit/Eloria/Location Advantage/` | `Location Advantage.html` | Not added yet |
-| `Sales Kit/Eloria/Video/` | `Walkthrough.mp4` | Not added yet |
+| `Sales Kit/Eloria/Cost Sheet/` | *(anything)* | Not added yet — folder hidden until something is |
+| `Sales Kit/Eloria/Location Advantage/` | *(anything)* | Not added yet — folder hidden until something is |
+| `Sales Kit/Eloria/Video/` | *(anything)* | Not added yet — folder hidden until something is |
 
-The six folders still waiting hold a `PLACEHOLDER.txt` that names the exact
-file they're waiting on — that's what makes them show up to upload into on
-GitHub. Delete a `PLACEHOLDER.txt` once its real file has replaced it (already
-done for both Brochure folders).
-
-Dropping a real file in does not turn the tile live by itself — the matching entry
-in that project's `folders` array in `PORTAL_DATA` still carries `missing: true`.
-Delete that flag (or the whole `missing:` line) once the file is actually in place.
-Add a `cover.jpg` and `logo.png` at the project's own root the same way Sanvi and
-Hummingvalley have theirs, and the card and folder pages pick them up automatically.
+Dropping a real file into one of the "Not added yet" folders, then **Settings →
+Rebuild Library**, is the whole procedure — the folder appears on its own, with
+whatever file was dropped in, under whatever name it already has. Nothing to edit
+anywhere else. A `cover.jpg`/`logo.png` at the project's own root, same as Sanvi
+and Hummingvalley have theirs, gets picked up the same automatic way.
 
 ### Card heading vs. folder name
 
-A project's `name` in `PORTAL_DATA` is also its folder name on disk — renaming one
-without the other breaks every file link under it. Where the two need to differ (the
-homepage should read "Sanvi Aero Gardens" while the folder on disk stays the short
-`Sales Kit/Sanvi/`), add a `displayName` alongside `name`: `displayName` is what
-the portal shows everywhere a project's name appears — the card, the project page,
-breadcrumbs — while `name` keeps doing its quiet job of pointing at the right folder.
-Leave `displayName` out and the portal just shows `name` in both roles, as before.
+A project's folder name on disk (`Sales Kit/Sanvi/`) and what the portal displays
+for it ("Sanvi Aero Gardens") are two different things on purpose — renaming the
+folder itself would break every file link under it, so that stays short and plain.
+The displayed name comes from `displayName` in that project's `project.json`,
+editable through **Settings → Branding** without ever opening the file by hand.
+Leave it unset (a brand-new project before anyone fills in Branding) and the portal
+just shows the folder name in both roles.
 
 ### Homepage card order
 
-The project grid is a fixed 2-column layout (1 column on phones), and it fills
-left-to-right, top-to-bottom in the exact order projects appear in the `projects`
-array — there's no separate "row" setting. That's currently Sanvi and
-Hummingvalley (row 1), the two Codename projects (row 2), then Triton Group alone
-in row 3. To change which projects sit together, reorder the array; pairs will
-follow automatically.
+The project grid is a fixed 2-column layout (1 column on phones), filling
+left-to-right, top-to-bottom. Order is alphabetical by folder name — Rebuild
+Library sorts projects that way every time, so there's no array to reorder by hand
+any more. If a specific order ever matters more than alphabetical, the practical
+workaround is naming the folders with that order in mind (or asking for a proper
+"sort order" field to be added to `project.json`, which isn't there today).
 
 ### Front screen
 

@@ -1,0 +1,11 @@
+{
+  "displayName": "Sanvi Aero Gardens",
+  "location": "Live Above the Ordinary",
+  "tagline": "Airport side residences with rooftop living.",
+  "tag": "Residential",
+  "accent": "linear-gradient(155deg,#6d8399,#3b4a5c 55%,#8a7a52)",
+  "folderVisibility": {
+    "Availability Sheet": "sales-only",
+    "Comparison Sheet": "sales-only"
+  }
+}

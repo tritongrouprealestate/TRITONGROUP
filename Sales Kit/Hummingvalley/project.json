@@ -1,0 +1,12 @@
+{
+  "displayName": "Triton Humming Valley",
+  "location": "Your Private Escape",
+  "tagline": "Luxury 3, 4 and 5 BHK Villas Between Nandi Hills and Chandragiri Hills",
+  "tag": "Villas",
+  "accent": "linear-gradient(155deg,#6f8a72,#3a4a3c 55%,#7d8552)",
+  "links": [
+    { "label": "Old Film", "youtube": "1SuGJy0W7fY" },
+    { "label": "New Film", "youtube": "85QY818IoOc" }
+  ],
+  "folderVisibility": {}
+}
