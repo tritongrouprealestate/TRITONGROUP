@@ -1272,11 +1272,44 @@ function projectCard(p, i) {
   '</a>';
 }
 
+function recentRow() {
+  var vis = visible();
+  var items = Recent.list().map(function (r) {
+    var parts = r.href.replace(/^#\/?/, '').split('/').filter(Boolean).map(decodeURIComponent);
+    var p = parts[0] === 'p' ? vis.filter(function (x) { return x.id === parts[1]; })[0] : null;
+    if (!p) return null; // project deleted, or now sales-only while in Customer mode
+    if (parts[2] && !visibleFolders(p).some(function (f) { return f.id === parts[2]; })) return null; // folder deleted/hidden
+    return r;
+  }).filter(Boolean).slice(0, 6);
+  if (!items.length) return '';
+  return '<div class="recent-row rv">' +
+    '<p class="recent-label">Recently viewed</p>' +
+    '<div class="recent-scroll">' + items.map(function (r) {
+      return '<a class="recent-chip" href="' + esc(r.href) + '" data-cursor="open">' +
+        '<span class="recent-title">' + esc(r.title) + '</span>' +
+        '<span class="recent-sub">' + esc(r.sub) + '</span></a>';
+    }).join('') + '</div>' +
+  '</div>';
+}
+
 function renderHome() {
   Hero.hide(false);
   crumbs([]);
   var body =
     '<div class="view">' +
+      '<style>' +
+        '.recent-row{margin:0 0 28px}' +
+        '.recent-label{font:600 10.5px/1 var(--sans);letter-spacing:.24em;text-transform:uppercase;' +
+          'color:var(--fg-faint);margin:0 0 10px}' +
+        '.recent-scroll{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}' +
+        '.recent-chip{flex:0 0 auto;min-width:150px;max-width:220px;background:var(--paper);' +
+          'border:1px solid rgba(0,0,0,.08);border-radius:10px;padding:12px 14px;text-decoration:none;' +
+          'color:inherit;display:block;box-shadow:0 1px 3px rgba(0,0,0,.05);min-height:44px;' +
+          'box-sizing:border-box;touch-action:manipulation}' +
+        '.recent-chip:active{transform:scale(.97)}' +
+        '.recent-title{display:block;font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}' +
+        '.recent-sub{display:block;font-size:11px;opacity:.6;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}' +
+      '</style>' +
       '<div class="sec-head rv">' +
         '<div>' +
           '<p class="sec-eyebrow">Sales Deck · Kit</p>' +
@@ -1286,6 +1319,7 @@ function renderHome() {
         '</div>' +
         '<span class="sec-count">' + visible().length + ' Projects</span>' +
       '</div>' +
+      recentRow() +
       '<div class="projects">' + visible().map(projectCard).join('') + '</div>' +
       (Mode.isMarketing() ? marketingToolsHome() : '') +
     '</div>';
@@ -1369,8 +1403,31 @@ function wireMarketingHome() {
   });
 }
 
+/* ============================================================
+   RECENTLY VIEWED — a quick-access row on the home screen so a sales
+   rep mid-meeting can jump straight back to a project/folder instead
+   of re-navigating. Per-device (localStorage), same for every access
+   level including Customer — it's just a convenience, nothing it
+   shows isn't already reachable the normal way.
+   ============================================================ */
+var Recent = (function () {
+  var KEY = 'tritonRecent', MAX = 6;
+  function list() {
+    try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch (e) { return []; }
+  }
+  function record(entry) {
+    try {
+      var items = list().filter(function (x) { return x.href !== entry.href; });
+      items.unshift(entry);
+      localStorage.setItem(KEY, JSON.stringify(items.slice(0, MAX)));
+    } catch (e) {}
+  }
+  return { list: list, record: record };
+})();
+
 function renderProject(p) {
   Hero.hide(true);
+  Recent.record({ href: '#/p/' + p.id, title: p.displayName || p.name, sub: 'Project' });
   crumbs([{ t: p.displayName || p.name }]);
   var folders = visibleFolders(p);
   var links   = p.links   || [];
@@ -1511,6 +1568,7 @@ function wireMarketingProject(p) {
 
 function renderFolder(p, f) {
   Hero.hide(true);
+  Recent.record({ href: '#/p/' + p.id + '/' + f.id, title: f.name, sub: p.displayName || p.name });
   crumbs([{ t: p.displayName || p.name, h: '#/p/' + p.id }, { t: f.name }]);
   var files = f.files || [];
   var body =
@@ -2282,6 +2340,26 @@ function renderSettings() {
   var marketing = Mode.isMarketing();
   var tierLabel = marketing ? 'Marketing' : 'Sales';
 
+  /* Portfolio-wide numbers, computed fresh from what's already loaded --
+     nothing here is tracked separately, so it can never drift out of sync
+     with the folders/files or the unit statuses themselves. */
+  var ovFolders = 0, ovFiles = 0, ovSalesOnlyFolders = 0;
+  D.projects.forEach(function (p) {
+    (p.folders || []).forEach(function (f) {
+      ovFolders++;
+      ovFiles += (f.files || []).length;
+      if (f.salesOnly) ovSalesOnlyFolders++;
+    });
+  });
+  var ovUnitsAvailable = 0, ovUnitsTotal = 0, ovUnitRows = [];
+  calc.forEach(function (c) {
+    if (!c.units || !c.units.length) return;
+    var ov = overrides[c.id] || {};
+    var available = c.units.filter(function (u) { return (ov[u.no] || u.status) !== 'sold'; }).length;
+    ovUnitsAvailable += available; ovUnitsTotal += c.units.length;
+    ovUnitRows.push({ name: c.name, available: available, total: c.units.length });
+  });
+
   var body =
     '<div class="view settings-view">' +
     '<style>' +
@@ -2304,11 +2382,32 @@ function renderSettings() {
       '.settings-view .s-btn.secondary{background:transparent;border:1px solid rgba(255,255,255,.2);color:inherit}' +
       '.settings-view .s-msg{font-size:12.5px;min-height:18px;margin-top:8px;line-height:1.5}' +
       '.settings-view .s-unit-list{max-height:320px;overflow:auto;margin-top:6px}' +
+      '.ov-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px}' +
+      '.ov-stat{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;' +
+        'padding:14px 12px;text-align:center}' +
+      '.ov-stat b{display:block;font-size:22px;font-weight:700;line-height:1.2}' +
+      '.ov-stat span{display:block;font-size:11px;opacity:.65;margin-top:4px;text-transform:uppercase;letter-spacing:.04em}' +
     '</style>' +
     '<a class="back" href="#/" data-cursor="back">' + svg('back') + ' All projects</a>' +
     '<div class="sec-head rv"><div><p class="sec-eyebrow">' + esc(tierLabel) + '</p><h2 class="sec-title">Settings</h2>' +
       '<p class="sec-sub">Everything here edits real files on disk, through the folder you grant access to —' +
       ' nothing lives only in this browser.' + (marketing ? '' : ' Signed in at Sales level — ask Marketing for more.') + '</p></div></div>' +
+
+    (!marketing ? '' :
+    '<div class="s-card">' +
+      '<h3>Overview</h3>' +
+      '<p class="s-sub">The whole portfolio at a glance — nothing tracked separately, just read live from the' +
+      ' same folders and unit statuses everything else here uses.</p>' +
+      '<div class="ov-stats">' +
+        '<div class="ov-stat"><b>' + D.projects.length + '</b><span>Projects</span></div>' +
+        '<div class="ov-stat"><b>' + ovFolders + '</b><span>Folders' + (ovSalesOnlyFolders ? ' (' + ovSalesOnlyFolders + ' sales-only)' : '') + '</span></div>' +
+        '<div class="ov-stat"><b>' + ovFiles + '</b><span>Files</span></div>' +
+        (ovUnitsTotal ? '<div class="ov-stat"><b>' + ovUnitsAvailable + ' / ' + ovUnitsTotal + '</b><span>Units Available</span></div>' : '') +
+      '</div>' +
+      (ovUnitRows.length ? '<div class="s-unit-list" style="margin-top:14px">' + ovUnitRows.map(function (r) {
+        return '<div class="s-row"><span>' + esc(r.name) + '</span><span>' + r.available + ' / ' + r.total + ' available</span></div>';
+      }).join('') + '</div>' : '') +
+    '</div>') +
 
     '<div class="s-card">' +
       '<h3>Unit Status</h3>' +
