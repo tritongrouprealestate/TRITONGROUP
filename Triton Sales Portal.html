@@ -1383,6 +1383,7 @@ function wireMarketingHome() {
   panel.querySelectorAll('[data-del-project]').forEach(function (btn) {
     btn.addEventListener('click', async function () {
       var name = btn.dataset.delProject;
+      if (!(await ensureHandleOrMsg('#mtHomeMsg'))) return;
       if (!confirm('Permanently delete the whole "' + name + '" project folder and everything in it? This cannot be undone from here.')) return;
       settingsMsg('#mtHomeMsg', 'Pick the "Sales Kit" folder if asked, then wait…');
       try { await Library.deleteProject(name); await Library.rebuild(); settingsMsg('#mtHomeMsg', 'Deleted. Reloading…'); setTimeout(function () { location.reload(); }, 500); }
@@ -1509,6 +1510,7 @@ function wireMarketingProject(p) {
   panel.querySelectorAll('[data-del-folder]').forEach(function (btn) {
     btn.addEventListener('click', async function () {
       var name = btn.dataset.delFolder;
+      if (!(await ensureHandleOrMsg('#mtProjectMsg'))) return;
       if (!confirm('Permanently delete the "' + name + '" folder and everything in it? This cannot be undone from here.')) return;
       settingsMsg('#mtProjectMsg', 'Pick the "Sales Kit" folder if asked, then wait…');
       try { await Library.deleteFolder(p.name, name); await Library.rebuild(); settingsMsg('#mtProjectMsg', 'Deleted. Reloading…'); setTimeout(function () { location.reload(); }, 500); }
@@ -1650,6 +1652,7 @@ function wireMarketingFolder(p, f) {
   panel.querySelectorAll('[data-del-file]').forEach(function (btn) {
     btn.addEventListener('click', async function () {
       var name = btn.dataset.delFile;
+      if (!(await ensureHandleOrMsg('#mtFolderMsg'))) return;
       if (!confirm('Permanently delete "' + name + '"? This cannot be undone from here.')) return;
       settingsMsg('#mtFolderMsg', 'Pick the "Sales Kit" folder if asked, then wait…');
       try { await Library.deleteFile(p.name, f.name, name); await Library.rebuild(); settingsMsg('#mtFolderMsg', 'Deleted. Reloading…'); setTimeout(function () { location.reload(); }, 500); }
@@ -1659,6 +1662,7 @@ function wireMarketingFolder(p, f) {
   panel.querySelectorAll('[data-rename-file]').forEach(function (btn) {
     btn.addEventListener('click', async function () {
       var oldName = btn.dataset.renameFile;
+      if (!(await ensureHandleOrMsg('#mtFolderMsg'))) return;
       var newName = prompt('Rename "' + oldName + '" to:', oldName);
       if (!newName || newName === oldName) return;
       var bad = badNameReason(newName);
@@ -1682,7 +1686,10 @@ function wireMarketingFolder(p, f) {
     var file = input.files[0];
     if (!file) { settingsMsg('#mtFolderMsg', 'Choose a file first.', true); return; }
     var existing = (f.files || []).some(function (x) { return x.name.toLowerCase() === file.name.toLowerCase(); });
-    if (existing && !confirm('"' + file.name + '" already exists in this folder — replace it?')) return;
+    if (existing) {
+      if (!(await ensureHandleOrMsg('#mtFolderMsg'))) return;
+      if (!confirm('"' + file.name + '" already exists in this folder — replace it?')) return;
+    }
     settingsMsg('#mtFolderMsg', 'Pick the "Sales Kit" folder if asked, then wait…');
     try { await Library.uploadFile(p.name, f.name, file); await Library.rebuild(); settingsMsg('#mtFolderMsg', 'Uploaded. Reloading…'); setTimeout(function () { location.reload(); }, 500); }
     catch (e) { settingsMsg('#mtFolderMsg', e.message || String(e), true); }
@@ -2288,6 +2295,15 @@ function openPinGate() {
       var pin2 = overlay.querySelector('#pinIn2').value.trim();
       if (pin.length < 4) { errEl.textContent = 'PIN needs at least 4 digits.'; return; }
       if (pin !== pin2) { errEl.textContent = 'PINs don’t match.'; return; }
+      /* The folder picker has to be the very first await after the click,
+         with nothing ahead of it -- Chrome silently aborts
+         showDirectoryPicker() ("The user aborted a request") if even one
+         unrelated await (like hashing the PIN) runs first and the click's
+         "freshness" lapses before the picker call. Grabbing the handle here
+         means writeConfig() below already has it and won't need to
+         re-prompt. */
+      try { await Library.ensureHandle(); }
+      catch (e) { errEl.textContent = e.message || 'Could not get folder access.'; return; }
       var hash = await Mode.sha256Hex(pin);
       var newCfg = { setupDone: true, marketingPinHash: hash, salesPinHash: cfg.salesPinHash || '' };
       try { await Library.writeConfig(newCfg); }
@@ -2319,6 +2335,19 @@ function settingsMsg(targetSel, text, isError) {
   if (!el) return;
   el.textContent = text;
   el.style.color = isError ? '#e2766f' : '#6fbf8b';
+}
+
+/* Call as the very first thing in any click handler that leads to a
+   Library.* call, before any confirm()/prompt() or other work. Chrome
+   silently aborts showDirectoryPicker() ("The user aborted a request")
+   once the click that triggered it stops counting as "fresh" -- which a
+   confirm() dialog, an await, or just enough synchronous work in between
+   can cause. Grabbing the handle here, immediately, is what keeps every
+   Library call after it from needing to re-prompt. Returns true if a
+   usable handle was obtained, having already shown the error otherwise. */
+async function ensureHandleOrMsg(msgSel) {
+  try { await Library.ensureHandle(); return true; }
+  catch (e) { settingsMsg(msgSel, e.message || 'Could not get folder access.', true); return false; }
 }
 
 var settingsCalc = [], settingsOverrides = {};
@@ -2652,6 +2681,10 @@ function promptNewPin(label, hashKey) {
     var pin = in1.value.trim(), pin2 = overlay.querySelector('#npIn2').value.trim();
     if (pin.length < 4) { errEl.textContent = 'PIN needs at least 4 digits.'; return; }
     if (pin !== pin2) { errEl.textContent = 'PINs don’t match.'; return; }
+    /* Same ordering fix as the sign-in PIN setup: grab the folder handle
+       before any other await, or Chrome can silently abort the picker. */
+    try { await Library.ensureHandle(); }
+    catch (e) { errEl.textContent = e.message || 'Could not get folder access.'; return; }
     var hash = await Mode.sha256Hex(pin);
     var cfg = Object.assign({ setupDone: true, marketingPinHash: '', salesPinHash: '' }, window.PORTAL_CONFIG || {});
     cfg[hashKey] = hash;
