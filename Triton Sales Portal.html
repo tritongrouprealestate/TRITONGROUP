@@ -205,6 +205,21 @@ body.cur-hot .cursor{opacity:0}
 }
 .topbar.show{opacity:1;transform:none;pointer-events:auto}
 .topbar.solid{box-shadow:0 12px 34px rgba(10,14,13,.16)}
+.preview-banner{
+  position:fixed;left:0;right:0;bottom:0;z-index:9500;
+  display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;
+  padding:11px 18px;background:#d9a24a;color:#1c1406;
+  font:600 12px/1.3 var(--sans);letter-spacing:.03em;text-align:center;
+  box-shadow:0 -8px 24px rgba(10,14,13,.18);
+}
+.preview-banner b{letter-spacing:.08em;text-transform:uppercase}
+.preview-banner button{
+  font:600 12px/1 var(--sans);letter-spacing:.03em;color:#1c1406;background:#fff;
+  border:none;border-radius:999px;padding:8px 18px;cursor:pointer;min-height:36px;
+  touch-action:manipulation;transition:transform .15s,opacity .15s;
+}
+.preview-banner button:hover{opacity:.85}
+.preview-banner button:active{transform:scale(.96)}
 .brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:inherit;flex:0 0 auto}
 .brand-logo{height:34px;width:auto;display:block;flex:0 0 auto}
 .brand-text{display:flex;flex-direction:column;gap:3px;line-height:1}
@@ -680,6 +695,12 @@ div.tile.missing{cursor:default}
 
 <!-- ============ transition wipe ============ -->
 <div class="wipe" id="wipe" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+
+<!-- ============ preview-mode banner (Marketing previewing Sales/Customer) ============ -->
+<div class="preview-banner" id="previewBanner" style="display:none">
+  <span id="previewBannerText"></span>
+  <button type="button" id="previewBannerExit">Exit Preview</button>
+</div>
 
 <!-- ============ top bar ============ -->
 <header class="topbar" id="topbar">
@@ -1321,7 +1342,7 @@ function renderHome() {
       '</div>' +
       recentRow() +
       '<div class="projects">' + visible().map(projectCard).join('') + '</div>' +
-      (Mode.isMarketing() ? marketingToolsHome() : '') +
+      (Mode.effectiveIsMarketing() ? marketingToolsHome() : '') +
     '</div>';
   paint(body);
 }
@@ -1472,7 +1493,7 @@ function renderProject(p) {
             '<em>Open on YouTube · these need an internet connection</em></div>' +
           '<div class="tiles">' + links.map(linkTile).join('') + '</div>'
         : '') +
-      (Mode.isMarketing() ? marketingToolsProject(p) : '') +
+      (Mode.effectiveIsMarketing() ? marketingToolsProject(p) : '') +
     '</div>';
   mtCurrentProject = p;
   paint(body);
@@ -1618,7 +1639,7 @@ function renderFolder(p, f) {
         : emptyState(
             'No files listed for <b>' + esc(p.name) + ' &rarr; ' + esc(f.name) + '</b> yet. Add them to<br>' +
             '<code>Sales Kit/' + esc(p.name) + '/' + esc(f.name) + '/</code>')) +
-      (Mode.isMarketing() ? marketingToolsFolder(p, f) : '') +
+      (Mode.effectiveIsMarketing() ? marketingToolsFolder(p, f) : '') +
     '</div>';
   mtCurrentProject = p; mtCurrentFolder = f;
   paint(body);
@@ -1733,12 +1754,25 @@ function findFolder(p, id) {
   return visibleFolders(p).filter(function (f) { return f.id === id; })[0];
 }
 
+function updatePreviewBanner() {
+  var banner = $('#previewBanner');
+  if (!banner) return;
+  var pv = Mode.preview();
+  if (!pv) { banner.style.display = 'none'; return; }
+  banner.style.display = 'flex';
+  var text = $('#previewBannerText', banner);
+  if (text) text.innerHTML = 'Previewing as <b>' + (pv === 'sales' ? 'Sales' : 'Customer') + '</b> — this is exactly what they see.';
+}
+
 function route() {
+  updatePreviewBanner();
   var h = (location.hash || '#/').replace(/^#\/?/, '');
   var parts = h.split('/').filter(Boolean).map(decodeURIComponent);
 
   if (parts[0] === 'settings') {
-    if (!Mode.isSales()) { location.hash = '#/'; return; }
+    /* True identity, not preview-affected -- a previewing Marketing user
+       must always be able to reach Settings to exit preview. */
+    if (!Mode.isStaff()) { location.hash = '#/'; return; }
     Screensaver.setProject(null);
     Route.away = true; renderSettings(); return;
   }
@@ -1986,10 +2020,22 @@ var Library = (function () {
     }
     var picked = await window.showDirectoryPicker({ id: 'triton-sales-kit', mode: 'readwrite' });
     if (!(await grantedPermission(picked))) throw new Error('Folder access was not granted.');
-    if (picked.name !== 'Sales Kit') {
-      if (!confirm('You picked "' + picked.name + '" — this should be the "Sales Kit" folder itself (the one with Sanvi, Hummingvalley, etc. inside it). Use it anyway?')) {
-        return ensureHandle(true);
-      }
+    /* A name check alone is weak -- it's easy to click through a "this
+       doesn't look right, use it anyway?" prompt without really reading
+       it, pick the wrong folder (a parent, a project folder, anything),
+       and have every write below silently land somewhere harmless instead
+       of the real Sales Kit -- so it LOOKS like it worked (success
+       message, reload) while nothing the portal actually reads ever
+       changed. Checking for the "_Portal" folder specifically (every real
+       Sales Kit has one; nothing else would) catches that before any
+       write happens, rather than just warning about the name. */
+    var looksRight = picked.name === 'Sales Kit';
+    if (looksRight) {
+      try { await picked.getDirectoryHandle('_Portal'); } catch (e) { looksRight = false; }
+    }
+    if (!looksRight) {
+      alert('That doesn’t look like the "Sales Kit" folder — it should be named exactly "Sales Kit" and contain a "_Portal" folder inside it, alongside Sanvi, Hummingvalley, etc. Pick it again on the next screen.');
+      return ensureHandle(true);
     }
     dirHandle = picked;
     await rememberHandle(picked);
@@ -2218,10 +2264,29 @@ var Library = (function () {
    ============================================================ */
 var Mode = (function () {
   var KEY = 'tritonAccessLevel'; // '', 'sales', or 'marketing'
+  var PREVIEW_KEY = 'tritonPreviewAs'; // '', 'sales', or 'customer' -- Marketing only
   function level() { return sessionStorage.getItem(KEY) || ''; }
-  function setLevel(lvl) { if (lvl) sessionStorage.setItem(KEY, lvl); else sessionStorage.removeItem(KEY); }
+  function setLevel(lvl) { if (lvl) sessionStorage.setItem(KEY, lvl); else sessionStorage.removeItem(KEY); if (!lvl) setPreview(''); }
   function isStaff() { return level() === 'sales' || level() === 'marketing'; }
   function isMarketing() { return level() === 'marketing'; }
+
+  /* Previewing is Marketing looking at the portal as Sales or Customer
+     would see it, without actually signing out -- the true level (above)
+     never changes, so Settings and the "exit preview" control are always
+     reachable; only what the public-facing views (home/project/folder,
+     search, the Marketing panels) show is affected. Only meaningful for
+     someone truly at Marketing level; everyone else's preview is always
+     empty regardless of what's in storage. */
+  function preview() { return isMarketing() ? (sessionStorage.getItem(PREVIEW_KEY) || '') : ''; }
+  function setPreview(p) { if (p) sessionStorage.setItem(PREVIEW_KEY, p); else sessionStorage.removeItem(PREVIEW_KEY); }
+  function effectiveIsStaff() {
+    var pv = preview();
+    if (pv === 'customer') return false;
+    if (pv === 'sales') return true;
+    return isStaff();
+  }
+  function effectiveIsMarketing() { return isMarketing() && !preview(); }
+
   async function sha256Hex(text) {
     var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
     return Array.prototype.map.call(new Uint8Array(buf), function (b) { return b.toString(16).padStart(2, '0'); }).join('');
@@ -2229,9 +2294,12 @@ var Mode = (function () {
   return {
     level: level, setLevel: setLevel,
     isStaff: isStaff, isMarketing: isMarketing,
+    preview: preview, setPreview: setPreview,
+    effectiveIsStaff: effectiveIsStaff, effectiveIsMarketing: effectiveIsMarketing,
     /* kept for the folder-visibility call sites: both staff tiers see a
-       project's sales-only folders, only Customer mode is restricted */
-    isSales: isStaff,
+       project's sales-only folders, only Customer mode is restricted --
+       these respect an active preview, same as the view itself does */
+    isSales: effectiveIsStaff,
     sha256Hex: sha256Hex
   };
 })();
@@ -2486,6 +2554,18 @@ function renderSettings() {
       '<button class="s-btn secondary" id="btnChangeSalesPin" type="button">Set/Change Sales PIN</button>' +
     '</div>') +
 
+    (!Mode.isMarketing() ? '' :
+    '<div class="s-card">' +
+      '<h3>Preview As</h3>' +
+      '<p class="s-sub">See exactly what a Sales rep or a Customer sees — without logging out of Marketing.' +
+      ' Everything here in Settings stays reachable the whole time, so you’re never stuck.</p>' +
+      (Mode.preview()
+        ? '<p class="s-msg" style="color:#d9a24a">Currently previewing as <b>' + esc(Mode.preview() === 'sales' ? 'Sales' : 'Customer') + '</b>.</p>' +
+          '<button class="s-btn" id="btnStopPreview" type="button">Stop Previewing</button>'
+        : '<button class="s-btn secondary" id="btnPreviewSales" type="button">Preview as Sales</button> ' +
+          '<button class="s-btn secondary" id="btnPreviewCustomer" type="button">Preview as Customer</button>') +
+    '</div>') +
+
     '<div class="s-card">' +
       '<h3>Exit ' + esc(tierLabel) + ' Mode</h3>' +
       '<p class="s-sub">Back to the Customer view — sales-only folders disappear again.</p>' +
@@ -2644,6 +2724,20 @@ function wireSettings(calc, overrides) {
   if (btnExit) btnExit.addEventListener('click', function () {
     Mode.setLevel(''); updateSalesButton(); location.hash = '#/';
   });
+
+  var btnPreviewSales = $('#btnPreviewSales', stage);
+  if (btnPreviewSales) btnPreviewSales.addEventListener('click', function () {
+    Mode.setPreview('sales'); location.hash = '#/';
+  });
+  var btnPreviewCustomer = $('#btnPreviewCustomer', stage);
+  if (btnPreviewCustomer) btnPreviewCustomer.addEventListener('click', function () {
+    Mode.setPreview('customer'); location.hash = '#/';
+  });
+  var btnStopPreview = $('#btnStopPreview', stage);
+  if (btnStopPreview) btnStopPreview.addEventListener('click', function () {
+    Mode.setPreview(''); location.hash = '#/settings';
+    setTimeout(function () { route(); }, 0);
+  });
 }
 
 /* Reused for both "Change Marketing PIN" and "Set/Change Sales PIN" — same
@@ -2697,8 +2791,16 @@ function promptNewPin(label, hashKey) {
 
 var salesBtnEl = $('#salesBtn');
 if (salesBtnEl) salesBtnEl.addEventListener('click', function () {
-  if (Mode.isSales()) { location.hash = '#/settings'; return; }
+  /* True identity, not preview-affected -- see the #/settings guard above. */
+  if (Mode.isStaff()) { location.hash = '#/settings'; return; }
   openPinGate();
+});
+
+var previewBannerExitEl = $('#previewBannerExit');
+if (previewBannerExitEl) previewBannerExitEl.addEventListener('click', function () {
+  Mode.setPreview('');
+  location.hash = '#/settings';
+  setTimeout(function () { route(); }, 0);
 });
 
 /* ============================================================
