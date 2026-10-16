@@ -87,6 +87,17 @@ window.PORTAL_DATA.projects = [
             "name": "Humming Clouds Brochure.pdf"
           }
         ]
+      },
+      {
+        "id": "master-plan",
+        "name": "Master Plan",
+        "salesOnly": false,
+        "files": [
+          {
+            "label": "Master Plan",
+            "name": "Master Plan.webp"
+          }
+        ]
       }
     ]
   },
