@@ -4,5 +4,11 @@
   "tagline": "Explore our story, projects and vision.",
   "tag": "Corporate",
   "accent": "linear-gradient(155deg,#9a8358,#4d4331 55%,#5c5a63)",
-  "folderVisibility": {}
+  "folderVisibility": {},
+  "links": [
+    {
+      "label": "Site Visit Feedback Form",
+      "url": "https://docs.google.com/forms/d/1Z9pWtfboGAAWnZ0wOV3Rv09mCWxd0HE1djeRnjoGEzo/viewform"
+    }
+  ]
 }

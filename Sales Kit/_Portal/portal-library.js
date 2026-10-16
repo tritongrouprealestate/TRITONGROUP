@@ -395,7 +395,12 @@ window.PORTAL_DATA.projects = [
     "cover": "Sales Kit/Triton Branded/cover.jpg",
     "accent": "linear-gradient(155deg,#9a8358,#4d4331 55%,#5c5a63)",
     "salesOnly": false,
-    "links": [],
+    "links": [
+      {
+        "label": "Site Visit Feedback Form",
+        "url": "https://docs.google.com/forms/d/1Z9pWtfboGAAWnZ0wOV3Rv09mCWxd0HE1djeRnjoGEzo/viewform"
+      }
+    ],
     "screensaver": [
       "Screensaver/1.jpg",
       "Screensaver/2.jpg",
@@ -403,17 +408,35 @@ window.PORTAL_DATA.projects = [
     ],
     "folders": [
       {
-        "id": "general",
-        "name": "General",
+        "id": "brochure",
+        "name": "Brochure",
         "salesOnly": false,
         "files": [
           {
-            "label": "Feedback Form",
-            "name": "Feedback Form.pdf"
-          },
-          {
             "label": "Main Brochure",
             "name": "Main Brochure.pdf"
+          }
+        ]
+      },
+      {
+        "id": "feedback-form",
+        "name": "Feedback Form",
+        "salesOnly": false,
+        "files": [
+          {
+            "label": "Offline Enquiry Form",
+            "name": "Offline Enquiry Form.pdf"
+          }
+        ]
+      },
+      {
+        "id": "video",
+        "name": "Video",
+        "salesOnly": false,
+        "files": [
+          {
+            "label": "Triton Brand Film",
+            "name": "Triton Brand Film.mp4"
           }
         ]
       }
