@@ -445,6 +445,10 @@ window.PORTAL_DATA.projects = [
           {
             "label": "Brochure",
             "name": "Brochure.pdf"
+          },
+          {
+            "label": "Investor Deck",
+            "name": "Investor Deck.pdf"
           }
         ]
       },
