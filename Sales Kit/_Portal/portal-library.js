@@ -63,6 +63,34 @@ window.PORTAL_DATA.projects = [
     ]
   },
   {
+    "id": "humming-clouds",
+    "name": "Humming Clouds",
+    "displayName": "Humming Clouds",
+    "location": "At the Foot of Nandi Hills",
+    "tagline": "Six bungalow-sized plots of about 6,000 sq ft each, from the team behind Triton Humming Valley.",
+    "tag": "Plots",
+    "cover": "Sales Kit/Humming Clouds/cover.jpg",
+    "accent": "linear-gradient(155deg,#2f5240,#0f2a22 55%,#4d6b52)",
+    "salesOnly": false,
+    "links": [],
+    "screensaver": [
+      "cover.jpg"
+    ],
+    "folders": [
+      {
+        "id": "brochure",
+        "name": "Brochure",
+        "salesOnly": false,
+        "files": [
+          {
+            "label": "Humming Clouds Brochure",
+            "name": "Humming Clouds Brochure.pdf"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "hummingvalley",
     "name": "Hummingvalley",
     "displayName": "Triton Humming Valley",
