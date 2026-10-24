@@ -211,7 +211,7 @@
     playVid: playVid,
     mpEnter: function () { if (!mob() && mp()) mp().style.transform = 'scale(1.25)'; },
     mpLeave: function () { if (mp()) mp().style.transform = 'scale(1)'; },
-    mpOpen: function () { if (mob()) window.open(mp().getAttribute('src'), '_blank'); },
+    mpOpen: function () {},
     mpMove: function (a, el, e) { if (mob() || !mp()) return; var r = el.getBoundingClientRect(); mp().style.transformOrigin = ((e.clientX - r.left) / r.width * 100) + '% ' + ((e.clientY - r.top) / r.height * 100) + '%'; }
   };
   function act(v, el, e) { var i = v.indexOf(':'), n = i < 0 ? v : v.slice(0, i), a = i < 0 ? null : v.slice(i + 1); if (actions[n]) actions[n](a, el, e); }
@@ -313,6 +313,21 @@
     if (im && im.getAttribute('data-src')) { im.setAttribute('srcset', im.getAttribute('data-srcset')); im.src = im.getAttribute('data-src'); im.removeAttribute('data-src'); im.removeAttribute('data-srcset'); }
   }
   window.addEventListener('load', function () { setTimeout(loadHeroAlt, 2500); });
+  // phones: keep the gallery counter in step with the swipe
+  var gsc = $('[data-ref="hTrack"]'); gsc = gsc && gsc.parentElement;
+  if (gsc) gsc.addEventListener('scroll', function () {
+    if (!mob()) return;
+    var max = gsc.scrollWidth - gsc.clientWidth, p = max > 0 ? gsc.scrollLeft / max : 0;
+    var bar = $('[data-ref="hBar"]'), cnt = $('[data-ref="hCount"]');
+    if (bar) bar.style.transform = 'scaleX(' + Math.max(0.08, p) + ')';
+    if (cnt) cnt.textContent = pad(Math.min(GALLERY.length, 1 + Math.round(p * (GALLERY.length - 1))));
+  }, { passive: true });
+  // phones: swipe the enlarged picture left or right
+  var tx = null, lbd = $('[aria-label="Image viewer"]');
+  if (lbd) {
+    lbd.addEventListener('touchstart', function (e) { tx = e.touches[0].clientX; }, { passive: true });
+    lbd.addEventListener('touchend', function (e) { if (tx === null) return; var d = e.changedTouches[0].clientX - tx; tx = null; if (Math.abs(d) > 50) stepLb(d < 0 ? 1 : -1); }, { passive: true });
+  }
   var icons = (window.HV_ASSET_BASE || 'assets/') + 'icons/';
   root.setAttribute('data-icons', icons);
   setHdr(); setTimeout(function () { setHdr(); setupReveal(); measure(); frame(); }, 60);

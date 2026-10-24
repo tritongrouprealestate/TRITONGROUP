@@ -155,7 +155,7 @@ html{scroll-behavior:smooth}
 @media (max-width:1139px){#hv-root{--hv-hero-cols:minmax(0,1fr)}}
 @media (max-width:899px){
 #hv-root{--hv-story-cols:minmax(0,1fr);--hv-step-h:auto;--hv-sig-dir:column;--hv-sig-h:auto;--hv-sig-min:72vh;
---hv-h-pos:relative;--hv-h-h:auto;--hv-h-ov:auto;--hv-h-pad:clamp(80px,12vw,120px) 0;--hv-g-h:52vh;padding-bottom:56px}
+--hv-h-pos:relative;--hv-h-h:auto;--hv-h-ov:auto;--hv-h-pad:clamp(80px,12vw,120px) 0;--hv-g-h:52vh}
 #hv-root .hv-if-mobile{display:contents}
 #hv-root .hv-if-desktop{display:none}
 #hv-root .hv-hint-d{display:none}
@@ -195,8 +195,53 @@ transition:background var(--dur-fast) var(--ease-standard),color var(--dur-fast)
 #hv-root [data-grp="story-sticky"]{top:var(--hv-hdr,0px)!important;height:calc(100vh - var(--hv-hdr,0px))!important}
 #hv-root [data-grp="gal-sticky"]{top:var(--hv-hdr,0px)!important}
 #hv-root [data-grp="float"]{right:24px!important;bottom:104px!important}
-@media (max-width:899px){.wa__btn_popup{bottom:76px!important}.wa__popup_chat_box{bottom:148px!important}}
 html.hv-modal .wa__btn_popup,html.hv-modal .wa__popup_chat_box{display:none!important}
+
+/* ---------- phones ---------- */
+#hv-root .hv-amen-fig{display:none}
+@media (max-width:899px){
+html body{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
+.wa__btn_popup_txt{display:none!important}
+.wa__btn_popup{right:12px!important;bottom:calc(68px + env(safe-area-inset-bottom,0px))!important}
+.wa__popup_chat_box{right:12px!important;bottom:calc(132px + env(safe-area-inset-bottom,0px))!important}
+/* bottom bar stays readable when the phone uses large text */
+#hv-root [data-grp="mbar"]{grid-template-columns:1fr 1fr 1.4fr!important}
+#hv-root [data-grp="mbar"] a{padding:0 6px!important;font-size:clamp(10px,2.9vw,12px)!important;letter-spacing:.12em!important;white-space:nowrap;text-align:center}
+/* hero: photo on top, words below it, so the family stays visible */
+#hv-root [data-grp="hero-bg"]{bottom:auto!important;height:74svh!important}
+#hv-root [data-grp="hero-ov"]{background:linear-gradient(to bottom,rgba(4,17,15,.38) 0,rgba(4,17,15,.04) 24svh,rgba(4,17,15,.3) 52svh,#04110F 76svh)!important}
+#hv-root [data-grp="hero-in"]{padding-top:50svh!important}
+#hv-root [data-grp="hero-in"] dd{white-space:normal!important}
+#hv-root #film p{white-space:normal!important}
+/* buttons wrap instead of overflowing */
+#hv-root .hv-btn{max-width:100%;justify-content:center;text-align:center;white-space:normal}
+#hv-root .hv-btn--lg{padding:18px 22px;letter-spacing:.2em}
+/* day and night image */
+#hv-root [data-grp="promise-fig"]{aspect-ratio:4/5!important}
+#hv-root [data-grp="promise-ctl"]{left:14px!important;right:14px!important;bottom:14px!important;align-items:stretch!important}
+#hv-root [data-grp="promise-ctl"] > div{width:100%}
+#hv-root [data-grp="promise-ctl"] > div > button{flex:1;justify-content:center;padding:14px 8px!important;letter-spacing:.16em!important}
+#hv-root [data-grp="promise-cap"]{left:16px!important;right:16px!important;bottom:auto!important;top:46px!important;font-size:1.4rem!important;line-height:1.2!important}
+/* master plan: swipe a readable size instead of a tiny picture */
+#hv-root [data-grp="mp"]{overflow-x:auto!important;aspect-ratio:auto!important;cursor:auto!important;-webkit-overflow-scrolling:touch}
+#hv-root [data-grp="mp"] > img{width:max(100%,880px)!important;height:auto!important;aspect-ratio:1672/941;object-fit:contain!important}
+/* gallery: swipeable cards, one per screen */
+#hv-root [data-ref="hTrack"]{gap:12px!important}
+#hv-root [data-ref="hTrack"] > li{width:min(84vw,420px)}
+#hv-root [data-ref="hTrack"] > li > button{height:auto!important;width:100%!important;aspect-ratio:4/3!important}
+#hv-root [data-ref="hTrack"] > li > button[data-ar="941/1672"]{aspect-ratio:4/5!important}
+#hv-root [data-ref="hTrack"] > li:nth-child(1) img{object-position:72% 50%}
+/* villas: picture first, controls right under it */
+#hv-root [data-grp="villa-grid"]{gap:22px!important}
+#hv-root [data-grp="villa-left"]{display:contents}
+#hv-root [data-grp="villa-left"] > *{order:2}
+#hv-root [data-grp="villa-left"] > h2{order:0}
+#hv-root [data-grp="type-imgs"]{order:1;aspect-ratio:4/3!important}
+/* amenities: the picture opens inside the row you tapped */
+#hv-root .hv-amen-fig{display:block}
+#hv-root [data-grp="amen-imgs"]{display:none!important}
+#hv-root [data-show^="amen:"] ul{padding-left:0!important;grid-template-columns:1fr 1fr!important}
+}
 
 #hv-root .hvh0:hover{color:#fff!important;border-bottom-color:#fff!important}
 #hv-root .hvh1:focus{border-bottom-color:#F4F1EA!important}

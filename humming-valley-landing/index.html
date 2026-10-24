@@ -35,12 +35,12 @@
 <div id="hv-prog" aria-hidden="true" style="position:fixed;top:0;left:0;right:0;height:2px;background:var(--paper-200);transform-origin:left;transform:scaleX(0);z-index:60;mix-blend-mode:difference"></div>
 <main>
 <section id="top" data-screen-label="Hero" style="position:relative;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden;background:var(--teal-1000);color:var(--paper-200)">
-  <div aria-hidden="true" style="position:absolute;inset:0;overflow:hidden;animation:hvKb 2.8s cubic-bezier(.16,1,.3,1) both">
+  <div data-grp="hero-bg" aria-hidden="true" style="position:absolute;inset:0;overflow:hidden;animation:hvKb 2.8s cubic-bezier(.16,1,.3,1) both">
     <img data-ref="heroImg" src="assets/img/hero-family-1672.webp" srcset="assets/img/hero-family-800.webp 800w, assets/img/hero-family-1280.webp 1280w, assets/img/hero-family-1672.webp 1672w" sizes="(max-width:700px) 70vw,100vw" width="1672" height="941" alt="Family on a villa balcony facing the granite slopes of Nandi Hills at Triton Humming Valley, North Bangalore" fetchpriority="high" loading="eager" decoding="async" style="position:absolute;left:0;top:-6%;width:100%;height:112%;object-fit:cover;object-position:62% center;will-change:transform">
     <img data-src="assets/img/hero-couple-1254.webp" data-srcset="assets/img/hero-couple-800.webp 800w, assets/img/hero-couple-1254.webp 1254w" sizes="100vw" alt="Couple on a villa terrace looking out at the twin granite peaks of Nandi Hills" loading="lazy" fetchpriority="low" decoding="async" style="position:absolute;left:0;top:-6%;width:100%;height:112%;object-fit:cover;object-position:center 45%;opacity:0;transition:opacity 2.4s cubic-bezier(.2,0,0,1);will-change:transform,opacity">
   </div>
-  <div aria-hidden="true" style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(4,17,15,.6),rgba(4,17,15,.18) 38%,rgba(4,17,15,.86))"></div>
-  <div style="position:relative;width:100%;max-width:1680px;margin:0 auto;padding:150px clamp(20px,5vw,88px) clamp(48px,7vw,96px);display:grid;grid-template-columns:var(--hv-hero-cols);gap:clamp(32px,5vw,72px);align-items:end;box-sizing:border-box">
+  <div data-grp="hero-ov" aria-hidden="true" style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(4,17,15,.6),rgba(4,17,15,.18) 38%,rgba(4,17,15,.86))"></div>
+  <div data-grp="hero-in" style="position:relative;width:100%;max-width:1680px;margin:0 auto;padding:150px clamp(20px,5vw,88px) clamp(48px,7vw,96px);display:grid;grid-template-columns:var(--hv-hero-cols);gap:clamp(32px,5vw,72px);align-items:end;box-sizing:border-box">
     <div style="display:flex;flex-direction:column;gap:clamp(20px,2.4vw,32px);min-width:0">
       <h1 style="margin:0;font-weight:400;color:var(--paper-100)">
         <span style="display:block;overflow:hidden;padding-bottom:.04em"><span style="display:block;font-family:var(--font-display);font-size:clamp(3.6rem,12vw,11.5rem);line-height:.9;letter-spacing:-.035em;animation:hvRise 1.4s cubic-bezier(.16,1,.3,1) .25s both">Humming</span></span>
@@ -173,18 +173,18 @@
       </div>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:clamp(20px,3vw,40px);align-items:start">
-      <figure data-rv="img" style="margin:0;position:relative;overflow:hidden;aspect-ratio:21/9;grid-column:1/-1;min-width:0">
+      <figure data-grp="promise-fig" data-rv="img" style="margin:0;position:relative;overflow:hidden;aspect-ratio:21/9;grid-column:1/-1;min-width:0">
         <img class="hvh2" src="assets/img/rooftop-jacuzzi-mist.webp" alt="Private rooftop jacuzzi overlooking misty Nandi Hills at Triton Humming Valley" loading="lazy" fetchpriority="low" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform 1.4s cubic-bezier(.16,1,.3,1)">
       <img src="assets/img/rooftop-jacuzzi-night.webp" alt="The same rooftop jacuzzi at night, lit terraces and misty Nandi Hills" loading="lazy" fetchpriority="low" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity 1.6s cubic-bezier(.2,0,0,1)">
         <div style="position:absolute;top:clamp(14px,1.6vw,22px);right:clamp(14px,1.6vw,22px);font-size:10px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(244,241,234,.9);text-shadow:0 1px 8px rgba(4,17,15,.6)">Real shot (enhanced)</div>
-        <div style="position:absolute;left:clamp(16px,2vw,28px);bottom:clamp(16px,2vw,28px);display:flex;flex-direction:column;align-items:flex-start;gap:12px"><span style="font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:clamp(1.1rem,1.4vw,1.35rem);color:var(--paper-100);text-shadow:0 2px 14px rgba(4,17,15,.7)">See the same terrace by day and by night</span><div role="group" aria-label="Time of day" style="display:flex;padding:5px;border-radius:999px;background:rgba(7,26,23,.62);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(244,241,234,.34);animation:hvGlow 2.6s ease-in-out 1.2s 4">
+        <div data-grp="promise-ctl" style="position:absolute;left:clamp(16px,2vw,28px);bottom:clamp(16px,2vw,28px);display:flex;flex-direction:column;align-items:flex-start;gap:12px"><span style="font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:clamp(1.1rem,1.4vw,1.35rem);color:var(--paper-100);text-shadow:0 2px 14px rgba(4,17,15,.7)">See the same terrace by day and by night</span><div role="group" aria-label="Time of day" style="display:flex;padding:5px;border-radius:999px;background:rgba(7,26,23,.62);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(244,241,234,.34);animation:hvGlow 2.6s ease-in-out 1.2s 4">
           
             <button data-click="night:false" aria-pressed="true" style="all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;padding:14px 26px;border-radius:999px;font-size:12px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;background:var(--paper-100);color:var(--teal-1000);transition:background .6s cubic-bezier(.16,1,.3,1),color .6s"><span aria-hidden="true" style="width:18px;height:18px;background:url(assets/icons/sun-ink.svg) center/contain no-repeat"></span>Morning</button>
           
             <button data-click="night:true" aria-pressed="false" style="all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;padding:14px 26px;border-radius:999px;font-size:12px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;background:transparent;color:var(--paper-100);transition:background .6s cubic-bezier(.16,1,.3,1),color .6s"><span aria-hidden="true" style="width:18px;height:18px;background:url(assets/icons/moon-paper.svg) center/contain no-repeat"></span>Night</button>
           
         </div></div>
-        <p style="position:absolute;right:clamp(16px,2vw,28px);bottom:clamp(22px,2.4vw,34px);margin:0;font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:clamp(1.1rem,1.6vw,1.5rem);color:var(--paper-100);text-shadow:0 2px 16px rgba(4,17,15,.6)"><span data-t="todCap">Mist rests in the folds of the rock</span></p>
+        <p data-grp="promise-cap" style="position:absolute;right:clamp(16px,2vw,28px);bottom:clamp(22px,2.4vw,34px);margin:0;font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:clamp(1.1rem,1.6vw,1.5rem);color:var(--paper-100);text-shadow:0 2px 16px rgba(4,17,15,.6)"><span data-t="todCap">Mist rests in the folds of the rock</span></p>
       </figure>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));background-image:url(assets/icons/sprout-teal.svg),radial-gradient(circle,rgba(10,15,14,.32) 1px,rgba(0,0,0,0) 1.4px);background-size:13px 13px,8px 3px;background-repeat:no-repeat,repeat-x;background-position:0 0,20px 6px">
@@ -408,49 +408,49 @@
       <ul data-ref="hTrack" style="list-style:none;margin:0;padding:0 clamp(20px,5vw,88px);display:flex;gap:clamp(16px,2vw,28px);width:max-content;will-change:transform">
         
           <li style="scroll-snap-align:start;display:flex;flex-direction:column;gap:14px">
-            <button data-click="lb:0" aria-label="Enlarge: Wake up and the hills are right there" style="all:unset;cursor:zoom-in;display:block;height:var(--hv-g-h);aspect-ratio:1876/838;overflow:hidden;background:var(--teal-800)">
+            <button data-click="lb:0" data-ar="1876/838" aria-label="Enlarge: Wake up and the hills are right there" style="all:unset;cursor:zoom-in;display:block;height:var(--hv-g-h);aspect-ratio:1876/838;overflow:hidden;background:var(--teal-800)">
               <img class="hvh3" src="assets/img/misty-morning-balcony.webp" alt="Morning coffee on a villa balcony facing misty Nandi Hills" loading="lazy" fetchpriority="low" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 1.4s cubic-bezier(.16,1,.3,1)">
             </button>
             <div style="display:flex;gap:14px;align-items:baseline"><span style="font-family:var(--font-display);font-size:15px;color:var(--teal-300)">01</span><span style="font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:20px;color:var(--paper-100)">Wake up and the hills are right there</span></div>
           </li>
         
           <li style="scroll-snap-align:start;display:flex;flex-direction:column;gap:14px">
-            <button data-click="lb:1" aria-label="Enlarge: Rooftop jacuzzis along the villa lane" style="all:unset;cursor:zoom-in;display:block;height:var(--hv-g-h);aspect-ratio:1672/940;overflow:hidden;background:var(--teal-800)">
+            <button data-click="lb:1" data-ar="1672/940" aria-label="Enlarge: Rooftop jacuzzis along the villa lane" style="all:unset;cursor:zoom-in;display:block;height:var(--hv-g-h);aspect-ratio:1672/940;overflow:hidden;background:var(--teal-800)">
               <img class="hvh3" src="assets/img/villa-lane-mist.webp" alt="Aerial view of villa rows with private rooftop jacuzzis on a misty morning near Nandi Hills" loading="lazy" fetchpriority="low" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 1.4s cubic-bezier(.16,1,.3,1)">
             </button>
             <div style="display:flex;gap:14px;align-items:baseline"><span style="font-family:var(--font-display);font-size:15px;color:var(--teal-300)">02</span><span style="font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:20px;color:var(--paper-100)">Rooftop jacuzzis along the villa lane</span></div>
           </li>
         
           <li style="scroll-snap-align:start;display:flex;flex-direction:column;gap:14px">
-            <button data-click="lb:2" aria-label="Enlarge: Twilight on a private rooftop" style="all:unset;cursor:zoom-in;display:block;height:var(--hv-g-h);aspect-ratio:1448/1086;overflow:hidden;background:var(--teal-800)">
+            <button data-click="lb:2" data-ar="1448/1086" aria-label="Enlarge: Twilight on a private rooftop" style="all:unset;cursor:zoom-in;display:block;height:var(--hv-g-h);aspect-ratio:1448/1086;overflow:hidden;background:var(--teal-800)">
               <img class="hvh3" src="assets/img/rooftop-jacuzzi-twilight.webp" alt="Rooftop jacuzzi and loungers at twilight with Nandi Hills behind" loading="lazy" fetchpriority="low" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 1.4s cubic-bezier(.16,1,.3,1)">
             </button>
             <div style="display:flex;gap:14px;align-items:baseline"><span style="font-family:var(--font-display);font-size:15px;color:var(--teal-300)">03</span><span style="font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:20px;color:var(--paper-100)">Twilight on a private rooftop</span></div>
           </li>
         
           <li style="scroll-snap-align:start;display:flex;flex-direction:column;gap:14px">
-            <button data-click="lb:3" aria-label="Enlarge: Jacuzzi, rooftop bar and sitting areas" style="all:unset;cursor:zoom-in;display:block;height:var(--hv-g-h);aspect-ratio:4/3;overflow:hidden;background:var(--teal-800)">
+            <button data-click="lb:3" data-ar="4/3" aria-label="Enlarge: Jacuzzi, rooftop bar and sitting areas" style="all:unset;cursor:zoom-in;display:block;height:var(--hv-g-h);aspect-ratio:4/3;overflow:hidden;background:var(--teal-800)">
               <img class="hvh3" src="https://i0.wp.com/tritongroup.in/wp-content/uploads/2026/09/WhatsApp-Image-2026-09-25-at-12.18.12.webp?w=1400&amp;ssl=1" alt="Private terrace lounge at villas near Nandi Hills" loading="lazy" fetchpriority="low" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 1.4s cubic-bezier(.16,1,.3,1)">
             </button>
             <div style="display:flex;gap:14px;align-items:baseline"><span style="font-family:var(--font-display);font-size:15px;color:var(--teal-300)">04</span><span style="font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:20px;color:var(--paper-100)">Jacuzzi, rooftop bar and sitting areas</span></div>
           </li>
         
           <li style="scroll-snap-align:start;display:flex;flex-direction:column;gap:14px">
-            <button data-click="lb:4" aria-label="Enlarge: A glass alcove, facing the hills" style="all:unset;cursor:zoom-in;display:block;height:var(--hv-g-h);aspect-ratio:4/3;overflow:hidden;background:var(--teal-800)">
+            <button data-click="lb:4" data-ar="4/3" aria-label="Enlarge: A glass alcove, facing the hills" style="all:unset;cursor:zoom-in;display:block;height:var(--hv-g-h);aspect-ratio:4/3;overflow:hidden;background:var(--teal-800)">
               <img class="hvh3" src="https://i0.wp.com/tritongroup.in/wp-content/uploads/2026/09/Luxurious-Glass-Alcove-with-Mountain-Views.webp?w=1400&amp;ssl=1" alt="Glass alcove overlooking mountain views" loading="lazy" fetchpriority="low" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 1.4s cubic-bezier(.16,1,.3,1)">
             </button>
             <div style="display:flex;gap:14px;align-items:baseline"><span style="font-family:var(--font-display);font-size:15px;color:var(--teal-300)">05</span><span style="font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:20px;color:var(--paper-100)">A glass alcove, facing the hills</span></div>
           </li>
         
           <li style="scroll-snap-align:start;display:flex;flex-direction:column;gap:14px">
-            <button data-click="lb:5" aria-label="Enlarge: A bedroom that frames the hills" style="all:unset;cursor:zoom-in;display:block;height:var(--hv-g-h);aspect-ratio:1450/1085;overflow:hidden;background:var(--teal-800)">
+            <button data-click="lb:5" data-ar="1450/1085" aria-label="Enlarge: A bedroom that frames the hills" style="all:unset;cursor:zoom-in;display:block;height:var(--hv-g-h);aspect-ratio:1450/1085;overflow:hidden;background:var(--teal-800)">
               <img class="hvh3" src="assets/img/bedroom-hill-view.webp" alt="Bedroom with a picture window framing hill views in a Bangalore villa" loading="lazy" fetchpriority="low" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 1.4s cubic-bezier(.16,1,.3,1)">
             </button>
             <div style="display:flex;gap:14px;align-items:baseline"><span style="font-family:var(--font-display);font-size:15px;color:var(--teal-300)">06</span><span style="font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:20px;color:var(--paper-100)">A bedroom that frames the hills</span></div>
           </li>
         
           <li style="scroll-snap-align:start;display:flex;flex-direction:column;gap:14px">
-            <button data-click="lb:6" aria-label="Enlarge: Rooftop pool with a kids pool beside it" style="all:unset;cursor:zoom-in;display:block;height:var(--hv-g-h);aspect-ratio:941/1672;overflow:hidden;background:var(--teal-800)">
+            <button data-click="lb:6" data-ar="941/1672" aria-label="Enlarge: Rooftop pool with a kids pool beside it" style="all:unset;cursor:zoom-in;display:block;height:var(--hv-g-h);aspect-ratio:941/1672;overflow:hidden;background:var(--teal-800)">
               <img class="hvh3" src="assets/img/rooftop-pool-kids.webp" alt="Rooftop swimming pool with a separate kids pool and loungers" loading="lazy" fetchpriority="low" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 1.4s cubic-bezier(.16,1,.3,1)">
             </button>
             <div style="display:flex;gap:14px;align-items:baseline"><span style="font-family:var(--font-display);font-size:15px;color:var(--teal-300)">07</span><span style="font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:20px;color:var(--paper-100)">Rooftop pool with a kids pool beside it</span></div>
@@ -475,8 +475,8 @@
 </section>
 <section id="villas" data-screen-label="04 Villas" style="padding:clamp(96px,11vw,200px) clamp(20px,5vw,88px)">
   <div style="max-width:1680px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(64px,8vw,128px)">
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:clamp(40px,6vw,112px);align-items:start">
-      <div style="display:flex;flex-direction:column;gap:32px">
+    <div data-grp="villa-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:clamp(40px,6vw,112px);align-items:start">
+      <div data-grp="villa-left" style="display:flex;flex-direction:column;gap:32px">
         <h2 data-rv="up" data-d="100" style="margin:0;font-family:var(--font-display);font-weight:400;font-size:clamp(2.4rem,5vw,5rem);line-height:1;letter-spacing:-.025em;color:var(--ink-900)">3, 4 &amp; 5 BHK villas <em style="font-family:'Instrument Serif',Georgia,serif;font-style:italic;color:var(--teal-500)">near Nandi Hills</em></h2>
         <div role="tablist" aria-label="Configuration" style="display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line-strong)">
           
@@ -521,9 +521,9 @@
     <div id="masterplan" style="display:flex;flex-direction:column;gap:28px">
       <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:20px">
         <h3 data-rv="up" style="margin:0;font-family:var(--font-display);font-weight:400;font-size:clamp(2rem,3.6vw,3.6rem);line-height:1;letter-spacing:-.02em;color:var(--ink-900)">Master plan: thirty villas <em style="font-family:'Instrument Serif',Georgia,serif;font-style:italic;color:var(--teal-500)">around green lanes</em></h3>
-        <p data-rv="up" data-d="100" style="margin:0;max-width:44ch;font-size:16px;line-height:1.65;color:var(--ink-500)">Thirty villas around green lanes and open space. Every home gets light and air. <span style="color:var(--ink-800)"><span class="hv-hint-d">Hover to look closer.</span><span class="hv-hint-m">Tap to open full size.</span></span></p>
+        <p data-rv="up" data-d="100" style="margin:0;max-width:44ch;font-size:16px;line-height:1.65;color:var(--ink-500)">Thirty villas around green lanes and open space. Every home gets light and air. <span style="color:var(--ink-800)"><span class="hv-hint-d">Hover to look closer.</span><span class="hv-hint-m">Swipe to explore the plan.</span></span></p>
       </div>
-      <figure data-rv="img" data-move="mpMove" data-enter="mpEnter" data-leave="mpLeave" data-click="mpOpen" style="margin:0;position:relative;overflow:hidden;background:var(--paper-100);border:1px solid var(--line-hairline);cursor:zoom-in;aspect-ratio:1672/941">
+      <figure data-grp="mp" data-rv="img" data-move="mpMove" data-enter="mpEnter" data-leave="mpLeave" data-click="mpOpen" style="margin:0;position:relative;overflow:hidden;background:var(--paper-100);border:1px solid var(--line-hairline);cursor:zoom-in;aspect-ratio:1672/941">
         <img data-ref="mp" src="assets/img/master-plan.webp" alt="Triton Humming Valley master plan: 30 villas in three rows around green lanes, with the clubhouse and pool" loading="lazy" fetchpriority="low" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 1.4s cubic-bezier(.16,1,.3,1)">
         <div style="position:absolute;top:clamp(14px,1.6vw,22px);right:clamp(14px,1.6vw,22px);pointer-events:none;font-size:10px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(244,241,234,.92);text-shadow:0 1px 8px rgba(4,17,15,.7)">Rendered</div>
       </figure>
@@ -593,7 +593,7 @@
               <span style="font-family:var(--font-display);font-size:clamp(1.8rem,3.2vw,3rem);line-height:1;letter-spacing:-.02em;transform:translateX(8px);transition:transform .7s cubic-bezier(.16,1,.3,1)">In the clubhouse</span>
               <span style="font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:22px;color:var(--teal-500)">04</span>
             </button>
-            <div class="hv-c" data-show="amen:0">
+            <div class="hv-c" data-show="amen:0"><figure class="hv-amen-fig" style="margin:6px 0 22px;aspect-ratio:4/3;overflow:hidden;background:var(--teal-900)"><img src="assets/img/clubhouse-exterior.webp" alt="The 6,700 sq ft clubhouse beneath the granite hills, with terrace cafe seating" loading="lazy" fetchpriority="low" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block"></figure>
               <ul style="list-style:none;margin:0;padding:4px 0 32px 60px;display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:18px 28px;animation:hvFade .7s cubic-bezier(.16,1,.3,1) both">
                 
                   <li style="display:flex;align-items:center;gap:14px;font-size:15px;line-height:1.35;color:var(--ink-800)"><span aria-hidden="true" style="flex:none;width:22px;height:22px;background:url(assets/icons/party-popper.svg) center/contain no-repeat"></span>Multipurpose hall</li>
@@ -614,7 +614,7 @@
               <span style="font-family:var(--font-display);font-size:clamp(1.8rem,3.2vw,3rem);line-height:1;letter-spacing:-.02em;transform:none;transition:transform .7s cubic-bezier(.16,1,.3,1)">Gathering</span>
               <span style="font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:22px;color:var(--teal-500)">03</span>
             </button>
-            <div class="hv-c hv-hide" data-show="amen:1">
+            <div class="hv-c hv-hide" data-show="amen:1"><figure class="hv-amen-fig" style="margin:6px 0 22px;aspect-ratio:4/3;overflow:hidden;background:var(--teal-900)"><img src="assets/img/gathering-courtyard-night.webp" alt="Lit garden sit-out with a table for two on a warm evening" loading="lazy" fetchpriority="low" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block"></figure>
               <ul style="list-style:none;margin:0;padding:4px 0 32px 60px;display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:18px 28px;animation:hvFade .7s cubic-bezier(.16,1,.3,1) both">
                 
                   <li style="display:flex;align-items:center;gap:14px;font-size:15px;line-height:1.35;color:var(--ink-800)"><span aria-hidden="true" style="flex:none;width:22px;height:22px;background:url(assets/icons/tent-tree.svg) center/contain no-repeat"></span>Tropical Asian gazebo</li>
@@ -633,7 +633,7 @@
               <span style="font-family:var(--font-display);font-size:clamp(1.8rem,3.2vw,3rem);line-height:1;letter-spacing:-.02em;transform:none;transition:transform .7s cubic-bezier(.16,1,.3,1)">For children</span>
               <span style="font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:22px;color:var(--teal-500)">08</span>
             </button>
-            <div class="hv-c hv-hide" data-show="amen:2">
+            <div class="hv-c hv-hide" data-show="amen:2"><figure class="hv-amen-fig" style="margin:6px 0 22px;aspect-ratio:4/3;overflow:hidden;background:var(--teal-900)"><img src="assets/img/kids-climbing-wall.webp" alt="Children on the adventure rock wall at Triton Humming Valley" loading="lazy" fetchpriority="low" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block"></figure>
               <ul style="list-style:none;margin:0;padding:4px 0 32px 60px;display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:18px 28px;animation:hvFade .7s cubic-bezier(.16,1,.3,1) both">
                 
                   <li style="display:flex;align-items:center;gap:14px;font-size:15px;line-height:1.35;color:var(--ink-800)"><span aria-hidden="true" style="flex:none;width:22px;height:22px;background:url(assets/icons/baby.svg) center/contain no-repeat"></span>Kids play lawn</li>
@@ -662,7 +662,7 @@
               <span style="font-family:var(--font-display);font-size:clamp(1.8rem,3.2vw,3rem);line-height:1;letter-spacing:-.02em;transform:none;transition:transform .7s cubic-bezier(.16,1,.3,1)">Wellness &amp; sport</span>
               <span style="font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:22px;color:var(--teal-500)">07</span>
             </button>
-            <div class="hv-c hv-hide" data-show="amen:3">
+            <div class="hv-c hv-hide" data-show="amen:3"><figure class="hv-amen-fig" style="margin:6px 0 22px;aspect-ratio:4/3;overflow:hidden;background:var(--teal-900)"><img src="assets/img/clubhouse-rooftop-pool.webp" alt="Clubhouse rooftop swimming pool and glass-roofed cafe terrace" loading="lazy" fetchpriority="low" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block"></figure>
               <ul style="list-style:none;margin:0;padding:4px 0 32px 60px;display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:18px 28px;animation:hvFade .7s cubic-bezier(.16,1,.3,1) both">
                 
                   <li style="display:flex;align-items:center;gap:14px;font-size:15px;line-height:1.35;color:var(--ink-800)"><span aria-hidden="true" style="flex:none;width:22px;height:22px;background:url(assets/icons/waves.svg) center/contain no-repeat"></span>Rooftop swimming pool</li>
@@ -928,7 +928,7 @@
 </section>
 </main>
 <div class="hv-if-mobile">
-  <div style="position:fixed;left:0;right:0;bottom:0;z-index:45;display:grid;grid-template-columns:1fr 1fr 1.3fr;background:rgba(4,17,15,.94);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);background-image:url(assets/icons/sprout-mist.svg),radial-gradient(circle,rgba(244,241,234,.38) 1px,rgba(0,0,0,0) 1.4px);background-size:13px 13px,8px 3px;background-repeat:no-repeat,repeat-x;background-position:0 0,20px 6px;padding-bottom:env(safe-area-inset-bottom)">
+  <div data-grp="mbar" style="position:fixed;left:0;right:0;bottom:0;z-index:45;display:grid;grid-template-columns:1fr 1fr 1.3fr;background:rgba(4,17,15,.94);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);background-image:url(assets/icons/sprout-mist.svg),radial-gradient(circle,rgba(244,241,234,.38) 1px,rgba(0,0,0,0) 1.4px);background-size:13px 13px,8px 3px;background-repeat:no-repeat,repeat-x;background-position:0 0,20px 6px;padding-bottom:env(safe-area-inset-bottom)">
     <a href="tel:+919036682626" style="display:flex;align-items:center;justify-content:center;min-height:56px;font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--paper-200);border-right:1px solid rgba(244,241,234,.14)">Call</a>
     <a href="https://wa.me/919036682626" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;min-height:56px;font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--paper-200);border-right:1px solid rgba(244,241,234,.14)">WhatsApp</a>
     <a href="#enquire" style="display:flex;align-items:center;justify-content:center;min-height:56px;font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;background:var(--paper-200);color:var(--teal-1000)">Book a visit</a>
