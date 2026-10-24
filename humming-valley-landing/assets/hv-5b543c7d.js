@@ -155,7 +155,8 @@ window.HV_DATA={"GALLERY":[{"img":"https://tritongroup.in/wp-content/uploads/hv/
     if (t.phone && s.phone) setVal(t.phone, digits(s.phone.value));
     if (t.email && s.email) setVal(t.email, s.email.value.trim());
   }
-  function formKey(f) { var k = f.getAttribute('data-submit'); return k === 'modal' ? FORM_FOR[st.modal || 'visit'] : FORM_FOR[k]; }
+  function subKey(f) { return String(f.getAttribute('data-submit')).replace(/^submit:/, ''); }
+  function formKey(f) { var k = subKey(f); return k === 'modal' ? FORM_FOR[st.modal || 'visit'] : FORM_FOR[k]; }
   root.addEventListener('input', function (e) { var f = e.target.closest && e.target.closest('form[data-submit]'); if (f) mirror(f, formKey(f)); });
   function note(f, msg) {
     var p = f.querySelector('.hv-msg');
@@ -186,7 +187,7 @@ window.HV_DATA={"GALLERY":[{"img":"https://tritongroup.in/wp-content/uploads/hv/
     setTimeout(function () { if (!done) reset('This is taking longer than usual. Please try again or call ' + TEL + '.'); }, 15000);
   }
   function showThanks(f) {
-    var k = f.getAttribute('data-submit');
+    var k = subKey(f);
     if (k === 'hero') { show('heroSent', true); show('heroForm2', false); }
     else if (k === 'final') { show('finalSent', true); show('finalForm', false); }
     else { show('modalSent', true); show('modalForm', false); }
