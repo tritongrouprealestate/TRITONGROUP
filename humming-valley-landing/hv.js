@@ -2,7 +2,7 @@
 (function () {
   var root = document.getElementById('hv-root');
   if (!root) return;
-  var D = window.HV_DATA, CFG = window.HV_CONFIG || {};
+  var D = window.HV_DATA;
   var GALLERY = D.GALLERY, TYPES = D.TYPES, REV = D.REV, AMEN = D.AMEN, STORY = D.STORY, MODALS = D.MODALS;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var st = { story: 0, type: 0, facing: 0, rev: 0, amen: 0, faq: 0, sig: 0, night: false, heroAlt: false, modal: null, lb: -1, interest: [], pastHero: false };
@@ -126,22 +126,68 @@
     show('vidIdle', false); show('vidPlay', true);
   }
 
-  /* ---------- leads ---------- */
-  function sendLead(form, source) {
-    var fd = new FormData(form), get = function (k) { return (fd.get(k) || '').toString().trim(); };
-    var lead = { name: get('name'), email: get('email'), phone: get('phone'), source: source, interest: st.interest.join(', ') };
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ event: 'generate_lead', lead_source: source });
-    if (!CFG.jetpackFormId || !CFG.jetpackHash) { console.info('[lead] Jetpack form not configured yet; set HV_CONFIG.jetpackFormId and jetpackHash.', lead); return; }
-    var g = 'g' + CFG.jetpackFormId + '-', body = new FormData();
-    body.append(g + (CFG.fieldName || 'name'), lead.name);
-    body.append(g + (CFG.fieldEmail || 'email'), lead.email);
-    body.append(g + (CFG.fieldPhone || 'phonenumber'), lead.phone);
-    if (CFG.fieldMessage !== '') body.append(g + (CFG.fieldMessage || 'message'), 'Source: ' + source + (lead.interest ? ' | Interested in: ' + lead.interest : ''));
-    body.append('contact-form-id', CFG.jetpackFormId);
-    body.append('contact-form-hash', CFG.jetpackHash);
-    body.append('action', 'grunion-contact-form');
-    fetch(CFG.jetpackUrl, { method: 'POST', body: body, mode: 'no-cors', credentials: 'include' }).catch(function (e) { console.warn('[lead] submit failed', e); });
+  /* ---------- leads: bridge to the site's real Jetpack forms ---------- */
+  // Every enquiry is passed to a hidden Jetpack form (.hv-pf--KEY form), so notifications, CRM webhook,
+  // spam checks and the thank-you redirect behave exactly as before.
+  var FORM_FOR = { hero: 'page', final: 'page', visit: 'page', sunset: 'page', floor: 'floor', brochure: 'brochure', revenue: 'rental' };
+  var TEL = '+91 90366 82626';
+  function proxy(key) { return document.querySelector('.hv-pf--' + key + ' form'); }
+  function setVal(el, v) {
+    if (!el) return;
+    Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(el, v);
+    ['input', 'change'].forEach(function (t) { el.dispatchEvent(new Event(t, { bubbles: true })); });
+  }
+  function fields(f) {
+    var els = Array.prototype.slice.call(f.querySelectorAll('input')).filter(function (e) { return ['hidden', 'submit', 'button', 'checkbox', 'radio'].indexOf(e.type) < 0 && !/honeypot|akismet|ak_/i.test(e.name || ''); });
+    return {
+      email: els.filter(function (e) { return e.type === 'email'; })[0],
+      phone: els.filter(function (e) { return e.type === 'tel'; })[0],
+      name: els.filter(function (e) { return e.type === 'text' && /name/i.test(e.name + ' ' + e.id); })[0] || els.filter(function (e) { return e.type === 'text'; })[0]
+    };
+  }
+  function digits(v) { var d = String(v || '').replace(/[^\d+]/g, ''); if (/^\+?91\d{10}$/.test(d)) d = d.slice(-10); return d; }
+  function mirror(src, key) {
+    var dst = proxy(key); if (!dst) return;
+    var s = fields(src), t = fields(dst);
+    if (t.name && s.name) setVal(t.name, s.name.value.trim());
+    if (t.phone && s.phone) setVal(t.phone, digits(s.phone.value));
+    if (t.email && s.email) setVal(t.email, s.email.value.trim());
+  }
+  function formKey(f) { var k = f.getAttribute('data-submit'); return k === 'modal' ? FORM_FOR[st.modal || 'visit'] : FORM_FOR[k]; }
+  root.addEventListener('input', function (e) { var f = e.target.closest && e.target.closest('form[data-submit]'); if (f) mirror(f, formKey(f)); });
+  function note(f, msg) {
+    var p = f.querySelector('.hv-msg');
+    if (!p) { p = document.createElement('p'); p.className = 'hv-msg'; p.setAttribute('role', 'alert'); p.style.cssText = 'margin:0;font-size:13px;line-height:1.5;color:#F2C4B4'; var b = f.querySelector('button[type="submit"]'); f.insertBefore(p, b); }
+    p.textContent = msg || '';
+  }
+  function submitLead(f) {
+    var key = formKey(f), dst = proxy(key), btn = f.querySelector('button[type="submit"]'), label = btn.textContent;
+    note(f, '');
+    if (!dst) { note(f, 'The enquiry form could not load. Please call ' + TEL + '.'); return; }
+    mirror(f, key);
+    var done = false, jp = dst.closest('.hv-pf');
+    btn.disabled = true; btn.textContent = 'Sending';
+    function reset(msg) { done = true; obs.disconnect(); btn.disabled = false; btn.textContent = label; note(f, msg); }
+    var obs = new MutationObserver(function () {
+      if (done) return;
+      var err = jp.querySelector('.contact-form__input-error.has-errors [data-wp-text], .contact-form__error, .form-errors');
+      var msg = err && err.textContent.trim();
+      if (msg) { reset(msg); return; }
+      if (document.querySelector('.contact-form-submission, .contact-form__success, [class*="submission-success"]') || !document.contains(dst)) {
+        done = true; obs.disconnect(); showThanks(f);
+      }
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['class'] });
+    var sb = dst.querySelector('button[type="submit"], input[type="submit"], .wp-block-button__link, button:not([type="button"])');
+    if (sb) sb.click(); else if (dst.requestSubmit) dst.requestSubmit(); else dst.submit();
+    // Jetpack redirects to the thank-you page on success. If it does not within 15s, say so.
+    setTimeout(function () { if (!done) reset('This is taking longer than usual. Please try again or call ' + TEL + '.'); }, 15000);
+  }
+  function showThanks(f) {
+    var k = f.getAttribute('data-submit');
+    if (k === 'hero') { show('heroSent', true); show('heroForm2', false); }
+    else if (k === 'final') { show('finalSent', true); show('finalForm', false); }
+    else { show('modalSent', true); show('modalForm', false); }
   }
 
   /* ---------- actions ---------- */
@@ -173,11 +219,7 @@
   root.addEventListener('mouseout', function (e) { var el = e.target.closest('[data-leave]'); if (el && !el.contains(e.relatedTarget)) act(el.getAttribute('data-leave'), el, e); });
   root.addEventListener('mousemove', function (e) { var el = e.target.closest('[data-move]'); if (el) act(el.getAttribute('data-move'), el, e); });
   root.addEventListener('submit', function (e) {
-    var f = e.target.closest('form[data-submit]'); if (!f) return; e.preventDefault();
-    var k = f.getAttribute('data-submit');
-    if (k === 'hero') { sendLead(f, 'Hero: Access villa inventory'); show('heroSent', true); show('heroForm2', false); }
-    else if (k === 'final') { sendLead(f, 'Schedule a private visit'); show('finalSent', true); show('finalForm', false); }
-    else { sendLead(f, MODALS[st.modal || 'visit'].title); show('modalSent', true); show('modalForm', false); }
+    var f = e.target.closest('form[data-submit]'); if (!f) return; e.preventDefault(); submitLead(f);
   });
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && st.modal) { closeModal(); return; }
