@@ -100,7 +100,8 @@
     });
     T('todCap', st.night ? 'The water glows long after the hills go dark' : 'Mist rests in the folds of the rock');
   }
-  function renderFloat() { show('floatShow', !mob() && st.pastHero && !st.modal && st.lb < 0); }
+  function lockUi() { document.documentElement.classList.toggle('hv-modal', !!st.modal || st.lb > -1); }
+  function renderFloat() { lockUi(); show('floatShow', !mob() && st.pastHero && !st.modal && st.lb < 0); }
 
   /* ---------- modal, lightbox, video ---------- */
   function openModal(key) {
@@ -228,11 +229,31 @@
   });
 
   /* ---------- scroll choreography ---------- */
+  var HDR = 0;
+  function headerH() {
+    var b = 0, seen = [];
+    [3, 30, 60].forEach(function (y) {
+      (document.elementsFromPoint(window.innerWidth / 2, y) || []).forEach(function (e) {
+        if (root.contains(e) || e.closest('#wpadminbar')) return;
+        for (var n = e; n && n !== document.body && n !== document.documentElement; n = n.parentElement) {
+          if (seen.indexOf(n) > -1) break;
+          var p = getComputedStyle(n).position;
+          if (p === 'fixed' || p === 'sticky') {
+            seen.push(n); var r = n.getBoundingClientRect();
+            if (r.top <= y + 1 && r.height < 240 && r.width > window.innerWidth * 0.5) b = Math.max(b, r.bottom);
+            break;
+          }
+        }
+      });
+    });
+    return Math.max(0, Math.round(b));
+  }
+  function setHdr() { HDR = headerH(); root.style.setProperty('--hv-hdr', HDR + 'px'); }
   function measure() {
     var s = $('[data-ref="hSec"]'), t = $('[data-ref="hTrack"]'); if (!s || !t) return;
     if (window.innerWidth < 900 || reduce) { s.style.height = 'auto'; t.style.transform = 'none'; hTotal = 0; return; }
     hTotal = Math.max(0, t.scrollWidth - window.innerWidth);
-    s.style.height = (hTotal + window.innerHeight) + 'px';
+    s.style.height = (hTotal + window.innerHeight - HDR) + 'px';
   }
   function frame() {
     var y = window.scrollY, vh = window.innerHeight, max = document.documentElement.scrollHeight - vh;
@@ -242,7 +263,7 @@
     if (hi && !reduce && y < vh * 1.3) hi.style.transform = hi.nextElementSibling.style.transform = 'translate3d(0,' + (y * 0.22).toFixed(1) + 'px,0) scale(' + (1 + y / vh * 0.06).toFixed(4) + ')';
     var s = $('[data-ref="hSec"]'), t = $('[data-ref="hTrack"]');
     if (s && t && hTotal) {
-      var p = Math.min(1, Math.max(0, -s.getBoundingClientRect().top / hTotal));
+      var p = Math.min(1, Math.max(0, (HDR - s.getBoundingClientRect().top) / hTotal));
       t.style.transform = 'translate3d(' + (-p * hTotal).toFixed(1) + 'px,0,0)';
       var bar = $('[data-ref="hBar"]'), cnt = $('[data-ref="hCount"]');
       if (bar) bar.style.transform = 'scaleX(' + Math.max(0.08, p) + ')';
@@ -254,8 +275,8 @@
   }
   var ticking = false;
   window.addEventListener('scroll', function () { if (ticking) return; ticking = true; requestAnimationFrame(function () { ticking = false; frame(); }); }, { passive: true });
-  window.addEventListener('resize', function () { measure(); renderSig(); renderStory(); renderFloat(); frame(); });
-  window.addEventListener('load', function () { measure(); frame(); });
+  window.addEventListener('resize', function () { setHdr(); measure(); renderSig(); renderStory(); renderFloat(); frame(); });
+  window.addEventListener('load', function () { setHdr(); measure(); frame(); });
 
   function count(el) {
     var node = el.firstChild; if (!node || node.nodeType !== 3) return;
@@ -287,7 +308,7 @@
 
   var icons = (window.HV_ASSET_BASE || 'assets/') + 'icons/';
   root.setAttribute('data-icons', icons);
-  setTimeout(function () { setupReveal(); measure(); frame(); }, 60);
+  setHdr(); setTimeout(function () { setHdr(); setupReveal(); measure(); frame(); }, 60);
   renderSig(); renderStory(); renderFloat();
   if (!reduce) setInterval(function () {
     st.heroAlt = !st.heroAlt; var hi = $('[data-ref="heroImg"]'); if (hi && hi.nextElementSibling) hi.nextElementSibling.style.opacity = st.heroAlt ? 1 : 0;
