@@ -308,6 +308,12 @@ window.HV_DATA={"GALLERY":[{"img":"https://tritongroup.in/wp-content/uploads/hv/
     });
   }
 
+  // the second hero image only fades in after seven seconds, so load it once the page is settled
+  function loadHeroAlt() {
+    var im = $('[data-ref="heroImg"]'); im = im && im.nextElementSibling;
+    if (im && im.getAttribute('data-src')) { im.setAttribute('srcset', im.getAttribute('data-srcset')); im.src = im.getAttribute('data-src'); im.removeAttribute('data-src'); im.removeAttribute('data-srcset'); }
+  }
+  window.addEventListener('load', function () { setTimeout(loadHeroAlt, 2500); });
   var icons = (window.HV_ASSET_BASE || 'assets/') + 'icons/';
   root.setAttribute('data-icons', icons);
   setHdr(); setTimeout(function () { setHdr(); setupReveal(); measure(); frame(); }, 60);
