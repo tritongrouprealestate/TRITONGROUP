@@ -194,7 +194,7 @@ transition:background var(--dur-fast) var(--ease-standard),color var(--dur-fast)
 #hv-root #hv-prog{top:var(--hv-hdr,0px)!important}
 #hv-root [data-grp="story-sticky"]{top:var(--hv-hdr,0px)!important;height:calc(100vh - var(--hv-hdr,0px))!important}
 #hv-root [data-grp="gal-sticky"]{top:var(--hv-hdr,0px)!important}
-#hv-root [data-grp="float"]{right:96px!important;bottom:41px!important}
+#hv-root [data-grp="float"]{right:24px!important;bottom:104px!important}
 @media (max-width:899px){.wa__btn_popup{bottom:76px!important}.wa__popup_chat_box{bottom:148px!important}}
 html.hv-modal .wa__btn_popup,html.hv-modal .wa__popup_chat_box{display:none!important}
 
