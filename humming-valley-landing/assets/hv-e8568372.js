@@ -39,7 +39,7 @@ window.HV_DATA={"GALLERY":[{"img":"https://tritongroup.in/wp-content/uploads/hv/
   function renderTypes() {
     $$('button[data-click^="type:"]').forEach(function (b, i) {
       var on = i === st.type;
-      b.setAttribute('aria-selected', on); b.style.background = on ? 'var(--ink-900)' : 'transparent'; b.style.color = on ? 'var(--paper-100)' : 'var(--ink-900)';
+      b.setAttribute('aria-selected', on); b.style.background = on ? 'var(--paper-100)' : 'transparent'; b.style.color = on ? 'var(--teal-1000)' : 'var(--paper-200)';
     });
     $$('[data-grp="type-imgs"] > img').forEach(function (im, i) {
       im.style.opacity = i === st.type ? 1 : 0; im.style.transform = i === st.type ? 'scale(1)' : 'scale(1.06)';
@@ -51,8 +51,8 @@ window.HV_DATA={"GALLERY":[{"img":"https://tritongroup.in/wp-content/uploads/hv/
     plans.forEach(function (p, j) {
       var b = j === 0 ? proto : proto.cloneNode(true);
       b.textContent = p.facing; b.setAttribute('data-click', 'facing:' + j);
-      b.style.color = j === st.facing ? 'var(--ink-900)' : 'var(--ink-400)';
-      b.style.borderBottomColor = j === st.facing ? 'var(--ink-900)' : 'transparent';
+      b.style.color = j === st.facing ? 'var(--paper-100)' : 'var(--teal-300)';
+      b.style.borderBottomColor = j === st.facing ? 'var(--paper-100)' : 'transparent';
       if (j > 0) wrap.appendChild(b);
     });
     T('plan.line', plan.line); T('plan.sba', plan.sba); T('plan.land', plan.land);
@@ -71,7 +71,7 @@ window.HV_DATA={"GALLERY":[{"img":"https://tritongroup.in/wp-content/uploads/hv/
   function renderAmen() {
     $$('button[data-click^="amen:"]').forEach(function (b, i) {
       var on = i === st.amen;
-      b.setAttribute('aria-expanded', on); b.style.color = on ? 'var(--ink-900)' : 'var(--ink-400)';
+      b.setAttribute('aria-expanded', on); b.style.color = on ? 'var(--paper-100)' : 'var(--teal-300)';
       b.children[1].style.transform = on ? 'translateX(8px)' : 'none'; show('amen:' + i, on);
     });
     $$('[data-grp="amen-imgs"] > img').forEach(function (im, i) {
@@ -83,7 +83,7 @@ window.HV_DATA={"GALLERY":[{"img":"https://tritongroup.in/wp-content/uploads/hv/
     $$('[data-faq-g]').forEach(function (el) { el.classList.toggle('hv-hide', +el.getAttribute('data-faq-g') !== st.faqG); });
     $$('button[data-click^="faqtab:"]').forEach(function (b) {
       var on = +b.getAttribute('data-click').split(':')[1] === st.faqG;
-      b.setAttribute('aria-selected', on); b.style.background = on ? 'var(--ink-900)' : 'transparent'; b.style.color = on ? 'var(--paper-100)' : 'var(--ink-900)'; b.style.borderColor = on ? 'var(--ink-900)' : 'var(--line-strong)';
+      b.setAttribute('aria-selected', on); b.style.background = on ? 'var(--paper-100)' : 'transparent'; b.style.color = on ? 'var(--teal-1000)' : 'var(--paper-200)'; b.style.borderColor = on ? 'var(--paper-100)' : 'rgba(244,241,234,.28)';
     });
     $$('button[data-click^="faq:"]').forEach(function (b) {
       var i = +b.getAttribute('data-click').split(':')[1], on = i === st.faq;

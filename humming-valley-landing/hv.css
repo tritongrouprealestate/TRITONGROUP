@@ -120,7 +120,7 @@
 --hv-story-cols:minmax(0,1fr) minmax(0,1.15fr);--hv-step-h:92vh;
 --hv-sig-dir:row;--hv-sig-h:min(80vh,820px);--hv-sig-min:0;
 --hv-h-pos:sticky;--hv-h-h:calc(100vh - var(--hv-hdr,0px));--hv-h-ov:visible;--hv-h-pad:80px 0 0;--hv-g-h:min(52vh,600px);
-font-family:var(--font-sans);color:var(--text-body);background:var(--paper-200);overflow-x:clip;
+font-family:var(--font-sans);color:var(--teal-100);background:var(--teal-1000);overflow-x:clip;
 font-variant-numeric:lining-nums tabular-nums;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
 font-size:1rem;line-height:1.65;letter-spacing:0;text-align:left
 }
@@ -276,5 +276,5 @@ html body{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
 #hv-root .hvh1:focus{border-bottom-color:#F4F1EA!important}
 #hv-root .hvh2:hover{transform:scale(1.03)!important}
 #hv-root .hvh3:hover{transform:scale(1.04)!important}
-#hv-root .hvh4:hover{color:var(--teal-500)!important}
+#hv-root .hvh4:hover{color:var(--teal-200)!important}
 #hv-root .hvh5:hover{color:#fff!important;text-decoration:underline!important}
