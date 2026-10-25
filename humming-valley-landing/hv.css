@@ -219,14 +219,15 @@ html body{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
 #hv-root form,#hv-root form label,#hv-root #faq p,#hv-root [data-ref="hTrack"] li,#hv-root #amenities ul,#hv-root #amenities li{text-align:left}
 #hv-root [data-ref="hTrack"] .hv-frow,#hv-root [data-show^="amen:"] .hv-frow{justify-content:flex-start!important}
 /* buttons are full width pills with the label centred */
-#hv-root .hv-btn{width:100%;max-width:400px;justify-content:space-between;text-align:center;white-space:normal}
+#hv-root .hv-btn{width:100%;max-width:400px;margin-left:auto;margin-right:auto;justify-content:space-between;text-align:center;white-space:normal}
 #hv-root .hv-btn::before{content:"";flex:none;width:38px}
 #hv-root .hv-btn--lg::before{width:46px}
 /* questions: topic chips on top, one topic at a time */
 #hv-root [data-grp="faq-wrap"]{grid-template-columns:1fr!important;gap:18px!important}
 #hv-root [data-grp="faq-tabs"]{flex-direction:row!important;position:static!important;overflow-x:auto;gap:8px!important;margin:0 -20px;padding:2px 20px 8px;scrollbar-width:none;justify-content:flex-start!important;align-items:center!important}
 #hv-root [data-grp="faq-tabs"]::-webkit-scrollbar{display:none}
-#hv-root [data-grp="faq-tabs"] button{flex:none;padding:12px 18px!important;gap:10px!important;white-space:nowrap;text-align:center!important}
+#hv-root [data-grp="faq-tabs"] button{flex:none!important;padding:12px 18px!important;gap:10px!important;white-space:nowrap!important;text-align:center!important}
+#hv-root section img[aria-hidden="true"][width]{margin-left:auto;margin-right:auto}
 /* hero: photo on top, words below it, so the family stays visible */
 #hv-root [data-grp="hero-bg"]{bottom:auto!important;height:74svh!important}
 #hv-root [data-grp="hero-ov"]{background:linear-gradient(to bottom,rgba(4,17,15,.38) 0,rgba(4,17,15,.04) 24svh,rgba(4,17,15,.3) 52svh,#04110F 76svh)!important}
