@@ -222,9 +222,8 @@ html body{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
 #hv-root section a{justify-content:center}
 #hv-root section dd{align-items:center}
 /* buttons are full width pills with the label centred */
-#hv-root .hv-btn{width:100%;max-width:400px;margin-left:auto;margin-right:auto;justify-content:space-between;text-align:center;white-space:normal}
-#hv-root .hv-btn::before{content:"";flex:none;width:38px}
-#hv-root .hv-btn--lg::before{width:46px}
+#hv-root .hv-btn{width:100%;max-width:400px;margin-left:auto;margin-right:auto;justify-content:space-between;text-align:left;white-space:normal;padding-left:24px;letter-spacing:.15em}
+#hv-root .hv-btn--lg{letter-spacing:.17em}
 /* questions: topic chips on top, one topic at a time */
 #hv-root [data-grp="faq-wrap"]{grid-template-columns:1fr!important;gap:18px!important}
 #hv-root [data-grp="faq-tabs"]{flex-direction:row!important;position:static!important;overflow-x:auto;gap:8px!important;margin:0 -20px;padding:2px 20px 8px;scrollbar-width:none;justify-content:flex-start!important;align-items:center!important}
@@ -236,6 +235,16 @@ html body{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
 #hv-root [data-grp="hero-ov"]{background:linear-gradient(to bottom,rgba(4,17,15,.38) 0,rgba(4,17,15,.04) 24svh,rgba(4,17,15,.3) 52svh,#04110F 76svh)!important}
 #hv-root [data-grp="hero-in"]{padding-top:50svh!important}
 #hv-root [data-grp="hero-in"] dd{white-space:normal!important}
+/* hero details: one calm block instead of a long stack */
+#hv-root [data-grp="hero-in"]{padding-bottom:40px!important}
+#hv-root [data-grp="hero-in"] > div:first-child{gap:16px!important}
+#hv-root [data-grp="hero-in"] p{font-size:1rem!important;line-height:1.6!important;max-width:34ch!important}
+#hv-root [data-grp="hero-in"] dl{display:grid!important;grid-template-columns:1fr 1fr;gap:0!important;margin:6px 0 4px!important;padding:0!important;background:rgba(7,26,23,.5)!important;border:1px solid rgba(244,241,234,.16);border-radius:18px;overflow:hidden;max-width:none!important}
+#hv-root [data-grp="hero-in"] dl > div{padding:16px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:84px}
+#hv-root [data-grp="hero-in"] dl > div:nth-child(odd){border-right:1px solid rgba(244,241,234,.12)}
+#hv-root [data-grp="hero-in"] dl > div:nth-child(-n+2){border-bottom:1px solid rgba(244,241,234,.12)}
+#hv-root [data-grp="hero-in"] dt{font-size:10px!important;letter-spacing:.16em!important;line-height:1.3}
+#hv-root [data-grp="hero-in"] dd{font-size:1.05rem!important;margin-top:6px!important;line-height:1.2;text-wrap:balance}
 #hv-root #film p{white-space:normal!important}
 /* day and night image */
 #hv-root [data-grp="promise-fig"]{aspect-ratio:4/5!important}
