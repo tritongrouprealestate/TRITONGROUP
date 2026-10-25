@@ -303,7 +303,7 @@
     var io = new IntersectionObserver(function (ents) {
       ents.forEach(function (e) {
         if (!e.isIntersecting) return;
-        var el = e.target; el.style.opacity = '1'; el.style.transform = 'none'; el.style.clipPath = 'inset(0 0 0 0)';
+        var el = e.target; el.style.opacity = '1'; el.style.transform = 'none'; el.style.clipPath = 'inset(-160px -160px -160px -160px)';
         $$('[data-count]', el).forEach(count); io.unobserve(el);
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
