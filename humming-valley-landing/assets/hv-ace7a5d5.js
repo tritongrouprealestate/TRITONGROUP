@@ -6,7 +6,7 @@ window.HV_DATA={"GALLERY":[{"img":"https://tritongroup.in/wp-content/uploads/hv/
   var D = window.HV_DATA;
   var GALLERY = D.GALLERY, TYPES = D.TYPES, REV = D.REV, AMEN = D.AMEN, STORY = D.STORY, MODALS = D.MODALS;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var st = { story: 0, type: 0, facing: 0, rev: 0, amen: 0, faq: 0, sig: 0, night: false, heroAlt: false, modal: null, lb: -1, interest: [], pastHero: false };
+  var st = { story: 0, type: 0, facing: 0, rev: 0, amen: 0, faq: 1, sig: 0, faqG: 0, night: false, heroAlt: false, modal: null, lb: -1, interest: [], pastHero: false };
   var hTotal = 0;
 
   function $(s, r) { return (r || root).querySelector(s); }
@@ -80,6 +80,11 @@ window.HV_DATA={"GALLERY":[{"img":"https://tritongroup.in/wp-content/uploads/hv/
     T('amenCap', AMEN[st.amen].cap);
   }
   function renderFaq() {
+    $$('[data-faq-g]').forEach(function (el) { el.classList.toggle('hv-hide', +el.getAttribute('data-faq-g') !== st.faqG); });
+    $$('button[data-click^="faqtab:"]').forEach(function (b) {
+      var on = +b.getAttribute('data-click').split(':')[1] === st.faqG;
+      b.setAttribute('aria-selected', on); b.style.background = on ? 'var(--ink-900)' : 'transparent'; b.style.color = on ? 'var(--paper-100)' : 'var(--ink-900)'; b.style.borderColor = on ? 'var(--ink-900)' : 'var(--line-strong)';
+    });
     $$('button[data-click^="faq:"]').forEach(function (b) {
       var i = +b.getAttribute('data-click').split(':')[1], on = i === st.faq;
       b.setAttribute('aria-expanded', on); b.querySelector('span[aria-hidden]').style.transform = on ? 'rotate(45deg)' : 'none'; show('faq:' + i, on);
@@ -93,7 +98,7 @@ window.HV_DATA={"GALLERY":[{"img":"https://tritongroup.in/wp-content/uploads/hv/
     });
   }
   function renderNight() {
-    var night = $('img[src$="rooftop-jacuzzi-night.webp"]'); if (night) night.style.opacity = st.night ? 1 : 0;
+    var night = $('[data-grp="night-img"]'); if (night) night.style.opacity = st.night ? 1 : 0;
     $$('button[data-click^="night:"]').forEach(function (b) {
       var v = b.getAttribute('data-click') === 'night:true', on = st.night === v;
       b.setAttribute('aria-pressed', on); b.style.background = on ? 'var(--paper-100)' : 'transparent'; b.style.color = on ? 'var(--teal-1000)' : 'var(--paper-100)';
@@ -202,6 +207,11 @@ window.HV_DATA={"GALLERY":[{"img":"https://tritongroup.in/wp-content/uploads/hv/
     rev: function (a) { st.rev = +a; renderRev(); },
     amen: function (a) { st.amen = +a; renderAmen(); },
     amenHover: function (a) { if (!mob()) { st.amen = +a; renderAmen(); } },
+    faqtab: function (a) {
+      st.faqG = +a;
+      var first = $('[data-faq-g="' + a + '"] button[data-click^="faq:"]');
+      st.faq = first ? +first.getAttribute('data-click').split(':')[1] : -1; renderFaq();
+    },
     faq: function (a) { st.faq = st.faq === +a ? -1 : +a; renderFaq(); },
     interest: function (a) { var i = st.interest.indexOf(a); if (i > -1) st.interest.splice(i, 1); else st.interest.push(a); renderInterest(); },
     night: function (a) { st.night = a === 'true'; renderNight(); },
