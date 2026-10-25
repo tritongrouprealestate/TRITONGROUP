@@ -408,8 +408,9 @@
 .tg-home .tg-lb.is-open{opacity:1;pointer-events:auto}
 .tg-has-js .tg-home [data-reveal]{opacity:0;transform:translateY(28px);transition:opacity 1100ms cubic-bezier(.16,1,.3,1),transform 1100ms cubic-bezier(.16,1,.3,1)}
 .tg-has-js .tg-home [data-reveal].is-in{opacity:1;transform:none}
-.tg-has-js .tg-home [data-df-fade]{opacity:0;transform:translateY(10px);transition:opacity 1100ms cubic-bezier(.16,1,.3,1),transform 1100ms cubic-bezier(.16,1,.3,1)}
-.tg-has-js .tg-home [data-df-fade].is-in{opacity:1;transform:none}
+.tg-home [data-df-fade]{opacity:0;transform:translateY(10px);animation:tg-fi 900ms cubic-bezier(.16,1,.3,1) 450ms forwards}
+.tg-home [data-df-fade]+[data-df-fade]{animation-delay:570ms}
+@keyframes tg-fi{to{opacity:1;transform:none}}
 .tg-home .tg-ticker{animation:tg-tick 120s linear infinite}
 @keyframes tg-tick{to{transform:translate3d(-50%,0,0)}}
 .tg-home .tg-ev-mob{display:none}
@@ -418,7 +419,8 @@
 .tg-home .tg-faq-item.is-open .tg-faq-body{grid-template-rows:1fr}
 .tg-home .tg-ev-track-still,.tg-home .tg-ev-track-still *{transition:none!important}
 @media (prefers-reduced-motion:reduce){
-.tg-has-js .tg-home [data-reveal],.tg-has-js .tg-home [data-df-fade]{opacity:1;transform:none;transition:none}
+.tg-has-js .tg-home [data-reveal]{opacity:1;transform:none;transition:none}
+.tg-home [data-df-fade]{opacity:1;transform:none;animation:none}
 .tg-home .tg-ticker{animation:none}
 .tg-home *{scroll-behavior:auto!important}
 }

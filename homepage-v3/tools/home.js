@@ -161,7 +161,7 @@
     function restart() {
       build(); s.t0 = performance.now(); ready = false;
       clearTimeout(readyTimer);
-      readyTimer = setTimeout(function () { ready = true; fades.forEach(function (e) { e.classList.add('is-in'); }); setCopy(); }, reduce ? 0 : 1700);
+      readyTimer = setTimeout(function () { ready = true; fades.forEach(function (e) { e.classList.add('is-in'); }); setCopy(); }, reduce ? 0 : 900);
     }
     function frame(now) {
       rafId = 0; if (!alive) return;
@@ -228,7 +228,7 @@
     var started = false;
     function go() { if (started || !alive) return; started = true; restart(); onHeroScroll(); ro.observe(stage); io.observe(stage); rafId = requestAnimationFrame(frame); }
     fr.then(go);
-    setTimeout(go, 2500); // never wait forever on the web font
+    setTimeout(go, 1500); // never wait long on the web font
   })();
 
   /* ---------- gallery: filter tabs and lightbox ---------- */

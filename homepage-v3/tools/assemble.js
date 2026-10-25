@@ -54,8 +54,9 @@ const extraCss = extraRules.map(([sel, d]) => `.tg-home ${sel}{${prefixFix(d)}}`
 const motion = `
 .tg-has-js .tg-home [data-reveal]{opacity:0;transform:translateY(28px);transition:opacity 1100ms cubic-bezier(.16,1,.3,1),transform 1100ms cubic-bezier(.16,1,.3,1)}
 .tg-has-js .tg-home [data-reveal].is-in{opacity:1;transform:none}
-.tg-has-js .tg-home [data-df-fade]{opacity:0;transform:translateY(10px);transition:opacity 1100ms cubic-bezier(.16,1,.3,1),transform 1100ms cubic-bezier(.16,1,.3,1)}
-.tg-has-js .tg-home [data-df-fade].is-in{opacity:1;transform:none}
+.tg-home [data-df-fade]{opacity:0;transform:translateY(10px);animation:tg-fi 900ms cubic-bezier(.16,1,.3,1) 450ms forwards}
+.tg-home [data-df-fade]+[data-df-fade]{animation-delay:570ms}
+@keyframes tg-fi{to{opacity:1;transform:none}}
 .tg-home .tg-ticker{animation:tg-tick 120s linear infinite}
 @keyframes tg-tick{to{transform:translate3d(-50%,0,0)}}
 .tg-home .tg-ev-mob{display:none}
@@ -64,7 +65,8 @@ const motion = `
 .tg-home .tg-faq-item.is-open .tg-faq-body{grid-template-rows:1fr}
 .tg-home .tg-ev-track-still,.tg-home .tg-ev-track-still *{transition:none!important}
 @media (prefers-reduced-motion:reduce){
-.tg-has-js .tg-home [data-reveal],.tg-has-js .tg-home [data-df-fade]{opacity:1;transform:none;transition:none}
+.tg-has-js .tg-home [data-reveal]{opacity:1;transform:none;transition:none}
+.tg-home [data-df-fade]{opacity:1;transform:none;animation:none}
 .tg-home .tg-ticker{animation:none}
 .tg-home *{scroll-behavior:auto!important}
 }
@@ -95,6 +97,6 @@ body = body.replace(/(src|data-big)="img\//g, '$1="%%A%%/img/').replace(/url\(im
 const ld = [...SRC.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(m => m[1]);
 ld.forEach(j => JSON.parse(j));
 const ldHtml = ld.map(j => `<script type="application/ld+json">${j}</script>`).join('\n');
-const html = `<link rel="stylesheet" href="%%A%%/home.css?ver=%%V%%">\n<script>(function(d){d.classList.add('tg-has-js');setTimeout(function(){if(!window.__tgReady)d.classList.remove('tg-has-js')},6000)})(document.documentElement)</script>\n${body}\n${ldHtml}\n<script src="%%A%%/home.js?ver=%%V%%" defer></script>`;
+const html = `<link rel="preload" as="font" type="font/woff2" href="%%A%%/fonts/gloock-latin.woff2" crossorigin>\n<link rel="preload" as="font" type="font/woff2" href="%%A%%/fonts/instrument-latin.woff2" crossorigin>\n<link rel="stylesheet" href="%%A%%/home.css?ver=%%V%%">\n<script>(function(d){d.classList.add('tg-has-js');setTimeout(function(){if(!window.__tgReady)d.classList.remove('tg-has-js')},6000)})(document.documentElement)</script>\n${body}\n${ldHtml}\n<script src="%%A%%/home.js?ver=%%V%%" defer></script>`;
 fs.writeFileSync(`${B}/home.fragment.html`, html);
 console.log('css', css.length, 'html', html.length, 'ld blocks', ld.length);
