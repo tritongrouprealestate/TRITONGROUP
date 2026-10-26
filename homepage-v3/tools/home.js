@@ -106,7 +106,7 @@
       var bTop = Math.max(120, H * 0.17);
       var bBot = fades[0] ? fades[0].getBoundingClientRect().top - sr.top - 28 : H * 0.75;
       var band = Math.max(60, bBot - bTop), mid = bTop + band / 2;
-      var size = Math.min(W * 0.115, band * 0.9, 176), lines = [];
+      var narrow = W < 700, size = narrow ? Math.min(W * 0.27, band * 0.5, 176) : Math.min(W * 0.115, band * 0.9, 176), lines = [];
       for (;;) {
         g.font = font(size); lines = []; var cur = '';
         for (var i = 0; i < words.length; i++) {
@@ -121,7 +121,8 @@
       try { g.letterSpacing = (-size * 0.03) + 'px'; } catch (e) { }
       var lh = size, top = mid - ((lines.length - 1) * lh) / 2;
       g.fillStyle = '#000'; lines.forEach(function (l, i) { g.fillText(l, W / 2, top + i * lh); });
-      var d = g.getImageData(0, 0, W, H).data, pts = [], step = Math.max(3, Math.round(size / 32));
+      var d = g.getImageData(0, 0, W, H).data, pts = [], step = Math.max(2, Math.round(size / 40));
+      s.step = step;
       for (var y = 0; y < H; y += step) for (var x = 0; x < W; x += step) if (d[(y * W + x) * 4 + 3] > 128) pts.push(x, y);
       return pts;
     }
@@ -201,7 +202,7 @@
           var x = P[k], y = P[k + 1], v = Math.abs(P[k + 2]) + Math.abs(P[k + 3]), gridA = Math.min(0.45, 0.1 + v * 0.05);
           if (isT) {
             var settle = reduce ? 1 - q : Math.min(1, Math.max(0, local * 1.2)) * (1 - q);
-            var a = (0.34 + settle * 0.62) * (1 - q) + gridA * q, r = 1.05 - q * 0.3;
+            var a = (0.34 + settle * 0.62) * (1 - q) + gridA * q, r = Math.max(1.05, (s.step || 3) * 0.36) * (1 - q * 0.45);
             ctx.globalAlpha = a; ctx.fillRect(x - r, y - r, r * 2, r * 2);
             if (q < 1 && !reduce) {
               var w = Math.max(0, 1 - Math.abs(x / W - sweep) * 7), ga = (w * 0.9 + (1 - settle) * 0.25) * (1 - q);
