@@ -81,6 +81,18 @@ const motion = `
 .tg-has-js .tg-home .tg-sig-b{clip-path:inset(-8% 100% -12% 0);transition:clip-path 1.5s cubic-bezier(.16,1,.3,1) .15s}
 .tg-has-js .tg-home .tg-sig.is-in .tg-sig-b{clip-path:inset(-8% -4% -12% 0)}
 @media (max-width:860px){.tg-home .tg-sig{grid-template-columns:minmax(0,1fr);align-items:start;border-radius:22px}.tg-home .tg-sig-side{padding-bottom:0}}
+.tg-home .tg-tq-row{display:contents}
+@media (max-width:759.98px){
+.tg-home .s16{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:0 14px!important}
+.tg-home .s16 .s17{padding-top:18px!important;gap:5px!important}
+.tg-home .s16 .s18{white-space:normal!important;font-size:clamp(.98rem,4.4vw,1.15rem)!important;line-height:1.18!important}
+.tg-home .s16 .s17 .s19{font-size:12px!important;line-height:1.3}
+.tg-home .tg-tq-row{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 calc(var(--page-margin,20px)*-1);padding:0 var(--page-margin,20px) 8px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.tg-home .tg-tq-row::-webkit-scrollbar{display:none}
+.tg-home .tg-tq-row>article{flex:0 0 82%;scroll-snap-align:center;min-width:0}
+.tg-home [data-tg="feat"]>div:first-child{min-height:210px!important;max-height:260px!important}
+.tg-home [data-tg="bento"]>.tg-bn3{min-height:0!important}
+}
 @media (prefers-reduced-motion:reduce){.tg-home .tg-sig-b{animation:none;clip-path:none!important;transition:none}}
 @media (prefers-reduced-motion:reduce){
 .tg-has-js .tg-home [data-reveal]{opacity:1;transform:none;transition:none}
