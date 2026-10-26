@@ -411,13 +411,31 @@
 .tg-home [data-df-fade]{opacity:0;transform:translateY(10px);animation:tg-fi 900ms cubic-bezier(.16,1,.3,1) 450ms forwards}
 .tg-home [data-df-fade]+[data-df-fade]{animation-delay:570ms}
 @keyframes tg-fi{to{opacity:1;transform:none}}
-.tg-home .tg-ticker{animation:tg-tick 120s linear infinite}
+.tg-home .tg-ticker{animation:tg-tick 40s linear infinite}
 @keyframes tg-tick{to{transform:translate3d(-50%,0,0)}}
 .tg-home .tg-ev-mob{display:none}
 .tg-home .tg-lb-img{width:min(1400px,calc(100vw - 64px));height:76vh;background-size:contain;background-position:center;background-repeat:no-repeat;border-radius:16px}
 .tg-home .tg-faq-item .tg-faq-body{grid-template-rows:0fr}
 .tg-home .tg-faq-item.is-open .tg-faq-body{grid-template-rows:1fr}
 .tg-home .tg-ev-track-still,.tg-home .tg-ev-track-still *{transition:none!important}
+.tg-home .tg-sig{position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:clamp(28px,5vw,80px);align-items:end;padding:clamp(40px,6vw,88px) clamp(24px,5vw,80px);border-radius:28px;border:1px solid rgba(111,203,176,.18);background:radial-gradient(60% 120% at 8% 0%,rgba(111,203,176,.17),transparent 62%),radial-gradient(55% 100% at 100% 100%,rgba(27,86,74,.6),transparent 66%),linear-gradient(160deg,#0E322C 0%,#071A17 55%,#04110F 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 40px 90px rgba(0,0,0,.45)}
+.tg-home .tg-sig:before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(90deg,rgba(159,186,178,.07) 0 1px,transparent 1px 96px),repeating-linear-gradient(0deg,rgba(159,186,178,.05) 0 1px,transparent 1px 96px);-webkit-mask-image:radial-gradient(80% 90% at 20% 30%,#000,transparent 75%);mask-image:radial-gradient(80% 90% at 20% 30%,#000,transparent 75%)}
+.tg-home .tg-sig:after{content:"";position:absolute;right:-10%;top:-55%;width:clamp(280px,46vw,640px);aspect-ratio:1;border-radius:50%;pointer-events:none;border:1px solid rgba(159,186,178,.16);box-shadow:0 0 0 clamp(26px,4vw,56px) rgba(159,186,178,.035),0 0 0 clamp(52px,8vw,112px) rgba(159,186,178,.025)}
+.tg-home .tg-sig>*{position:relative;z-index:1}
+.tg-home .tg-sig-title{display:flex;flex-direction:column;align-items:flex-start;gap:clamp(6px,1vw,14px);margin:0}
+.tg-home .tg-sig-a{display:flex;align-items:center;gap:16px;font-family:var(--font-sans);font-size:clamp(.78rem,1.2vw,1rem);font-weight:500;letter-spacing:.38em;text-transform:uppercase;color:var(--teal-200)}
+.tg-home .tg-sig-a:before{content:"";width:clamp(32px,5vw,72px);height:1px;background:linear-gradient(90deg,transparent,var(--teal-200))}
+.tg-home .tg-sig-b{font-family:var(--font-display);font-weight:400;font-size:clamp(3.4rem,11.5vw,10rem);line-height:.92;letter-spacing:-.035em;padding:0 .06em .14em 0;background:linear-gradient(100deg,#6FCBB0 0%,#FFFFFF 32%,#DCEBE6 52%,#6FCBB0 100%) 0 0/230% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:tg-shine 9s ease-in-out infinite}
+@keyframes tg-shine{0%,100%{background-position:0 0}50%{background-position:100% 0}}
+.tg-home .tg-sig-side{display:flex;flex-direction:column;align-items:flex-start;gap:20px;padding-bottom:.6em}
+.tg-home .tg-sig-lead{font-size:var(--type-lead);line-height:1.5;color:var(--teal-100);max-width:30ch}
+.tg-home .tg-sig-meta{display:flex;flex-wrap:wrap;gap:8px 22px;margin:0;padding:0;list-style:none;font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--teal-200)}
+.tg-home .tg-sig-meta li{display:flex;align-items:baseline}
+.tg-home .tg-sig-meta b{font-family:var(--font-display);font-weight:400;font-size:1.9em;letter-spacing:0;color:var(--paper-100);margin-right:.35em}
+.tg-has-js .tg-home .tg-sig-b{clip-path:inset(-8% 100% -12% 0);transition:clip-path 1.5s cubic-bezier(.16,1,.3,1) .15s}
+.tg-has-js .tg-home .tg-sig.is-in .tg-sig-b{clip-path:inset(-8% -4% -12% 0)}
+@media (max-width:860px){.tg-home .tg-sig{grid-template-columns:minmax(0,1fr);align-items:start;border-radius:22px}.tg-home .tg-sig-side{padding-bottom:0}}
+@media (prefers-reduced-motion:reduce){.tg-home .tg-sig-b{animation:none;clip-path:none!important;transition:none}}
 @media (prefers-reduced-motion:reduce){
 .tg-has-js .tg-home [data-reveal]{opacity:1;transform:none;transition:none}
 .tg-home [data-df-fade]{opacity:1;transform:none;animation:none}
