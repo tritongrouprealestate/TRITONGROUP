@@ -178,7 +178,7 @@ window.HV_DATA={"GALLERY":[{"img":"https://tritongroup.in/wp-content/uploads/hv/
     function reset(msg) { done = true; obs.disconnect(); btn.disabled = false; btn.textContent = label; note(f, msg); }
     var obs = new MutationObserver(function () {
       if (done) return;
-      var err = jp.querySelector('.contact-form__input-error.has-errors [data-wp-text], .contact-form__error, .form-errors');
+      var err = jp.querySelector('.contact-form__error.show-errors .contact-form__error-message, .contact-form__input-error.has-errors [data-wp-text]');
       var msg = err && err.textContent.trim();
       if (msg) { reset(msg); return; }
       if (document.querySelector('.contact-form-submission, .contact-form__success, [class*="submission-success"]') || !document.contains(dst)) {
