@@ -238,6 +238,8 @@ JS = r"""
 (function(){
 var root=document.getElementById('tg-op');if(!root)return;
 root.classList.add('tg-js');
+/* theme hook: the hero is dark, so let the fixed header float transparent over it (theme turns it solid after 80px of scroll) */
+var hw=document.querySelector('.site-header .header-wrapper.position-fixed');if(hw)hw.classList.add('is-transparent');
 var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 /* tracking: feeds the site's existing dataLayer / gtag / fbq, no extra tags are loaded */
 window.dataLayer=window.dataLayer||[];
