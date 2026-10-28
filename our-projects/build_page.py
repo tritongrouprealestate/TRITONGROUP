@@ -8,7 +8,7 @@ OUT = sys.argv[1]
 UP = 'https://tritongroup.in/wp-content/uploads/'
 IMG = {
     'hv': UP + '2026/03/triton-humming-valley-villas-nandi-hills.webp',
-    'aero': UP + '2026/10/sanvi-aero-gardens-rooftop-pool-sunset.webp',
+    'aero': UP + '2026/03/sanvi-aero-gardens-rooftop-pool-dusk.webp',
     'eloria': UP + '2026/03/triton-codename-eloria-villas-rajanukunte.webp',
     'uitc': UP + '2026/03/triton-up-in-the-clouds-villas-nandi-hills.webp',
     'high': UP + '2026/03/triton-highstreet-commercial-bagalur.webp',
@@ -19,8 +19,8 @@ IMG = {
     'eus': UP + '2026/05/WhatsApp-Image-2026-05-05-at-12.15.23-PM.webp',
 }
 e = escape
-def wa(n):
-    return 'https://wa.me/919036682626?text=' + quote("Hi, I'd like details on " + n, safe="'")
+def wa(n, num='919036682626'):
+    return 'https://wa.me/' + num + '?text=' + quote("Hi, I'd like details on " + n, safe="'")
 
 ongoing = [
     dict(slug='triton-humming-valley', name='Triton Humming Valley', tags='villas', badge='Ongoing · Villas',
@@ -28,15 +28,15 @@ ongoing = [
          desc='A private, Bali-inspired retreat of 3, 4 & 5 BHK triplex villas at the foothills of Nandi Hills. Resort-like living with a lift to every floor, an indoor waterfall and a roof terrace with plunge pool.',
          facts=[('Starting from', '₹3.5 Cr'), ('Configuration', '3, 4 & 5 BHK'), ('Villas', '30'), ('Possession', 'Oct 2026')],
          points=['Infinity swimming pools, jacuzzis & clubhouse amenities', 'Rental income of ₹30 to 36 Lakhs annually', 'STRR & NH44 highway 15 minutes away', 'Kempegowda International Airport in 30 minutes'],
-         rera='PRM/KA/RERA/1254/460/PR/131224/007292', url='https://villas.tritongroup.in/', cta='Discover Humming Valley',
+         rera='PRM/KA/RERA/1254/460/PR/131224/007292', url='https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/', cta='Discover Humming Valley',
          img=IMG['hv'], w=1446, h=1087, alt='Triton Humming Valley luxury villas near Nandi Hills, North Bangalore'),
     dict(slug='sanvi-aero-gardens', name='Sanvi Aero Gardens', tags='apartments', badge='Ongoing · Apartments',
          location='Kannamangala Gate, Devanahalli · Near Bengaluru Airport',
          desc='Spacious 1 BHK apartments in Block A, 600 to 820 sq ft, beside NH44. 316 homes on 5 acres with rooftop pools and a 10,000 sq ft clubhouse, in North Bengaluru’s fastest-growing rental market.',
          facts=[('Starting from', '₹68 Lakhs'), ('Configuration', '1 BHK · 600 to 820 sq ft'), ('Land · Units', '5 acres · 316'), ('Completion', 'Dec 2027')],
          points=['Rooftop swimming pools & 10,000 sq ft clubhouse', 'Right beside NH44 National Highway', '15 minutes from KIADB & Aerospace tech parks', '10 minutes from Kempegowda International Airport'],
-         rera='ACK/KA/RERA/1250/303/PR/201124/008686', url='https://tritongroup.in/residential-projects-north-bangalore-triton-group/', cta='View Aero Gardens',
-         img=IMG['aero'], w=1200, h=900, alt='Rooftop pool at Sanvi Aero Gardens apartments near Kempegowda Airport, North Bangalore'),
+         rera='ACK/KA/RERA/1250/303/PR/201124/008686', url='https://tritongroup.in/sanvi-aero-gardens-apartments-north-bangalore/', cta='View Aero Gardens', wa_num='917996103103',
+         img=IMG['aero'], w=1200, h=800, alt='Rooftop pool terrace at dusk at Sanvi Aero Gardens apartments near Kempegowda Airport, North Bangalore'),
 ]
 upcoming = [
     dict(slug='triton-codename-eloria', name='Triton Codename Eloria', tags='villas', type='Villas', theme='French-themed', location='Rajanukunte, near Yelahanka',
@@ -309,7 +309,7 @@ def feature(p):
     ) % dict(slug=p['slug'], tags=p['tags'], nm=e(p['name']), pic=picture(p), badge=e(p['badge']), loc=e(p['location']), desc=e(p['desc']),
              facts=facts, pts=pts, rera=e(p['rera']),
              b1=btn(p['url'], e(p['cta']), 'primary', 'project_details', p['name']),
-             b2=btn(wa(p['name']), 'Enquire on WhatsApp', 'secondary', 'whatsapp_click', p['name'], extra=' target="_blank" rel="noopener"'))
+             b2=btn(wa(p['name'], p.get('wa_num', '919036682626')), 'Enquire on WhatsApp', 'secondary', 'whatsapp_click', p['name'], extra=' target="_blank" rel="noopener"'))
 
 def card(p):
     return (
@@ -347,7 +347,7 @@ jsonld = {
     "@context": "https://schema.org",
     "@graph": [
         {"@type": "ItemList", "name": "Triton Group projects", "itemListElement": [
-            {"@type": "ListItem", "position": 1, "item": {"@type": "Residence", "name": "Triton Humming Valley", "description": "3, 4 & 5 BHK Bali-inspired triplex villas near Nandi Hills, North Bangalore. RERA PRM/KA/RERA/1254/460/PR/131224/007292.", "url": "https://villas.tritongroup.in/", "address": {"@type": "PostalAddress", "addressLocality": "Nandi Hills, North Bangalore", "addressRegion": "Karnataka", "addressCountry": "IN"}}},
+            {"@type": "ListItem", "position": 1, "item": {"@type": "Residence", "name": "Triton Humming Valley", "description": "3, 4 & 5 BHK Bali-inspired triplex villas near Nandi Hills, North Bangalore. RERA PRM/KA/RERA/1254/460/PR/131224/007292.", "url": "https://tritongroup.in/triton-humming-valley-villas-in-nandi-hills-bangalore/", "address": {"@type": "PostalAddress", "addressLocality": "Nandi Hills, North Bangalore", "addressRegion": "Karnataka", "addressCountry": "IN"}}},
             {"@type": "ListItem", "position": 2, "item": {"@type": "ApartmentComplex", "name": "Sanvi Aero Gardens", "description": "Spacious 1 BHK apartments (600 to 820 sq ft) near Kempegowda International Airport, 316 units on 5 acres. RERA ACK/KA/RERA/1250/303/PR/201124/008686.", "numberOfAccommodationUnits": 316, "address": {"@type": "PostalAddress", "addressLocality": "North Bangalore", "addressRegion": "Karnataka", "addressCountry": "IN"}}},
             {"@type": "ListItem", "position": 3, "item": {"@type": "Residence", "name": "Triton Codename Eloria", "description": "French-themed 4.5 & 5 BHK luxury villas in Rajanukunte, North Bengaluru."}},
             {"@type": "ListItem", "position": 4, "item": {"@type": "Place", "name": "Triton Highstreet", "description": "Premium commercial development at KIADB Tech Park, Bagalur."}},
