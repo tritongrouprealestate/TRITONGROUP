@@ -455,6 +455,8 @@
 .tg-home .tg-why-foot{flex-direction:column!important;align-items:stretch!important;gap:18px!important}
 .tg-home .tg-why-foot>a{justify-content:center;text-align:center}
 }
+.tg-home .tg-df-grid{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(circle,rgba(244,241,234,.2) 0,rgba(244,241,234,.2) .85px,transparent 1.15px);background-size:18px 12px;background-position:-15px -7px}
+.tg-home [data-tg="df-glow"]{filter:none!important;mix-blend-mode:normal!important;opacity:.9}
 @media (prefers-reduced-motion:reduce){.tg-home .tg-sig-b{animation:none;clip-path:none!important;transition:none}}
 @media (prefers-reduced-motion:reduce){
 .tg-has-js .tg-home [data-reveal]{opacity:1;transform:none;transition:none}

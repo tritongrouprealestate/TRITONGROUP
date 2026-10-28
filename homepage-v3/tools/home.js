@@ -86,68 +86,74 @@
   $$('[data-reveal]').forEach(function (el) { rio.observe(el); });
 
   /* ---------- hero: dot-matrix headline that scatters on scroll ---------- */
+  /* Only the headline dots live on the canvas. The resting dot grid is plain CSS (.tg-df-grid), which is why this is cheap.
+     The letters start almost assembled, then a very small shimmer fades in, so the word always feels slightly restless. */
   (function hero() {
     var outer = tg('df-outer'), stage = tg('df-stage'), cv = tg('df-dots'), gl = tg('df-glow');
     if (!outer || !stage || !cv || !gl || !cv.getContext) return;
     var ctx = cv.getContext('2d'), gtx = gl.getContext('2d');
     var spot = tg('df-spot'), copy = tg('df-copy'), hint = tg('df-hint'), lab = tg('df-label'), ms = tg('df-mouse'), wheel = tg('df-wheel');
-    var o = { headline: 'Triton Group', font: 'Gloock, Georgia, serif', weight: 400, grid: [18, 12], R: 130, accent: '#9FBAB2', fg: '#F4F1EA' };
-    var s = { W: 0, H: 0, N: 0, P: new Float32Array(0), t0: 0, scrollP: 0, last: 0, kick: 0, mouse: { x: -9999, y: -9999, on: false } };
-    var rafId = 0, visible = true, alive = true, ready = false, readyTimer = 0, rt = 0;
+    var lowEnd = (navigator.hardwareConcurrency || 8) <= 4 || (navigator.deviceMemory || 8) <= 4;
+    var o = { headline: 'Triton Group', font: 'Gloock, Georgia, serif', weight: 400, R: 130, fg: '#F4F1EA', accent: '#9FBAB2' };
+    var GX = 18, GY = 12, NB = 8, NG = 4;
+    var s = { W: 0, H: 0, N: 0, P: new Float32Array(0), t0: 0, scrollP: 0, last: 0, kick: 0, step: 3, dpr: 1, tick: 0, slow: 0, half: false, mouse: { x: -9999, y: -9999, on: false } };
+    var rafId = 0, visible = true, alive = true, ready = false, readyTimer = 0, rt = 0, lastNow = 0, bx = [], by = [], bc = [], gx = [], gy = [], gc = [];
     var FLOW = function (x, y, t) { return (Math.sin(x * 0.004 + t * 0.7) + Math.cos(y * 0.005 - t * 0.5) + Math.sin((x + y) * 0.002 + t * 0.3)) * Math.PI; };
     var fades = $$('[data-df-fade]', stage);
-    fades.forEach(function (e, i) { e.style.transitionDelay = (i * 120) + 'ms'; });
+    var meas = document.createElement('canvas').getContext('2d');
 
     function sample() {
-      var W = s.W, H = s.H, c = document.createElement('canvas'), g = c.getContext('2d', { willReadFrequently: true });
-      c.width = W; c.height = H;
-      var font = function (px) { return o.weight + ' ' + px + 'px ' + o.font; }, words = o.headline.split(/\s+/);
+      var W = s.W, H = s.H, font = function (px) { return o.weight + ' ' + px + 'px ' + o.font; }, words = o.headline.split(/\s+/);
       var sr = stage.getBoundingClientRect();
       var bTop = Math.max(120, H * 0.17);
       var bBot = fades[0] ? fades[0].getBoundingClientRect().top - sr.top - 28 : H * 0.75;
-      var band = Math.max(60, bBot - bTop), mid = bTop + band / 2;
-      var narrow = W < 700, size = narrow ? Math.min(W * 0.27, band * 0.5, 176) : Math.min(W * 0.115, band * 0.9, 176), lines = [];
+      var band = Math.max(60, bBot - bTop), mid = bTop + band / 2, narrow = W < 700;
+      var size = narrow ? Math.min(W * 0.27, band * 0.5, 176) : Math.min(W * 0.115, band * 0.9, 176), lines = [], i;
       for (;;) {
-        g.font = font(size); lines = []; var cur = '';
-        for (var i = 0; i < words.length; i++) {
+        meas.font = font(size); lines = []; var cur = '';
+        for (i = 0; i < words.length; i++) {
           var t = cur ? cur + ' ' + words[i] : words[i];
-          if (g.measureText(t).width > W * 0.86 && cur) { lines.push(cur); cur = words[i]; } else cur = t;
+          if (meas.measureText(t).width > W * 0.86 && cur) { lines.push(cur); cur = words[i]; } else cur = t;
         }
         lines.push(cur);
-        if ((lines.length <= 3 && lines.length * size <= band && lines.every(function (l) { return g.measureText(l).width <= W * 0.9; })) || size < 22) break;
+        if ((lines.length <= 3 && lines.length * size <= band && lines.every(function (l) { return meas.measureText(l).width <= W * 0.9; })) || size < 22) break;
         size *= 0.9;
       }
+      var lh = size, top = mid - ((lines.length - 1) * lh) / 2;
+      // only rasterise the band the text occupies, not the whole stage
+      var y0 = Math.max(0, Math.floor(top - size * 0.8)), y1 = Math.min(H, Math.ceil(top + (lines.length - 1) * lh + size * 0.8)), h = Math.max(1, y1 - y0);
+      var c = document.createElement('canvas'); c.width = W; c.height = h;
+      var g = c.getContext('2d', { willReadFrequently: true });
       g.font = font(size); g.textAlign = 'center'; g.textBaseline = 'middle';
       try { g.letterSpacing = (-size * 0.03) + 'px'; } catch (e) { }
-      var lh = size, top = mid - ((lines.length - 1) * lh) / 2;
-      g.fillStyle = '#000'; lines.forEach(function (l, i) { g.fillText(l, W / 2, top + i * lh); });
-      var d = g.getImageData(0, 0, W, H).data, pts = [], step = Math.max(2, Math.round(size / 40));
+      g.fillStyle = '#000'; lines.forEach(function (l, n) { g.fillText(l, W / 2, top + n * lh - y0); });
+      var d = g.getImageData(0, 0, W, h).data, pts = [], step = Math.max(2, Math.round(size / 40));
+      if (lowEnd) step += 1;
       s.step = step;
-      for (var y = 0; y < H; y += step) for (var x = 0; x < W; x += step) if (d[(y * W + x) * 4 + 3] > 128) pts.push(x, y);
+      for (var y = 0; y < h; y += step) for (var x = 0; x < W; x += step) if (d[(y * W + x) * 4 + 3] > 128) pts.push(x, y + y0);
       return pts;
     }
     function build() {
-      var r = stage.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1);
+      var r = stage.getBoundingClientRect();
+      s.dpr = Math.min(lowEnd ? 1 : 1.5, window.devicePixelRatio || 1);
       s.W = Math.max(1, Math.round(r.width)); s.H = Math.max(1, Math.round(r.height));
-      [cv, gl].forEach(function (c) { c.width = s.W * dpr; c.height = s.H * dpr; });
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0); gtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      var GX = o.grid[0], GY = o.grid[1], tgt = sample();
-      var cols = Math.ceil(s.W / GX) + 1, rows = Math.ceil(s.H / GY) + 1, cells = cols * rows, nText = tgt.length / 2;
-      s.N = Math.max(cells, nText);
-      var P = new Float32Array(s.N * 10), i;
-      for (i = 0; i < s.N; i++) {
-        var cell = i < cells ? i : (Math.random() * cells) | 0, hx = (cell % cols) * GX - 6, hy = Math.floor(cell / cols) * GY - 1, k = i * 10;
-        P[k] = hx; P[k + 1] = hy; P[k + 4] = hx; P[k + 5] = hy;
-      }
-      var ids = []; for (i = 0; i < s.N; i++) ids.push(i);
-      for (i = ids.length - 1; i > 0; i--) { var j = (Math.random() * (i + 1)) | 0, t = ids[i]; ids[i] = ids[j]; ids[j] = t; }
-      var diag = Math.hypot(s.W, s.H);
-      for (var n = 0; n < nText; n++) {
-        var kk = ids[n] * 10, tx = tgt[n * 2], ty = tgt[n * 2 + 1];
-        P[kk + 6] = tx; P[kk + 7] = ty; P[kk + 9] = 1;
-        P[kk + 8] = 0.15 + Math.min(0.9, Math.hypot(tx - s.W / 2, ty - s.H * 0.5) / diag) * 1.1 + Math.random() * 0.25;
+      cv.width = Math.round(s.W * s.dpr); cv.height = Math.round(s.H * s.dpr);
+      gl.width = Math.ceil(s.W / 4); gl.height = Math.ceil(s.H / 4);       // low resolution glow: the browser smooths it, no blur filter needed
+      ctx.setTransform(s.dpr, 0, 0, s.dpr, 0, 0); gtx.setTransform(0.25, 0, 0, 0.25, 0, 0);
+      var tgt = sample(), N = tgt.length / 2, cols = Math.ceil(s.W / GX) + 1, rows = Math.ceil(s.H / GY) + 1, cells = cols * rows;
+      s.N = N; var P = new Float32Array(N * 10), diag = Math.hypot(s.W, s.H);
+      for (var n = 0; n < N; n++) {
+        var k = n * 10, tx = tgt[n * 2], ty = tgt[n * 2 + 1], cell = (Math.random() * cells) | 0, ang = Math.random() * 6.2832, rad = 8 + Math.random() * 26;
+        P[k] = tx + Math.cos(ang) * rad; P[k + 1] = ty + Math.sin(ang) * rad;      // start close to the final spot: calm, not a burst
+        P[k + 4] = (cell % cols) * GX - 6; P[k + 5] = Math.floor(cell / cols) * GY - 1;   // home on the grid, used when scrolling away
+        P[k + 6] = tx; P[k + 7] = ty;
+        P[k + 8] = 0.05 + Math.min(0.9, Math.hypot(tx - s.W / 2, ty - s.H * 0.5) / diag) * 0.9 + Math.random() * 0.15;
+        P[k + 9] = Math.random() * 6.2832;
       }
       s.P = P;
+      bx = []; by = []; bc = new Int32Array(NB); gx = []; gy = []; gc = new Int32Array(NG);
+      for (var b = 0; b < NB; b++) { bx.push(new Float32Array(N)); by.push(new Float32Array(N)); }
+      for (b = 0; b < NG; b++) { gx.push(new Float32Array(N)); gy.push(new Float32Array(N)); }
     }
     function setCopy() {
       var p = s.scrollP;
@@ -162,74 +168,91 @@
     function restart() {
       build(); s.t0 = performance.now(); ready = false;
       clearTimeout(readyTimer);
-      readyTimer = setTimeout(function () { ready = true; fades.forEach(function (e) { e.classList.add('is-in'); }); setCopy(); }, reduce ? 0 : 900);
+      readyTimer = setTimeout(function () { ready = true; setCopy(); }, reduce ? 0 : 700);
     }
     function frame(now) {
-      rafId = 0; if (!alive) return;
-      if (visible) {
-        var t = (now - s.t0) / 1000, W = s.W, H = s.H, N = s.N, P = s.P, R = o.R, R2 = R * R, SC = s.scrollP;
-        s.kick = s.kick * 0.93 + Math.abs(SC - s.last) * 6; s.last = SC;
-        var q = Math.min(1, SC), sweep = ((t * 0.35) % 1.6) - 0.3, m = s.mouse;
-        ctx.clearRect(0, 0, W, H); gtx.clearRect(0, 0, W, H);
-        ctx.fillStyle = o.fg; gtx.fillStyle = o.accent;
-        for (var i = 0; i < N; i++) {
-          var k = i * 10, isT = P[k + 9] === 1;
-          var tx = P[k + 4], ty = P[k + 5], sp = 0.06, fl = 0;
-          var local = t - P[k + 8];
-          if (isT) {
-            if (local > 0) {
-              var dd = Math.min(1, SC * (0.8 + P[k + 8] * 0.6));
-              tx = P[k + 6] + (P[k + 4] - P[k + 6]) * dd; ty = P[k + 7] + (P[k + 5] - P[k + 7]) * dd;
-              sp = Math.min(0.09, 0.02 + local * 0.08);
-            }
-            fl = local > -1 ? Math.max(0, 1 - Math.max(0, local) * 1.4) : 0;
-          }
-          if (s.kick > 0.01) fl = Math.max(fl, Math.min(1, s.kick) * 0.9);
-          if (reduce) {
-            var d2r = isT ? 1 - q : 0;
-            P[k] = P[k + 4] + ((isT ? P[k + 6] : P[k + 4]) - P[k + 4]) * d2r;
-            P[k + 1] = P[k + 5] + ((isT ? P[k + 7] : P[k + 5]) - P[k + 5]) * d2r;
-          } else {
-            var ax = (tx - P[k]) * sp, ay = (ty - P[k + 1]) * sp;
-            if (fl > 0) { var a0 = FLOW(P[k], P[k + 1], t); ax += Math.cos(a0) * 2.2 * fl; ay += Math.sin(a0) * 2.2 * fl; }
-            if (m.on && R > 0) {
-              var dx = P[k] - m.x, dy = P[k + 1] - m.y, d2 = dx * dx + dy * dy;
-              if (d2 < R2) { var d = Math.sqrt(d2) || 1, f = (1 - d / R) * 6; ax += (dx / d) * f; ay += (dy / d) * f; }
-            }
-            P[k + 2] = (P[k + 2] + ax) * 0.82; P[k + 3] = (P[k + 3] + ay) * 0.82;
-            P[k] += P[k + 2]; P[k + 1] += P[k + 3];
-          }
-          var x = P[k], y = P[k + 1], v = Math.abs(P[k + 2]) + Math.abs(P[k + 3]), gridA = Math.min(0.45, 0.1 + v * 0.05);
-          if (isT) {
-            var settle = reduce ? 1 - q : Math.min(1, Math.max(0, local * 1.2)) * (1 - q);
-            var a = (0.34 + settle * 0.62) * (1 - q) + gridA * q, r = Math.max(1.05, (s.step || 3) * 0.36) * (1 - q * 0.45);
-            ctx.globalAlpha = a; ctx.fillRect(x - r, y - r, r * 2, r * 2);
-            if (q < 1 && !reduce) {
-              var w = Math.max(0, 1 - Math.abs(x / W - sweep) * 7), ga = (w * 0.9 + (1 - settle) * 0.25) * (1 - q);
-              if (ga > 0.02) { gtx.globalAlpha = ga; gtx.fillRect(x - 2, y - 2, 4, 4); }
-            }
-          } else { ctx.globalAlpha = gridA; ctx.fillRect(x - 0.75, y - 0.75, 1.5, 1.5); }
-        }
-        ctx.globalAlpha = 1; gtx.globalAlpha = 1;
-        if (wheel && !reduce) { var c = (t % 1.8) / 1.8; wheel.style.transform = 'translateY(' + (Math.min(1, c / 0.7) * 10) + 'px)'; wheel.style.opacity = c < 0.2 ? c / 0.2 : c < 0.7 ? 1 - (c - 0.2) / 0.5 : 0; }
-      }
       rafId = requestAnimationFrame(frame);
+      if (!alive || !visible) return;
+      // slow devices: after a run of long frames, draw every other frame for good
+      if (lastNow && now - lastNow > 40) s.slow++; else if (s.slow > 0 && now - lastNow < 24) s.slow--;
+      lastNow = now; if (s.slow > 18) s.half = true;
+      var t = (now - s.t0) / 1000, SC = s.scrollP, q = Math.min(1, SC);
+      var idle = t > 2.5 && SC < 0.01 && !s.mouse.on && s.kick < 0.02;
+      if ((idle || s.half) && ((s.tick++) & 1)) return;     // 30fps while nothing is happening
+      var W = s.W, H = s.H, N = s.N, P = s.P, R = o.R, R2 = R * R, m = s.mouse;
+      s.kick = s.kick * 0.93 + Math.abs(SC - s.last) * 6; s.last = SC;
+      var sweep = ((t * 0.35) % 1.6) - 0.3, ramp = Math.min(1, Math.max(0, (t - 0.4) / 2.6));
+      var amb = reduce ? 0 : (0.03 + 0.1 * ramp) * (1 - q);   // the shimmer: very small at first, a little more after ~3s
+      var r = Math.max(1.05, s.step * 0.36) * (1 - q * 0.45), r2 = r * 2, i, b;
+      for (b = 0; b < NB; b++) bc[b] = 0; for (b = 0; b < NG; b++) gc[b] = 0;
+      for (i = 0; i < N; i++) {
+        var k = i * 10, local = t - P[k + 8], x = P[k], y = P[k + 1], vx = P[k + 2], vy = P[k + 3];
+        if (reduce) {
+          x = P[k + 6] + (P[k + 4] - P[k + 6]) * q; y = P[k + 7] + (P[k + 5] - P[k + 7]) * q; P[k] = x; P[k + 1] = y;
+        } else if (local > 0) {
+          var d = Math.min(1, SC * (0.8 + P[k + 8] * 0.6)), sp = Math.min(0.09, 0.02 + local * 0.08);
+          var ax = (P[k + 6] + (P[k + 4] - P[k + 6]) * d - x) * sp, ay = (P[k + 7] + (P[k + 5] - P[k + 7]) * d - y) * sp;
+          ax += amb * Math.sin(t * 1.9 + P[k + 9]) + amb * 0.5 * Math.sin(t * 7.3 + P[k + 9] * 2.1);
+          ay += amb * Math.cos(t * 1.5 + P[k + 9] * 1.3) + amb * 0.5 * Math.cos(t * 6.1 + P[k + 9] * 1.7);
+          if (s.kick > 0.01) { var fl = Math.min(1, s.kick) * 0.9, a0 = FLOW(x, y, t); ax += Math.cos(a0) * 1.6 * fl; ay += Math.sin(a0) * 1.6 * fl; }
+          if (m.on) {
+            var dx = x - m.x, dy = y - m.y, d2 = dx * dx + dy * dy;
+            if (d2 < R2) { var dd = Math.sqrt(d2) || 1, f = (1 - dd / R) * 6; ax += (dx / dd) * f; ay += (dy / dd) * f; }
+          }
+          vx = (vx + ax) * 0.82; vy = (vy + ay) * 0.82; x += vx; y += vy;
+          P[k] = x; P[k + 1] = y; P[k + 2] = vx; P[k + 3] = vy;
+        }
+        var settle = reduce ? 1 - q : Math.min(1, Math.max(0, local * 1.2)) * (1 - q);
+        var gridA = Math.min(0.45, 0.1 + (Math.abs(vx) + Math.abs(vy)) * 0.05);
+        var al = (0.34 + settle * 0.62) * (1 - q) + gridA * q;
+        b = Math.min(NB - 1, (al * NB) | 0); bx[b][bc[b]] = x; by[b][bc[b]++] = y;
+        if (q < 1 && !reduce) {
+          var w = Math.max(0, 1 - Math.abs(x / W - sweep) * 7), ga = (w * 0.9 + (1 - settle) * 0.25) * (1 - q);
+          if (ga > 0.05) { b = Math.min(NG - 1, (ga * NG) | 0); gx[b][gc[b]] = x; gy[b][gc[b]++] = y; }
+        }
+      }
+      ctx.clearRect(0, 0, W, H); gtx.clearRect(0, 0, W, H);
+      ctx.fillStyle = o.fg;
+      for (b = 0; b < NB; b++) {
+        if (!bc[b]) continue;
+        ctx.globalAlpha = (b + 0.5) / NB; ctx.beginPath();
+        for (i = 0; i < bc[b]; i++) ctx.rect(bx[b][i] - r, by[b][i] - r, r2, r2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      gtx.fillStyle = o.accent;
+      for (b = 0; b < NG; b++) {
+        if (!gc[b]) continue;
+        gtx.globalAlpha = (b + 0.5) / NG; gtx.beginPath();
+        for (i = 0; i < gc[b]; i++) gtx.rect(gx[b][i] - 2, gy[b][i] - 2, 4, 4);
+        gtx.fill();
+      }
+      gtx.globalAlpha = 1;
+      if (wheel && !reduce) { var c = (t % 1.8) / 1.8; wheel.style.transform = 'translateY(' + (Math.min(1, c / 0.7) * 10) + 'px)'; wheel.style.opacity = c < 0.2 ? c / 0.2 : c < 0.7 ? 1 - (c - 0.2) / 0.5 : 0; }
     }
-    function onHeroScroll() { var r = outer.getBoundingClientRect(); s.scrollP = Math.min(1, Math.max(0, -r.top / (window.innerHeight * 0.38))); setCopy(); }
+    function onHeroScroll() { var rc = outer.getBoundingClientRect(); s.scrollP = Math.min(1, Math.max(0, -rc.top / (window.innerHeight * 0.38))); setCopy(); }
     function move(e) {
-      var r = stage.getBoundingClientRect(); s.mouse.x = e.clientX - r.left; s.mouse.y = e.clientY - r.top; s.mouse.on = true;
+      var rc = stage.getBoundingClientRect(); s.mouse.x = e.clientX - rc.left; s.mouse.y = e.clientY - rc.top; s.mouse.on = true;
       if (spot) { spot.style.opacity = '1'; spot.style.setProperty('--x', s.mouse.x + 'px'); spot.style.setProperty('--y', s.mouse.y + 'px'); }
     }
     function leave() { s.mouse.on = false; if (spot) spot.style.opacity = '0'; }
-    var ro = new ResizeObserver(function () { clearTimeout(rt); rt = setTimeout(function () { build(); s.t0 = performance.now() - 3000; }, 150); });
+    // ignore tiny size changes (phone address bar, scrollbar) so the effect never restarts by accident
+    var ro = new ResizeObserver(function () {
+      clearTimeout(rt);
+      rt = setTimeout(function () {
+        var rc = stage.getBoundingClientRect();
+        if (Math.abs(rc.width - s.W) < 3 && Math.abs(rc.height - s.H) < 3) return;
+        build(); s.t0 = performance.now() - 2500;
+      }, 250);
+    });
     var io = new IntersectionObserver(function (es) { visible = es[0].isIntersecting; }, { threshold: 0 });
     stage.addEventListener('pointermove', move); stage.addEventListener('pointerleave', leave);
     window.addEventListener('scroll', onHeroScroll, { passive: true });
-    var fr = document.fonts && document.fonts.load ? document.fonts.load(o.weight + ' 100px Gloock').catch(function () { return []; }) : Promise.resolve([]);
-    var started = false;
+    var started = false, fontOk = false;
     function go() { if (started || !alive) return; started = true; restart(); onHeroScroll(); ro.observe(stage); io.observe(stage); rafId = requestAnimationFrame(frame); }
-    fr.then(go);
-    setTimeout(go, 1500); // never wait long on the web font
+    var fr = document.fonts && document.fonts.load ? document.fonts.load(o.weight + ' 100px Gloock').catch(function () { return []; }) : Promise.resolve([]);
+    fr.then(function () { var late = started; fontOk = true; if (late) restart(); else go(); });   // late font: redraw once with the right letters
+    setTimeout(function () { go(); }, 900);        // fonts are preloaded, so this is only a safety net
   })();
 
   /* ---------- gallery: filter tabs and lightbox ---------- */
