@@ -316,6 +316,10 @@ window.PORTAL_DATA.projects = [
             "name": "Brochure.pdf"
           },
           {
+            "label": "October Brochure",
+            "name": "October Brochure.pdf"
+          },
+          {
             "label": "Presentation",
             "name": "Presentation.pptx"
           }
