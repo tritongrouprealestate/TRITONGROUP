@@ -474,54 +474,6 @@ p{max-width:62ch}                      /* under 80 chars, per the brief     */
   font-family:var(--font-display);font-size:var(--step-2);line-height:1.3;
   color:var(--color-cloud);text-wrap:balance}
 
-/* 26vw of a 390px screen is 101px, so the clamp floor was doing all the
-   work and the centre card came out at 190px. A phone can give the card
-   more than half its width without the neighbours disappearing. */
-.cf{--cf-card:clamp(220px,30vw,340px);width:100%}
-.cf-frame{perspective:calc(var(--cf-card) * 3);padding-block:2.75rem;
-  overflow:hidden;cursor:grab;touch-action:pan-y;outline:none}
-.cf-frame:active{cursor:grabbing}
-.cf-frame:focus-visible{outline:2px solid var(--color-dawn);outline-offset:-4px}
-.cf-track{position:relative;height:calc(var(--cf-card) * .75);
-  transform-style:preserve-3d;user-select:none}
-.cf-card{position:absolute;left:50%;top:0;margin:0;width:var(--cf-card);
-  aspect-ratio:4/3;overflow:hidden;background:var(--color-frond);
-  box-shadow:0 34px 70px -30px rgba(0,0,0,.85);
-  will-change:transform,opacity;backface-visibility:hidden}
-.cf-card img{display:block;width:100%;height:100%;object-fit:cover;
-  user-select:none;-webkit-user-drag:none}
-
-/* The arrows sit outside the cards on a wide screen and over them on a
-   phone, where there is no outside to sit in. */
-.cf-nav{position:absolute;top:calc(50% - 1.4rem);z-index:200;
-  display:grid;place-items:center;width:2.75rem;height:2.75rem;
-  color:var(--color-cloud);background:rgba(6,26,24,.45);
-  border:1px solid rgba(243,245,242,.22);border-radius:50%;
-  backdrop-filter:blur(6px);cursor:pointer;
-  transition:background-color .3s var(--ease-out),border-color .3s var(--ease-out),
-             transform .3s var(--ease-out)}
-.cf-nav:hover{background:var(--color-dawn);border-color:var(--color-dawn);
-  color:var(--color-night)}
-.cf-nav:active{transform:scale(.94)}
-.cf-nav svg{width:1.1rem;height:1.1rem}
-.cf-prev{left:clamp(.75rem,3vw,2.5rem)}
-.cf-next{right:clamp(.75rem,3vw,2.5rem)}
-
-.cf-caption{margin:.25rem auto 0;text-align:center;color:var(--color-cloud);
-  font-family:var(--font-display);font-size:var(--step-1);min-height:1.6em}
-.cf-dots{display:flex;justify-content:center;gap:.15rem;margin-top:1rem}
-/* The dot a finger has to hit is 28px square; the dot the eye sees is 8px
-   of it, drawn by the pseudo-element. Padding, not size, is what makes a
-   small mark tappable. */
-.cf-dot{position:relative;width:1.75rem;height:1.75rem;border-radius:50%;
-  cursor:pointer;background:none;border:0;padding:0}
-.cf-dot::before{content:"";position:absolute;inset:0;margin:auto;
-  width:.5rem;height:.5rem;border-radius:50%;background:var(--color-cloud);
-  opacity:.3;transition:opacity .3s var(--ease-out),transform .3s var(--ease-out)}
-.cf-dot[aria-current="true"]::before{opacity:1;transform:scale(1.3)}
-.cf-dot:hover::before{opacity:.65}
-.cf-dot:focus-visible{outline:2px solid var(--color-dawn);outline-offset:-2px}
-
 /* ── Horizontal gallery track ─────────────────────────────────────────── */
 #inside{background:#0F3F37}
 .frame{position:relative;overflow:hidden;background:#16564A}
@@ -1317,46 +1269,69 @@ a[data-field]:not([class]){display:inline-block;padding-block:.2rem}
   display:grid;gap:.6rem;font-size:.78rem;line-height:1.6}
 .foot-legal p{max-width:78ch;margin:0}
 
+/* ── Contact buttons ───────────────────────────────────────────────────────
+   WhatsApp is the primary action everywhere, so it is the one solid green on
+   a page that is otherwise dark pine and white. Call sits beside it in the
+   page's own colours. */
+.btn-wa{background:#25D366;color:#04120E;border-color:#25D366}
+.btn-wa:hover{background:#3BE07A;border-color:#3BE07A}
+.btn-wa .wa-icon{width:20px;height:20px;color:currentColor}
+.cta-pair{display:flex;flex-wrap:wrap;gap:.75rem}
+.cta-stack{display:grid;gap:.75rem}
+.cta-stack .btn{width:100%}
+@media (min-width:1024px){ .hero-actions{display:none} }
+.viewing-cta{align-self:center;padding:clamp(1.5rem,4vw,3rem);background:var(--color-night-2);
+  border:1px solid rgba(243,245,242,.12)}
+.viewing-cta-lede{margin:1rem 0 1.75rem;max-width:36ch;color:var(--color-haze);
+  font-family:var(--font-display);font-size:var(--step-2);line-height:1.3}
+.aerial{width:100%}
+.aerial img{display:block;aspect-ratio:1700/957;height:auto;object-fit:cover}
+@media (max-width:639.98px){ .aerial img{aspect-ratio:4/3} }
 
-/* ── Monthly cost ──────────────────────────────────────────────────────── */
-.emi{display:grid;gap:2.5rem;border-top:1px solid rgba(8,25,26,.12);padding-top:3rem}
-@media (min-width:900px){ .emi{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:4rem} }
-.emi-controls{display:grid;gap:1.75rem;align-content:start}
-.emi-pills{display:flex;flex-wrap:wrap;gap:.6rem}
-.emi-pill{min-height:44px;padding:.55rem 1.4rem;border:1px solid rgba(8,25,26,.28);border-radius:999px;
-  background:transparent;color:var(--color-ink);font:inherit;font-size:.95rem;cursor:pointer;
-  transition:background-color .25s var(--ease-out),color .25s var(--ease-out),border-color .25s var(--ease-out)}
-.emi-pill:hover{border-color:var(--color-dawn-deep)}
-.emi-pill[aria-checked="true"]{background:var(--color-dawn-deep);border-color:var(--color-dawn-deep);color:var(--color-cloud)}
-.emi-field label{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;
-  font-size:.9rem;color:var(--color-mist)}
-.emi-field output{font-family:var(--font-display);font-size:1.35rem;color:var(--color-ink);
+/* ── Polaroid line ─────────────────────────────────────────────────────────
+   Prints are placed entirely by transform (see the script), so nothing here
+   sets a position. --pl-cw is the print width, written by the script from the
+   size of the frame. */
+.pl-root{--pl-ink:var(--color-cloud);--pl-muted:rgba(243,245,242,.62);--pl-line:rgba(243,245,242,.28);
+  position:relative;width:100%;height:clamp(540px,82svh,720px);overflow:hidden;color:var(--pl-ink);
+  user-select:none;-webkit-user-select:none;touch-action:pan-y;outline:none;cursor:grab}
+.pl-root[data-drag="1"]{cursor:grabbing}
+.pl-root:focus-visible{box-shadow:inset 0 0 0 2px var(--pl-ink)}
+.pl-string{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.pl-card{position:absolute;left:0;top:0;width:var(--pl-cw,300px);transform-origin:50% 0;
+  will-change:transform;cursor:inherit}
+.pl-print{margin-top:10px;background:#FBFAF7;padding:10px 10px 0;
+  box-shadow:0 1px 2px rgba(0,0,0,.12),0 18px 30px -16px rgba(0,0,0,.55);
+  transition:transform .5s cubic-bezier(.2,.7,.2,1),filter .5s ease}
+.pl-card[data-on="0"] .pl-print{transform:scale(.9);filter:saturate(.7) brightness(.94)}
+.pl-shot{position:relative;aspect-ratio:1;overflow:hidden;background:#D9D5CC}
+.pl-shot img{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;
+  display:block;pointer-events:none;opacity:0;transition:opacity .6s var(--ease-out)}
+.pl-shot img.is-loaded{opacity:1}
+.pl-note{height:46px;display:flex;align-items:center;justify-content:center;padding:0 6px;
+  font:italic 400 15px/1.1 var(--font-display),Georgia,serif;color:#3B3833;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis}
+.pl-peg{position:absolute;left:50%;top:0;width:10px;height:26px;margin-left:-5px;border-radius:2px;
+  background:linear-gradient(90deg,#C9A67A,#E3C9A1 45%,#B8915F);box-shadow:0 2px 3px rgba(0,0,0,.25)}
+.pl-peg::after{content:"";position:absolute;left:4px;top:8px;width:2px;height:7px;
+  background:rgba(80,60,30,.45);border-radius:1px}
+.pl-bar{position:absolute;left:clamp(16px,4vw,56px);right:clamp(16px,4vw,56px);
+  bottom:clamp(14px,3vh,34px);display:flex;align-items:center;gap:clamp(10px,2vw,22px);cursor:default}
+.pl-cap{flex:1;min-width:0;overflow:hidden;padding-bottom:.15em}
+.pl-cap>*{display:block;animation:pl-in .55s cubic-bezier(.2,.8,.2,1) both}
+.pl-title{font-family:var(--font-display);font-size:clamp(20px,2.4vw,30px);line-height:1.15;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pl-sub{margin-top:4px;font-size:.88rem;line-height:1.4;color:var(--pl-muted)}
+.pl-count{font:500 12px/1 var(--font-sans);letter-spacing:.14em;color:var(--pl-muted);
   font-variant-numeric:tabular-nums}
-.emi-range{-webkit-appearance:none;appearance:none;display:block;width:100%;height:44px;margin:0;
-  background:transparent;cursor:pointer;--p:0%}
-.emi-range::-webkit-slider-runnable-track{height:4px;border-radius:4px;
-  background:linear-gradient(to right,var(--color-dawn-deep) var(--p),rgba(8,25,26,.16) var(--p))}
-.emi-range::-moz-range-track{height:4px;border-radius:4px;
-  background:linear-gradient(to right,var(--color-dawn-deep) var(--p),rgba(8,25,26,.16) var(--p))}
-.emi-range::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;margin-top:-10px;
-  border-radius:50%;background:var(--color-cloud);border:2px solid var(--color-dawn-deep);
-  box-shadow:0 2px 8px rgba(8,25,26,.25);transition:transform .2s var(--ease-out)}
-.emi-range::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--color-cloud);
-  border:2px solid var(--color-dawn-deep);box-shadow:0 2px 8px rgba(8,25,26,.25)}
-.emi-range:active::-webkit-slider-thumb{transform:scale(1.15)}
-.emi-result{display:grid;gap:1.4rem;align-content:start;padding:clamp(1.5rem,4vw,2.5rem);
-  background:var(--color-night-2);color:var(--color-cloud)}
-.emi-kicker{margin:0;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--color-haze)}
-.emi-amount{margin:0;font-size:var(--step-4);line-height:1.05}
-.emi-split{display:flex;height:6px;border-radius:6px;overflow:hidden;background:rgba(255,255,255,.1)}
-.emi-split i{display:block;flex:1 1 0;min-width:0;transition:flex-grow .35s var(--ease-out)}
-.emi-split i:first-child{background:var(--color-dawn)}
-.emi-split i:last-child{background:#6FA89A}
-.emi-rows{display:grid;gap:.1rem;margin:0}
-.emi-rows div{display:flex;justify-content:space-between;gap:1rem;padding:.7rem 0;
-  border-bottom:1px solid rgba(255,255,255,.1)}
-.emi-rows dt{color:var(--color-haze);font-size:.92rem}
-.emi-rows dd{margin:0;font-family:var(--font-display);font-size:1.15rem}
-.emi-note{margin:0;font-size:.8rem;line-height:1.55;color:var(--color-haze)}
-@media (prefers-reduced-motion:reduce){ .emi-split i,.emi-pill,.emi-range::-webkit-slider-thumb{transition:none} }
-.emi-amount,.emi-rows dd,.emi-field output{font-variant-numeric:lining-nums tabular-nums}
+.pl-count b{color:var(--pl-ink);font-weight:500}
+.pl-btn{appearance:none;flex:0 0 auto;width:44px;height:44px;border-radius:50%;
+  border:1px solid var(--pl-line);background:transparent;color:inherit;display:grid;place-items:center;
+  cursor:pointer;transition:background-color .25s var(--ease-out),color .25s var(--ease-out)}
+.pl-btn:hover{background:var(--color-cloud);color:var(--color-night)}
+.pl-btn:focus-visible{outline:2px solid var(--pl-ink);outline-offset:2px}
+.pl-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@keyframes pl-in{from{transform:translateY(100%);opacity:0}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){ .pl-cap>*{animation:none} .pl-print,.pl-shot img{transition:none} }
+@media (max-width:639.98px){ .pl-sub{display:none} .pl-count{display:none} }
+.aerial figcaption{position:static;background:none;padding:.9rem 1.15rem;color:var(--color-cloud);font-size:.85rem;line-height:1.5}

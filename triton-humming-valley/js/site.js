@@ -26,18 +26,15 @@ const DATA = {
   inventoryHeading: 'Only Few Villas Remaining!',
 
   /* The address shown to visitors. Where enquiries are DELIVERED is a
-     separate setting — notify_email in config.php — so the public address can
-     sit on the domain while the inbox behind it is wherever you read mail. */
+     separate setting; this site no longer has an enquiry form. */
   contact: {
-    /* Shown on the page and used by the "call us" links in the enquiry
-       section and footer. */
+    /* Shown on the page and used by the "call us" links in the hero,
+       the viewing section and the footer. */
     phone: '+91 90366 82626',
 
     /* Confirmed as the same number as above. Set this to a different value
        only if a separate sales line is ever used for the call button. */
-    callPhone: null,
-
-    email: 'sales@tritongroup.in'
+    callPhone: null
   },
 
   /* WhatsApp click-to-chat. The number is digits only with country code and
@@ -72,7 +69,7 @@ const DATA = {
     { id:'3bhk', name:'3 BHK', area:'2,350&ndash;2,700', land:'1,000&ndash;1,115',
       price:'₹2.9 Cr', beds:3, baths:3, facing:'North and east facing',
       photo:'images/villa-3bhk.jpg',
-      photoAlt:'A 3 BHK villa seen from the street, planting spilling from the upper balconies',
+      photoAlt:'The front of a 3 BHK villa, planting along every balcony',
       blurb:'Three levels on a compact plot. The ground floor is one room &mdash; living, dining and kitchen running together to the garden &mdash; with a bedroom and a lounge above it, and the top floor given over to the primary suite and a terrace with the plunge pool.',
       levels:[
         {n:'Ground', rooms:['Living', 'Kitchen &amp; dining', 'Garden', 'Car porch']},
@@ -85,7 +82,7 @@ const DATA = {
     { id:'4bhk', name:'4 BHK', area:'3,474&ndash;3,724', land:'1,356&ndash;1,389',
       price:'₹3.5 Cr', beds:4, baths:4, facing:'North and east facing',
       photo:'images/villa-4bhk.jpg',
-      photoAlt:'A 4 BHK villa standing against the wooded hillside, palms either side',
+      photoAlt:'A 4 BHK villa from the entrance, the car porch below and balconies above, palms either side',
       blurb:'Two layouts, both four bedrooms over three floors. Living and kitchen-dining run the length of the ground floor to the garden; three bedrooms, their balconies and a walk-in closet sit above; the top floor keeps one bedroom and gives the rest of itself to the terrace, the bar and the pool. One of the two adds a home theatre.',
       levels:[
         {n:'Ground', rooms:['Living', 'Kitchen &amp; dining', 'Garden', 'Car porch']},
@@ -99,7 +96,7 @@ const DATA = {
     { id:'5bhk', name:'5 BHK', area:'4,448', land:'1,555',
       price:'₹4.5 Cr', beds:5, baths:5, facing:'North facing',
       photo:'images/villa-5bhk.jpg',
-      photoAlt:'The pool below the 5 BHK villas, the valley opening beyond it',
+      photoAlt:'A 5 BHK villa from above, three levels stepping up to a roof terrace with a plunge pool, the misty hills behind',
       blurb:'The largest plan on the site, and the only one with a two-car porch. Five bedrooms over two upper floors, every one with its own balcony, and a top-floor terrace that runs the width of the villa around the pool and the bar.',
       levels:[
         {n:'Ground', rooms:['Living', 'Kitchen cum dining', 'Utility', 'Two-car porch']},
@@ -172,17 +169,17 @@ const DATA = {
      so it should be the strongest photograph you have. */
   choreography: [
     {src:'images/choreo-1.jpg',
-     alt:'The living room, the water wall and seated Buddha behind the seating'},
+     alt:'The entrance passage, the water wall and a seated Buddha beside the door'},
     {src:'images/choreo-2.jpg',
-     alt:'The water court from the side, the hammock and the garden beyond the glass'},
+     alt:'The roof terrace at sunset, a plunge pool and a lounger'},
     {src:'images/choreo-3.jpg',
-     alt:'Lunch laid out on the street between two villa rows'},
+     alt:'The bedroom, warm timber and a window onto the garden'},
     {src:'images/choreo-4.jpg',
-     alt:'A family in the living room, the water wall and the garden behind them',
-     caption:'The living room, gathered around the water court'}
+     alt:'The living room, a long sofa and the water wall with a seated Buddha at the far end',
+     caption:'The living room, gathered around the water wall'}
   ],
 
-  /* The three cards of the ownership model. `from` and `to` are the two
+    /* The three cards of the ownership model. `from` and `to` are the two
      ends of the panel that sits behind each card and glows through it —
      keep them inside the site's palette or the section stops matching the
      rest of the page. */
@@ -191,61 +188,70 @@ const DATA = {
       head:'Own the residence.',
       body:'A private residence in Humming Valley, created for a life closer to '
          + 'nature, hospitality and the hills.',
-      cta:'Discover', from:'#DCE8E0', to:'#26463C' },
+      cta:'Ask on WhatsApp', from:'#DCE8E0', to:'#26463C' },
     { n:'02', kicker:'Forget the maintenance.',
       head:'We manage the rest.',
       body:'No day-to-day maintenance. No property management headaches. Your '
          + 'residence is managed through the hotel-managed residence program.',
-      cta:'Discover', from:'#6FCBB0', to:'#12474A' },
+      cta:'Ask on WhatsApp', from:'#6FCBB0', to:'#12474A' },
     { n:'03', kicker:'Let it earn.',
       head:'Zero inventory tension.',
       body:'When you are away, your residence can be offered to guests. Revenue '
          + 'generated through the hotel-managed residence contributes to your '
          + 'defined owner share.',
-      cta:'See how it works', from:'#8FD49B', to:'#1F5540' }
+      cta:'Ask on WhatsApp', from:'#8FD49B', to:'#1F5540' }
   ],
 
-  /* The seven photographs in the coverflow above the masterplan. Point
-     these at whatever you like — the carriage reads the list, so adding an
-     eighth or dropping to five needs no other change. */
-  coverflow: [
-    {src:'images/cover-1.jpg', alt:'The pool at first light, the valley opening beyond it',
-     title:'The pool, looking down the valley'},
-    {src:'images/cover-2.jpg', alt:'The internal street between the two villa rows at sunset',
-     title:'The street at sunset'},
-    {src:'images/cover-3.jpg', alt:'The wooded slope seen from a bedroom window',
-     title:'The hills from a bedroom'},
-    {src:'images/cover-4.jpg', alt:'The living room, the water wall and seated Buddha behind the seating',
-     title:'The living room and the water wall'},
-    {src:'images/cover-5.jpg', alt:'The water court from the side, the garden beyond the glass',
-     title:'The water court'},
-    {src:'images/cover-6.jpg', alt:'A family in the living room, the garden behind them',
-     title:'Living room, open to the garden'},
-    {src:'images/cover-7.jpg', alt:'A villa standing against the wooded hillside',
-     title:'A villa against the hillside'}
+  /* The twelve prints on the string in the views section. `title` is written
+     on the print and `caption` under it. `pos` optionally moves the square
+     crop, as a CSS object-position, when the subject sits off centre. */
+  polaroids: [
+    {src:'images/polaroid-1.jpg',  title:'Under the granite hills', caption:'A villa and its garden, the granite hills close behind.',
+     alt:'A three-level villa among palms with a granite hill rising behind it'},
+    {src:'images/polaroid-2.jpg',  title:'Mornings on the balcony', caption:'A family looks out at the hillside from a bedroom balcony.',
+     alt:'A family of four on a bedroom balcony looking at a granite hillside'},
+    {src:'images/polaroid-3.jpg',  title:'Wake up to the hills', caption:'The bedroom opens to a balcony and the green slope beyond.',
+     alt:'A family standing on a balcony off the bedroom, hills ahead', pos:'30% 50%'},
+    {src:'images/polaroid-4.jpg',  title:'Coffee with the view', caption:'A balcony bar facing the granite hills.',
+     alt:'A couple having coffee at a balcony bar facing the hills'},
+    {src:'images/polaroid-5.jpg',  title:'Room on the terrace', caption:'Space to sit and take in the hills.',
+     alt:'A couple on a terrace looking out at the granite hills'},
+    {src:'images/polaroid-6.jpg',  title:'Rooftops above the mist', caption:'Roof terraces and plunge pools along the cloud line.',
+     alt:'An aerial view of villa roof terraces with plunge pools, mist over the hills'},
+    {src:'images/polaroid-7.jpg',  title:'A jacuzzi in the monsoon', caption:'A rooftop jacuzzi behind a carved metal screen.',
+     alt:'A rooftop jacuzzi behind a carved metal screen, the villa row lit beyond', pos:'35% 50%'},
+    {src:'images/polaroid-8.jpg',  title:'Rooftop at blue hour', caption:'Loungers, a bar counter and the hills at dusk.',
+     alt:'A roof terrace at dusk with a jacuzzi, loungers and a bar counter'},
+    {src:'images/polaroid-9.jpg',  title:'The clubhouse', caption:'Terraces and glass beneath the granite skyline.',
+     alt:'The clubhouse, a three-level building with terraces and glazing, granite hills behind'},
+    {src:'images/polaroid-10.jpg', title:'Three levels in the mist', caption:'Terraces stepping up to a roof deck.',
+     alt:'An aerial view of a white three-level villa with terraces among misty hills'},
+    {src:'images/polaroid-11.jpg', title:'Planted balconies', caption:'Green edges and hanging seats on the upper floors.',
+     alt:'A close view of villa balconies with planting and a hanging chair'},
+    {src:'images/polaroid-12.jpg', title:'Twilight on the roof', caption:'Jacuzzi, daybeds and a bar at the end of the day.',
+     alt:'A roof terrace at twilight with a jacuzzi, daybeds and a bar', pos:'40% 50%'}
   ],
 
-  /* The six captions the client wrote for this grid, in their order:
-       1  Kitchen opening into the living space          ← photo needed
-       2  Lounge overlooking the internal courtyard      ← photo needed
-       3  Interior passage                               ← photo needed
-       4  Infinity Pool facing the valley                ← in place below
-       5  Private Jacuzzi                                ← photo needed
-       6  Family room with panoramic mountain view       ← in place below
-     Four of them describe rooms we have no photograph of, so those tiles
-     keep a picture we do have and a caption that matches it. Drop the four
-     photographs into images/ and the captions above go straight in.
-
-     The frame keeps its shape and caption whether or not an image loads. */
+  /* The six tiles of the grid in the Inside section. */
   gallery: [
-    {src:'images/gallery-1.jpg', cap:'The internal street between the two villa rows'},
-    {src:'images/gallery-2.jpg', cap:'Infinity Pool facing the valley'},
-    {src:'images/gallery-3.jpg', cap:'Family room with panoramic mountain view'},
-    {src:'images/gallery-4.jpg', cap:'On site: the first row, structure complete'},
-    {src:'images/gallery-5.jpg', cap:'On site: the rows from the approach road'},
-    {src:'images/gallery-6.jpg', cap:'On site: looking back up the street under construction'}
+    {src:'images/gallery-1.jpg', cap:'Kitchen and dining, opening into the living space'},
+    {src:'images/gallery-2.jpg', cap:'The living room, warmly lit, the dining beyond'},
+    {src:'images/gallery-3.jpg', cap:'A private garden court off the lounge'},
+    {src:'images/gallery-4.jpg', cap:'The roof terrace plunge pool at sunset'},
+    {src:'images/gallery-5.jpg', cap:'A window onto the hills and the fields below'},
+    {src:'images/gallery-6.jpg', cap:'The covered balcony, palms beyond'}
   ]
 };
+
+/* ── Contact: WhatsApp and phone ───────────────────────────────────────────
+   Every call to action on the page is one of these two. The context ("3 BHK
+   villa", "Plot 11") is added to the WhatsApp message, so the sales team
+   knows what the person was looking at before they say a word. */
+const waHref  = ctx => 'https://wa.me/' + DATA.whatsapp.number + '?text='
+  + encodeURIComponent(DATA.whatsapp.message + (ctx ? ' I am looking at: ' + ctx + '.' : ''));
+const telHref = () => 'tel:' + (DATA.contact.callPhone || DATA.contact.phone).replace(/[^\d+]/g, '');
+const WA_ICON = '<svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.65-2.05-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.53.15-.18.2-.3.3-.5.1-.2.05-.38-.02-.53-.08-.15-.67-1.6-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.53.07-.8.38-.28.3-1.05 1.02-1.05 2.5s1.08 2.9 1.23 3.1c.15.2 2.12 3.24 5.15 4.54.72.31 1.28.5 1.72.63.72.23 1.38.2 1.9.12.58-.09 1.75-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35Z"/><path d="M12.04 2.5c-5.24 0-9.5 4.26-9.5 9.5 0 1.67.44 3.3 1.27 4.74L2.5 21.5l4.9-1.28a9.46 9.46 0 0 0 4.64 1.2h.01c5.23 0 9.49-4.26 9.49-9.5 0-2.54-.99-4.92-2.78-6.71a9.42 9.42 0 0 0-6.72-2.79Zm5.55 15.05a7.87 7.87 0 0 1-5.55 2.3h-.01a7.9 7.9 0 0 1-4.02-1.1l-.29-.17-2.98.78.8-2.9-.19-.3a7.87 7.87 0 0 1-1.21-4.2 7.9 7.9 0 0 1 13.48-5.58 7.83 7.83 0 0 1 2.31 5.58c0 2.1-.82 4.08-2.3 5.57Z"/></svg>';
+const CALL_ICON = '<svg class="call-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8.1 9.6a16 16 0 0 0 6 6l1.2-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z"/></svg>';
 
 /* ── Images ───────────────────────────────────────────────────────────────
    Every photograph is fetched through a probe rather than set straight onto
@@ -295,8 +301,8 @@ const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
    number by one is what makes a swap appear immediately, for everybody.
 
    AFTER YOU REPLACE ANYTHING IN images/, BUMP THIS NUMBER — and the two
-   ?v=2 in index.html's <head> with it, or the hero is fetched twice.     */
-const BUILD = '2';
+   ?v= numbers in index.html's <head> with it, or the hero is fetched twice.     */
+const BUILD = '3';
 
 const bust = p => /^images\//.test(p) ? p + '?v=' + BUILD : p;
 $$('[data-src]').forEach(el => { el.dataset.src = bust(el.dataset.src); });
@@ -304,6 +310,7 @@ if (typeof DATA !== 'undefined') {
   (DATA.villas       || []).forEach(v => { v.photo = bust(v.photo); });
   (DATA.choreography || []).forEach(f => { f.src   = bust(f.src);   });
   (DATA.gallery      || []).forEach(g => { g.src   = bust(g.src);   });
+  (DATA.polaroids    || []).forEach(g => { g.src   = bust(g.src);   });
 }
 
 document.body.classList.remove('no-js');
@@ -330,17 +337,15 @@ if (!DATA.rera) $('#faq-rera').textContent =
    desktop. The href keeps only digits and a leading +, because spaces in a
    tel: URI are unreliable across handsets. */
 $$('[data-call]').forEach(a => {
-  const num = DATA.contact.callPhone || DATA.contact.phone;
-  a.href = 'tel:' + num.replace(/[^\d+]/g, '');
+  a.href = telHref();
   const label = a.querySelector('[data-call-label]');
-  if (label) label.textContent = num;
+  if (label) label.textContent = DATA.contact.callPhone || DATA.contact.phone;
 });
 
 /* WhatsApp links. wa.me hands off to the app on a phone and to WhatsApp Web
    on a desktop, so one link covers both without sniffing the device. */
 $$('[data-whatsapp]').forEach(a => {
-  a.href = 'https://wa.me/' + DATA.whatsapp.number
-         + '?text=' + encodeURIComponent(DATA.whatsapp.message);
+  a.href = waHref(a.dataset.waContext);
   a.target = '_blank';
   a.rel = 'noopener noreferrer';
 });
@@ -380,8 +385,6 @@ function setContact(a, value, href) {
 }
 $$('a[data-field="phone"]').forEach(a =>
   setContact(a, DATA.contact.phone, 'tel:' + DATA.contact.phone.replace(/[^\d+]/g,'')));
-$$('a[data-field="email"]').forEach(a =>
-  setContact(a, DATA.contact.email, 'mailto:' + DATA.contact.email));
 
 /* ═══ VILLAS ═══════════════════════════════════════════════════════════ */
 const bedIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4" aria-hidden="true"><path d="M2 17v-5h20v5M2 17v3M22 17v3M4 12V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4M8 12V9h8v3"/></svg>';
@@ -420,7 +423,10 @@ $('#villa-list').innerHTML = DATA.villas.map(v => `
             <svg viewBox="0 0 24 24" fill="none" stroke="#0B3B33" stroke-width="2" class="mt-1 h-3.5 w-3.5 shrink-0" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
             <span>${f}</span></li>`).join('')}
         </ul>
-        <button type="button" class="btn btn-ink mt-8" data-enquire="Villa ${v.name}" data-villa="${v.name}">Enquire about the ${v.name}</button>
+        <div class="cta-pair mt-8">
+          <a class="btn btn-wa" href="${waHref('the ' + v.name + ' villa')}" target="_blank" rel="noopener noreferrer">${WA_ICON}WhatsApp about the ${v.name}</a>
+          <a class="btn btn-ink" href="${telHref()}">${CALL_ICON}Call</a>
+        </div>
       </div>
       <div class="grid gap-5">
         <div class="villa-shot relative aspect-square overflow-hidden bg-cloud-2">
@@ -473,123 +479,6 @@ $$('.villa').forEach(d => {
   });
 });
 
-})();
-
-/* ═══ MONTHLY COST ═══════════════════════════════════════════════════════
-   An EMI estimate per villa type. The prices come from DATA.villas, so a
-   price edited there changes this too. Indicative only: the rate and tenure
-   are the visitor's to set, and the page says so. */
-(() => {
-'use strict';
-const mount = document.getElementById('emi');
-if (typeof DATA === 'undefined' || !mount || !(DATA.villas || []).length) return;
-
-/* '₹2.9 Cr' -> 29,000,000. A price in any other shape is skipped rather than
-   guessed at. */
-const rupees = v => {
-  const m = /([\d.]+)\s*(Cr|L|Lakh)/i.exec(v.price || '');
-  if (!m) return 0;
-  return Math.round(parseFloat(m[1]) * (/^cr/i.test(m[2]) ? 1e7 : 1e5));
-};
-const villas = DATA.villas.map(v => ({ name: v.name, id: v.id, price: rupees(v) })).filter(v => v.price > 0);
-if (!villas.length) return;
-
-const inr = n => '₹ ' + Math.round(n).toLocaleString('en-IN');
-const crore = n => '₹ ' + (n / 1e7).toFixed(2).replace(/\.?0+$/, '') + ' Cr';
-
-mount.innerHTML = `
-  <div class="emi">
-    <div class="emi-controls">
-      <p class="eyebrow">Plan the purchase</p>
-      <h3 id="emi-title" class="font-display" style="font-size:var(--step-3)">What would it cost each month?</h3>
-
-      <div class="emi-pills" role="radiogroup" aria-label="Villa type">
-        ${villas.map((v, i) => `<button type="button" role="radio" class="emi-pill" data-i="${i}"
-          aria-checked="${i === 0}" tabindex="${i === 0 ? 0 : -1}">${v.name}</button>`).join('')}
-      </div>
-
-      <div class="emi-field">
-        <label for="emi-down">Down payment <output id="emi-down-out" for="emi-down"></output></label>
-        <input id="emi-down" class="emi-range" type="range" min="10" max="80" step="5" value="20">
-      </div>
-      <div class="emi-field">
-        <label for="emi-rate">Interest rate <output id="emi-rate-out" for="emi-rate"></output></label>
-        <input id="emi-rate" class="emi-range" type="range" min="7" max="12" step="0.25" value="8.5">
-      </div>
-      <div class="emi-field">
-        <label for="emi-years">Tenure <output id="emi-years-out" for="emi-years"></output></label>
-        <input id="emi-years" class="emi-range" type="range" min="5" max="30" step="1" value="20">
-      </div>
-    </div>
-
-    <div class="emi-result" aria-live="polite">
-      <p class="emi-kicker">Estimated monthly instalment</p>
-      <p class="emi-amount font-display tabular-nums" id="emi-amount"></p>
-      <div class="emi-split" aria-hidden="true"><i id="emi-bar-principal"></i><i id="emi-bar-interest"></i></div>
-      <dl class="emi-rows tabular-nums">
-        <div><dt>Villa price</dt><dd id="emi-price"></dd></div>
-        <div><dt>Down payment</dt><dd id="emi-downamt"></dd></div>
-        <div><dt>Loan amount</dt><dd id="emi-loan"></dd></div>
-        <div><dt>Total interest</dt><dd id="emi-interest"></dd></div>
-      </dl>
-      <button type="button" class="btn btn-dawn w-full" id="emi-cta" data-enquire="Financing the villa">Talk to us about financing</button>
-      <p class="emi-note">An estimate to help you plan, not an offer of credit. Prices are the all-inclusive figures above. Your lender sets the rate and the terms.</p>
-    </div>
-  </div>`;
-
-const $ = s => mount.querySelector(s);
-const pills = Array.from(mount.querySelectorAll('.emi-pill'));
-const down = $('#emi-down'), rate = $('#emi-rate'), years = $('#emi-years');
-let sel = 0;
-
-const fill = el => el.style.setProperty('--p', ((el.value - el.min) / (el.max - el.min) * 100) + '%');
-
-function update(){
-  const v = villas[sel];
-  const dPct = +down.value, r = +rate.value / 1200, n = +years.value * 12;
-  const deposit = v.price * dPct / 100, loan = v.price - deposit;
-  const emi = r === 0 ? loan / n : loan * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
-  const interest = emi * n - loan;
-
-  $('#emi-down-out').textContent = dPct + '%';
-  $('#emi-rate-out').textContent = (+rate.value).toFixed(2).replace(/0$/, '') + '%';
-  $('#emi-years-out').textContent = years.value + ' years';
-  $('#emi-amount').textContent = inr(emi);
-  $('#emi-price').textContent = crore(v.price);
-  $('#emi-downamt').textContent = crore(deposit);
-  $('#emi-loan').textContent = crore(loan);
-  $('#emi-interest').textContent = crore(interest);
-  $('#emi-bar-principal').style.flexGrow = loan;
-  $('#emi-bar-interest').style.flexGrow = interest;
-  $('#emi-cta').dataset.villa = v.name;
-  $('#emi-cta').dataset.enquire = 'Financing the ' + v.name;
-  [down, rate, years].forEach(fill);
-}
-
-function choose(i, focus){
-  sel = (i + pills.length) % pills.length;
-  pills.forEach((b, k) => { b.setAttribute('aria-checked', String(k === sel)); b.tabIndex = k === sel ? 0 : -1; });
-  if (focus) pills[sel].focus();
-  update();
-}
-pills.forEach((b, i) => {
-  b.addEventListener('click', () => choose(i));
-  b.addEventListener('keydown', e => {
-    if (e.key === 'ArrowRight' || e.key === 'ArrowDown'){ e.preventDefault(); choose(sel + 1, true); }
-    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp'){   e.preventDefault(); choose(sel - 1, true); }
-  });
-});
-[down, rate, years].forEach(el => el.addEventListener('input', update));
-
-/* Opening a villa card above should leave the calculator on that villa. */
-document.addEventListener('toggle', e => {
-  const d = e.target;
-  if (!(d instanceof HTMLDetailsElement) || !d.open || !d.id || !d.id.startsWith('villa-')) return;
-  const i = villas.findIndex(v => 'villa-' + v.id === d.id);
-  if (i > -1 && i !== sel) choose(i);
-}, true);
-
-update();
 })();
 
 (() => {
@@ -664,7 +553,11 @@ function renderSummary(){
       </div>
     </dl>
     <p class="mt-5 text-[.8rem] text-mist">Availability shown is indicative and
-      changes daily. Confirm current status with the sales team.</p>`;
+      changes daily. Confirm current status with the sales team.</p>
+    <div class="cta-pair mt-6">
+      <a class="btn btn-wa" href="${waHref('current availability')}" target="_blank" rel="noopener noreferrer">${WA_ICON}Check availability</a>
+      <a class="btn btn-ink" href="${telHref()}">${CALL_ICON}Call</a>
+    </div>`;
 }
 renderSummary();
 
@@ -692,7 +585,10 @@ function selectPlot(p, node){
       <div class="flex justify-between gap-4 py-3"><dt class="text-mist">Aspect</dt><dd>${p.a}</dd></div>
       <div class="flex justify-between gap-4 py-3"><dt class="text-mist">Price <span class="whitespace-nowrap">(all inclusive)</span></dt><dd class="text-dawn-deep font-medium">${villa ? villa.price : '—'}</dd></div>
     </dl>
-    <button type="button" class="btn btn-ink mt-7 w-full" data-enquire="Villa ${p.n}" data-plot-cta="${p.n}">Enquire about villa ${p.n}</button>`;
+    <div class="cta-pair mt-7">
+      <a class="btn btn-wa" href="${waHref('villa ' + p.n + ' (' + p.t + ')')}" target="_blank" rel="noopener noreferrer">${WA_ICON}WhatsApp about villa ${p.n}</a>
+      <a class="btn btn-ink" href="${telHref()}">${CALL_ICON}Call</a>
+    </div>`;
 
   if (hasGSAP && !reduced.matches)
     gsap.from(detail.children, {opacity:0, y:10, duration:.4, stagger:.05, ease:'power2.out'});
@@ -861,9 +757,9 @@ if (own && DATA.ownership) own.innerHTML = DATA.ownership.map(c => `
       <p class="skew-kicker">${c.n} &mdash; ${c.kicker}</p>
       <h3 class="skew-head">${c.head}</h3>
       <p class="skew-copy">${c.body}</p>
-      <button type="button" class="skew-cta" data-enquire="Ownership model &mdash; ${c.kicker}">
+      <a class="skew-cta" href="${waHref('the ownership model: ' + c.kicker)}" target="_blank" rel="noopener noreferrer">
         ${c.cta}<span aria-hidden="true">&rarr;</span>
-      </button>
+      </a>
     </div>
   </article>`).join('');
 
@@ -893,6 +789,11 @@ $$('#gallery img').forEach(img => {
     f.setAttribute('aria-hidden','true');
     frame.prepend(f);
   }, frame);
+});
+
+$$('.aerial img').forEach(img => {
+  const frame = img.closest('.frame');
+  loadWhenNear(img, img.dataset.src, ok => { if (!ok) img.remove(); }, frame);
 });
 
 /* ═══ LIGHTBOX ═════════════════════════════════════════════════════════
@@ -926,10 +827,6 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Tab') { e.preventDefault(); lbClose.focus(); }
 });
 })();
-
-/* The enquiry form is built by the component in the block below, which
-   serves the hero card, the popup and the enquiry section from one
-   implementation. */
 
 (() => {
 'use strict';
@@ -1532,525 +1429,223 @@ window.addEventListener('load', () => ScrollTrigger.refresh());
 })();
 
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   ENQUIRY FORM — one component, three placements
+/* ═══════════════════════════════════════════════════════════════════════
+   POLAROID LINE  (The views)
 
-   The same form appears in the hero card, in the popup that every call to
-   action opens, and in the enquiry section. Writing it once and mounting it
-   three times is not just less code: it means validation, error handling and
-   the success state cannot drift apart between them, which is exactly what
-   happens when a form gets copied.
+   Instant prints pegged to a sagging string. Drag the line, click a print,
+   use the arrows or the keyboard, and the prints slide along it, swinging on
+   their pegs with the speed you give them and settling with a little
+   overshoot. At rest they sway in a light breeze. The print in the middle is
+   the one you are looking at.
 
-   Every instance gets its own field ids, so three copies can sit in one
-   document without their labels pointing at each other's inputs.
-   ═══════════════════════════════════════════════════════════════════════ */
-const Enquiry = (() => {
-  'use strict';
-  let seq = 0;
+   A port of a React component to plain script, because this site has no
+   build step on the server. The physics is unchanged:
 
-  const RULES = {
-    name:  { label:'Your name', msg:'Enter your name so we know who to expect.',
-             test: v => v.trim().length >= 2 },
-    phone: { label:'Phone', msg:'Enter a phone number of at least 10 digits.',
-             test: v => v.replace(/\D/g,'').length >= 10 },
-    email: { label:'Email', msg:'Enter an email address in the form name@example.com.',
-             test: v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) }
-  };
+   · One offset, `off`, is the whole position of the line. A spring pulls it
+     to `target`, and `target` is always a whole print.
+   · Each print is a damped pendulum driven by how fast the line is moving, so
+     it lags behind a push and swings back, rather than being rotated by a
+     fixed amount.
+   · Everything is written straight to the DOM once a frame, as transforms, so
+     a drag costs compositing and no layout.
 
-  function build(mount, opts){
-    const o = Object.assign({ variant:'full', source:'', tone:'dark' }, opts);
-    const id = 'e' + (++seq);
-    const full = o.variant === 'full';
-
-    const field = (key, type, label, extra='') => `
-      <div class="field" data-fieldname="${key}">
-        <label for="${id}-${key}">${label}${RULES[key] ? ' <span aria-hidden="true" class="req">*</span>' : ''}</label>
-        <input id="${id}-${key}" name="${key}" type="${type}"
-               ${type==='tel' ? 'inputmode="tel" autocomplete="tel"' : ''}
-               ${type==='email' ? 'inputmode="email" autocomplete="email"' : ''}
-               ${key==='name' ? 'autocomplete="name"' : ''}
-               ${RULES[key] ? 'required' : ''} aria-describedby="${id}-${key}-err" ${extra}>
-        <p class="err" id="${id}-${key}-err">${RULES[key] ? RULES[key].msg : ''}</p>
-      </div>`;
-
-    mount.innerHTML = `
-      <form class="enquiry" novalidate data-source="${o.source}">
-        <div class="form-summary" id="${id}-summary" tabindex="-1" role="alert">
-          <h3>Check these before sending</h3>
-          <ul></ul>
-        </div>
-
-        <div aria-hidden="true" class="hp">
-          <label for="${id}-company">Company</label>
-          <input id="${id}-company" name="company" type="text" tabindex="-1" autocomplete="off">
-        </div>
-
-        <div class="fields ${full ? 'is-full' : 'is-compact'}">
-          ${field('name','text','Your name')}
-          ${field('phone','tel','Phone')}
-          ${field('email','email','Email')}
-          ${full ? `
-          <fieldset class="field field-wide choice" data-fieldname="villa">
-            <legend>Villa type <span class="choice-hint">&mdash; choose any that interest you</span></legend>
-            <div class="choice-set">
-              ${DATA.villas.map((v, n) => `
-                <label class="choice-chip">
-                  <input type="checkbox" name="villa" value="${v.name}" id="${id}-villa-${n}">
-                  <span>${v.name}<small>${v.area} sq ft</small></span>
-                </label>`).join('')}
-            </div>
-          </fieldset>
-          <div class="field">
-            <label for="${id}-date">Preferred date</label>
-            <input id="${id}-date" name="date" type="date">
-          </div>
-          <div class="field field-wide">
-            <label for="${id}-note">Anything we should know</label>
-            <textarea id="${id}-note" name="note" rows="3"></textarea>
-          </div>` : ''}
-        </div>
-
-        <button type="submit" class="btn btn-dawn form-submit">Request a viewing</button>
-        <p class="form-note">We use these details only to arrange your viewing.</p>
-
-        <div class="form-done" hidden tabindex="-1">
-          <h3>Request sent</h3>
-          <p>We will confirm your viewing within one working day.</p>
-        </div>
-      </form>`;
-
-    const form    = mount.querySelector('form');
-    const summary = mount.querySelector('.form-summary');
-    const openedAt = Date.now();
-    const get = k => mount.querySelector('#' + id + '-' + k);
-
-    function check(key, show=true){
-      const el = get(key), ok = RULES[key].test(el.value);
-      if (show){
-        el.closest('.field').classList.toggle('is-invalid', !ok);
-        el.setAttribute('aria-invalid', String(!ok));
-      }
-      return ok;
-    }
-
-    Object.keys(RULES).forEach(key => {
-      const el = get(key);
-      el.addEventListener('blur',  () => { if (el.value !== '') check(key); });
-      /* Correct live once a field is already marked wrong, but never nag
-         before the person has finished with it. */
-      el.addEventListener('input', () => { if (el.getAttribute('aria-invalid') === 'true') check(key); });
-    });
-
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      const bad = Object.keys(RULES).filter(k => !check(k));
-
-      if (bad.length){
-        summary.querySelector('ul').innerHTML = bad.map(k =>
-          `<li><a href="#${id}-${k}">${RULES[k].label} — ${RULES[k].msg}</a></li>`).join('');
-        summary.classList.add('is-shown');
-        summary.focus();
-        summary.querySelectorAll('a').forEach(a => a.addEventListener('click', ev => {
-          ev.preventDefault(); get(a.getAttribute('href').split('-').pop()).focus();
-        }));
-        return;
-      }
-
-      summary.classList.remove('is-shown');
-      const btn = form.querySelector('.form-submit');
-      const label = btn.textContent;
-      btn.disabled = true; btn.textContent = 'Sending…';
-
-      const done = () => {
-        form.querySelectorAll('.fields, .form-submit, .form-note').forEach(n => n.hidden = true);
-        const d = form.querySelector('.form-done');
-        d.hidden = false; d.focus();
-      };
-
-      if (window.__PREVIEW__) { setTimeout(done, 700); return; }
-
-      fetch('submit.php', {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({
-          name: get('name').value.trim(),
-          phone: get('phone').value.trim(),
-          email: get('email').value.trim(),
-          villa: full ? Array.from(form.querySelectorAll('input[name="villa"]:checked'))
-                             .map(c => c.value).join(', ') : '',
-          date:  full ? get('date').value  : '',
-          note:  full ? get('note').value.trim() : '',
-          source: o.source || (location.pathname + location.hash),
-          company: get('company').value,
-          elapsed: Date.now() - openedAt
-        })
-      })
-      .then(async res => {
-        const data = await res.json().catch(() => ({}));
-        if (res.ok && data.ok) return done();
-        if (data.fields) Object.entries(data.fields).forEach(([k, msg]) => {
-          const el = get(k); if (!el) return;
-          el.setAttribute('aria-invalid','true');
-          el.closest('.field').classList.add('is-invalid');
-          const err = el.closest('.field').querySelector('.err'); if (err) err.textContent = msg;
-        });
-        throw new Error(data.error || 'That did not send.');
-      })
-      .catch(err => {
-        /* Never leave a dead button. Restore it and give the phone number as
-           the way through. */
-        btn.disabled = false; btn.textContent = label;
-        summary.querySelector('ul').innerHTML =
-          '<li>' + (err && err.message ? err.message : 'That did not send.') +
-          ' You can also call <a href="tel:' + DATA.contact.phone.replace(/[^\d+]/g,'') +
-          '">' + DATA.contact.phone + '</a>.</li>';
-        summary.classList.add('is-shown');
-        summary.focus();
-      });
-    });
-
-    return { form, focusFirst: () => get('name').focus() };
-  }
-
-  return { build };
-})();
-
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   MOUNTING THE FORMS, AND THE POPUP
-   ═══════════════════════════════════════════════════════════════════════ */
-(() => {
-  'use strict';
-  const $  = (s, r=document) => r.querySelector(s);
-  const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
-
-  /* Every [data-enquiry-mount] gets its own instance. */
-  const instances = new Map();
-  $$('[data-enquiry-mount]').forEach(m => {
-    instances.set(m, Enquiry.build(m, {
-      variant: m.dataset.variant || 'full',
-      source:  m.dataset.source  || ''
-    }));
-  });
-
-  /* ── Popup ──────────────────────────────────────────────────────────── */
-  const modal = $('#enquiry-modal');
-  if (!modal) return;
-  const panel = $('.modal-panel', modal);
-  const inst  = instances.get($('[data-enquiry-mount]', modal));
-  let lastFocus = null;
-
-  const focusable = () => $$('a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])', panel)
-    .filter(el => el.offsetParent !== null);
-
-  /* Freezing the page behind the popup.
-
-     Setting overflow:hidden on <html> looked like the obvious way and was
-     wrong: Lenis owns the scroll and sets its own rules on that element, and
-     forcing overflow on it left the document 1305px wider than the viewport
-     — permanently, even after the popup closed. Lenis's own stop() holds the
-     page without touching layout. The overflow fallback is only for when
-     Lenis is not running at all (reduced motion), where it is applied to
-     <body>, which no library is managing. */
-  function lockScroll(on){
-    if (window.lenisInstance){
-      on ? window.lenisInstance.stop() : window.lenisInstance.start();
-    } else {
-      document.body.style.overflow = on ? 'hidden' : '';
-    }
-  }
-
-  function open(source, ctx){
-    lastFocus = document.activeElement;
-    modal.hidden = false;
-    lockScroll(true);
-
-    /* Carry the button's context into the form, so an enquiry from a villa
-       card or a plot arrives saying which one. */
-    const form = inst && inst.form;
-    if (form){
-      form.dataset.source = source || 'Popup';
-      if (ctx && ctx.villa){
-        const box = form.querySelector(`input[name="villa"][value="${ctx.villa}"]`);
-        if (box) box.checked = true;
-      }
-      if (ctx && ctx.plot){
-        const note = form.querySelector('textarea[name="note"]');
-        const line = `Interested in plot ${ctx.plot}.`;
-        if (note && !note.value.includes(line)) note.value = (note.value ? note.value.trim() + '\n' : '') + line;
-      }
-    }
-
-    if (typeof gsap !== 'undefined' && !matchMedia('(prefers-reduced-motion: reduce)').matches){
-      gsap.fromTo(modal, {opacity:0}, {opacity:1, duration:.25, ease:'power2.out'});
-      gsap.fromTo(panel, {y:24, scale:.985}, {y:0, scale:1, duration:.45, ease:'expo.out'});
-    }
-    /* Focus the panel, not the first input: dropping straight into a text
-       field skips the heading and a screen reader never hears what the
-       dialog is for. */
-    panel.setAttribute('tabindex','-1');
-    panel.focus();
-  }
-
-  function close(){
-    modal.hidden = true;
-    lockScroll(false);
-    if (lastFocus) lastFocus.focus();
-  }
-
-  /* Delegated, so CTAs rendered later (villa cards, plot panel) work too. */
-  document.addEventListener('click', e => {
-    const trigger = e.target.closest('[data-enquire]');
-    if (trigger){
-      e.preventDefault();
-      open(trigger.dataset.enquire, {
-        villa: trigger.dataset.villa,
-        plot:  trigger.dataset.plotCta
-      });
-      return;
-    }
-    if (e.target.closest('[data-close]')) close();
-  });
-
-  document.addEventListener('keydown', e => {
-    if (modal.hidden) return;
-    if (e.key === 'Escape'){ close(); return; }
-    if (e.key !== 'Tab') return;
-    /* Keep Tab inside the dialog while it is open. */
-    const items = focusable();
-    if (!items.length) return;
-    const first = items[0], last = items[items.length - 1];
-    if (e.shiftKey && (document.activeElement === first || document.activeElement === panel)){
-      e.preventDefault(); last.focus();
-    } else if (!e.shiftKey && document.activeElement === last){
-      e.preventDefault(); first.focus();
-    }
-  });
-})();
-
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   COVERFLOW  (The views)
-
-   Ported from a React component. The mechanism is unchanged and worth
-   stating, because it is the reason this is cheap to run:
-
-   · One fractional index, `pos`, is the entire state. Every card's place is
-     derived from its distance to it, so there is nothing to keep in sync.
-   · The loop is arithmetic. A card's offset is folded into the shorter way
-     round the ring, so the strip repeats without a single cloned node or
-     any reordering of the DOM.
-   · Nothing is written to layout. Position, recession and tilt are one
-     transform per card, so a drag costs compositing and no reflow.
-
-   Three things changed in the port, all forced by the surroundings:
-   React's per-frame state became direct style writes (there was never any
-   state React needed to see); the settle honours prefers-reduced-motion by
-   arriving at once; and the frame keeps touch-action:pan-y so a drag on a
-   phone still leaves the page its vertical scroll.
+   What changed in the port: React state became plain variables; the loop
+   pauses when the section is off screen; prefers-reduced-motion arrives at
+   once, with no swing and no autoplay; and the frame keeps touch-action:pan-y
+   so a drag on a phone still leaves the page its vertical scroll.
    ═══════════════════════════════════════════════════════════════════════ */
 (() => {
 'use strict';
-const mount = document.querySelector('[data-coverflow]');
-if (!mount || typeof DATA === 'undefined' || !DATA.coverflow) return;
+const mount = document.querySelector('[data-polaroid]');
+if (!mount || typeof DATA === 'undefined' || !(DATA.polaroids || []).length) return;
 
-const slides = DATA.coverflow, count = slides.length;
-if (!count) return;
+const slides = DATA.polaroids, n = slides.length;
+const SAG = 46, SWING = 1, AUTOPLAY = 4500, CARD = 300, STRING = '#C7D6CC';
 
-/* Geometry. Every one of these is a look, not a mechanism — change them
-   freely, nothing below depends on a particular value.
-
-   ROTATE    degrees the first neighbour tilts
-   DEPTH     how far it recedes, as a fraction of card width
-   FALLOFF   exponent on distance: below 1 the rake eases off as cards
-             travel out, which is what keeps the second card readable
-   FADE      opacity lost per step from the centre
-   GAP       space between cards, as a fraction of card width           */
-const ROTATE = 44, DEPTH = 0.6, FALLOFF = 0.56, FADE = 0.1, GAP = 0.05;
-const LOOP = true, MAX_TILT = 82;
-
-const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-const chev = d => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-  stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`;
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const stringY = (x, w, y0, sag) => { const t = clamp(x / w, 0, 1); return y0 + 4 * sag * t * (1 - t); };
+const springStep = (x, v, target, dt, k = 70) => {
+  const c = 2 * Math.sqrt(k), nv = v + (k * (target - x) - c * v) * dt;
+  return [x + nv * dt, nv];
+};
+const swingStep = (a, w, lineVel, dt, gain) => {
+  const nw = w + (-38 * a - 4.2 * w + lineVel * 0.0034 * gain) * dt;
+  return [clamp(a + nw * dt, -0.6, 0.6), nw];
+};
+const nearestAt = (off, spacing, count) => clamp(Math.round(off / spacing), 0, Math.max(0, count - 1));
+const pad2 = v => (v < 10 ? '0' + v : String(v));
+const esc = t => String(t == null ? '' : t).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 mount.innerHTML = `
-  <div class="cf" role="region" aria-roledescription="carousel"
-       aria-label="${mount.dataset.label || 'Gallery'}">
-    <div class="cf-frame" tabindex="0">
-      <div class="cf-track">
-        ${slides.map((s, i) => `
-          <figure class="cf-card" role="group" aria-roledescription="slide"
-                  aria-label="${i + 1} of ${count}">
-            <img alt="${s.alt}" data-src="${s.src}" draggable="false"
-                 decoding="async" width="1000" height="750"
-                 ${i > 2 ? 'loading="lazy"' : ''}>
-          </figure>`).join('')}
-      </div>
+  <div class="pl-root" role="region" aria-roledescription="carousel"
+       aria-label="${esc(mount.dataset.label || 'Image carousel')}" tabindex="0">
+    <svg class="pl-string" aria-hidden="true">
+      <path fill="none" stroke="${STRING}" stroke-opacity=".7" stroke-width="1.5" stroke-linecap="round"></path>
+    </svg>
+    ${slides.map((s, i) => `
+      <div class="pl-card" data-i="${i}" data-on="0" aria-hidden="true">
+        <div class="pl-print">
+          <div class="pl-shot"><img alt="${esc(s.alt || s.title)}" data-src="${esc(s.src)}"
+               draggable="false" decoding="async" width="600" height="600"
+               ${s.pos ? `style="object-position:${esc(s.pos)}"` : ''}></div>
+          <div class="pl-note">${esc(s.title)}</div>
+        </div>
+        <div class="pl-peg"></div>
+      </div>`).join('')}
+    <div class="pl-bar">
+      <div class="pl-cap" aria-hidden="true"></div>
+      <span class="pl-count" aria-hidden="true"><b></b> / ${pad2(n)}</span>
+      <button type="button" class="pl-btn" data-dir="-1" aria-label="Previous">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M10 3 5 8l5 5" stroke="currentColor" stroke-width="1.4"/></svg>
+      </button>
+      <button type="button" class="pl-btn" data-dir="1" aria-label="Next">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m6 3 5 5-5 5" stroke="currentColor" stroke-width="1.4"/></svg>
+      </button>
     </div>
-    <button type="button" class="cf-nav cf-prev" aria-label="Previous view">${chev('m15 18-6-6 6-6')}</button>
-    <button type="button" class="cf-nav cf-next" aria-label="Next view">${chev('m9 18 6-6-6-6')}</button>
-    <p class="cf-caption" aria-live="polite"></p>
-    <div class="cf-dots">
-      ${slides.map((s, i) => `<button type="button" class="cf-dot"
-         aria-label="Go to ${s.title || 'view ' + (i + 1)}" data-dot="${i}"></button>`).join('')}
-    </div>
+    <div class="pl-sr" aria-live="polite"></div>
   </div>`;
 
-const $  = (s, r = mount) => r.querySelector(s);
-const $$ = (s, r = mount) => Array.from(r.querySelectorAll(s));
-const frame   = $('.cf-frame');
-const cards   = $$('.cf-card');
-const dots    = $$('.cf-dot');
-const caption = $('.cf-caption');
+const root  = mount.querySelector('.pl-root');
+const path  = root.querySelector('.pl-string path');
+const cards = Array.from(root.querySelectorAll('.pl-card'));
+const cap   = root.querySelector('.pl-cap');
+const count = root.querySelector('.pl-count b');
+const live  = root.querySelector('.pl-sr');
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-/* Same loading rule as the rest of the page: show the photograph once it has
-   decoded, and leave the card's own colour if it never arrives. */
-/* The gallery is watched as one thing, not seven. Each card used to observe
-   itself, and the cards away from the centre are translated far off to the
-   sides — on a phone four of the seven never intersected the viewport at
-   all, so their pictures never loaded and swiping reached empty frames.
-   The track is what the visitor can see; when it arrives, all seven load. */
-(() => {
-  const track = document.querySelector('.cf-track') || document.querySelector('.cf-stage')
-             || (cards[0] && cards[0].parentElement);
-  const imgs = $$('.cf-card img');
-  if (!track || !imgs.length) return;
-  const start = () => imgs.forEach(img => {
-    const card = img.closest('.cf-card');
-    loadImage(img, img.dataset.src, ok => { if (!ok) img.remove(); });
-    if (card) card.dataset.loading = '1';
+/* The strip is watched as one thing. Prints away from the centre sit off to
+   the sides, so watching each one would leave the far ones unloaded. */
+near(root, () => cards.forEach(c => {
+  const img = c.querySelector('img');
+  loadImage(img, img.dataset.src, ok => { if (!ok) img.remove(); });
+}));
+
+const S = { off: 0, vel: 0, target: 0, a: [], w: [] };
+let size = { w: 1200, h: 700, cw: CARD }, spacing = CARD * 1.08;
+let active = -1, drag = null, lastTouch = 0, visible = true, raf = 0, prev = performance.now();
+
+function setActive(i){
+  if (i === active) return;
+  active = i;
+  cards.forEach((c, k) => {
+    c.dataset.on = k === i ? '1' : '0';
+    if (k === i) c.removeAttribute('aria-hidden'); else c.setAttribute('aria-hidden', 'true');
   });
-  near(track, start);
-})();
-
-let pos = 0;        // fractional index at the centre — the single source of truth
-let target = 0;     // where the current settle is headed
-let width = 0;      // card width in px; pitch, depth and perspective all derive
-let raf = null;
-let drag = null;
-let selected = -1;
-
-const indexAt = p => ((Math.round(p) % count) + count) % count;
-const wrap = i => LOOP ? i : Math.max(0, Math.min(count - 1, i));
-
-function select(i) {
-  if (i === selected) return;
-  selected = i;
-  caption.textContent = slides[i].title || '';
-  dots.forEach((d, n) => d.setAttribute('aria-current', String(n === i)));
+  const s = slides[i];
+  cap.innerHTML = `<span class="pl-title">${esc(s.title)}</span>${s.caption ? `<span class="pl-sub">${esc(s.caption)}</span>` : ''}`;
+  count.textContent = pad2(i + 1);
+  live.textContent = 'Print ' + (i + 1) + ' of ' + n + ': ' + s.title;
 }
+const goTo = i => { S.target = clamp(i, 0, n - 1) * spacing; };
 
-function paint() {
-  if (!width) return;
-  const pitch = width * (1 + GAP);
-
-  cards.forEach((card, i) => {
-    /* Fold the distance into the shorter way round the ring. This is the
-       whole looping mechanism. */
-    let offset = i - pos;
-    if (LOOP) {
-      offset = ((offset % count) + count) % count;
-      if (offset > count / 2) offset -= count;
-    }
-
-    const distance = Math.abs(offset);
-    /* Tilt and recession both ease off with distance: doubling it adds only
-       about half again as much of each. A linear ramp folds the second card
-       shut and the strip stops reading. */
-    const ramp = Math.pow(distance, FALLOFF);
-    const tilt = Math.min(ROTATE * ramp, MAX_TILT) * Math.sign(offset);
-
-    card.style.transform =
-      `translateX(calc(-50% + ${offset * pitch}px)) ` +
-      `translateZ(${-DEPTH * width * ramp}px) rotateY(${-tilt}deg)`;
-
-    /* A card is teleported across the ring at exactly half a turn out, so it
-       has to be gone by then or the jump is visible. */
-    const edge = LOOP ? Math.min(1, Math.max(0, count / 2 - distance)) : 1;
-    card.style.opacity = String(Math.max(0, 1 - FADE * distance) * edge);
-    card.style.zIndex  = String(100 - Math.round(distance));
-  });
+function measure(){
+  const r = root.getBoundingClientRect();
+  const cw = Math.round(Math.max(150, Math.min(CARD, r.width * 0.5, r.height * 0.42)));
+  size = { w: r.width, h: r.height, cw };
+  spacing = cw * 1.08;
+  root.style.setProperty('--pl-cw', cw + 'px');
+  S.target = Math.max(0, active) * spacing;
+  S.off = S.target;
 }
-
-function settle(to) {
-  if (raf !== null) cancelAnimationFrame(raf);
-  target = to;
-  select(indexAt(to));
-
-  if (reduced.matches) { pos = to; paint(); raf = null; return; }
-
-  const step = () => {
-    const remaining = target - pos;
-    if (Math.abs(remaining) < 0.0004) {
-      pos = target; paint(); raf = null; return;
-    }
-    pos += remaining * 0.16;      // exponential ease-out, no overshoot
-    paint();
-    raf = requestAnimationFrame(step);
-  };
-  raf = requestAnimationFrame(step);
-}
-
-/* Step off the target rather than off pos, or a click that lands mid-flight
-   is swallowed by the round-off. */
-const nudge = by => settle(wrap(Math.round(target) + by));
-const goTo  = i  => settle(wrap(LOOP
-  ? i + Math.round((target - i) / count) * count     // the shorter way round
-  : i));
-
-/* ── Drag ─────────────────────────────────────────────────────────────── */
-frame.addEventListener('pointerdown', e => {
-  if (raf !== null) { cancelAnimationFrame(raf); raf = null; }
-  frame.setPointerCapture(e.pointerId);
-  target = pos;
-  drag = { id: e.pointerId, x: e.clientX, pos, v: 0, t: performance.now() };
-});
-
-frame.addEventListener('pointermove', e => {
-  if (!drag || drag.id !== e.pointerId) return;
-  const pitch = width * (1 + GAP);
-  if (!pitch) return;
-
-  const now = performance.now(), previous = pos;
-  pos = wrap(drag.pos - (e.clientX - drag.x) / pitch);
-  drag.v = ((pos - previous) / Math.max(now - drag.t, 1)) * 1000;   // cards/sec
-  drag.t = now;
-  select(indexAt(pos));
-  paint();
-});
-
-function endDrag(e) {
-  if (!drag || drag.id !== e.pointerId) return;
-  const carried = Math.max(-2, Math.min(2, drag.v * 0.18));  // let a flick carry
-  drag = null;
-  settle(wrap(Math.round(pos + carried)));
-}
-frame.addEventListener('pointerup', endDrag);
-frame.addEventListener('pointercancel', endDrag);
-
-/* ── Keyboard, buttons, dots ──────────────────────────────────────────── */
-frame.addEventListener('keydown', e => {
-  if (e.key === 'ArrowLeft')       { e.preventDefault(); nudge(-1); }
-  else if (e.key === 'ArrowRight') { e.preventDefault(); nudge(1);  }
-});
-$('.cf-prev').addEventListener('click', () => nudge(-1));
-$('.cf-next').addEventListener('click', () => nudge(1));
-dots.forEach(d => d.addEventListener('click', () => goTo(+d.dataset.dot)));
-
-/* A click on a card that is not the centre brings it in, which is what
-   everyone tries first. A drag must not count as a click. */
-cards.forEach((card, i) => {
-  card.addEventListener('click', () => {
-    if (Math.abs(pos - target) > 0.02) return;
-    if (indexAt(pos) !== i) goTo(i);
-  });
-});
-
-/* Card width drives pitch, depth and perspective, so it is the only thing
-   worth measuring — and only when the box actually changes. */
-const measure = () => { width = cards[0].offsetWidth; paint(); };
+new ResizeObserver(measure).observe(root);
 measure();
-new ResizeObserver(measure).observe(frame);
-select(0);
+
+function frame(now){
+  raf = 0;
+  if (!visible) return;
+  const dt = Math.min(0.033, (now - prev) / 1000);
+  prev = now;
+  const { w, h, cw } = size, y0 = Math.max(40, h * 0.2);
+  let lineVel;
+  if (drag && drag.moved) {
+    lineVel = drag.v * 1000;
+  } else if (reduce.matches) {
+    S.off = S.target; S.vel = 0; lineVel = 0;
+  } else {
+    const before = S.off;
+    [S.off, S.vel] = springStep(S.off, S.vel, S.target, dt);
+    lineVel = -(S.off - before) / Math.max(dt, 1e-3);
+  }
+  const gain = reduce.matches ? 0 : SWING;
+  const nearest = nearestAt(S.off, spacing, n);
+  for (let i = 0; i < n; i++){
+    const el = cards[i];
+    const x = w / 2 + i * spacing - S.off;
+    if (x < -cw * 1.5 || x > w + cw * 1.5){ el.style.visibility = 'hidden'; continue; }
+    el.style.visibility = 'visible';
+    let a = S.a[i] || 0, av = S.w[i] || 0;
+    [a, av] = swingStep(a, av, lineVel, dt, gain);
+    if (gain) a += Math.sin(now / 1300 + i * 1.7) * 0.0009 * gain;
+    S.a[i] = a; S.w[i] = av;
+    const y = stringY(x, w, y0, SAG) - 6;
+    el.style.transform = 'translate(' + (x - cw / 2).toFixed(1) + 'px,' + y.toFixed(1) + 'px) rotate(' + a.toFixed(4) + 'rad)';
+    el.style.zIndex = String(i === nearest ? n + 1 : n - Math.abs(i - nearest));
+  }
+  path.setAttribute('d', 'M0 ' + y0 + ' Q' + w / 2 + ' ' + (y0 + 2 * SAG) + ' ' + w + ' ' + y0);
+  setActive(nearest);
+  raf = requestAnimationFrame(frame);
+}
+new IntersectionObserver(([e]) => {
+  visible = e.isIntersecting;
+  if (visible && !raf){ prev = performance.now(); raf = requestAnimationFrame(frame); }
+}).observe(root);
+raf = requestAnimationFrame(frame);
+
+/* Dragging the line moves it one-to-one, with a rubber band at either end;
+   letting go throws it on, and it settles on the nearest print. */
+root.addEventListener('pointerdown', e => {
+  if (e.target.closest('.pl-bar')) return;
+  lastTouch = performance.now();
+  drag = { x: e.clientX, off: S.off, lx: e.clientX, lt: e.timeStamp, v: 0, moved: false };
+});
+root.addEventListener('pointermove', e => {
+  if (!drag) return;
+  const dx = e.clientX - drag.x;
+  if (!drag.moved && Math.abs(dx) > 5){ drag.moved = true; root.dataset.drag = '1'; root.setPointerCapture(e.pointerId); }
+  if (!drag.moved) return;
+  const dt = Math.max(1, e.timeStamp - drag.lt);
+  drag.v = 0.7 * ((e.clientX - drag.lx) / dt) + 0.3 * drag.v;
+  drag.lx = e.clientX; drag.lt = e.timeStamp;
+  const max = (n - 1) * spacing;
+  let off = drag.off - dx;
+  if (off < 0) off *= 0.35;
+  if (off > max) off = max + (off - max) * 0.35;
+  S.off = off;
+});
+const release = e => {
+  const d = drag; drag = null; lastTouch = performance.now();
+  if (!d) return;
+  if (d.moved){
+    root.dataset.drag = '0';
+    S.vel = -d.v * 1000;
+    goTo(nearestAt(S.off - d.v * 180, spacing, n));
+    return;
+  }
+  const card = e.target.closest && e.target.closest('[data-i]');
+  if (card) goTo(Number(card.dataset.i));
+};
+root.addEventListener('pointerup', release);
+root.addEventListener('pointercancel', release);
+
+/* Counted from where the line is heading, not from the print nearest the
+   centre, so two quick presses move two prints. */
+const step = dir => { lastTouch = performance.now(); goTo(Math.round(S.target / spacing) + dir); };
+root.querySelectorAll('.pl-btn').forEach(b => b.addEventListener('click', () => step(Number(b.dataset.dir))));
+root.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') step(1); else if (e.key === 'ArrowLeft') step(-1); else return;
+  e.preventDefault();
+});
+
+/* Autoplay moves on every few seconds and starts again from the first print
+   after the last. It waits while anyone is touching the carousel, and it is
+   off for anyone who has asked their device for less motion. */
+if (!reduce.matches && n > 1){
+  setInterval(() => {
+    if (document.hidden || !visible || drag || performance.now() - lastTouch < AUTOPLAY) return;
+    const at = Math.round(S.target / spacing);
+    goTo(at >= n - 1 ? 0 : at + 1);
+  }, AUTOPLAY);
+}
 })();
 
 
@@ -2205,7 +1800,7 @@ if (poster && poster.dataset.src) {
      the page moves behind a full-screen panel and arrives somewhere the
      visitor cannot see. */
   sheet.addEventListener('click', e => {
-    const a = e.target.closest('a[href^="#"], [data-enquire]');
+    const a = e.target.closest('a[href^="#"], [data-whatsapp], [data-call]');
     if (a) setOpen(false);
   });
 

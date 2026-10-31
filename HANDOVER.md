@@ -5,6 +5,33 @@ needs. Written 8 September 2026.
 
 ---
 
+## Revision, 31 October 2026 — read this first
+
+This section supersedes anything below that it contradicts.
+
+- **Every image was replaced** with the 35 renders in the client's Drive folder
+  (29 are used). They are resized JPEGs under `images/`; see `images/README.txt`
+  for the slot each one fills. The originals are PNGs of about 2.5 MB each and
+  are not in the repo.
+- **Every call to action is now WhatsApp or a phone call**, both to
+  `+91 90366 82626`. The enquiry form, the popup, the hero card form and the
+  email address were removed. `submit.php`, `config.php` and the Leadi5 webhook
+  are therefore **unused**. They are still in the folder and can be deleted from
+  the server. Section 8 below describes the old form and is history.
+- WhatsApp links carry context in the message ("I am looking at: the 4 BHK
+  villa"), built by `waHref()` near the top of `js/site.js`. Contact details
+  live in `DATA.contact` and `DATA.whatsapp`.
+- **The coverflow was replaced by a polaroid line carousel** (prints pegged to a
+  string, drag, arrows, keyboard, autoplay). It is a plain-script port of a React
+  component, near the foot of `js/site.js`. Its content is `DATA.polaroids`.
+- The monthly cost (EMI) calculator added on 2 October was **removed**.
+- `images/masterplan-aerial.jpg` is an illustration. It shows 31 houses (two are
+  numbered 26) and some areas that differ from `DATA.plots`. The interactive
+  plan remains the source of truth; do not present the aerial as a survey.
+- CSS is built with `npm ci` then `npm run build:css` from the repo root.
+
+---
+
 ## 1 · What this is
 
 A single-page marketing site for **Triton Humming Valley** — 30 Bali-inspired

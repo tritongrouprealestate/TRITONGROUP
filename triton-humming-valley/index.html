@@ -40,8 +40,6 @@
        js/lenis.min.js
        fonts/*.woff2       Cormorant Garamond and Jost, from this domain
        images/             the photographs — see images/README.txt
-       submit.php          receives the enquiry forms
-       config.php          your API key and notification address (never commit)
        robots.txt          points crawlers at the sitemap
        sitemap.xml         one URL; update <lastmod> when the page changes
 
@@ -76,19 +74,19 @@
 <link rel="preload" href="fonts/cormorant-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/jost-latin.woff2" as="font" type="font/woff2" crossorigin>
 
-<link rel="stylesheet" href="css/styles.css?v=3">
+<link rel="stylesheet" href="css/styles.css?v=4">
 
 <!-- The hero photograph is the largest thing on the first screen, and it is
      fetched by script rather than found in the markup, so the browser is
      told about it here instead of discovering it a second late. -->
-<link rel="preload" href="images/hero.jpg?v=2" as="image" fetchpriority="high">
+<link rel="preload" href="images/hero.jpg?v=3" as="image" fetchpriority="high">
 
 <!-- Deferred, not at the foot of the page: the download starts while the
      HTML is still parsing and execution still waits for it, in order. -->
 <script src="js/lenis.min.js" defer></script>
 <script src="js/gsap.min.js" defer></script>
 <script src="js/ScrollTrigger.min.js" defer></script>
-<script src="js/site.js?v=2" defer></script>
+<script src="js/site.js?v=3" defer></script>
 
 <!-- Structured data. Everything in here is stated on the page as well;
      nothing is claimed to Google that a visitor cannot read. -->
@@ -247,8 +245,8 @@
     <p style="margin:0">
       To arrange a viewing, call
       <a href="tel:+919036682626" style="color:#6FCBB0">+91&nbsp;90366&nbsp;82626</a>
-      or email
-      <a href="mailto:sales@tritongroup.in" style="color:#6FCBB0">sales@tritongroup.in</a>.
+      or message us on
+      <a href="https://wa.me/919036682626" style="color:#6FCBB0">WhatsApp</a>.
       RERA PRM/KA/RERA/1254/460/PR/131224/007292.
     </p>
   </div>
@@ -289,7 +287,8 @@
       <li><a class="nav-link" href="#ownership">Ownership</a></li>
     </ul>
 
-    <button type="button" data-enquire="Nav" class="btn btn-dawn nav-cta">Book a viewing</button>
+    <a class="btn btn-dawn nav-cta" data-call href="tel:+919036682626"><svg class="call-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8.1 9.6a16 16 0 0 0 6 6l1.2-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z"/></svg>Call</a>
+    <a class="btn btn-wa nav-cta" data-whatsapp href="https://wa.me/919036682626"><svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.65-2.05-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.53.15-.18.2-.3.3-.5.1-.2.05-.38-.02-.53-.08-.15-.67-1.6-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.53.07-.8.38-.28.3-1.05 1.02-1.05 2.5s1.08 2.9 1.23 3.1c.15.2 2.12 3.24 5.15 4.54.72.31 1.28.5 1.72.63.72.23 1.38.2 1.9.12.58-.09 1.75-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35Z"/><path d="M12.04 2.5c-5.24 0-9.5 4.26-9.5 9.5 0 1.67.44 3.3 1.27 4.74L2.5 21.5l4.9-1.28a9.46 9.46 0 0 0 4.64 1.2h.01c5.23 0 9.49-4.26 9.49-9.5 0-2.54-.99-4.92-2.78-6.71a9.42 9.42 0 0 0-6.72-2.79Zm5.55 15.05a7.87 7.87 0 0 1-5.55 2.3h-.01a7.9 7.9 0 0 1-4.02-1.1l-.29-.17-2.98.78.8-2.9-.19-.3a7.87 7.87 0 0 1-1.21-4.2 7.9 7.9 0 0 1 13.48-5.58 7.83 7.83 0 0 1 2.31 5.58c0 2.1-.82 4.08-2.3 5.57Z"/></svg>WhatsApp</a>
 
     <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="nav-sheet">
       <span class="nav-burger" aria-hidden="true"><i></i><i></i></span>
@@ -311,7 +310,7 @@
       <li><a href="#assurance">Assurance</a></li>
     </ul>
     <div class="nav-sheet-foot">
-      <button type="button" data-enquire="Menu" class="btn btn-dawn w-full">Book a viewing</button>
+      <a class="btn btn-wa w-full" data-whatsapp href="https://wa.me/919036682626"><svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.65-2.05-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.53.15-.18.2-.3.3-.5.1-.2.05-.38-.02-.53-.08-.15-.67-1.6-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.53.07-.8.38-.28.3-1.05 1.02-1.05 2.5s1.08 2.9 1.23 3.1c.15.2 2.12 3.24 5.15 4.54.72.31 1.28.5 1.72.63.72.23 1.38.2 1.9.12.58-.09 1.75-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35Z"/><path d="M12.04 2.5c-5.24 0-9.5 4.26-9.5 9.5 0 1.67.44 3.3 1.27 4.74L2.5 21.5l4.9-1.28a9.46 9.46 0 0 0 4.64 1.2h.01c5.23 0 9.49-4.26 9.49-9.5 0-2.54-.99-4.92-2.78-6.71a9.42 9.42 0 0 0-6.72-2.79Zm5.55 15.05a7.87 7.87 0 0 1-5.55 2.3h-.01a7.9 7.9 0 0 1-4.02-1.1l-.29-.17-2.98.78.8-2.9-.19-.3a7.87 7.87 0 0 1-1.21-4.2 7.9 7.9 0 0 1 13.48-5.58 7.83 7.83 0 0 1 2.31 5.58c0 2.1-.82 4.08-2.3 5.57Z"/></svg>WhatsApp us</a>
       <a class="nav-sheet-call" href="tel:+919036682626" data-field="phone">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8.1 9.6a16 16 0 0 0 6 6l1.2-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z"/></svg>
         <span>+91 90366 82626</span>
@@ -323,7 +322,7 @@
 <!-- A phone has no room for a call to action in the bar, and a sales page
      should never be more than a thumb away from one. -->
 <div class="dock" aria-hidden="false">
-  <button type="button" data-enquire="Dock" class="btn btn-dawn dock-cta">Book a viewing</button>
+  <a class="btn btn-wa dock-cta" data-whatsapp href="https://wa.me/919036682626"><svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.65-2.05-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.53.15-.18.2-.3.3-.5.1-.2.05-.38-.02-.53-.08-.15-.67-1.6-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.53.07-.8.38-.28.3-1.05 1.02-1.05 2.5s1.08 2.9 1.23 3.1c.15.2 2.12 3.24 5.15 4.54.72.31 1.28.5 1.72.63.72.23 1.38.2 1.9.12.58-.09 1.75-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35Z"/><path d="M12.04 2.5c-5.24 0-9.5 4.26-9.5 9.5 0 1.67.44 3.3 1.27 4.74L2.5 21.5l4.9-1.28a9.46 9.46 0 0 0 4.64 1.2h.01c5.23 0 9.49-4.26 9.49-9.5 0-2.54-.99-4.92-2.78-6.71a9.42 9.42 0 0 0-6.72-2.79Zm5.55 15.05a7.87 7.87 0 0 1-5.55 2.3h-.01a7.9 7.9 0 0 1-4.02-1.1l-.29-.17-2.98.78.8-2.9-.19-.3a7.87 7.87 0 0 1-1.21-4.2 7.9 7.9 0 0 1 13.48-5.58 7.83 7.83 0 0 1 2.31 5.58c0 2.1-.82 4.08-2.3 5.57Z"/></svg>WhatsApp us</a>
   <a class="dock-call" href="tel:+919036682626" data-field="phone" aria-label="Call +91 90366 82626">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8.1 9.6a16 16 0 0 0 6 6l1.2-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z"/></svg>
   </a>
@@ -373,8 +372,8 @@
         <div data-possession-row><dt>Possession</dt><dd data-possession>October 2026</dd></div>
       </dl>
       <div class="hero-actions">
+        <a class="btn btn-wa" data-whatsapp href="https://wa.me/919036682626"><svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.65-2.05-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.53.15-.18.2-.3.3-.5.1-.2.05-.38-.02-.53-.08-.15-.67-1.6-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.53.07-.8.38-.28.3-1.05 1.02-1.05 2.5s1.08 2.9 1.23 3.1c.15.2 2.12 3.24 5.15 4.54.72.31 1.28.5 1.72.63.72.23 1.38.2 1.9.12.58-.09 1.75-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35Z"/><path d="M12.04 2.5c-5.24 0-9.5 4.26-9.5 9.5 0 1.67.44 3.3 1.27 4.74L2.5 21.5l4.9-1.28a9.46 9.46 0 0 0 4.64 1.2h.01c5.23 0 9.49-4.26 9.49-9.5 0-2.54-.99-4.92-2.78-6.71a9.42 9.42 0 0 0-6.72-2.79Zm5.55 15.05a7.87 7.87 0 0 1-5.55 2.3h-.01a7.9 7.9 0 0 1-4.02-1.1l-.29-.17-2.98.78.8-2.9-.19-.3a7.87 7.87 0 0 1-1.21-4.2 7.9 7.9 0 0 1 13.48-5.58 7.83 7.83 0 0 1 2.31 5.58c0 2.1-.82 4.08-2.3 5.57Z"/></svg>WhatsApp us</a>
         <a class="btn btn-dawn" data-call href="tel:+919036682626"><svg class="call-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8.1 9.6a16 16 0 0 0 6 6l1.2-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z"/></svg>Call <span data-call-label>+91 90366 82626</span></a>
-        <a class="btn btn-whatsapp" data-whatsapp href="https://wa.me/919036682626"><svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.65-2.05-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.53.15-.18.2-.3.3-.5.1-.2.05-.38-.02-.53-.08-.15-.67-1.6-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.53.07-.8.38-.28.3-1.05 1.02-1.05 2.5s1.08 2.9 1.23 3.1c.15.2 2.12 3.24 5.15 4.54.72.31 1.28.5 1.72.63.72.23 1.38.2 1.9.12.58-.09 1.75-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35Z"/><path d="M12.04 2.5c-5.24 0-9.5 4.26-9.5 9.5 0 1.67.44 3.3 1.27 4.74L2.5 21.5l4.9-1.28a9.46 9.46 0 0 0 4.64 1.2h.01c5.23 0 9.49-4.26 9.49-9.5 0-2.54-.99-4.92-2.78-6.71a9.42 9.42 0 0 0-6.72-2.79Zm5.55 15.05a7.87 7.87 0 0 1-5.55 2.3h-.01a7.9 7.9 0 0 1-4.02-1.1l-.29-.17-2.98.78.8-2.9-.19-.3a7.87 7.87 0 0 1-1.21-4.2 7.9 7.9 0 0 1 13.48-5.58 7.83 7.83 0 0 1 2.31 5.58c0 2.1-.82 4.08-2.3 5.57Z"/></svg>WhatsApp us</a>
       </div>
     </div>
 
@@ -382,11 +381,11 @@
          screen costs more enquiries than the extra detail is worth. -->
     <aside class="hero-card" aria-labelledby="hero-card-h">
       <h2 id="hero-card-h">Step into Humming Valley <span aria-hidden="true">&rarr;</span></h2>
-      <p>One party at a time. We confirm within a working day.</p>
-      <div data-enquiry-mount data-variant="compact" data-source="Hero card"></div>
-      <p class="hero-card-alt">
-        Or call <a href="tel:+919036682626" data-field="phone">+91 90366 82626</a>
-      </p>
+      <p>Private viewings, one party at a time. Message or call and we will confirm a time within a working day.</p>
+      <div class="cta-stack">
+        <a class="btn btn-wa" data-whatsapp href="https://wa.me/919036682626"><svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.65-2.05-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.53.15-.18.2-.3.3-.5.1-.2.05-.38-.02-.53-.08-.15-.67-1.6-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.53.07-.8.38-.28.3-1.05 1.02-1.05 2.5s1.08 2.9 1.23 3.1c.15.2 2.12 3.24 5.15 4.54.72.31 1.28.5 1.72.63.72.23 1.38.2 1.9.12.58-.09 1.75-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35Z"/><path d="M12.04 2.5c-5.24 0-9.5 4.26-9.5 9.5 0 1.67.44 3.3 1.27 4.74L2.5 21.5l4.9-1.28a9.46 9.46 0 0 0 4.64 1.2h.01c5.23 0 9.49-4.26 9.49-9.5 0-2.54-.99-4.92-2.78-6.71a9.42 9.42 0 0 0-6.72-2.79Zm5.55 15.05a7.87 7.87 0 0 1-5.55 2.3h-.01a7.9 7.9 0 0 1-4.02-1.1l-.29-.17-2.98.78.8-2.9-.19-.3a7.87 7.87 0 0 1-1.21-4.2 7.9 7.9 0 0 1 13.48-5.58 7.83 7.83 0 0 1 2.31 5.58c0 2.1-.82 4.08-2.3 5.57Z"/></svg>WhatsApp us</a>
+        <a class="btn btn-dawn" data-call href="tel:+919036682626"><svg class="call-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8.1 9.6a16 16 0 0 0 6 6l1.2-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z"/></svg>Call <span data-call-label>+91 90366 82626</span></a>
+      </div>
     </aside>
   </div>
 
@@ -526,8 +525,8 @@
 </section>
 
 <!-- ══ 4b · THE VIEWS ═══════════════════════════════════════════════════
-     A coverflow of seven photographs over the site photograph. The cards
-     are built from DATA.coverflow; the carriage is at the foot of site.js. -->
+     Instant prints pegged to a string, over the site photograph. The prints
+     are built from DATA.polaroids; the carousel is near the foot of site.js. -->
 <section id="views" class="relative overflow-hidden bg-night pt-[clamp(3.5rem,9vh,8.5rem)] pb-[clamp(2.5rem,6vh,6rem)]">
   <div class="absolute inset-0"
        style="background:linear-gradient(140deg,#0B2A25,#0F3F37 45%,#3E6B5E)" aria-hidden="true"></div>
@@ -544,7 +543,7 @@
     </p>
   </div>
 
-  <div class="relative mt-8" data-coverflow data-label="Villa views"><!-- from DATA.coverflow --></div>
+  <div class="relative mt-8" data-polaroid data-label="Villa views"><!-- from DATA.polaroids --></div>
 </section>
 
 <!-- ══ 5 · MASTERPLAN ════════════════════════════════════════════════════
@@ -560,6 +559,12 @@
       <div class="flex flex-wrap items-end justify-between gap-6">
         <h2 style="font-size:var(--step-3)" data-anim="rise">Choose your ground</h2>
       </div>
+
+      <figure class="frame aerial mt-8">
+        <img data-src="images/masterplan-aerial.jpg" width="1700" height="957" decoding="async" loading="lazy"
+             alt="An illustrative aerial view of the layout: three rows of villas around two internal streets, the clubhouse and pool at the south-western corner, the approach road along the eastern edge.">
+        <figcaption>An illustrative aerial view of the layout. Plot numbers, areas and what is still available are on the plan below.</figcaption>
+      </figure>
 
       <div class="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] lg:gap-16">
 
@@ -637,7 +642,6 @@
       </p>
 
       <div id="villa-list" class="mt-14 grid gap-5"><!-- injected from DATA.villas --></div>
-      <div id="emi" class="mt-16" aria-labelledby="emi-title"><!-- injected from DATA.villas --></div>
     </div>
   </div>
 </section>
@@ -830,17 +834,13 @@
           <h2 style="font-size:var(--step-4)" class="max-w-[16ch]"
               data-lines="Come see it.|Feel the difference.">Come see it. Feel the difference.</h2>
           <p class="lede mt-7 text-haze">
-            Viewings are by appointment, one party at a time. Tell us when suits and
-            we will confirm within a working day.
+            Viewings are by appointment, one party at a time. Message or call us and
+            we will confirm a time within a working day.
           </p>
           <dl class="mt-12 space-y-6">
             <div>
               <dt class="text-[.85rem] text-haze">Sales</dt>
               <dd class="mt-1"><a class="nav-link font-display text-[1.35rem]" href="tel:+919036682626" data-field="phone">+91 90366 82626</a></dd>
-            </div>
-            <div>
-              <dt class="text-[.85rem] text-haze">Email</dt>
-              <dd class="mt-1"><a class="nav-link font-display text-[1.35rem]" href="mailto:sales@tritongroup.in" data-field="email">sales@tritongroup.in</a></dd>
             </div>
             <div>
               <dt class="text-[.85rem] text-haze">Site</dt>
@@ -854,7 +854,14 @@
           </dl>
         </div>
 
-        <div data-enquiry-mount data-variant="full" data-source="Enquiry section"></div>
+        <div class="viewing-cta">
+          <p class="alt alt-tick text-dawn">Book a private viewing</p>
+          <p class="viewing-cta-lede">The quickest way to reach us is WhatsApp. Prefer to talk? Call the same number.</p>
+          <div class="cta-stack">
+            <a class="btn btn-wa" data-whatsapp href="https://wa.me/919036682626"><svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.65-2.05-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.53.15-.18.2-.3.3-.5.1-.2.05-.38-.02-.53-.08-.15-.67-1.6-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.53.07-.8.38-.28.3-1.05 1.02-1.05 2.5s1.08 2.9 1.23 3.1c.15.2 2.12 3.24 5.15 4.54.72.31 1.28.5 1.72.63.72.23 1.38.2 1.9.12.58-.09 1.75-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35Z"/><path d="M12.04 2.5c-5.24 0-9.5 4.26-9.5 9.5 0 1.67.44 3.3 1.27 4.74L2.5 21.5l4.9-1.28a9.46 9.46 0 0 0 4.64 1.2h.01c5.23 0 9.49-4.26 9.49-9.5 0-2.54-.99-4.92-2.78-6.71a9.42 9.42 0 0 0-6.72-2.79Zm5.55 15.05a7.87 7.87 0 0 1-5.55 2.3h-.01a7.9 7.9 0 0 1-4.02-1.1l-.29-.17-2.98.78.8-2.9-.19-.3a7.87 7.87 0 0 1-1.21-4.2 7.9 7.9 0 0 1 13.48-5.58 7.83 7.83 0 0 1 2.31 5.58c0 2.1-.82 4.08-2.3 5.57Z"/></svg>Message us on WhatsApp</a>
+            <a class="btn btn-dawn" data-call href="tel:+919036682626"><svg class="call-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8.1 9.6a16 16 0 0 0 6 6l1.2-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z"/></svg>Call <span data-call-label>+91 90366 82626</span></a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -888,7 +895,7 @@
     </nav>
     <div class="foot-contact">
       <a href="tel:+919036682626" data-field="phone">+91 90366 82626</a>
-      <a href="mailto:sales@tritongroup.in" data-field="email">sales@tritongroup.in</a>
+      <a href="https://wa.me/919036682626" data-whatsapp>WhatsApp us</a>
       <p><a class="map-link" data-map href="https://maps.app.goo.gl/qKgAu1p8eE1tc8KK6">
         <svg class="map-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><span>Near Nandi Hills,<br>Bangalore North, Karnataka</span>
       </a></p>
@@ -901,24 +908,6 @@
     <p>&copy; <span id="year">2026</span> Triton Group. All rights reserved.</p>
   </div>
 </footer>
-
-<!-- ══ ENQUIRY POPUP ═════════════════════════════════════════════════════
-     Opened by every call to action on the page. -->
-<div id="enquiry-modal" hidden>
-  <div class="modal-scrim" data-close></div>
-  <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modal-h">
-    <button type="button" class="modal-close" data-close aria-label="Close">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-        <path d="M18 6 6 18M6 6l12 12"/></svg>
-    </button>
-    <div class="modal-head">
-      <h2 id="modal-h">Book a private viewing</h2>
-      <p class="modal-sub">Viewings are by appointment, one party at a time.
-         Tell us when suits and we will confirm within a working day.</p>
-    </div>
-    <div data-enquiry-mount data-variant="full" data-source="Popup"></div>
-  </div>
-</div>
 
 <!-- Lightbox -->
 <!-- The film. The iframe is written on open and cleared on close, so the

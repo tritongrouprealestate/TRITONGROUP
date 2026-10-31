@@ -1,57 +1,40 @@
-PROJECT PHOTOGRAPHY
-===================
-These files are already in place — upload the folder as it is and the site
-displays them. Nothing else needs changing.
+PROJECT IMAGES
+==============
+These files are in place. Upload the folder as it is and the site displays them.
 
-Filenames are fixed. To swap a photograph, save the new one over the old file
-using exactly the same name; to change which photograph goes where, or its
-caption, edit the DATA object at the top of ../js/site.js.
+Filenames are fixed. To swap a picture, save the new one over the old file with
+exactly the same name. To change which picture goes where, or its caption, edit
+the DATA object at the top of ../js/site.js.
 
-  hero.jpg          2400x1340  the aerial down the internal street at sunset
-                               sits behind the headline, full bleed
+AFTER REPLACING ANY IMAGE, raise BUILD at the top of ../js/site.js by one, and
+the ?v= numbers in ../index.html, or visitors who have been here before keep
+seeing the old picture for a day.
 
-  band.jpg          1376x768   the rows in monsoon cloud
-                               full-width strip after "The land"
+All pictures are illustrative renders of the project, resized to 1000-1900px
+wide and saved as JPEG so the whole folder stays under 5 MB. Keep new files to
+about the same size: a phone on mobile data is the visitor that matters.
 
-  villa-3bhk.jpg     600x800   one elevation per villa type, portrait 3:4
-  villa-4bhk.jpg    1200x1600
-  villa-5bhk.jpg    1200x1600
+  hero.jpg              aerial down the villa rows in monsoon, full bleed behind the headline
+  band.jpg              misty hills and villas, behind the views carousel
+  video-poster.jpg      the poster for the film (16:9)
+  masterplan-aerial.jpg illustrative aerial view of the layout, above the interactive plan
+  villa-3bhk.jpg        one picture per villa type, shown in the closed card and the open one
+  villa-4bhk.jpg
+  villa-5bhk.jpg
+  choreo-1.jpg          the four-frame scroll sequence in "Inside"
+  choreo-2.jpg          (choreo-4 is the frame that opens to fill the screen)
+  choreo-3.jpg
+  choreo-4.jpg
+  gallery-1.jpg         the six-tile grid under that sequence
+  ...
+  gallery-6.jpg
+  polaroid-1.jpg        the twelve prints on the string in the views section,
+  ...                   cropped square on the print
+  polaroid-12.jpg
 
-  choreo-1.jpg      1500x1000  the four-frame scroll sequence in "Inside", 3:2
-  choreo-2.jpg      1500x1000
-  choreo-3.jpg      1500x1000
-  choreo-4.jpg      1792x1195  <- this one opens to fill the screen
+  favicon.svg, favicon-32.png, favicon-180.png, favicon-512.png, triton-mark.svg
+                        the mark. Do not replace these with photographs.
 
-  gallery-1.jpg     1400x1050  the grid below that sequence
-  gallery-2.jpg     1400x1050
-  gallery-3.jpg     1400x1050
-  gallery-4.jpg     1280x596   taken on site, June 2026
-  gallery-5.jpg     1280x596   taken on site, June 2026
-  gallery-6.jpg      480x1040  taken on site, June 2026
-
-  cover-1.jpg       1000x750   the seven cards of the coverflow above the
-  cover-2.jpg                  masterplan, 4:3. The centre card is the one
-  cover-3.jpg                  the visitor reads, so put the strongest
-  cover-4.jpg                  photographs at 1, 4 and 7 — those are the
-  cover-5.jpg                  ones that land in the middle first.
-  cover-6.jpg
-  cover-7.jpg
-
-SIZE MATTERS MORE THAN YOU THINK
-A photograph is never drawn larger than the frame it sits in, so anything
-past twice that frame's width is bytes a visitor pays for and never sees.
-The right widths are:
-
-  hero.jpg                    2400px   (full screen)
-  band.jpg                    2000px   (full screen)
-  villa-*.jpg                 1200px   (drawn at ~600px)
-  choreo-*.jpg                1500px   (drawn at ~700px)
-  gallery-*.jpg               1400px   (drawn at ~520px)
-  cover-*.jpg                 1000px   (drawn at ~340px)
-
-Keep each file under about 350 KB. Export at JPEG quality 80 — above that
-the file doubles and nobody can see the difference. A 2.5 MB photograph is
-roughly eight seconds of a 4G connection in the hills, on its own.
-Everything is cropped to fill its frame, so the subject only needs to be
-roughly centred. Any file that is missing falls back to artwork drawn in
-code — nothing breaks, you just lose that photograph.
+The aerial in masterplan-aerial.jpg is an illustration, not a survey. It shows a
+different plot count and some different areas from the interactive plan, which
+carries the confirmed figures. Check it against the plan before relying on it.
