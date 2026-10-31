@@ -302,7 +302,7 @@ const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
 
    AFTER YOU REPLACE ANYTHING IN images/, BUMP THIS NUMBER — and the two
    ?v= numbers in index.html's <head> with it, or the hero is fetched twice.     */
-const BUILD = '3';
+const BUILD = '4';
 
 const bust = p => /^images\//.test(p) ? p + '?v=' + BUILD : p;
 $$('[data-src]').forEach(el => { el.dataset.src = bust(el.dataset.src); });

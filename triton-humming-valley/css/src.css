@@ -1335,3 +1335,4 @@ a[data-field]:not([class]){display:inline-block;padding-block:.2rem}
 @media (prefers-reduced-motion:reduce){ .pl-cap>*{animation:none} .pl-print,.pl-shot img{transition:none} }
 @media (max-width:639.98px){ .pl-sub{display:none} .pl-count{display:none} }
 .aerial figcaption{position:static;background:none;padding:.9rem 1.15rem;color:var(--color-cloud);font-size:.85rem;line-height:1.5}
+.video-meta{display:none}
