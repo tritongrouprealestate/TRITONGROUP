@@ -132,7 +132,7 @@ const DATA = {
      area. It costs nobody anything — none of them can be bought — but it is
      an inference, not a fact. */
   plots: [
-    {n:'10',x:100,y:46,t:'5 BHK',sq:3724,s:'sold',a:'North row'},
+    {n:'10',x:100,y:46,t:'5 BHK',sq:3724,s:'available',a:'North row'},
     {n:'9',x:148,y:46,t:'4 BHK',sq:2725,s:'sold',a:'North row'},
     {n:'8',x:196,y:46,t:'3 BHK',sq:2660,s:'available',a:'North row'},
     {n:'7',x:244,y:46,t:'3 BHK',sq:2334,s:'sold',a:'North row'},
