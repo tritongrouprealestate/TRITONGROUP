@@ -203,14 +203,14 @@ main{position:relative;z-index:1}
 
 /* game windows: small premium cards, the quiz is larger */
 .gm{--gbg:linear-gradient(180deg,#0e0a2a,#261048 58%,#4a1442);--gfg:#fff8e8;--gac:#f7c95a;--gline:rgba(247,201,90,.55);--w:460px;--h:580px;
-  position:fixed;inset:0;z-index:70;display:grid;place-items:center;
-  padding:max(10px,env(safe-area-inset-top,0px)) max(10px,env(safe-area-inset-right,0px)) max(10px,env(safe-area-inset-bottom,0px)) max(10px,env(safe-area-inset-left,0px));
+  position:fixed;inset:0;z-index:70;display:grid;grid-template-columns:minmax(0,1fr);place-items:center;
+  padding:max(14px,env(safe-area-inset-top,0px)) max(14px,env(safe-area-inset-right,0px)) max(14px,env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px));
   background:radial-gradient(80% 60% at 50% 40%,rgba(120,20,40,.55),rgba(8,4,14,.92));backdrop-filter:blur(8px)}
 .gm[data-game="runner"]{--gbg:linear-gradient(180deg,#0b1a3d,#1d3a6b 58%,#43305f)}
 .gm[data-game="pandal"],.gm[data-game="quiz"]{--gbg:linear-gradient(165deg,#fffbf0,#f8e6bd 60%,#f0d29a);--gfg:#2a0f12;--gac:#8a1426;--gline:#8a560c}
 .gm[data-game="pandal"]{--h:640px}
 .gm[data-game="quiz"]{--w:620px;--h:860px}
-.gwin{width:min(100%,var(--w));height:min(78dvh,var(--h));display:flex;flex-direction:column;border-radius:20px;overflow:hidden;background:var(--gbg);color:var(--gfg);
+.gwin{width:100%;max-width:var(--w);min-width:0;height:min(78dvh,var(--h));display:flex;flex-direction:column;border-radius:20px;overflow:hidden;background:var(--gbg);color:var(--gfg);
   box-shadow:0 0 0 2px var(--gold-3),0 0 0 5px #4a0b16,0 0 0 6px var(--gold-2),0 40px 90px rgba(0,0,0,.65)}
 .gm[data-game="quiz"] .gwin{height:min(92dvh,var(--h))}
 .gmbar{display:flex;align-items:center;gap:8px;padding:8px 10px;flex:none;background:linear-gradient(90deg,#4a0b16,#8a1426 50%,#4a0b16);border-bottom:2px solid var(--gold-3);color:var(--paper)}
@@ -223,7 +223,7 @@ main{position:relative;z-index:1}
 .gmbody.scroll{overflow-y:auto;-webkit-overflow-scrolling:touch}
 .gstage{position:absolute;inset:0}
 .gstage canvas{width:100%;height:100%;display:block;touch-action:none;user-select:none;-webkit-user-select:none}
-.gpanel{position:absolute;inset:0;display:grid;place-items:center;padding:14px;background:radial-gradient(90% 70% at 50% 40%,rgba(50,12,40,.88),rgba(8,4,16,.94));overflow-y:auto;color:#fff8e8}
+.gpanel{position:absolute;inset:0;display:grid;place-items:center;padding:14px;background:radial-gradient(90% 70% at 50% 40%,rgba(50,12,40,.985),rgba(8,4,16,.99));overflow-y:auto;color:#fff8e8}
 .gp{width:100%;max-width:520px;margin:0 auto;padding:12px;display:flex;flex-direction:column;gap:12px}
 .gp h2{margin:0;font:400 clamp(1.8rem,7vw,2.5rem)/1.2 var(--display);font-weight:400;text-wrap:balance;padding:0 .1em;background:var(--foil-text);-webkit-background-clip:text;background-clip:text;color:transparent}
 .gm[data-game="pandal"] .gp h2,.gm[data-game="quiz"] .gp h2{background:var(--red-text);-webkit-background-clip:text;background-clip:text}
@@ -288,6 +288,9 @@ main{position:relative;z-index:1}
 .qex.bad{box-shadow:0 0 0 2px #c32217}
 .qex p{margin:6px 0 0}
 .paused .qopts{filter:blur(7px);pointer-events:none}
+.gwin{position:relative}
+.qpause{position:absolute;inset:58px 0 0 0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:rgba(255,248,232,.82);backdrop-filter:blur(4px)}
+.qpause h2{margin:0;font:400 2.2rem/1.3 var(--display);color:var(--maroon-2)}
 .qr{border-radius:12px;padding:10px 14px;background:linear-gradient(180deg,#fff,#fff6e2);box-shadow:0 0 0 2px var(--gold-3)}
 .qr.ok{box-shadow:0 0 0 2px #1c7a43}
 .qr.bad{box-shadow:0 0 0 2px #c32217}
@@ -300,6 +303,14 @@ main{position:relative;z-index:1}
 :root[lang="bn"] .paper h2,:root[lang="bn"] .scene h1,:root[lang="bn"] .games h2,:root[lang="bn"] .names,:root[lang="bn"] .gcard b,:root[lang="bn"] .gp h2,:root[lang="bn"] .gmbar strong,:root[lang="bn"] .sec-title,:root[lang="bn"] .pcard h2,:root[lang="bn"] .pcard h3,:root[lang="bn"] .splash span,:root[lang="bn"] .pola .cap,:root[lang="bn"] .stub span{line-height:1.45}
 :root[lang="bn"] .paper h2{line-height:1.3}
 :root[lang="bn"] .gmbar strong{line-height:1.25}
+@media (max-height:720px){
+  .scene{gap:8px;padding-top:calc(66px + env(safe-area-inset-top,0px))}
+  .scene h1{font-size:clamp(1.7rem,7.5vw,2.2rem)}
+  .arch{width:min(34vw,128px)}
+  .tray{height:96px}
+  .conch,.conch svg{width:130px}
+  .hint{min-height:2.8em}
+}
 @media (max-width:380px){.ticket{grid-template-columns:1fr}.stub{border-right:0;border-bottom:2px dashed rgba(255,241,191,.7);flex-direction:row;gap:10px}.stub b{font-size:2.6rem}.pp{font-size:.72rem}}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -987,7 +998,7 @@ const GM = {
     ensureAudio(); sfx.click();
     this.id = id; this.cur = GAMES[id];
     $("gm").hidden = false; $("gm").dataset.game = id; document.body.style.overflow = "hidden";
-    $("gmBody").textContent = ""; $("gmPause").hidden = !this.cur.pause;
+    $("gmBody").className = "gmbody"; $("gmBody").textContent = ""; $("gmPause").hidden = !this.cur.pause;
     this.relang(true);
     this.cur.start($("gmBody"));
     $("gmBack").focus();
@@ -1007,107 +1018,138 @@ $("gmPause").addEventListener("click", () => { if (GM.cur && GM.cur.pause) GM.cu
 $("gmLang").addEventListener("click", () => setLang(lang === "en" ? "bn" : "en"));
 document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("gm").hidden) GM.close(); });
 
-/* ---------- Game 1: Calm the Mother (rhythm, Kalighat Pat style flat art) ---------- */
+/* ---------- Game 1: Calm the Mother (one level, tap the diyas, avoid the shadows) ---------- */
 Object.assign(GT, {
-  r_story: { en: "After the battle, Kali's rage keeps growing. The gods ask Shiva to calm her. He walks into her path. Keep the rhythm and light the diyas until she sees him and calms.", bn: "যুদ্ধের পর কালীর ক্রোধ বেড়েই চলে। দেবতারা শিবকে তাঁকে শান্ত করতে বলেন। শিব তাঁর পথে এসে দাঁড়ান। তালে তাল রেখে প্রদীপ জ্বালান, যতক্ষণ না মা তাঁকে দেখে শান্ত হন।" },
-  r_how: { en: "Tap, or press Space, when a beat reaches the gold circle. Hold the long beats.", bn: "তাল সোনালি বৃত্তে পৌঁছলে ট্যাপ করুন বা স্পেস বার চাপুন। লম্বা তাল ধরে রাখুন।" },
-  r_l1: { en: "Dakshineswar Ghat", bn: "দক্ষিণেশ্বর ঘাট" }, r_l2: { en: "Kalighat Lanes", bn: "কালীঘাটের গলি" }, r_l3: { en: "Battlefield", bn: "যুদ্ধক্ষেত্র" },
-  r_p1: { en: "Light the lamp", bn: "প্রদীপ জ্বালান" }, r_p2: { en: "Send the shadows back", bn: "ছায়াদের ফিরিয়ে দিন" }, r_p3: { en: "Be calm, Mother", bn: "শান্ত হও মা" },
-  r_perfect: { en: "Perfect", bn: "দারুণ" }, r_good: { en: "Good", bn: "ভালো" }, r_miss: { en: "Miss", bn: "ফসকাল" },
+  d_rhythm: { en: "Tap the diyas, avoid the shadows, calm Maa.", bn: "প্রদীপে ট্যাপ করুন, ছায়া এড়িয়ে চলুন, মাকে শান্ত করুন।" },
+  r_story: { en: "Kali's rage is rising. Light the diyas to calm her. Beware of the dark shadows.", bn: "মায়ের ক্রোধ বাড়ছে। প্রদীপ জ্বালিয়ে তাঁকে শান্ত করুন। কালো ছায়াদের থেকে সাবধান।" },
+  r_how: { en: "Tap a diya to light it: points go up. Tap a dark shadow: points go down. Red jaba flowers give a bonus.", bn: "প্রদীপে ট্যাপ করলে জ্বলবে, পয়েন্ট বাড়বে। কালো ছায়ায় ট্যাপ করলে পয়েন্ট কমবে। লাল জবা ফুলে বোনাস।" },
+  r_anger: { en: "Maa's anger", bn: "মায়ের ক্রোধ" },
   r_retry: { en: "Maa is too angry. Try again.", bn: "মা এখনও রেগে আছেন। আবার চেষ্টা করুন।" },
-  r_next: { en: "Next level", bn: "পরের স্তর" },
-  r_done: { en: "The lamps are lit. Well done.", bn: "সব প্রদীপ জ্বলেছে। চমৎকার।" },
-  r_end: { en: "Maa sees Mahadev and her rage fades. The night is peaceful.", bn: "মা মহাদেবকে দেখেন, তাঁর ক্রোধ মিলিয়ে যায়। রাত শান্ত হয়ে আসে।" }
+  r_end: { en: "Maa sees Mahadev and her rage fades. The night is peaceful.", bn: "মা মহাদেবকে দেখেন, তাঁর ক্রোধ মিলিয়ে যায়। রাত শান্ত হয়ে আসে।" },
+  r_great: { en: "Great!", bn: "দারুণ!" }
 });
 GAMES.rhythm = (() => {
-  const TRAVEL = 1900, WP = 80, WG = 160;
-  const LV = [{ bpm: 80, beats: 24, miss: 4 }, { bpm: 100, beats: 32, miss: 6 }, { bpm: 120, beats: 56, miss: 8 }];
-  let root, cv, cx, W = 0, H = 0, raf = 0, last = 0, clock = 0, level = 0, notes = [], score = 0, combo = 0, rage = 20, perf = 0, hits = 0, cp = 0;
-  let mode = "menu", paused = false, pop = "", popT = 0, shiva = 0, beatMs = 750, nextBeat = 0, endT = 0, holdN = null, litN = 0, best = LS.get("kp_best_rhythm", 0), panelEl, run = false;
+  const INK = "#0b0c1a", GOLD = "#F2B33D", CREAM = "#FFF6E5", RED = "#B0302A";
+  let root, cv, cx, W = 0, H = 0, raf = 0, last = 0, mode = "menu", paused = false, panelEl;
+  let items, parts, pops, score, combo, rage, time, spawnT, litN, shake, flash, shiva, endT, played;
+  let best = LS.get("kp_best_calm", 0);
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  const faceR = () => Math.min(W * .12, H * .1);
+  const topLimit = () => 66 + faceR() * 2 + 40;           /* items fade out above this line */
+  const slot = i => ({ x: W * (.06 + .88 * ((i % 12) + .5) / 12), y: H * (.86 + (Math.floor(i / 12) % 3) * .045) });
 
-  function gen(l) {                                  /* build the note list for a level */
-    beatMs = 60000 / LV[l].bpm; const out = []; let b = Math.ceil(2300 / beatMs);
-    for (let i = 0; i < LV[l].beats; i++) {
-      let type = "lamp", dur = 0;
-      if (l >= 1 && i % 4 === 3) type = "shadow";
-      if (l >= 1 && i % 8 === 6) { type = "hold"; dur = beatMs * 1.5; }
-      out.push({ t: b * beatMs, type, dur, done: false, miss: false });
-      b += (l === 2 && i % 6 === 4) ? .5 : 1; if (type === "hold") b += 1;
-    }
-    return out;
-  }
-  function begin(l) {
-    level = l; notes = gen(l); clock = 0; score = 0; combo = 0; rage = 20; perf = 0; hits = 0; cp = 0; shiva = 0; litN = 0; holdN = null; pop = "";
-    nextBeat = 0; mode = "play"; paused = false; run = false; showPanel(""); duck(.12); ensureAudio();
-  }
-  function showPanel(html) { panelEl.innerHTML = html; panelEl.hidden = !html; }
+  function reset() { items = []; parts = []; pops = []; score = 0; combo = 0; rage = 60; time = 0; spawnT = 400; litN = 0; shake = 0; flash = 0; shiva = 0; endT = 0; played = false; }
+  const panel = html => { panelEl.innerHTML = html; panelEl.hidden = !html; };
   function menu() {
-    mode = "menu"; duck(.4);
-    showPanel(`<div class="gp"><h2>${gl("t_rhythm")}</h2><p>${gl("r_story")}</p><p class="dim">${gl("r_how")}</p>
-      <div class="gbtns">${[0, 1, 2].map(i => `<button class="gbtn" data-lv="${i}">${i + 1}. ${gl("r_l" + (i + 1))}</button>`).join("")}</div>
-      <p class="dim">${gl("best")}: ${nd(best)}</p></div>`);
+    mode = "menu"; duck(.4); reset();
+    panel(`<div class="gp"><h2>${gl("t_rhythm")}</h2><p>${gl("r_story")}</p><p class="dim">${gl("r_how")}</p><div class="gbtns"><button class="gbtn" data-go="1">${gl("start")}</button></div><p class="dim">${gl("best")}: ${nd(best)}</p></div>`);
   }
-  function endLevel(won) {
-    mode = "over"; run = false; if (score > best) { best = score; LS.set("kp_best_rhythm", best); }
-    const last = level === 2;
-    showPanel(`<div class="gp"><h2>${last ? gl("r_end") : gl("r_done")}</h2><p>${gl("score")}: ${nd(score)} &middot; ${gl("best")}: ${nd(best)}</p>
-      <div class="gbtns">${last ? "" : `<button class="gbtn" data-lv="${level + 1}">${gl("r_next")}</button>`}<button class="gbtn alt" data-lv="${level}">${gl("again")}</button><button class="gbtn alt" data-menu="1">${gl("menu")}</button></div></div>`);
+  function go() { reset(); mode = "play"; paused = false; panel(""); duck(.25); ensureAudio(); }
+  function finish(won) {
+    if (score > best) { best = score; LS.set("kp_best_calm", best); }
+    mode = "over";
+    panel(`<div class="gp"><h2>${won ? gl("r_end") : gl("r_retry")}</h2><p>${gl("score")}: ${nd(score)} &middot; ${gl("best")}: ${nd(best)}</p><div class="gbtns"><button class="gbtn" data-go="1">${gl("again")}</button></div></div>`);
   }
-  function judge(n, perfect) {
-    if (perfect) { score += 3; rage = Math.max(0, rage - 3); perf++; pop = gl("r_perfect"); sfx.perfect(); if (perf % 10 === 0) sfx.ulu(); }
-    else { score += 1; perf = 0; pop = gl("r_good"); sfx.good(); }
-    popT = 600; combo++; hits++;
-    if (n.type !== "shadow") litN++;
-    if (hits % 10 === 0) { cp = notes.indexOf(n) + 1; playConch(1.6); }
+  function pop(x, y, text, color) { pops.push({ x, y, text, color, life: 1 }); }
+  function burst(x, y, n, cols, spd) { for (let i = 0; i < n; i++) { const a = rnd(0, 6.283), s = rnd(.4, 1) * spd; parts.push({ x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s - 40, c: cols[i % cols.length], life: 1, r: rnd(2, 4) }); } }
+
+  function spawn() {
+    const live = items.filter(i => i.state === "live");
+    if (live.length >= 6) return;
+    const pShadow = .22 + .12 * Math.min(1, time / 40), roll = Math.random();
+    const type = roll < .07 ? "jaba" : roll < .07 + pShadow ? "shadow" : "diya";
+    let x = 0;
+    for (let k = 0; k < 8; k++) { x = rnd(44, W - 44); if (live.every(i => Math.hypot(i.x - x, i.y - H * .8) > 76)) break; }
+    items.push({ type, x, y: H * .82, r: type === "jaba" ? 22 : 26, ph: rnd(0, 6), t: 0, state: "live", fly: 0, sx: 0, sy: 0 });
   }
-  function press() {
+  function tap(px, py) {
     ensureAudio(); if (mode !== "play" || paused) return;
-    let c = null, bd = 1e9;
-    for (const n of notes) { if (n.done || n.miss) continue; const d = Math.abs(n.t - clock); if (d <= WG && d < bd) { c = n; bd = d; } }
-    if (!c) { sfx.tap(); return; }
-    c.done = true; judge(c, bd <= WP); if (c.type === "hold") holdN = c;
-  }
-  function release() {
-    if (!holdN) return;
-    if (clock < holdN.t + holdN.dur - WG) { rage = Math.min(100, rage + 3); combo = 0; pop = gl("r_miss"); popT = 500; sfx.soft(); } else score += 1;
-    holdN = null;
+    for (let k = items.length - 1; k >= 0; k--) {
+      const it = items[k]; if (it.state !== "live" || Math.hypot(it.x - px, it.y - py) > it.r + 18) continue;
+      if (it.type === "shadow") {
+        score = Math.max(0, score - 10); rage = Math.min(100, rage + 8); combo = 0; shake = 320; flash = 320;
+        burst(it.x, it.y, 18, ["#1a1530", "#3a2a55", "#6b1c24"], 120); pop(it.x, it.y - 20, "-" + nd(10), "#ff7a6b"); sfx.bad(); it.state = "gone";
+      } else {
+        combo++; const pts = it.type === "jaba" ? 25 : 10 + Math.min(combo - 1, 10);
+        score += pts; rage = Math.max(0, rage - (it.type === "jaba" ? 8 : 4));
+        burst(it.x, it.y, it.type === "jaba" ? 22 : 14, it.type === "jaba" ? ["#e5322a", "#F2B33D", "#fff1bf"] : ["#F2B33D", "#fff1bf", "#ff8a1f"], 130);
+        pop(it.x, it.y - 20, "+" + nd(pts), "#fff1bf");
+        if (it.type === "jaba") sfx.perfect(); else sfx.lamp(combo);
+        if (combo % 10 === 0) { sfx.ulu(); pop(it.x, it.y - 52, gl("r_great"), "#F2B33D"); }
+        if (it.type === "diya") { it.state = "fly"; const s = slot(litN); it.sx = it.x; it.sy = it.y; it.tx = s.x; it.ty = s.y; it.fly = 0; } else it.state = "gone";
+      }
+      if (rage <= 0) { mode = "ending"; endT = 0; played = false; } else if (rage >= 100) finish(false);
+      return;
+    }
+    sfx.tap();
   }
   function update(dt) {
-    clock += dt;
-    if (clock >= nextBeat && mode === "play") { sfx.dhak(Math.round(nextBeat / beatMs) % 4 === 0); nextBeat += beatMs; }
-    if (popT > 0) popT -= dt;
-    for (const n of notes) if (!n.done && !n.miss && clock - n.t > WG) { n.miss = true; combo = 0; perf = 0; rage = Math.min(100, rage + LV[level].miss); pop = gl("r_miss"); popT = 500; sfx.bad(); }
-    if (holdN && clock >= holdN.t + holdN.dur) { holdN = null; score += 1; }
-    if (rage >= 100) { mode = "retry"; showPanel(`<div class="gp"><h2>${gl("r_retry")}</h2></div>`); setTimeout(() => { if (mode !== "retry") return; restart(); }, 1600); return; }
-    const finished = notes.every(n => n.done || n.miss);
-    if (level === 2 && combo >= 30 || (finished && level === 2)) { mode = "ending"; endT = 0; beatMs = 1000; nextBeat = clock; }
-    else if (finished && level < 2) endLevel();
+    const s = dt / 1000; time += s; spawnT -= dt;
+    if (spawnT <= 0) { spawn(); spawnT = Math.max(470, 950 - time * 8); }
+    const vy = 62 + Math.min(42, time * .9), top = topLimit();
+    for (const it of items) {
+      it.t += dt;
+      if (it.state === "live") {
+        it.y -= vy * s; it.x += Math.sin(it.t / 520 + it.ph) * 18 * s; it.x = Math.max(26, Math.min(W - 26, it.x));
+        if (it.y < top) { if (it.type === "diya") { rage = Math.min(100, rage + 2); combo = 0; } it.state = "gone"; }
+      } else if (it.state === "fly") {
+        it.fly += dt / 520; const e = Math.min(1, it.fly), k = 1 - Math.pow(1 - e, 3);
+        it.x = it.sx + (it.tx - it.sx) * k; it.y = it.sy + (it.ty - it.sy) * k - Math.sin(e * Math.PI) * 50;
+        if (e >= 1) { litN++; it.state = "gone"; }
+      }
+    }
+    items = items.filter(i => i.state !== "gone");
+    if (rage >= 100 && mode === "play") finish(false);
   }
-  function restart() {
-    for (let i = cp; i < notes.length; i++) { notes[i].done = false; notes[i].miss = false; }
-    clock = cp > 0 ? notes[cp].t - TRAVEL - 400 : 0; rage = 40; combo = 0; holdN = null; nextBeat = Math.ceil(clock / beatMs) * beatMs; mode = "play"; showPanel("");
+  function updateFx(dt) {
+    const s = dt / 1000; if (shake > 0) shake -= dt; if (flash > 0) flash -= dt;
+    for (const p of parts) { p.x += p.vx * s; p.y += p.vy * s; p.vy += 260 * s; p.life -= s * 1.4; }
+    parts = parts.filter(p => p.life > 0);
+    for (const p of pops) { p.y -= 34 * s; p.life -= s * 1.1; }
+    pops = pops.filter(p => p.life > 0);
   }
 
-  /* ---- drawing: bold outlines, flat colours ---- */
-  const INK = "#0b0c1a", GOLD = "#F2B33D", NIGHT = "#1B1F3B", CREAM = "#FFF6E5", RED = "#B0302A";
-  function face(x, y, r, mood) {                     /* mood 0 calm .. 1 raging */
+  /* ---- drawing: bold outlines, flat colours with soft gradients ---- */
+  function face(x, y, r, mood) {
     cx.lineWidth = Math.max(2, r * .07); cx.strokeStyle = INK;
     cx.fillStyle = INK; cx.beginPath(); cx.arc(x, y - r * .05, r * 1.18, 0, 7); cx.fill();
-    cx.fillStyle = "#33468f"; cx.beginPath(); cx.arc(x, y, r, 0, 7); cx.fill(); cx.stroke();
+    const fg = cx.createRadialGradient(x - r * .3, y - r * .4, r * .1, x, y, r); fg.addColorStop(0, "#4a60b8"); fg.addColorStop(1, "#2a3a80");
+    cx.fillStyle = fg; cx.beginPath(); cx.arc(x, y, r, 0, 7); cx.fill(); cx.stroke();
     cx.fillStyle = GOLD; cx.beginPath(); cx.arc(x - r * .98, y + r * .25, r * .13, 0, 7); cx.arc(x + r * .98, y + r * .25, r * .13, 0, 7); cx.fill();
-    cx.fillStyle = CREAM;
-    [-1, 1].forEach(s => { cx.beginPath(); cx.ellipse(x + s * r * .36, y - r * .1, r * .2, r * .13, 0, 0, 7); cx.fill(); cx.stroke();
-      cx.fillStyle = INK; cx.beginPath(); cx.arc(x + s * r * .36, y - r * .1, r * .07, 0, 7); cx.fill(); cx.fillStyle = CREAM;
-      cx.beginPath(); cx.moveTo(x + s * r * .6, y - r * (.36 + mood * .1)); cx.lineTo(x + s * r * .16, y - r * (.36 - mood * .08)); cx.stroke(); });
+    [-1, 1].forEach(s => {
+      cx.fillStyle = CREAM; cx.beginPath(); cx.ellipse(x + s * r * .36, y - r * .1, r * .2, r * .13, 0, 0, 7); cx.fill(); cx.stroke();
+      cx.fillStyle = INK; cx.beginPath(); cx.arc(x + s * r * .36, y - r * .1, r * .07, 0, 7); cx.fill();
+      cx.beginPath(); cx.moveTo(x + s * r * .6, y - r * (.36 + mood * .1)); cx.lineTo(x + s * r * .16, y - r * (.36 - mood * .08)); cx.stroke();
+    });
     cx.fillStyle = RED; cx.beginPath(); cx.arc(x, y - r * .5, r * .07, 0, 7); cx.fill();
-    cx.beginPath(); cx.lineWidth = Math.max(2, r * .07); cx.strokeStyle = INK;
-    const m = .5 - mood;                              /* positive = smile */
-    cx.moveTo(x - r * .28, y + r * .42); cx.quadraticCurveTo(x, y + r * (.42 + m * .5), x + r * .28, y + r * .42); cx.stroke();
+    cx.beginPath(); cx.moveTo(x - r * .28, y + r * .42); cx.quadraticCurveTo(x, y + r * (.42 + (.5 - mood) * .5), x + r * .28, y + r * .42); cx.stroke();
   }
-  function lamp(x, y, r, lit, t) {
-    cx.lineWidth = 3; cx.strokeStyle = INK; cx.fillStyle = "#B8581F";
-    cx.beginPath(); cx.moveTo(x - r, y); cx.quadraticCurveTo(x, y + r * 1.3, x + r, y); cx.closePath(); cx.fill(); cx.stroke();
-    if (lit) { cx.fillStyle = GOLD; cx.beginPath(); cx.moveTo(x, y - r * 1.5 - Math.sin(t / 120) * 2); cx.quadraticCurveTo(x + r * .7, y - r * .5, x, y); cx.quadraticCurveTo(x - r * .7, y - r * .5, x, y - r * 1.5); cx.fill(); cx.stroke(); }
+  function lamp(x, y, r, lit, t, glow) {
+    if (glow) { const g = cx.createRadialGradient(x, y - r * .4, 2, x, y - r * .4, r * 2.1); g.addColorStop(0, "rgba(247,201,90,.55)"); g.addColorStop(1, "rgba(247,201,90,0)"); cx.fillStyle = g; cx.fillRect(x - r * 2.2, y - r * 2.6, r * 4.4, r * 4.4); }
+    cx.lineWidth = 3; cx.strokeStyle = INK;
+    const bg = cx.createLinearGradient(0, y, 0, y + r * 1.2); bg.addColorStop(0, "#f4b56a"); bg.addColorStop(1, "#9a4a1c"); cx.fillStyle = bg;
+    cx.beginPath(); cx.moveTo(x - r, y); cx.quadraticCurveTo(x, y + r * 1.4, x + r, y); cx.closePath(); cx.fill(); cx.stroke();
+    cx.fillStyle = "#5a2410"; cx.beginPath(); cx.ellipse(x, y, r, r * .22, 0, 0, 7); cx.fill();
+    if (lit) {
+      const fg = cx.createLinearGradient(0, y - r * 1.6, 0, y); fg.addColorStop(0, "#ff8a1f"); fg.addColorStop(.6, "#ffd25a"); fg.addColorStop(1, "#fffbe0"); cx.fillStyle = fg;
+      cx.beginPath(); cx.moveTo(x, y - r * 1.6 - Math.sin(t / 110) * 2); cx.quadraticCurveTo(x + r * .7, y - r * .5, x, y); cx.quadraticCurveTo(x - r * .7, y - r * .5, x, y - r * 1.6); cx.fill(); cx.stroke();
+    }
+  }
+  function shadowBlob(x, y, r, t) {
+    cx.fillStyle = "#07060f"; cx.strokeStyle = "#8a6aa8"; cx.lineWidth = 2.5;
+    cx.beginPath();
+    for (let a = 0; a <= 6.3; a += .35) { const rr = r * (1 + .12 * Math.sin(a * 3 + t / 160)), px = x + Math.cos(a) * rr, py = y + Math.sin(a) * rr * .9; a === 0 ? cx.moveTo(px, py) : cx.lineTo(px, py); }
+    cx.closePath(); cx.fill(); cx.stroke();
+    cx.fillStyle = "#ff5a4a"; cx.beginPath(); cx.arc(x - r * .32, y - r * .1, r * .14, 0, 7); cx.arc(x + r * .32, y - r * .1, r * .14, 0, 7); cx.fill();
+  }
+  function jaba(x, y, r) {
+    cx.lineWidth = 2; cx.strokeStyle = "#5a0a10";
+    for (let i = 0; i < 5; i++) {
+      cx.save(); cx.translate(x, y); cx.rotate(i * 1.2566);
+      const pg = cx.createRadialGradient(0, -r * .5, 1, 0, -r * .5, r); pg.addColorStop(0, "#ff5a3f"); pg.addColorStop(1, "#b0141c"); cx.fillStyle = pg;
+      cx.beginPath(); cx.ellipse(0, -r * .55, r * .42, r * .62, 0, 0, 7); cx.fill(); cx.stroke(); cx.restore();
+    }
+    cx.fillStyle = GOLD; cx.beginPath(); cx.arc(x, y, r * .2, 0, 7); cx.fill();
   }
   function shivaFig(x, y, s) {
     cx.lineWidth = 3; cx.strokeStyle = INK;
@@ -1115,77 +1157,68 @@ GAMES.rhythm = (() => {
     cx.fillStyle = "#9db4ec"; cx.beginPath(); cx.arc(x, y, s * .38, 0, 7); cx.fill(); cx.stroke();
     cx.fillStyle = INK; cx.beginPath(); cx.arc(x, y - s * .22, s * .38, Math.PI, 0); cx.fill();
     cx.fillStyle = CREAM; cx.beginPath(); cx.arc(x, y - s * .55, s * .13, .3, 5.9); cx.fill();
-    cx.strokeStyle = CREAM; cx.lineWidth = 2; [-.12, 0, .12].forEach(d => { cx.beginPath(); cx.moveTo(x - s * .15, y - s * .02 + d * s); cx.lineTo(x + s * .15, y - s * .02 + d * s); cx.stroke(); });
     cx.strokeStyle = GOLD; cx.lineWidth = 3; cx.beginPath(); cx.arc(x, y, s * .6, 0, 7); cx.stroke();
   }
   function draw(ts) {
-    cx.clearRect(0, 0, W, H); const bg = cx.createLinearGradient(0, 0, 0, H); bg.addColorStop(0, "#0e0a2a"); bg.addColorStop(.55, "#261048"); bg.addColorStop(1, "#4a1442"); cx.fillStyle = bg; cx.fillRect(0, 0, W, H);
-    const mg = cx.createRadialGradient(W * .82, H * .14, 4, W * .82, H * .14, W * .5); mg.addColorStop(0, "rgba(247,201,90,.35)"); mg.addColorStop(1, "rgba(247,201,90,0)"); cx.fillStyle = mg; cx.fillRect(0, 0, W, H);
-    cx.fillStyle = CREAM; for (let i = 0; i < 24; i++) cx.fillRect((i * 97) % W, (i * 53) % (H * .4), 2, 2);
-    const mood = Math.min(1, rage / 100), ly = H * .6, tx = W * .2, fr = Math.min(W * .13, H * .12);
-    /* ghat steps and lit lamps */
-    ["#3a2a66", "#4b2f78", "#5e3a82"].forEach((c, i) => { cx.fillStyle = c; cx.fillRect(0, H * .76 + i * H * .08, W, H * .08); cx.strokeStyle = INK; cx.lineWidth = 3; cx.strokeRect(-2, H * .76 + i * H * .08, W + 4, H * .08); });
-    const total = Math.max(litN, mode === "ending" ? 36 : 0);
-    for (let i = 0; i < Math.min(total, 36); i++) lamp(W * (.05 + .9 * ((i % 12) + .5) / 12), H * (.8 + (Math.floor(i / 12) % 3) * .08), Math.min(12, W / 40), true, ts + i * 80);
-    /* lane and target */
-    cx.strokeStyle = INK; cx.lineWidth = 12; cx.beginPath(); cx.moveTo(0, ly); cx.lineTo(W, ly); cx.stroke();
-    cx.strokeStyle = CREAM; cx.lineWidth = 4; cx.beginPath(); cx.moveTo(0, ly); cx.lineTo(W, ly); cx.stroke();
-    cx.strokeStyle = INK; cx.lineWidth = 11; cx.beginPath(); cx.arc(tx, ly, 34, 0, 7); cx.stroke();
-    cx.strokeStyle = GOLD; cx.lineWidth = 6; cx.beginPath(); cx.arc(tx, ly, 34, 0, 7); cx.stroke();
-    /* Kali's face and Shiva */
-    face(W / 2, H * .3, fr, shiva > 0 ? Math.max(0, mood - shiva) * .5 : mood);
-    if (shiva > 0) shivaFig(W * (.12 + .3 * Math.min(1, shiva * 1.4)), H * .35, fr * .9);
-    /* notes */
-    const span = W - tx;
-    for (const n of notes) {
-      const x = tx + (n.t - clock) / TRAVEL * span;
-      if (n.done && n.type !== "hold" || n.miss || x > W + 40 || x < -60 - (n.dur / TRAVEL * span)) continue;
-      if (n.type === "hold") { const x2 = tx + (n.t + n.dur - clock) / TRAVEL * span; cx.lineWidth = 3; cx.strokeStyle = INK; cx.fillStyle = n.done ? GOLD : "#f7d98a"; cx.beginPath(); cx.roundRect(Math.max(x2, tx - 10) - 4, ly - 20, Math.max(0, x - Math.max(x2, tx - 10)) + 8, 40, 20); cx.fill(); cx.stroke(); }
-      if (n.type === "shadow") { cx.fillStyle = "#06070f"; cx.strokeStyle = CREAM; cx.lineWidth = 3; cx.beginPath(); cx.arc(x, ly, 24, 0, 7); cx.fill(); cx.stroke(); cx.fillStyle = CREAM; cx.beginPath(); cx.arc(x - 8, ly - 4, 4, 0, 7); cx.arc(x + 8, ly - 4, 4, 0, 7); cx.fill(); }
-      else if (!(n.done && n.type === "hold" && clock > n.t)) lamp(x, ly + 6, 18, true, ts);
+    cx.save(); if (shake > 0) cx.translate(rnd(-5, 5), rnd(-5, 5));
+    const bg = cx.createLinearGradient(0, 0, 0, H); bg.addColorStop(0, "#0e0a2a"); bg.addColorStop(.55, "#261048"); bg.addColorStop(1, "#4a1442"); cx.fillStyle = bg; cx.fillRect(-10, -10, W + 20, H + 20);
+    const mg = cx.createRadialGradient(W * .82, H * .14, 4, W * .82, H * .14, W * .5); mg.addColorStop(0, "rgba(247,201,90,.3)"); mg.addColorStop(1, "rgba(247,201,90,0)"); cx.fillStyle = mg; cx.fillRect(0, 0, W, H);
+    cx.fillStyle = CREAM; for (let i = 0; i < 26; i++) cx.fillRect((i * 97) % W, (i * 53) % (H * .5), 2, 2);
+    const mood = Math.min(1, rage / 100), fr = faceR(), fy = 66 + fr + 6;
+    /* ghat steps with the lamps you have lit */
+    ["#3a2a66", "#4b2f78", "#5e3a82"].forEach((c, i) => { cx.fillStyle = c; cx.fillRect(0, H * .84 + i * H * .055, W, H * .055); cx.strokeStyle = INK; cx.lineWidth = 3; cx.strokeRect(-2, H * .84 + i * H * .055, W + 4, H * .055); });
+    const total = (mode === "ending" || (mode === "over" && rage <= 0)) ? 36 : litN;
+    for (let i = 0; i < Math.min(Math.floor(total), 36); i++) { const s = slot(i); lamp(s.x, s.y, Math.min(11, W / 42), true, ts + i * 80); }
+    face(W / 2, fy, fr, shiva > 0 ? Math.max(0, mood - shiva) * .5 : mood * .9);
+    if (shiva > 0) shivaFig(W * (.12 + .3 * Math.min(1, shiva * 1.4)), fy + fr * .3, fr * .9);
+    for (const it of items) {
+      if (it.type === "diya") lamp(it.x, it.y, it.r * .9, it.state === "fly", ts, it.state === "live");
+      else if (it.type === "shadow") shadowBlob(it.x, it.y, it.r, ts);
+      else jaba(it.x, it.y, it.r);
     }
+    for (const p of parts) { cx.globalAlpha = Math.max(0, p.life); cx.fillStyle = p.c; cx.beginPath(); cx.arc(p.x, p.y, p.r, 0, 7); cx.fill(); }
+    cx.globalAlpha = 1; cx.textAlign = "center"; cx.font = '700 22px "Hind Siliguri", sans-serif';
+    for (const p of pops) { cx.globalAlpha = Math.max(0, Math.min(1, p.life * 1.6)); cx.lineWidth = 4; cx.strokeStyle = INK; cx.strokeText(p.text, p.x, p.y); cx.fillStyle = p.color; cx.fillText(p.text, p.x, p.y); }
+    cx.globalAlpha = 1;
+    if (mode === "ending") { cx.fillStyle = `rgba(11,12,26,${Math.min(.5, endT / 9000)})`; cx.fillRect(0, 0, W, H * .8); }
+    cx.restore();
+    if (flash > 0) { cx.fillStyle = `rgba(200,30,30,${flash / 320 * .3})`; cx.fillRect(0, 0, W, H); }
     /* HUD */
-    cx.fillStyle = CREAM; cx.font = '600 16px "Hind Siliguri", sans-serif'; cx.textAlign = "left"; cx.fillText(`${gl("score")} ${nd(score)}`, 14, 26);
-    cx.textAlign = "center"; cx.fillText(`${gl("combo")} ${nd(combo)}`, W / 2, 26); cx.textAlign = "right"; cx.fillText(`${gl("best")} ${nd(best)}`, W - 14, 26);
-    const bx = 56, bw = W - 80; cx.lineWidth = 3; cx.strokeStyle = INK; cx.fillStyle = "#2b2f55"; cx.fillRect(bx, 48, bw, 14); cx.fillStyle = RED; cx.fillRect(bx, 48, bw * rage / 100, 14); cx.strokeRect(bx, 48, bw, 14);
-    face(28, 55, 14, mood);
-    if (mode === "play" || mode === "ending") { cx.textAlign = "center"; cx.fillStyle = CREAM; cx.font = '600 20px "Hind Siliguri", sans-serif'; cx.fillText(mode === "ending" ? gl("r_p3") : gl("r_p" + (level + 1)), W / 2, H * .5);
-      if (popT > 0) { cx.fillStyle = GOLD; cx.font = '700 22px "Hind Siliguri", sans-serif'; cx.fillText(pop, tx, ly - 52); } }
-    if (mode === "ending") { cx.fillStyle = `rgba(11,12,26,${Math.min(.55, endT / 9000)})`; cx.fillRect(0, 0, W, H * .7); }
+    cx.fillStyle = CREAM; cx.font = '600 16px "Hind Siliguri", sans-serif'; cx.textAlign = "left"; cx.fillText(`${gl("score")} ${nd(score)}`, 14, 24);
+    cx.textAlign = "center"; cx.fillText(`${gl("combo")} ${nd(combo)}`, W / 2, 24); cx.textAlign = "right"; cx.fillText(`${gl("best")} ${nd(best)}`, W - 14, 24);
+    const bx = 56, bw = W - 80; cx.lineWidth = 3; cx.strokeStyle = INK; cx.fillStyle = "#2b2f55"; cx.fillRect(bx, 36, bw, 14);
+    const rg = cx.createLinearGradient(bx, 0, bx + bw, 0); rg.addColorStop(0, "#e8402e"); rg.addColorStop(1, "#a3151f"); cx.fillStyle = rg; cx.fillRect(bx, 36, bw * rage / 100, 14); cx.strokeRect(bx, 36, bw, 14);
+    face(28, 43, 14, mood);
+    cx.textAlign = "left"; cx.font = '500 12px "Hind Siliguri", sans-serif'; cx.fillStyle = CREAM; cx.fillText(gl("r_anger"), bx, 64);
   }
   function loop(ts) {
     raf = requestAnimationFrame(loop); const dt = Math.min(50, ts - (last || ts)); last = ts;
     if (!paused) {
+      updateFx(dt);
       if (mode === "play") update(dt);
       else if (mode === "ending") {
-        endT += dt; shiva = Math.min(1, endT / 3000); clock += dt; litN = Math.min(36, litN + dt / 120);
-        if (endT > 1500 && !run) { run = true; playConch(2.5); }
-        if (endT > 6500 && mode === "ending") { sfx.win(); endLevel(true); }
+        endT += dt; shiva = Math.min(1, endT / 2500); litN = Math.min(36, litN + dt / 90);
+        if (endT > 900 && !played) { played = true; playConch(2.6); }
+        if (endT > 5200) { sfx.win(); finish(true); }
       }
     }
     draw(ts);
   }
   function fit() { const r = root.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 2); W = r.width; H = r.height; cv.width = W * d; cv.height = H * d; cx.setTransform(d, 0, 0, d, 0, 0); }
-  const kd = e => { if (e.code === "Space") { e.preventDefault(); if (!e.repeat) press(); } else if (e.key === "p") GAMES.rhythm.pause(true); };
-  const ku = e => { if (e.code === "Space") release(); };
   return {
     start(r) {
       root = r; root.innerHTML = '<div class="gstage"><canvas></canvas><div class="gpanel" hidden></div></div>';
       cv = root.querySelector("canvas"); cx = cv.getContext("2d"); panelEl = root.querySelector(".gpanel"); fit(); addEventListener("resize", fit);
-      cv.addEventListener("pointerdown", e => { e.preventDefault(); press(); }); cv.addEventListener("pointerup", release); cv.addEventListener("pointercancel", release);
-      panelEl.addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; sfx.click(); if (b.dataset.lv) begin(+b.dataset.lv); else if (b.dataset.menu) menu(); else if (b.dataset.resume) this.pause(false); });
-      addEventListener("keydown", kd); addEventListener("keyup", ku); last = 0; run = false; menu(); raf = requestAnimationFrame(loop);
+      cv.addEventListener("pointerdown", e => { e.preventDefault(); const b = cv.getBoundingClientRect(); tap(e.clientX - b.left, e.clientY - b.top); });
+      panelEl.addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; sfx.click(); if (b.dataset.go) go(); else if (b.dataset.resume) this.pause(false); });
+      last = 0; menu(); raf = requestAnimationFrame(loop);
     },
-    stop() { cancelAnimationFrame(raf); removeEventListener("keydown", kd); removeEventListener("keyup", ku); removeEventListener("resize", fit); mode = "menu"; },
+    stop() { cancelAnimationFrame(raf); removeEventListener("resize", fit); mode = "menu"; },
+    dbg() { return { mode, score, rage, items: items.map(i => ({ type: i.type, x: i.x, y: i.y, state: i.state })), litN, combo }; },
     /* pause(true) toggles, pause(false) resumes, pause() only pauses */
-    pause(a) {
-      if (mode !== "play" && mode !== "ending") return;
-      paused = a === true ? !paused : a === false ? false : true; this.pausePanel();
-    },
-    pausePanel() {
-      if (paused) showPanel(`<div class="gp"><h2>${gl("paused")}</h2><div class="gbtns"><button class="gbtn" data-resume="1">${gl("resume")}</button></div></div>`); else if (mode === "play" || mode === "ending") showPanel("");
-    },
-    relang() { if (mode === "menu") menu(); else if (paused) this.pausePanel(); }
+    pause(a) { if (mode !== "play") return; paused = a === true ? !paused : a === false ? false : true; this.pausePanel(); },
+    pausePanel() { if (paused) panel(`<div class="gp"><h2>${gl("paused")}</h2><div class="gbtns"><button class="gbtn" data-resume="1">${gl("resume")}</button></div></div>`); else if (mode === "play") panel(""); },
+    relang() { if (mode === "menu") menu(); else if (paused) this.pausePanel(); else if (mode === "over") finish(rage <= 0); }
   };
 })();
 
@@ -1219,7 +1252,7 @@ GAMES.runner = (() => {
 
   function update(dt) {
     const s = dt / 1000, v = speed * (boost > 0 ? 1.3 : 1);
-    dist += v * s; speed = 290 + dist * .009; const m = dist / 50;
+    dist += v * s; speed = Math.min(560, 290 + dist * .009); const m = dist / 50;
     t += dt; if (shake > 0) shake -= dt; if (redT > 0) redT -= dt; if (boost > 0) boost -= dt; if (inv > 0) inv -= dt; if (flick > 0) flick -= dt;
     if (py > 0 || vy > 0) { py += vy * s; vy -= 2300 * s; if (py <= 0) { py = 0; vy = 0; } }
     if (sliding) { slideT -= dt; if (slideT <= 0) sliding = false; }
@@ -1326,6 +1359,7 @@ GAMES.runner = (() => {
       addEventListener("keydown", kd); menu(); raf = requestAnimationFrame(loop);
     },
     stop() { cancelAnimationFrame(raf); removeEventListener("keydown", kd); removeEventListener("resize", fit); mode = "menu"; },
+    dbg() { return { dist, obs, py, lives, mode, sliding, score, speed }; },
     pause(a) { if (mode !== "play") return; paused = a === true ? !paused : a === false ? false : true; this.pausePanel(); },
     pausePanel() { if (paused) panel(`<div class="gp"><h2>${gl("paused")}</h2><div class="gbtns"><button class="gbtn" data-resume="1">${gl("resume")}</button></div></div>`); else if (mode === "play") panel(""); },
     relang() { if (mode === "menu") menu(); else if (mode === "over") over(); else if (paused) this.pausePanel(); }
@@ -1513,9 +1547,19 @@ GAMES.quiz = (() => {
       <p class="dim small">${gl("q_src")}</p></div>`;
   }
   function begin(t) {
-    total = t; list = shuffle(QUIZ.map((_, i) => i)).slice(0, t); qi = 0; score = 0; right = 0; ans = []; ensureAudio(); duck(.35); ask();
+    paused = false; pauseUI(); total = t; list = shuffle(QUIZ.map((_, i) => i)).slice(0, t); qi = 0; score = 0; right = 0; ans = []; ensureAudio(); duck(.35); ask();
   }
   let chosen = -1;
+  /* a clear "Paused" cover with a Resume button, shown over the quiz window */
+  function pauseUI() {
+    const win = document.querySelector("#gm .gwin"); if (!win) return;
+    let el = win.querySelector(".qpause");
+    if (root) root.classList.toggle("paused", paused && stage === "ask");
+    if (paused && stage === "ask") {
+      if (!el) { el = document.createElement("div"); el.className = "qpause"; win.appendChild(el); el.addEventListener("click", e => { if (e.target.closest("[data-resume]")) GAMES.quiz.pause(false); }); }
+      el.innerHTML = `<h2>${gl("paused")}</h2><button class="gbtn" data-resume="1">${gl("resume")}</button>`;
+    } else if (el) el.remove();
+  }
   function ask() { stage = "ask"; answered = false; chosen = -1; left = 20; perm = shuffle([0, 1, 2, 3]); drawQ(); clearInterval(timer); timer = setInterval(tick, 100); }
   /* draw the current question; keeps the same option order so a language switch does not reshuffle */
   function drawQ() {
@@ -1555,17 +1599,17 @@ GAMES.quiz = (() => {
   }
   return {
     start(r) {
-      root = r; root.classList.add("scroll"); paused = false; stage = "menu";
+      root = r; root.classList.add("scroll"); paused = false; stage = "menu"; pauseUI();
       root.onclick = e => {
         const b = e.target.closest("button"); if (!b || b.disabled) return; sfx.click(); const d = b.dataset;
-        if (d.mode) begin(+d.mode); else if (d.i !== undefined) answer(+d.i); else if (d.next) { qi++; if (qi >= total) result(); else ask(); }
+        if (d.resume) GAMES.quiz.pause(false); else if (d.mode) begin(+d.mode); else if (d.i !== undefined) answer(+d.i); else if (d.next) { qi++; if (qi >= total) result(); else ask(); }
         else if (d.review) review(); else if (d.menu) menu();
       };
       menu();
     },
-    stop() { clearInterval(timer); if (root) { root.onclick = null; root.classList.remove("scroll"); } },
-    pause(a) { if (stage !== "ask") return; paused = a === true ? !paused : a === false ? false : true; root.classList.toggle("paused", paused); },
-    relang() { if (stage === "menu") menu(); else if (stage === "end") result(); else if (stage === "review") review(); else if (stage === "ask") drawQ(); }
+    stop() { clearInterval(timer); paused = false; pauseUI(); if (root) { root.onclick = null; root.classList.remove("scroll", "paused"); } },
+    pause(a) { if (stage !== "ask") return; paused = a === true ? !paused : a === false ? false : true; pauseUI(); },
+    relang() { if (stage === "menu") menu(); else if (stage === "end") result(); else if (stage === "review") review(); else if (stage === "ask") { drawQ(); pauseUI(); } }
   };
 })();
 
