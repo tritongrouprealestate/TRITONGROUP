@@ -1192,17 +1192,17 @@ GAMES.rhythm = (() => {
 /* ---------- Game 2: Diya Night Runner (endless runner) ---------- */
 Object.assign(GT, {
   n_story: { en: "It is Kali Puja night. The village is dark. Carry your diya and light the lamps along the path before the darkness catches up.", bn: "আজ কালীপূজার রাত। গ্রামে অন্ধকার। প্রদীপ হাতে পথের সব প্রদীপ জ্বালান, অন্ধকার ধরে ফেলার আগেই।" },
-  n_how: { en: "Tap or press Space to jump. Swipe down or press the Down arrow to slide. Grab the bhog plate for an extra life.", bn: "লাফাতে ট্যাপ করুন বা স্পেস বার চাপুন। নিচু হতে নিচে সোয়াইপ করুন বা নিচের তীর (↓) চাপুন। ভোগের থালা ধরলে একটি বাড়তি প্রাণ।" },
-  n_over: { en: "The darkness caught up.", bn: "অন্ধকার ধরে ফেলেছে।" },
+  n_how: { en: "Tap or press Space to jump. Swipe down or press the Down arrow to slide. Hitting an obstacle costs a life. Grab the bhog plate for an extra life.", bn: "লাফাতে ট্যাপ করুন বা স্পেস বার চাপুন। নিচু হতে নিচে সোয়াইপ করুন বা নিচের তীর (↓) চাপুন। বাধায় ধাক্কা লাগলে একটি প্রাণ যায়। ভোগের থালা ধরলে একটি বাড়তি প্রাণ।" },
+  n_over: { en: "Out of lives. The darkness won this round.", bn: "প্রাণ শেষ। এবার অন্ধকারের জয়।" },
   n_lamps: { en: "lamps lit", bn: "প্রদীপ জ্বলেছে" }
 });
 GAMES.runner = (() => {
   let root, cv, cx, W = 0, H = 0, raf = 0, last = 0, mode = "menu", paused = false, panelEl, gy = 0, px = 0;
-  let best = LS.get("kp_best_runner", 0), dist, speed, score, lives, gap, inv, py, vy, sliding, slideT, streak, boost, obs, lamps, picks, parts, nextObs, nextLamp, flick, beatT, t = 0;
+  let best = LS.get("kp_best_runner", 0), dist, speed, score, lives, gap, inv, py, vy, sliding, slideT, streak, boost, obs, lamps, picks, parts, nextObs, nextLamp, flick, beatT, shake = 0, redT = 0, t = 0;
   const rnd = (a, b) => a + Math.random() * (b - a);
   function reset() {
     dist = 0; speed = 290; score = 0; lives = 3; gap = 320; inv = 0; py = 0; vy = 0; sliding = false; slideT = 0; streak = 0; boost = 0;
-    obs = []; lamps = []; picks = []; parts = []; nextObs = 760; nextLamp = 260; flick = 0; beatT = 0;
+    obs = []; lamps = []; picks = []; parts = []; nextObs = 760; nextLamp = 260; flick = 0; beatT = 0; shake = 0; redT = 0;
   }
   function panel(html) { panelEl.innerHTML = html; panelEl.hidden = !html; }
   function menu() {
@@ -1220,7 +1220,7 @@ GAMES.runner = (() => {
   function update(dt) {
     const s = dt / 1000, v = speed * (boost > 0 ? 1.3 : 1);
     dist += v * s; speed = 290 + dist * .009; const m = dist / 50;
-    t += dt; if (boost > 0) boost -= dt; if (inv > 0) inv -= dt; if (flick > 0) flick -= dt;
+    t += dt; if (shake > 0) shake -= dt; if (redT > 0) redT -= dt; if (boost > 0) boost -= dt; if (inv > 0) inv -= dt; if (flick > 0) flick -= dt;
     if (py > 0 || vy > 0) { py += vy * s; vy -= 2300 * s; if (py <= 0) { py = 0; vy = 0; } }
     if (sliding) { slideT -= dt; if (slideT <= 0) sliding = false; }
     beatT += dt; if (beatT > 640) { beatT = 0; tone(100, .2, "sine", .14, 52); }
@@ -1239,9 +1239,9 @@ GAMES.runner = (() => {
     for (const p of picks) if (!p.got && Math.abs(p.x - dist) < 46) { p.got = true; lives = Math.min(3, lives + 1); boost = 3000; sfx.coin(); }
     const top = gy - py - (sliding ? 30 : 62);
     if (inv <= 0) for (const o of obs) {
-      if (Math.abs(dist - o.x) > o.w / 2 + 12) continue;
+      if (o.hit || Math.abs(dist - o.x) > o.w / 2 + 12) continue;
       const hit = o.type === "puddle" ? py < 10 : o.type === "wall" ? py < 42 : top < gy - 46;
-      if (hit) { inv = 1000; gap -= 110; streak = 0; flick = 700; sfx.bad(); break; }
+      if (hit) { o.hit = true; lives--; inv = 1600; gap = Math.max(60, gap - 60); streak = 0; boost = 0; flick = 900; shake = 380; redT = 380; sfx.bad(); if (lives <= 0) over(); break; }
     }
     gap -= (11 + m * .035) * s;
     if (gap <= 0) { lives--; gap = 250; inv = 1500; flick = 1200; sfx.bad(); if (lives <= 0) over(); }
@@ -1264,6 +1264,7 @@ GAMES.runner = (() => {
     }
   }
   function draw() {
+    cx.save(); if (shake > 0) cx.translate((Math.random() - .5) * 10, (Math.random() - .5) * 10);
     const m = dist / 50, th = THEMES[Math.floor(m / 500) % 3];
     const g = cx.createLinearGradient(0, 0, 0, gy); g.addColorStop(0, th.top); g.addColorStop(1, th.bot); cx.fillStyle = g; cx.fillRect(0, 0, W, H);
     cx.fillStyle = "#fff6e5"; for (let i = 0; i < 26; i++) cx.fillRect((i * 131) % W, (i * 47) % (gy * .5), 2, 2);
@@ -1299,6 +1300,7 @@ GAMES.runner = (() => {
     /* the darkness: a soft shadow creeping in from the left */
     const dk = Math.max(0, 1 - gap / 320), dg = cx.createLinearGradient(0, 0, px * 1.4 + 60, 0);
     dg.addColorStop(0, `rgba(4,5,18,${.25 + .7 * dk})`); dg.addColorStop(1, "rgba(4,5,18,0)"); cx.fillStyle = dg; cx.fillRect(0, 0, px * 1.4 + 60, H);
+    cx.restore(); if (redT > 0) { cx.fillStyle = `rgba(200,30,30,${redT / 380 * .35})`; cx.fillRect(0, 0, W, H); }
     /* HUD */
     cx.fillStyle = "#fff6e5"; cx.font = '600 16px "Hind Siliguri", sans-serif'; cx.textAlign = "left"; cx.fillText(`${gl("score")} ${nd(score)}`, 14, 26);
     cx.textAlign = "center"; cx.fillText(`${nd(Math.floor(m))} ${lang === "bn" ? "মি" : "m"}`, W / 2, 26); cx.textAlign = "right"; cx.fillText(`${gl("best")} ${nd(best)}`, W - 14, 26);
